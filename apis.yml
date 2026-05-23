@@ -1,0 +1,134 @@
+aid: recorded-future
+url: https://raw.githubusercontent.com/api-evangelist/recorded-future/refs/heads/main/apis.yml
+name: Recorded Future
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+- Cybersecurity
+- Threat Intelligence
+- Intelligence Cloud
+- Brand Intelligence
+- Identity Intelligence
+- Vulnerability Intelligence
+- AI Analyst
+description: Recorded Future is a threat intelligence platform whose Intelligence Cloud combines open-web, dark-web, technical,
+  and customer telemetry sources via the Intelligence Graph, indexed and analyzed by Insikt Group analysts and AI. The platform
+  spans Threat Intelligence, Brand Intelligence, Identity Intelligence, SecOps Intelligence, Vulnerability Intelligence,
+  Attack Surface Intelligence, Payment Fraud Intelligence, and Geopolitical Intelligence, plus Cyber Daily and the AI Analyst.
+  Recorded Future exposes a REST API at api.recordedfuture.com (commonly called ConnectAPI) that customers and integration
+  partners use to pull indicators, entities, alerts, and risk scores into SIEMs, SOARs, TIPs, and custom security workflows.
+  Named a Leader in the 2026 Gartner Magic Quadrant for Cyberthreat Intelligence Technologies.
+created: '2026-05-23'
+modified: '2026-05-23'
+specificationVersion: '0.19'
+apis:
+- aid: recorded-future:recorded-future-connect-api
+  name: Recorded Future Intelligence Cloud API
+  tags:
+  - Threat Intelligence
+  - Indicators
+  - Risk Scores
+  - Alerts
+  - Entities
+  humanURL: https://support.recordedfuture.com/hc/en-us
+  baseURL: https://api.recordedfuture.com
+  properties:
+  - url: https://support.recordedfuture.com/hc/en-us
+    type: Documentation
+    title: Recorded Future Support and API Documentation (gated)
+  - url: https://www.recordedfuture.com/platform
+    type: Portal
+    title: Recorded Future Intelligence Cloud
+  description: The Recorded Future Intelligence Cloud REST API (api.recordedfuture.com) provides programmatic access to threat
+    intelligence sourced from over a million open-web, dark-web, technical, and customer feeds and structured by the Intelligence
+    Graph. The API supports lookups for indicators of compromise (IPs, domains, hashes, URLs, vulnerabilities), entity context,
+    risk scoring, alert and watchlist management, and intelligence search. Detailed reference documentation and credentials
+    are issued to Recorded Future customers through the support portal and customer community.
+common:
+- type: LinkedIn
+  url: https://www.linkedin.com/company/recorded-future
+- type: Website
+  url: https://www.recordedfuture.com/
+- type: Portal
+  url: https://app.recordedfuture.com/
+  title: Recorded Future Customer Portal
+- type: Support
+  url: https://support.recordedfuture.com/hc/en-us
+- type: Documentation
+  url: https://support.recordedfuture.com/hc/en-us
+- type: Blog
+  url: https://www.recordedfuture.com/blog
+- type: News
+  url: https://therecord.media/
+  title: The Record by Recorded Future
+- type: CyberDaily
+  url: https://www.recordedfuture.com/products/cyber-daily
+- type: ContactSales
+  url: https://www.recordedfuture.com/contact
+- type: Careers
+  url: https://www.recordedfuture.com/careers
+- type: Partners
+  url: https://www.recordedfuture.com/partners
+- type: PrivacyPolicy
+  url: https://www.recordedfuture.com/legal/privacy-policy
+- type: TermsOfService
+  url: https://www.recordedfuture.com/legal/terms-of-service
+- type: Features
+  data:
+  - name: Intelligence Cloud
+    description: Unified intelligence platform delivering prioritized, organization-specific intelligence
+  - name: Intelligence Graph
+    description: Core graph data structure indexing and analyzing 1M+ open-web, dark-web, technical, and telemetry sources
+  - name: Threat Intelligence
+    description: Tactical, operational, and strategic threat intelligence on actors, malware, TTPs, and indicators
+  - name: Brand Intelligence
+    description: Detection of brand impersonation, typosquatting, and digital risk to corporate brands
+  - name: Identity Intelligence
+    description: Monitoring of leaked credentials, identity exposures, and credential compromise events
+  - name: SecOps Intelligence
+    description: Intelligence purpose-built for SOC workflows, alerting, and triage
+  - name: Vulnerability Intelligence
+    description: Vulnerability risk scoring, exploit chatter, and prioritization for patching decisions
+  - name: Attack Surface Intelligence
+    description: Continuous discovery and monitoring of external-facing assets and exposures
+  - name: Payment Fraud Intelligence
+    description: Intelligence on stolen cards, fraud actors, and dark-web payment fraud markets
+  - name: Geopolitical Intelligence
+    description: Geopolitical and physical security intelligence for global operations
+  - name: AI Analyst
+    description: Generative AI assistant that summarizes intelligence and accelerates analyst workflows
+  - name: Cyber Daily
+    description: Daily curated digest of the global threat landscape
+  - name: Insikt Group
+    description: In-house intelligence research and analyst team producing finished intelligence
+- type: UseCases
+  data:
+  - name: SOC Alert Triage
+    description: Enrich SIEM and SOAR alerts with risk scores and entity context from the Intelligence Cloud
+  - name: Vulnerability Management
+    description: Prioritize CVE remediation using real-world exploit and threat-actor activity
+  - name: Brand Protection
+    description: Detect and respond to brand impersonation, typosquatting, and phishing infrastructure
+  - name: Identity and Credential Monitoring
+    description: Detect leaked credentials and identity exposures for employees and customers
+  - name: Third-Party Risk
+    description: Monitor third-party and supply-chain partners for threat exposure
+  - name: Geopolitical Risk
+    description: Track geopolitical events affecting people, facilities, and operations
+- type: Integrations
+  data:
+  - name: SIEM
+    description: Out-of-the-box integrations with Splunk, Microsoft Sentinel, Google Chronicle, IBM QRadar, and others
+  - name: SOAR
+    description: Playbook content and integrations for Cortex XSOAR, Splunk SOAR, Tines, Torq, and similar platforms
+  - name: TIP
+    description: Integrations with ThreatConnect, Anomali, and other Threat Intelligence Platforms
+  - name: Firewalls and Proxies
+    description: IOC feeds and blocklists for next-gen firewalls and secure web gateways
+  - name: Endpoint and EDR
+    description: Enrichment integrations with CrowdStrike, Microsoft Defender, SentinelOne, and others
+  - name: Browser Extension
+    description: Recorded Future browser extension surfaces intelligence in any web-based security tool
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
