@@ -45,6 +45,10 @@ apis:
     risk scoring, alert and watchlist management, and intelligence search. Detailed reference documentation and credentials
     are issued to Recorded Future customers through the support portal and customer community.
 common:
+- type: VulnerabilityDisclosure
+  url: security/recorded-future-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/recorded-future-domain-security.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/recorded-future
 - type: Website
