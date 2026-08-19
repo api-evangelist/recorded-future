@@ -32,7 +32,7 @@ description: Recorded Future is a threat intelligence platform whose Intelligenc
   Named a Leader in the 2026 Gartner Magic Quadrant for Cyberthreat Intelligence Technologies.
 created: '2026-05-23'
 modified: '2026-05-23'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: recorded-future:recorded-future-connect-api
   name: Recorded Future Intelligence Cloud API
