@@ -1,0 +1,28 @@
+# Front Door AI Index — recorded-future — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: recorded-future
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.recordedfuture.com
+  final_host: www.recordedfuture.com
+  ownership: own
+  owner: recorded-future
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 4
+  host_score: 4
+  density: 3.84
+  words: 1041
+  tiers:
+    agentic: 1
+    core: 3
+    model: 0
+  ambiguous: 34
+  top_terms:
+    intelligence: 33
+    AI: 3
+    agentic: 1
+    predictive: 1
