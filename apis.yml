@@ -68,6 +68,12 @@ apis:
     risk scoring, alert and watchlist management, and intelligence search. Detailed reference documentation and credentials
     are issued to Recorded Future customers through the support portal and customer community.
 common:
+- type: Plans
+  url: plans/recorded-future-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/recorded-future-rate-limits.yml
+- type: FinOps
+  url: finops/recorded-future-finops.yml
 - type: VulnerabilityDisclosure
   url: security/recorded-future-vulnerability-disclosure.yml
 - type: DomainSecurity
