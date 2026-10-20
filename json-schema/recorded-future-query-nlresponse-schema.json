@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-query-nlresponse-schema.json",
+  "title": "QueryNLResponse",
+  "description": "Natural language query results with matching malware intelligence records.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-malware-intelligence-api-openapi.yml#/components/schemas/QueryNLResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/QueryHit"
+      }
+    },
+    "counts": {
+      "$ref": "#/$defs/QueryCount"
+    },
+    "totalPages": {
+      "$ref": "#/$defs/QueryTotalPages"
+    },
+    "executedQuery": {
+      "type": "string",
+      "description": "The executed query language search"
+    }
+  },
+  "$defs": {
+    "Links": {
+      "type": "object",
+      "properties": {
+        "universal_report": {
+          "description": "URL to the universal report for this entity. Only present for hash entities",
+          "type": "string"
+        },
+        "intelligence_card": {
+          "description": "URL to the intelligence card for this entity.",
+          "type": "string"
+        }
+      },
+      "description": "Related links and references for a malware intelligence record."
+    },
+    "QueryCount": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "description": "Number of hits included in the response",
+          "type": "integer"
+        },
+        "total": {
+          "description": "Total number of hits",
+          "type": "integer"
+        }
+      },
+      "description": "Count of matching records for a query."
+    },
+    "QueryHit": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Value matching the query",
+          "type": "string"
+        },
+        "count": {
+          "description": "Number of times the value occurs in the result set",
+          "type": "integer"
+        },
+        "risk_score": {
+          "description": "Risk Score for this entity",
+          "type": "integer"
+        },
+        "sandbox_score": {
+          "description": "Sandbox score of a hash. Only present for hash entities",
+          "type": "integer"
+        },
+        "file_extensions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "File Extensions",
+          "description": "List of file extensions for Hash. Only present for Hash entities",
+          "type": "array"
+        },
+        "tags": {
+          "description": "List of tags associated with Hash. Only present for Hash entities",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "links": {
+          "$ref": "#/$defs/Links"
+        }
+      },
+      "description": "A single malware intelligence record matching the query criteria."
+    },
+    "QueryTotalPages": {
+      "type": "integer",
+      "description": "Total number of pages that can be returned by this query"
+    }
+  }
+}

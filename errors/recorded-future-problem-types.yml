@@ -1,0 +1,120 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/recorded-future-alert-api-openapi.yml
+- openapi/recorded-future-analyst-note-api-openapi.yml
+- openapi/recorded-future-asi-project-api-openapi.yml
+- openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+- openapi/recorded-future-case-api-openapi.yml
+- openapi/recorded-future-collective-insights-api-openapi.yml
+- openapi/recorded-future-common-platform-enumeration-apis-v0-api-openapi.yml
+- openapi/recorded-future-connect-api-openapi.yml
+- openapi/recorded-future-customer-apis-v0-api-openapi.yml
+- openapi/recorded-future-customer-apis-v2-api-openapi.yml
+- openapi/recorded-future-detection-rule-api-openapi.yml
+- openapi/recorded-future-detection-rule-relation-api-openapi.yml
+format: custom
+envelope:
+  media_type: application/json
+  schema: ErrorWrapper
+coverage:
+  operations: 307
+  statuses_declared: 13
+problems:
+- status: 400
+  title: Bad Request
+  description: Bad Request
+  operations: 97
+  media_types:
+  - application/json
+  - text/plain
+  - application/octet-stream
+  schema: ErrorResponse
+- status: 401
+  title: Unauthorized
+  description: Unauthorized
+  operations: 103
+  media_types:
+  - application/json
+  - text/plain
+  - application/octet-stream
+  schema: ErrorWrapper
+- status: 403
+  title: Forbidden
+  description: Forbidden
+  operations: 45
+  media_types:
+  - application/json
+  - text/plain
+  schema: ErrorResponse
+- status: 404
+  title: Not Found
+  description: The URI didn't match an existing resource.
+  operations: 99
+  media_types:
+  - application/json
+  - application/octet-stream
+  schema: ErrorResponse
+- status: 409
+  title: Conflict
+  description: Profile name already exists.
+  operations: 3
+  media_types:
+  - application/json
+  schema: Error
+- status: 422
+  title: Unprocessable Content
+  description: Validation Error
+  operations: 25
+  media_types:
+  - application/json
+  schema: HTTPValidationError
+- status: 425
+  title: Too Early
+  description: Too Early
+  operations: 1
+  media_types:
+  - application/octet-stream
+  schema: file.ResponseError425
+- status: 429
+  title: Too Many Requests
+  description: Too Many Requests
+  operations: 21
+  media_types:
+  - application/json
+  - application/octet-stream
+  schema: preset.ResponseError429
+- status: 500
+  title: Internal Server Error
+  description: Internal Server Error
+  operations: 15
+  media_types:
+  - text/plain
+  schema: InternalServerErrorResponse
+- status: 502
+  title: Bad Gateway
+  description: Server error
+  operations: 2
+  media_types: []
+  schema: null
+- status: 503
+  title: Service Unavailable
+  description: Server error
+  operations: 7
+  media_types: []
+  schema: null
+- status: 504
+  title: Gateway Timeout
+  description: Server error
+  operations: 2
+  media_types: []
+  schema: null
+- status: default
+  title: null
+  description: Error
+  operations: 8
+  media_types:
+  - text/plain
+  - application/json
+  schema: ApiError

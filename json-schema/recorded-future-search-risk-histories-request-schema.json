@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-search-risk-histories-request-schema.json",
+  "title": "SearchRiskHistoriesRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-risk-api-openapi.yml#/components/schemas/SearchRiskHistoriesRequest",
+  "type": "object",
+  "properties": {
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Entity id"
+      }
+    },
+    "from": {
+      "format": "date-time",
+      "description": "Default value is minus 30 days from `to` date or current date if `to` date is missing"
+    },
+    "to": {
+      "format": "date-time",
+      "description": "Default value is plus 30 days from `from` date or current date if `from` date is missing"
+    }
+  },
+  "required": [
+    "entities"
+  ]
+}

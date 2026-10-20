@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-case-lookup-bulk-request-schema.json",
+  "title": "CaseLookupBulkRequest",
+  "description": "Request to look up multiple cases by their IDs with optional panel selection.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-case-api-openapi.yml#/components/schemas/CaseLookupBulkRequest",
+  "type": "object",
+  "properties": {
+    "ids": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TaskIdentity"
+      }
+    },
+    "panels": {
+      "$ref": "#/$defs/StandardPanels"
+    },
+    "logLimit": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "maxValue": 100,
+      "minvalue": 1,
+      "description": "How many history items of each Case should be returned"
+    }
+  },
+  "required": [
+    "ids",
+    "panels"
+  ],
+  "$defs": {
+    "StandardPanels": {
+      "description": "Request inclusion of detailed Case data, grouped into a set of panels. If left unset, all panels will be returned.\n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "summary",
+          "details",
+          "log"
+        ]
+      }
+    },
+    "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "maxLength": 41
+    }
+  }
+}

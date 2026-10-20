@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-metadata-common-schema.json",
+  "title": "MetadataCommon",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-playbook-alerts-api-openapi.yml#/components/schemas/MetadataCommon",
+  "type": "object",
+  "properties": {
+    "status_list": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Enumeration"
+      }
+    },
+    "category_list": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Enumeration"
+      }
+    },
+    "priority_list": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Enumeration"
+      }
+    },
+    "actions_by_category": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/OnwardActionsByCategory"
+      }
+    }
+  },
+  "$defs": {
+    "Enumeration": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    },
+    "OnwardActionEnumeration": {
+      "type": "object",
+      "properties": {
+        "action_id": {
+          "$ref": "#/$defs/OnwardActionId"
+        },
+        "description": {
+          "type": "string"
+        },
+        "deprecated": {
+          "type": "boolean",
+          "description": "If deprecated (true) it means that it is no longer possible to store it,  but it can still be returned from Playbook Alerts\n"
+        }
+      },
+      "required": [
+        "action_id",
+        "description"
+      ]
+    },
+    "OnwardActionId": {
+      "type": "string",
+      "description": "The id for the type of action taken. The possible values can be found in the response from metadata/common in actions_by_category field. The action ids possible can grow over time\n"
+    },
+    "OnwardActionsByCategory": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/PlaybookAlertCategory"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OnwardActionEnumeration"
+          }
+        }
+      }
+    },
+    "PlaybookAlertCategory": {
+      "type": "string",
+      "enum": [
+        "domain_abuse",
+        "malicious_sites",
+        "cyber_vulnerability",
+        "code_repo_leakage",
+        "third_party_risk",
+        "identity_novel_exposures",
+        "geopolitics_facility",
+        "dark_web",
+        "socmed_impersonation"
+      ]
+    }
+  }
+}

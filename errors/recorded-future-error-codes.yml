@@ -1,0 +1,24 @@
+name: Recorded Future error codes
+generated: '2026-10-20'
+method: searched
+source: https://docs.recordedfuture.com/reference/llm-instructions.md
+docs: https://docs.recordedfuture.com/reference/api-entitlements
+format: custom-json
+envelope: '{"error": {"status": <code>, "message": "...", "reason": "..."}, "traceId": "..."} (v2 APIs)'
+problems:
+- status: 403
+  title: Missing API privileges
+  type: missing-api-privileges
+  description: Your API token does not have the module entitlement required for the endpoint you are calling.
+  remediation: Check the API Entitlements tables; contact the Recorded Future account team, or regenerate the token if the
+    module was recently added.
+- status: 403
+  title: Missing Data permissions
+  type: missing-data-permissions
+  description: Token has the module entitlement but the account lacks access to the referenced data group.
+  remediation: Contact your Recorded Future administrator to review the data-group ACL configuration.
+- status: 429
+  title: Rate limit exceeded
+  type: rate-limited
+  description: Rate limit is 1000 requests per 60 seconds. Exceeding it returns 429.
+  remediation: Implement exponential backoff.

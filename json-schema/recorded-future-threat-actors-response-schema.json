@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-threat-actors-response-schema.json",
+  "title": "ThreatActorsResponse",
+  "description": "Paginated search results for threat actors.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-threat-api-openapi.yml#/components/schemas/ThreatActorsResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "description": "Array of threat actor objects.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ThreatActorSummary"
+      }
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "description": "Number of results in this response page",
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "description": "Total number of matching results across all pages",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "Pagination counts."
+    },
+    "next_offset": {
+      "description": "Opaque pagination token. Pass as offset in the next request to retrieve the next page.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "$defs": {
+    "Alias": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "description": "Known aliases of the threat actor, including in other languages",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "BaseEntityOutput": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Entity ID",
+          "type": "string"
+        },
+        "name": {
+          "description": "Entity name",
+          "type": "string"
+        }
+      }
+    },
+    "Categories": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BaseEntityOutput"
+          }
+        }
+      }
+    },
+    "CommonNames": {
+      "type": "object",
+      "properties": {
+        "common_names": {
+          "description": "Alternative names of the threat actor",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ThreatActorSummary": {
+      "description": "Threat actor summary",
+      "properties": {
+        "id": {
+          "description": "Entity ID",
+          "type": "string"
+        },
+        "type": {
+          "description": "Entity type (Company, Organization or Person)",
+          "type": "string",
+          "enum": [
+            "Company",
+            "Organization",
+            "Person"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/ThreatAttributes"
+        }
+      }
+    },
+    "ThreatAttributes": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        {
+          "$ref": "#/$defs/CommonNames"
+        },
+        {
+          "$ref": "#/$defs/Alias"
+        },
+        {
+          "$ref": "#/$defs/Categories"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,354 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-alert-search-response-v2-schema.json",
+  "title": "AlertSearchResponseV2",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertSearchResponseV2",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AlertV2Summary"
+          }
+        }
+      },
+      "required": [
+        "results"
+      ]
+    },
+    "counts": {
+      "$ref": "#/$defs/Counts"
+    }
+  },
+  "required": [
+    "data",
+    "counts"
+  ],
+  "$defs": {
+    "AiInsights": {
+      "type": "object",
+      "description": "Recorded Future AI summary of the alert. `text` and `comment` are mutually exclusive: when a summary is available `text` holds it and `comment` is `null`; otherwise `text` is `null` and `comment` explains why no summary is available.\n",
+      "properties": {
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The generated AI summary text. `null` when no summary is available."
+        },
+        "comment": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Human-readable explanation shown when no summary text is available (for example \"Summary is disabled for this alert.\" or \"Summary timed out.\"). `null` when `text` is populated.\n"
+        }
+      },
+      "required": [
+        "text",
+        "comment"
+      ]
+    },
+    "AlertV2Summary": {
+      "type": "object",
+      "description": "Summary representation of an alert",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Alert id"
+        },
+        "title": {
+          "type": "string",
+          "description": "Alert title"
+        },
+        "type": {
+          "type": "string",
+          "description": "Alert type",
+          "enum": [
+            "ENTITY",
+            "EVENT",
+            "REFERENCE",
+            "OTHER"
+          ]
+        },
+        "triggered": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of when the alert was triggered"
+        },
+        "url": {
+          "type": "string",
+          "description": "Portal URL for the alert"
+        },
+        "rule": {
+          "$ref": "#/$defs/RuleV2"
+        },
+        "ai_insights": {
+          "$ref": "#/$defs/AiInsights"
+        },
+        "review": {
+          "$ref": "#/$defs/ReviewV2"
+        },
+        "owner_organisation_details": {
+          "$ref": "#/$defs/OwnerOrganisationDetails"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "type",
+        "triggered",
+        "url",
+        "rule",
+        "ai_insights",
+        "review",
+        "owner_organisation_details"
+      ]
+    },
+    "Counts": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of alerts returned"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total number of alerts matching the query"
+        }
+      },
+      "required": [
+        "returned",
+        "total"
+      ]
+    },
+    "OwnerOrganisationDetails": {
+      "type": "object",
+      "description": "Details about the owner of the alert's rule and their organisation(s)",
+      "properties": {
+        "owner_id": {
+          "type": "string",
+          "description": "Id of the owning user. Only present when the owner is an individual user."
+        },
+        "owner_name": {
+          "type": "string",
+          "description": "Name of the owning user. Only present when the owner is an individual user."
+        },
+        "organisations": {
+          "type": "array",
+          "description": "Organisations the alert is shared with. May be empty.",
+          "minItems": 0,
+          "items": {
+            "type": "object",
+            "properties": {
+              "organisation_id": {
+                "type": "string",
+                "description": "Id of the organisation"
+              },
+              "organisation_name": {
+                "type": "string",
+                "description": "Name of the organisation"
+              }
+            },
+            "required": [
+              "organisation_id",
+              "organisation_name"
+            ]
+          }
+        },
+        "enterprise_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Id of the owner's enterprise"
+        },
+        "enterprise_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Name of the owner's enterprise"
+        }
+      },
+      "required": [
+        "organisations",
+        "enterprise_id",
+        "enterprise_name"
+      ]
+    },
+    "ReviewV2": {
+      "type": "object",
+      "description": "Triage/review information for the alert",
+      "properties": {
+        "status": {
+          "deprecated": true,
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Deprecated legacy review status. Use `statusInPortal` instead. `null` when the alert has no review status.",
+          "enum": [
+            "unassigned",
+            "assigned",
+            "pending",
+            "dismiss",
+            "no-action",
+            "actionable",
+            "tuning",
+            null
+          ]
+        },
+        "statusInPortal": {
+          "type": "string",
+          "description": "Alert review status as shown in the portal. Defaults to \"Unknown\".",
+          "enum": [
+            "New",
+            "Resolved",
+            "Pending",
+            "Dismissed",
+            "Flag for Tuning",
+            "Unknown"
+          ]
+        },
+        "statusDate": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "When the status was last changed"
+        },
+        "statusChangeBy": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Email of the user who last changed the status"
+        },
+        "assignee": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Email of the assigned user"
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Review note text"
+        },
+        "noteAuthor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Email of the note author"
+        },
+        "noteDate": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "When the note was last updated"
+        }
+      },
+      "required": [
+        "status",
+        "statusInPortal",
+        "statusDate",
+        "statusChangeBy",
+        "assignee",
+        "note",
+        "noteAuthor",
+        "noteDate"
+      ]
+    },
+    "RuleV2": {
+      "type": "object",
+      "description": "The alert rule that produced the alert",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Rule id"
+        },
+        "name": {
+          "type": "string",
+          "description": "Rule title, or \"No access to alert rule\" if the rule cannot be accessed"
+        },
+        "url": {
+          "type": "string",
+          "description": "Portal URL to view the rule"
+        },
+        "owner_id": {
+          "type": "string",
+          "description": "Id of the rule owner"
+        },
+        "owner_name": {
+          "type": "string",
+          "description": "Name of the rule owner"
+        },
+        "organisation_id": {
+          "type": "string",
+          "description": "Id of the rule owner organisation"
+        },
+        "organisation_name": {
+          "type": "string",
+          "description": "Name of the rule owner organisation"
+        },
+        "use_case_deprecation": {
+          "$ref": "#/$defs/UseCaseDeprecation"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "url",
+        "owner_id",
+        "owner_name",
+        "organisation_id",
+        "organisation_name",
+        "use_case_deprecation"
+      ]
+    },
+    "UseCaseDeprecation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Deprecation notice for the rule's use case. `null` unless the rule's use case is deprecated and the notice is currently active.\n",
+      "properties": {
+        "from": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Date from which the use case is deprecated"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable deprecation description"
+        },
+        "links": {
+          "type": "object",
+          "description": "Related links keyed by label",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

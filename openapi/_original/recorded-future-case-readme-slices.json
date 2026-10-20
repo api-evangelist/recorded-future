@@ -1,0 +1,2932 @@
+[
+ {
+  "page": "https://docs.recordedfuture.com/reference/cases-create.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "version": "0.1.0",
+    "title": "Case",
+    "description": "A very descriptive description will be available Soon(TM)",
+    "contact": {
+     "name": "Alerts Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/case"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "Case",
+     "description": "Endpoints related to Case"
+    }
+   ],
+   "paths": {
+    "/create": {
+     "post": {
+      "operationId": "create",
+      "description": "Create a new case linked to a reference alert (document-based) or signal alert (entity risk-based) for triage and investigation.",
+      "summary": "Build a Case around a Reference Alert, or a Signal Alert",
+      "parameters": [],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/CreateCaseRequest"
+         },
+         "examples": {
+          "fromReference": {
+           "summary": "From Reference Alert",
+           "value": {
+            "context": {
+             "type": "reference_alert",
+             "alert_notification": "4e4GmW",
+             "alert_rule": "report:FNESDXucADs",
+             "references": [
+              "HFBUAAAAACJ",
+              "HFBUAAABBAB"
+             ]
+            },
+            "organization": "uhash:2vefBNqkbi",
+            "status": "InProgress",
+            "priority": "High",
+            "title": "Dinosaurs break out of State of the Art amusement Park",
+            "description": "Guess you shouldn't skimp out on IT."
+           }
+          },
+          "fromRisk": {
+           "summary": "From Risk Signal Alert",
+           "value": {
+            "context": {
+             "type": "signal_alert",
+             "entity": "B-AMF",
+             "alert_rule": "report:FNESDXuhyYs",
+             "alert_notification": "4e4GmW",
+             "references": [
+              "HFBUAAAAACJ",
+              "HFBUAAABBAB"
+             ]
+            },
+            "organization": "uhash:2vefBNqkbi",
+            "status": "Resolved",
+            "priority": "Informational",
+            "title": "Magic, evil ring destroyed",
+            "description": "Middle-earth rejoice",
+            "assignee": "uhash:2vefBNqkbi"
+           }
+          },
+          "fromCyber": {
+           "summary": "From Cyber Signal Alert",
+           "value": {
+            "context": {
+             "type": "signal_alert",
+             "entity": "B-AMF",
+             "alert_rule": "report:FNESDXuhyYs",
+             "alert_notification": "4e4GmW",
+             "risk_evidences": [
+              {
+               "rule_description": "Historical Suspected C&C Server",
+               "timestamp": "2024-09-16T10:47:19.695Z"
+              }
+             ],
+             "cyber_level": {
+              "attacker": 3
+             }
+            },
+            "organization": "uhash:2vefBNqkbi",
+            "status": "InProgress",
+            "priority": "High",
+            "title": "Magic, evil ring destroyed",
+            "description": "Middle-earth rejoice",
+            "assignee": "uhash:2vefBNqkbi"
+           }
+          }
+         }
+        }
+       }
+      },
+      "tags": [
+       "Case"
+      ],
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CreateCaseResponse"
+          },
+          "example": {
+           "status": {
+            "status_code": "OK",
+            "status_message": "Successfully created Case"
+           },
+           "data": "task:17b56cdf-9f9c-4c63-962b-17e49395e731"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "CreateCaseRequest": {
+      "type": "object",
+      "properties": {
+       "context": {
+        "$ref": "#/components/schemas/CreateContext"
+       },
+       "organization": {
+        "$ref": "#/components/schemas/UserIdentity"
+       },
+       "status": {
+        "$ref": "#/components/schemas/CaseStatus"
+       },
+       "priority": {
+        "$ref": "#/components/schemas/CasePriority"
+       },
+       "title": {
+        "type": "string",
+        "maxLength": 256
+       },
+       "description": {
+        "type": "string",
+        "maxLength": 1000
+       },
+       "assignee": {
+        "$ref": "#/components/schemas/UserIdentity"
+       }
+      },
+      "description": "Request to create a new case from an alert context."
+     },
+     "CreateCaseResponse": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "object",
+        "$ref": "#/components/schemas/Status"
+       },
+       "data": {
+        "$ref": "#/components/schemas/TaskIdentity"
+       }
+      },
+      "description": "Newly created case with its assigned ID."
+     },
+     "CreateContext": {
+      "oneOf": [
+       {
+        "$ref": "#/components/schemas/CreateReferenceAlertContext"
+       },
+       {
+        "$ref": "#/components/schemas/CreateSignalAlertContext"
+       }
+      ],
+      "discriminator": {
+       "propertyName": "type",
+       "mapping": {
+        "reference_alert": "#/components/schemas/CreateReferenceAlertContext",
+        "signal_alert": "#/components/schemas/CreateSignalAlertContext"
+       }
+      },
+      "description": "Alert context for case creation. Uses discriminator to select between reference and signal alert types."
+     },
+     "CreateReferenceAlertContext": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "reference_alert"
+        ]
+       },
+       "references": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/ReferenceId"
+        },
+        "maxItems": 100
+       },
+       "alert_notification": {
+        "$ref": "#/components/schemas/AlertNotificationId"
+       },
+       "alert_rule": {
+        "$ref": "#/components/schemas/AlertRuleId"
+       }
+      },
+      "required": [
+       "type",
+       "references",
+       "alert_notification",
+       "alert_rule"
+      ],
+      "description": "Alert context for reference-based cases, linking to document references and alert notifications."
+     },
+     "CreateSignalAlertContext": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "signal_alert"
+        ]
+       },
+       "entity": {
+        "$ref": "#/components/schemas/Identity"
+       },
+       "alert_rule": {
+        "$ref": "#/components/schemas/AlertRuleId"
+       },
+       "alert_notification": {
+        "$ref": "#/components/schemas/AlertNotificationId"
+       },
+       "risk_evidences": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/RiskEvidence"
+        },
+        "maxItems": 100
+       },
+       "references": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/ReferenceId"
+        },
+        "maxItems": 100
+       },
+       "cyber_level": {
+        "$ref": "#/components/schemas/CyberLevel"
+       }
+      },
+      "required": [
+       "type",
+       "entity",
+       "alert_rule",
+       "alert_notification"
+      ],
+      "oneOf": [
+       {
+        "required": [
+         "risk_evidences"
+        ],
+        "not": {
+         "required": [
+          "references"
+         ]
+        }
+       },
+       {
+        "required": [
+         "references"
+        ],
+        "not": {
+         "required": [
+          "risk_evidences"
+         ]
+        }
+       }
+      ],
+      "description": "Alert context for signal-based cases, linking to entities, risk evidence, and alert notifications."
+     },
+     "CaseStatus": {
+      "type": "string",
+      "enum": [
+       "New",
+       "InProgress",
+       "Dismissed",
+       "Resolved"
+      ],
+      "description": "The Status of the Case",
+      "example": "InProgress"
+     },
+     "CasePriority": {
+      "type": "string",
+      "enum": [
+       "Informational",
+       "Moderate",
+       "High"
+      ],
+      "description": "The Priority of the Case",
+      "example": "High"
+     },
+     "CyberLevel": {
+      "type": "object",
+      "properties": {
+       "attacker": {
+        "type": "integer",
+        "maximum": 4,
+        "minimum": 1
+       },
+       "method": {
+        "type": "integer",
+        "maximum": 4,
+        "minimum": 1
+       },
+       "operation": {
+        "type": "integer",
+        "maximum": 4,
+        "minimum": 1
+       },
+       "target": {
+        "type": "integer",
+        "maximum": 4,
+        "minimum": 1
+       }
+      },
+      "description": "Cyber kill chain level classification (attacker, method, operation, target)."
+     },
+     "Status": {
+      "type": "object",
+      "properties": {
+       "status_code": {
+        "type": "string"
+       },
+       "status_message": {
+        "type": "string"
+       }
+      },
+      "description": "API response status with code and message."
+     },
+     "RiskEvidence": {
+      "type": "object",
+      "properties": {
+       "rule_description": {
+        "type": "string",
+        "description": "The Description field of the risk rule",
+        "example": "Historical Suspected C&C Server",
+        "maxLength": 128
+       },
+       "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       }
+      },
+      "description": "Risk evidence linking a risk rule to a timestamp."
+     },
+     "AlertRuleId": {
+      "type": "string",
+      "pattern": "^report:[a-zA-Z0-9]{3,20}$",
+      "description": "The id of of an alert rule, prefixed with 'report:'",
+      "example": "report:FNESDXuhyYs",
+      "maxLength": 20
+     },
+     "AlertNotificationId": {
+      "type": "string",
+      "format": "identity",
+      "description": "Internal alert notification ID (e.g., 4e4GmW). This is NOT the same as alert IDs returned by the v3 Alerts API — it is an internal notification identifier. Using alert IDs from the Alerts API will result in errors.",
+      "example": "4e4GmW",
+      "maxLength": 16
+     },
+     "ReferenceId": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a Reference",
+      "example": "HFBUAAAAACJ",
+      "maxLength": 16
+     },
+     "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "example": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+      "maxLength": 41
+     },
+     "Identity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The id of an entity",
+      "example": "B_E-R",
+      "maxLength": 10
+     },
+     "UserIdentity": {
+      "type": "string",
+      "format": "identity",
+      "example": "uhash:2vefBNqkbi",
+      "maxLength": 24,
+      "description": "Organization identity string in uhash:<hash> format (e.g., uhash:2vefBNqkbi). This is the organization ID, not a user identity."
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/cases-delete-many.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "version": "0.1.0",
+    "title": "Case",
+    "description": "A very descriptive description will be available Soon(TM)",
+    "contact": {
+     "name": "Alerts Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/case"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "Case",
+     "description": "Endpoints related to Case"
+    }
+   ],
+   "paths": {
+    "/delete": {
+     "delete": {
+      "operationId": "deleteMany",
+      "description": "Bulk-delete up to 100 cases by ID, with partial-success handling that distinguishes deleted from already-removed cases.",
+      "summary": "Deletes specified Cases",
+      "tags": [
+       "Case"
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/TaskIdentity"
+          },
+          "maxItems": 100
+         },
+         "example": [
+          "task:e66b879c-afd0-4ada-8d84-d57671baa63d",
+          "task:553bde7b-bfd9-4ea2-9a15-bb271b30df15"
+         ]
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/DeleteCaseResponse"
+          },
+          "example": {
+           "status": {
+            "status_code": "OK",
+            "status_message": "Successfully deleted case."
+           },
+           "deleted": [
+            "task:17b56cdf-9f9c-4c63-962b-17e49395e731"
+           ],
+           "ignored": []
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "DeleteCaseResponse": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "object",
+        "$ref": "#/components/schemas/Status"
+       },
+       "deleted": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/TaskIdentity"
+        }
+       },
+       "ignored": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/TaskIdentity"
+        }
+       }
+      },
+      "description": "Result of a case deletion, showing which cases were deleted vs ignored (already deleted/not found)."
+     },
+     "Status": {
+      "type": "object",
+      "properties": {
+       "status_code": {
+        "type": "string"
+       },
+       "status_message": {
+        "type": "string"
+       }
+      },
+      "description": "API response status with code and message."
+     },
+     "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "example": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+      "maxLength": 41
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/cases-delete.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "version": "0.1.0",
+    "title": "Case",
+    "description": "A very descriptive description will be available Soon(TM)",
+    "contact": {
+     "name": "Alerts Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/case"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "Case",
+     "description": "Endpoints related to Case"
+    }
+   ],
+   "paths": {
+    "/delete/{id}": {
+     "delete": {
+      "operationId": "delete",
+      "description": "Permanently remove a single case by its ID (idempotent — already-deleted or non-existent cases return success).",
+      "summary": "Deletes one Case",
+      "tags": [
+       "Case"
+      ],
+      "parameters": [
+       {
+        "name": "id",
+        "in": "path",
+        "schema": {
+         "$ref": "#/components/schemas/TaskIdentity"
+        },
+        "required": true
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/DeleteCaseResponse"
+          },
+          "example": {
+           "status": {
+            "status_code": "OK",
+            "status_message": "Successfully deleted case."
+           },
+           "deleted": [
+            "task:1264c6cd-cdc7-4d98-929c-8d98ec004056"
+           ],
+           "ignored": []
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "DeleteCaseResponse": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "object",
+        "$ref": "#/components/schemas/Status"
+       },
+       "deleted": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/TaskIdentity"
+        }
+       },
+       "ignored": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/TaskIdentity"
+        }
+       }
+      },
+      "description": "Result of a case deletion, showing which cases were deleted vs ignored (already deleted/not found)."
+     },
+     "Status": {
+      "type": "object",
+      "properties": {
+       "status_code": {
+        "type": "string"
+       },
+       "status_message": {
+        "type": "string"
+       }
+      },
+      "description": "API response status with code and message."
+     },
+     "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "example": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+      "maxLength": 41
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/cases-eligible-assignees.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "version": "0.1.0",
+    "title": "Case",
+    "description": "A very descriptive description will be available Soon(TM)",
+    "contact": {
+     "name": "Alerts Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/case"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "Metadata",
+     "description": "Endpoints related to the metadata of a Case"
+    }
+   ],
+   "paths": {
+    "/assignees": {
+     "post": {
+      "operationId": "eligibleAssignees",
+      "description": "List users in an organization who are eligible to be assigned to a specific case, with optional name or email filtering.",
+      "summary": "Retrieve all eligible assignees for a Case",
+      "parameters": [],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/AssigneesRequest"
+         }
+        }
+       }
+      },
+      "tags": [
+       "Metadata"
+      ],
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "array",
+           "items": {
+            "$ref": "#/components/schemas/CaseAssigneesResponse"
+           }
+          },
+          "example": {
+           "status": {
+            "status_code": "OK",
+            "status_message": "Successfully retrieved eligible Assignees for Case."
+           },
+           "data": [
+            {
+             "name": "Unassigned",
+             "user_id": ""
+            },
+            {
+             "name": "InfoSec",
+             "email": "user@example.com",
+             "user_id": "uhash:1FsegTfQCA"
+            },
+            {
+             "name": "Jordan Rivera",
+             "email": "user@example.com",
+             "user_id": "uhash:1G0xnyoIHT"
+            },
+            {
+             "name": "Julian Kraus",
+             "email": "user@example.com",
+             "user_id": "uhash:1LtXGjMUk4"
+            },
+            {
+             "name": "Gamze",
+             "email": "user@example.com",
+             "user_id": "uhash:1O6eYFYQoy"
+            },
+            {
+             "name": "Elisabeth Marklund",
+             "email": "user@example.com",
+             "user_id": "uhash:1Vb0FM4qK2"
+            },
+            {
+             "name": "Love Karlsson",
+             "email": "user@example.com",
+             "user_id": "uhash:1Z2yFrdSYr"
+            },
+            {
+             "name": "Patrick Youn",
+             "email": "user@example.com",
+             "user_id": "uhash:1dW4KNw4Nj"
+            },
+            {
+             "name": "Admin",
+             "email": "user@example.com",
+             "user_id": "uhash:1gf2HLe4ED"
+            },
+            {
+             "name": "Ash Rafipour",
+             "email": "user@example.com",
+             "user_id": "uhash:1jY4xm9kal"
+            },
+            {
+             "name": "Wolfgang Walder",
+             "email": "user@example.com",
+             "user_id": "uhash:1mzNxQUrig"
+            }
+           ],
+           "count": 11
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "AssigneesRequest": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/TaskIdentity"
+       },
+       "limit": {
+        "type": "integer",
+        "minValue": 1
+       },
+       "text": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "id"
+      ],
+      "description": "Request to retrieve eligible assignees for a case."
+     },
+     "CaseAssigneesResponse": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "object",
+        "$ref": "#/components/schemas/Status"
+       },
+       "data": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/User"
+        }
+       }
+      },
+      "description": "List of eligible assignees for a case."
+     },
+     "User": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "email": {
+        "type": "string",
+        "format": "email",
+        "maxLength": 254
+       },
+       "user_id": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "name"
+      ],
+      "description": "A Recorded Future user (assignee, creator, or author)."
+     },
+     "Status": {
+      "type": "object",
+      "properties": {
+       "status_code": {
+        "type": "string"
+       },
+       "status_message": {
+        "type": "string"
+       }
+      },
+      "description": "API response status with code and message."
+     },
+     "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "example": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+      "maxLength": 41
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/cases-lookup-many.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "version": "0.1.0",
+    "title": "Case",
+    "description": "A very descriptive description will be available Soon(TM)",
+    "contact": {
+     "name": "Alerts Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/case"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "Case",
+     "description": "Endpoints related to Case"
+    }
+   ],
+   "paths": {
+    "/lookup": {
+     "post": {
+      "operationId": "lookupMany",
+      "description": "Retrieve full case details (metadata, alert context, activity history) for one or more cases by their IDs.",
+      "summary": "Lookup of Cases using Case IDs",
+      "tags": [
+       "Case"
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/CaseLookupBulkRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CaseLookupBulkResponse"
+          },
+          "example": {
+           "status": {
+            "status_code": "OK",
+            "status_message": "Successfully found Cases."
+           },
+           "data": {
+            "task:ff470692-3225-4e05-881c-1e7409c803b3": {
+             "id": "task:ff470692-3225-4e05-881c-1e7409c803b3",
+             "summary": {
+              "type": "summary",
+              "status": "InProgress",
+              "priority": "Informational",
+              "title": "LinksBR - Xat (test update)",
+              "creator": {
+               "name": "Alex Analyst",
+               "email": "user@example.com",
+               "user_id": "uhash:3lZHbJmnqY"
+              },
+              "assignee": {
+               "name": "Alex Analyst",
+               "email": "user@example.com",
+               "user_id": "uhash:3lZHbJmnqY"
+              },
+              "modified": "2026-03-12T23:56:45.649Z",
+              "created": "2026-01-30T17:10:45.183Z"
+             },
+             "details": [
+              {
+               "type": "document",
+               "references": [
+                {
+                 "id": "HFCjAAC1l0f",
+                 "type": "Event",
+                 "published": "2026-01-28T13:01:00.000Z",
+                 "title": "LinksBR - Xat 🤝",
+                 "fragment": "<i id=HFCjAAC1l0f>Vendido pela <e id=L3hL_>Oppo</e> <e id=B_Fug>Brasil</e> + <e id=B_IxU>Amazon</e>, tem representação oficial no <e id=B_Fug>Brasil</e>, assim <e id=I2Epmi>como</e> assistência técnica e <e id=CTzxz>SAC</e> (serviço de atendimento <e id=GlRQ7>ao</e> consumidor), assim <e id=I2Epmi>como</e> <e id=C2RKe>Vivo</e>/<e id=JHsR9_>Jovi</e>, <e id=VSJKiJ>Honor</e> <e id=B_Fug>Brasil</e>, <e id=I7YnaF>Huawei</e> <e id=B_Fug>Brasil</e>, <e id=Uk-iiK>Realme</e> <e id=B_Fug>Brasil</e> e <e id=k3Uh9>Xiaomi</e> <e id=B_Fug>Brasil</e>, ambas estão oficialmente no <e id=B_Fug>Brasil</e> (algumas já fabricam no <e id=B_Fug>Brasil</e>), mas somente comprando de canais oficiais para ter garantia de comprar o <e id=JqoagS>modelo</e> <e id=BbLcQ>NACIONAL</e>/<e id=RHoDKR>ANATEL</e>, que são mais <e id=JaY2yZ>caros</e> que os importados vendidos na praça. <e id=hyCYxt>Esse</e> acima: Vendido e Entregue pela propria Amazon <e id=B_Fug>Brasil</e> = o oficial <e id=L3hL_>Oppo</e> <e id=B_Fug>Brasil</e></i>",
+                 "lang": "",
+                 "entities": [
+                  {
+                   "id": "I7YnaF",
+                   "name": "Huawei Technologies",
+                   "type": "Company"
+                  },
+                  {
+                   "id": "hyCYxt",
+                   "name": "ESSE",
+                   "type": "IndustryTerm"
+                  },
+                  {
+                   "id": "k3Uh9",
+                   "name": "Xiaomi",
+                   "type": "Company"
+                  },
+                  {
+                   "id": "B_Fug",
+                   "name": "Brazil",
+                   "type": "Country"
+                  },
+                  {
+                   "id": "JaY2yZ",
+                   "name": "Caros",
+                   "type": "IndustryTerm"
+                  },
+                  {
+                   "id": "JHsR9_",
+                   "name": "Jovi",
+                   "type": "Product"
+                  },
+                  {
+                   "id": "I2Epmi",
+                   "name": "Como",
+                   "type": "City"
+                  },
+                  {
+                   "id": "JqoagS",
+                   "name": "Modelo",
+                   "type": "IndustryTerm"
+                  },
+                  {
+                   "id": "GlRQ7",
+                   "name": "Ao",
+                   "type": "IndustryTerm"
+                  },
+                  {
+                   "id": "BbLcQ",
+                   "name": "Nacional",
+                   "type": "IndustryTerm"
+                  },
+                  {
+                   "id": "B_IxU",
+                   "name": "Amazon.com",
+                   "type": "Company"
+                  },
+                  {
+                   "id": "RHoDKR",
+                   "name": "Anatel",
+                   "type": "Malware"
+                  },
+                  {
+                   "id": "Uk-iiK",
+                   "name": "RealMe",
+                   "type": "IndustryTerm"
+                  },
+                  {
+                   "id": "C2RKe",
+                   "name": "Vivo",
+                   "type": "IndustryTerm"
+                  },
+                  {
+                   "id": "CTzxz",
+                   "name": "SAC",
+                   "type": "IndustryTerm"
+                  },
+                  {
+                   "id": "VSJKiJ",
+                   "name": "Honor",
+                   "type": "IndustryTerm"
+                  },
+                  {
+                   "id": "L3hL_",
+                   "name": "Oppo",
+                   "type": "Company"
+                  }
+                 ]
+                }
+               ],
+               "source": {
+                "id": "source:Y7TWfI",
+                "name": "Telegram - Other Channels",
+                "type": "Source"
+               }
+              }
+             ],
+             "log": [
+              {
+               "type": "update",
+               "id": "uuid:11af8088-a432-491e-ad48-35a7699bb92c",
+               "author": {
+                "name": "Deleted User",
+                "user_id": ""
+               },
+               "created": "2026-03-12T23:56:45.649Z",
+               "modified": "2026-03-12T23:56:45.649Z",
+               "changes": [
+                {
+                 "old": "Informational",
+                 "new": "Informational",
+                 "type": "priority_change"
+                }
+               ]
+              },
+              {
+               "type": "update",
+               "id": "uuid:0d74cdde-6c54-4386-9876-d300f8629bef",
+               "author": {
+                "name": "Deleted User",
+                "user_id": ""
+               },
+               "created": "2026-03-12T22:14:03.765Z",
+               "modified": "2026-03-12T22:14:03.765Z",
+               "changes": [
+                {
+                 "old": "LinksBR - Xat 🤝",
+                 "new": "LinksBR - Xat (test update)",
+                 "type": "title_change"
+                }
+               ]
+              },
+              {
+               "type": "update",
+               "id": "uuid:5a2ee1ba-5375-454f-b3a1-7c7b1741ce22",
+               "author": {
+                "name": "Alex Analyst",
+                "email": "user@example.com",
+                "user_id": "uhash:3lZHbJmnqY"
+               },
+               "created": "2026-01-30T17:10:51.126Z",
+               "modified": "2026-01-30T17:10:51.126Z",
+               "changes": [
+                {
+                 "old": "New",
+                 "new": "InProgress",
+                 "type": "status_change"
+                }
+               ]
+              }
+             ]
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "CaseLookupBulkRequest": {
+      "type": "object",
+      "properties": {
+       "ids": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/TaskIdentity"
+        }
+       },
+       "panels": {
+        "$ref": "#/components/schemas/StandardPanels"
+       },
+       "logLimit": {
+        "type": "integer",
+        "maxValue": 100,
+        "minvalue": 1,
+        "description": "How many history items of each Case should be returned",
+        "nullable": true,
+        "example": 10
+       }
+      },
+      "required": [
+       "ids",
+       "panels"
+      ],
+      "description": "Request to look up multiple cases by their IDs with optional panel selection."
+     },
+     "CaseLookupBulkResponse": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "object",
+        "$ref": "#/components/schemas/Status"
+       },
+       "data": {
+        "type": "object",
+        "additionalProperties": {
+         "$ref": "#/components/schemas/ExternalCase"
+        },
+        "description": "Map of TaskIdentity strings to case objects."
+       }
+      },
+      "description": "Bulk case lookup response with requested panels."
+     },
+     "StandardPanels": {
+      "description": "Request inclusion of detailed Case data, grouped into a set of panels. If left unset, all panels will be returned.\n",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "summary",
+        "details",
+        "log"
+       ]
+      },
+      "example": [
+       "summary",
+       "details",
+       "log"
+      ]
+     },
+     "ExternalCase": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/TaskIdentity"
+       },
+       "summary": {
+        "$ref": "#/components/schemas/CaseSummaryPanel"
+       },
+       "details": {
+        "$ref": "#/components/schemas/CaseDetailsPanel"
+       },
+       "log": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/CaseLogPanel"
+        }
+       }
+      },
+      "description": "A case with expanded detail panels (summary, details, log)."
+     },
+     "CaseSummaryPanel": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/TaskIdentity"
+       },
+       "status": {
+        "$ref": "#/components/schemas/CaseStatus"
+       },
+       "priority": {
+        "$ref": "#/components/schemas/CasePriority"
+       },
+       "title": {
+        "type": "string",
+        "maxLength": 256
+       },
+       "description": {
+        "type": "string",
+        "maxLength": 1000
+       },
+       "assignee": {
+        "$ref": "#/components/schemas/User"
+       },
+       "creator": {
+        "$ref": "#/components/schemas/User"
+       },
+       "created": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       },
+       "modified": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       }
+      },
+      "description": "Summary panel with case metadata (status, priority, assignee, timestamps)."
+     },
+     "CaseDetailsPanel": {
+      "oneOf": [
+       {
+        "$ref": "#/components/schemas/ReferenceAlertDetails"
+       },
+       {
+        "$ref": "#/components/schemas/SignalAlertDetails"
+       }
+      ],
+      "discriminator": {
+       "propertyName": "type",
+       "mapping": {
+        "reference_details": "#/components/schemas/ReferenceAlertDetails",
+        "signal_details": "#/components/schemas/SignalAlertDetails"
+       }
+      },
+      "description": "Detail panel with alert-specific data. Uses discriminator for signal vs reference alert types."
+     },
+     "SignalAlertDetails": {
+      "type": "object",
+      "required": [
+       "type",
+       "entities"
+      ],
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "signal_details"
+        ],
+        "description": "Discriminator - must be 'signal_details'"
+       },
+       "entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EnrichedEntityContext"
+        }
+       }
+      },
+      "description": "Detail panel for signal alert cases with enriched entity context."
+     },
+     "ReferenceAlertDetails": {
+      "type": "object",
+      "required": [
+       "type",
+       "documents"
+      ],
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "reference_details"
+        ],
+        "description": "Discriminator - must be 'reference_details'"
+       },
+       "documents": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/DocumentContext"
+        }
+       }
+      },
+      "description": "Detail panel for reference alert cases with document context."
+     },
+     "CaseLogPanel": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/UniversalIdentity"
+       },
+       "author": {
+        "$ref": "#/components/schemas/User"
+       },
+       "created": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       },
+       "modified": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       },
+       "comment": {
+        "type": "string"
+       },
+       "changes": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Change"
+        }
+       }
+      },
+      "description": "Audit log entry showing changes made to a case."
+     },
+     "Change": {
+      "type": "object",
+      "oneOf": [
+       {
+        "$ref": "#/components/schemas/CaseAssigneeChange"
+       },
+       {
+        "$ref": "#/components/schemas/CaseStatusChange"
+       },
+       {
+        "$ref": "#/components/schemas/CasePriorityChange"
+       },
+       {
+        "$ref": "#/components/schemas/CaseTitleChange"
+       },
+       {
+        "$ref": "#/components/schemas/CaseDescriptionChange"
+       },
+       {
+        "$ref": "#/components/schemas/ExternalIdChange"
+       }
+      ],
+      "discriminator": {
+       "propertyName": "type",
+       "mapping": {
+        "assignee_change": "#/components/schemas/ReferenceAlertDetails",
+        "status_change": "#/components/schemas/SignalAlertDetails",
+        "priority_change": "#/components/schemas/CasePriorityChange",
+        "title_change": "#/components/schemas/CaseTitleChange",
+        "description_change": "#/components/schemas/CaseDescriptionChange",
+        "external_id_change": "#/components/schemas/ExternalIdChange"
+       }
+      },
+      "description": "A change event in the case audit log. Uses discriminator for change type."
+     },
+     "CaseAssigneeChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "assignee_change"
+        ]
+       },
+       "old": {
+        "$ref": "#/components/schemas/User"
+       },
+       "new": {
+        "$ref": "#/components/schemas/User"
+       }
+      },
+      "description": "Record of an assignee change on a case."
+     },
+     "CaseStatusChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "status_change"
+        ]
+       },
+       "old": {
+        "$ref": "#/components/schemas/CaseStatus"
+       },
+       "new": {
+        "$ref": "#/components/schemas/CaseStatus"
+       }
+      },
+      "description": "Record of a status change on a case."
+     },
+     "CasePriorityChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "priority_change"
+        ]
+       },
+       "old": {
+        "$ref": "#/components/schemas/CasePriority"
+       },
+       "new": {
+        "$ref": "#/components/schemas/CasePriority"
+       }
+      },
+      "description": "Record of a priority change on a case."
+     },
+     "CaseTitleChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "title_change"
+        ]
+       },
+       "old": {
+        "type": "string"
+       },
+       "new": {
+        "type": "string"
+       }
+      },
+      "description": "Record of a title change on a case."
+     },
+     "CaseDescriptionChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "description_change"
+        ]
+       },
+       "old": {
+        "type": "string"
+       },
+       "new": {
+        "type": "string"
+       }
+      },
+      "description": "Record of a description change on a case."
+     },
+     "ExternalIdChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "external_id_change"
+        ]
+       },
+       "old": {
+        "type": "string"
+       },
+       "new": {
+        "type": "string"
+       }
+      },
+      "description": "Record of an external ID change on a case."
+     },
+     "User": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "email": {
+        "type": "string",
+        "format": "email",
+        "maxLength": 254
+       },
+       "user_id": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "name"
+      ],
+      "description": "A Recorded Future user (assignee, creator, or author)."
+     },
+     "CaseStatus": {
+      "type": "string",
+      "enum": [
+       "New",
+       "InProgress",
+       "Dismissed",
+       "Resolved"
+      ],
+      "description": "The Status of the Case",
+      "example": "InProgress"
+     },
+     "CasePriority": {
+      "type": "string",
+      "enum": [
+       "Informational",
+       "Moderate",
+       "High"
+      ],
+      "description": "The Priority of the Case",
+      "example": "High"
+     },
+     "EnrichedEntityContext": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/Identity"
+       },
+       "name": {
+        "type": "string"
+       },
+       "type": {
+        "type": "string"
+       },
+       "risk_rules": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EnrichedRiskRule"
+        }
+       }
+      },
+      "description": "Entity with enriched risk rule details."
+     },
+     "DocumentContext": {
+      "type": "object",
+      "properties": {
+       "references": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EnrichedReference"
+        }
+       },
+       "source": {
+        "$ref": "#/components/schemas/EnrichedEntityWithType"
+       }
+      },
+      "description": "Document context with references and source information."
+     },
+     "EnrichedRiskRule": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "evidence": {
+        "type": "string"
+       },
+       "criticality": {
+        "type": "integer"
+       },
+       "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       }
+      },
+      "description": "Risk rule with evidence details and criticality."
+     },
+     "EnrichedReference": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/Identity"
+       },
+       "type": {
+        "type": "string"
+       },
+       "published": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       },
+       "title": {
+        "type": "string"
+       },
+       "fragment": {
+        "type": "string"
+       },
+       "lang": {
+        "type": "string"
+       },
+       "entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EnrichedEntityWithType"
+        }
+       }
+      },
+      "description": "Enriched intelligence reference with entities and metadata."
+     },
+     "EnrichedEntityWithType": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/Identity"
+       },
+       "name": {
+        "type": "string"
+       },
+       "type": {
+        "type": "string"
+       }
+      },
+      "description": "Entity reference with type classification."
+     },
+     "Status": {
+      "type": "object",
+      "properties": {
+       "status_code": {
+        "type": "string"
+       },
+       "status_message": {
+        "type": "string"
+       }
+      },
+      "description": "API response status with code and message."
+     },
+     "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "example": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+      "maxLength": 41
+     },
+     "Identity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The id of an entity",
+      "example": "B_E-R",
+      "maxLength": 10
+     },
+     "UniversalIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a UUID",
+      "example": "uuid:96b12d30-b14c-461f-8377-fc36a01c91fe"
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/cases-lookup.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "version": "0.1.0",
+    "title": "Case",
+    "description": "A very descriptive description will be available Soon(TM)",
+    "contact": {
+     "name": "Alerts Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/case"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "Case",
+     "description": "Endpoints related to Case"
+    }
+   ],
+   "paths": {
+    "/lookup/{id}": {
+     "get": {
+      "operationId": "lookup",
+      "description": "Retrieve full case details for a single case by ID (known routing bug — prefer POST /lookup with a single ID instead).",
+      "summary": "Lookup a Case using its ID",
+      "tags": [
+       "Case"
+      ],
+      "parameters": [
+       {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "description": "Id of a Case",
+        "schema": {
+         "type": "string",
+         "maxLength": 41
+        },
+        "deprecated": false
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "$ref": "#/components/schemas/CaseLookupResponse"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "No such case",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "CaseLookupResponse": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "object",
+        "$ref": "#/components/schemas/Status"
+       },
+       "data": {
+        "$ref": "#/components/schemas/ExternalCase"
+       }
+      },
+      "description": "Single case lookup response with full detail."
+     },
+     "ExternalCase": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/TaskIdentity"
+       },
+       "summary": {
+        "$ref": "#/components/schemas/CaseSummaryPanel"
+       },
+       "details": {
+        "$ref": "#/components/schemas/CaseDetailsPanel"
+       },
+       "log": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/CaseLogPanel"
+        }
+       }
+      },
+      "description": "A case with expanded detail panels (summary, details, log)."
+     },
+     "CaseSummaryPanel": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/TaskIdentity"
+       },
+       "status": {
+        "$ref": "#/components/schemas/CaseStatus"
+       },
+       "priority": {
+        "$ref": "#/components/schemas/CasePriority"
+       },
+       "title": {
+        "type": "string",
+        "maxLength": 256
+       },
+       "description": {
+        "type": "string",
+        "maxLength": 1000
+       },
+       "assignee": {
+        "$ref": "#/components/schemas/User"
+       },
+       "creator": {
+        "$ref": "#/components/schemas/User"
+       },
+       "created": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       },
+       "modified": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       }
+      },
+      "description": "Summary panel with case metadata (status, priority, assignee, timestamps)."
+     },
+     "CaseDetailsPanel": {
+      "oneOf": [
+       {
+        "$ref": "#/components/schemas/ReferenceAlertDetails"
+       },
+       {
+        "$ref": "#/components/schemas/SignalAlertDetails"
+       }
+      ],
+      "discriminator": {
+       "propertyName": "type",
+       "mapping": {
+        "reference_details": "#/components/schemas/ReferenceAlertDetails",
+        "signal_details": "#/components/schemas/SignalAlertDetails"
+       }
+      },
+      "description": "Detail panel with alert-specific data. Uses discriminator for signal vs reference alert types."
+     },
+     "SignalAlertDetails": {
+      "type": "object",
+      "required": [
+       "type",
+       "entities"
+      ],
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "signal_details"
+        ],
+        "description": "Discriminator - must be 'signal_details'"
+       },
+       "entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EnrichedEntityContext"
+        }
+       }
+      },
+      "description": "Detail panel for signal alert cases with enriched entity context."
+     },
+     "ReferenceAlertDetails": {
+      "type": "object",
+      "required": [
+       "type",
+       "documents"
+      ],
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "reference_details"
+        ],
+        "description": "Discriminator - must be 'reference_details'"
+       },
+       "documents": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/DocumentContext"
+        }
+       }
+      },
+      "description": "Detail panel for reference alert cases with document context."
+     },
+     "CaseLogPanel": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/UniversalIdentity"
+       },
+       "author": {
+        "$ref": "#/components/schemas/User"
+       },
+       "created": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       },
+       "modified": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       },
+       "comment": {
+        "type": "string"
+       },
+       "changes": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Change"
+        }
+       }
+      },
+      "description": "Audit log entry showing changes made to a case."
+     },
+     "Change": {
+      "type": "object",
+      "oneOf": [
+       {
+        "$ref": "#/components/schemas/CaseAssigneeChange"
+       },
+       {
+        "$ref": "#/components/schemas/CaseStatusChange"
+       },
+       {
+        "$ref": "#/components/schemas/CasePriorityChange"
+       },
+       {
+        "$ref": "#/components/schemas/CaseTitleChange"
+       },
+       {
+        "$ref": "#/components/schemas/CaseDescriptionChange"
+       },
+       {
+        "$ref": "#/components/schemas/ExternalIdChange"
+       }
+      ],
+      "discriminator": {
+       "propertyName": "type",
+       "mapping": {
+        "assignee_change": "#/components/schemas/ReferenceAlertDetails",
+        "status_change": "#/components/schemas/SignalAlertDetails",
+        "priority_change": "#/components/schemas/CasePriorityChange",
+        "title_change": "#/components/schemas/CaseTitleChange",
+        "description_change": "#/components/schemas/CaseDescriptionChange",
+        "external_id_change": "#/components/schemas/ExternalIdChange"
+       }
+      },
+      "description": "A change event in the case audit log. Uses discriminator for change type."
+     },
+     "CaseAssigneeChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "assignee_change"
+        ]
+       },
+       "old": {
+        "$ref": "#/components/schemas/User"
+       },
+       "new": {
+        "$ref": "#/components/schemas/User"
+       }
+      },
+      "description": "Record of an assignee change on a case."
+     },
+     "CaseStatusChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "status_change"
+        ]
+       },
+       "old": {
+        "$ref": "#/components/schemas/CaseStatus"
+       },
+       "new": {
+        "$ref": "#/components/schemas/CaseStatus"
+       }
+      },
+      "description": "Record of a status change on a case."
+     },
+     "CasePriorityChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "priority_change"
+        ]
+       },
+       "old": {
+        "$ref": "#/components/schemas/CasePriority"
+       },
+       "new": {
+        "$ref": "#/components/schemas/CasePriority"
+       }
+      },
+      "description": "Record of a priority change on a case."
+     },
+     "CaseTitleChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "title_change"
+        ]
+       },
+       "old": {
+        "type": "string"
+       },
+       "new": {
+        "type": "string"
+       }
+      },
+      "description": "Record of a title change on a case."
+     },
+     "CaseDescriptionChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "description_change"
+        ]
+       },
+       "old": {
+        "type": "string"
+       },
+       "new": {
+        "type": "string"
+       }
+      },
+      "description": "Record of a description change on a case."
+     },
+     "ExternalIdChange": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "external_id_change"
+        ]
+       },
+       "old": {
+        "type": "string"
+       },
+       "new": {
+        "type": "string"
+       }
+      },
+      "description": "Record of an external ID change on a case."
+     },
+     "User": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "email": {
+        "type": "string",
+        "format": "email",
+        "maxLength": 254
+       },
+       "user_id": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "name"
+      ],
+      "description": "A Recorded Future user (assignee, creator, or author)."
+     },
+     "CaseStatus": {
+      "type": "string",
+      "enum": [
+       "New",
+       "InProgress",
+       "Dismissed",
+       "Resolved"
+      ],
+      "description": "The Status of the Case",
+      "example": "InProgress"
+     },
+     "CasePriority": {
+      "type": "string",
+      "enum": [
+       "Informational",
+       "Moderate",
+       "High"
+      ],
+      "description": "The Priority of the Case",
+      "example": "High"
+     },
+     "EnrichedEntityContext": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/Identity"
+       },
+       "name": {
+        "type": "string"
+       },
+       "type": {
+        "type": "string"
+       },
+       "risk_rules": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EnrichedRiskRule"
+        }
+       }
+      },
+      "description": "Entity with enriched risk rule details."
+     },
+     "DocumentContext": {
+      "type": "object",
+      "properties": {
+       "references": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EnrichedReference"
+        }
+       },
+       "source": {
+        "$ref": "#/components/schemas/EnrichedEntityWithType"
+       }
+      },
+      "description": "Document context with references and source information."
+     },
+     "EnrichedRiskRule": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "evidence": {
+        "type": "string"
+       },
+       "criticality": {
+        "type": "integer"
+       },
+       "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       }
+      },
+      "description": "Risk rule with evidence details and criticality."
+     },
+     "EnrichedReference": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/Identity"
+       },
+       "type": {
+        "type": "string"
+       },
+       "published": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 24
+       },
+       "title": {
+        "type": "string"
+       },
+       "fragment": {
+        "type": "string"
+       },
+       "lang": {
+        "type": "string"
+       },
+       "entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EnrichedEntityWithType"
+        }
+       }
+      },
+      "description": "Enriched intelligence reference with entities and metadata."
+     },
+     "EnrichedEntityWithType": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/Identity"
+       },
+       "name": {
+        "type": "string"
+       },
+       "type": {
+        "type": "string"
+       }
+      },
+      "description": "Entity reference with type classification."
+     },
+     "Status": {
+      "type": "object",
+      "properties": {
+       "status_code": {
+        "type": "string"
+       },
+       "status_message": {
+        "type": "string"
+       }
+      },
+      "description": "API response status with code and message."
+     },
+     "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "example": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+      "maxLength": 41
+     },
+     "Identity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The id of an entity",
+      "example": "B_E-R",
+      "maxLength": 10
+     },
+     "UniversalIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a UUID",
+      "example": "uuid:96b12d30-b14c-461f-8377-fc36a01c91fe"
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable description of the error."
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code of the response."
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Unique request identifier to reference when contacting support."
+       }
+      },
+      "required": [
+       "message",
+       "status_code"
+      ]
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/cases-search.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "version": "0.1.0",
+    "title": "Case",
+    "description": "A very descriptive description will be available Soon(TM)",
+    "contact": {
+     "name": "Alerts Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/case"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "Case",
+     "description": "Endpoints related to Case"
+    }
+   ],
+   "paths": {
+    "/search": {
+     "post": {
+      "operationId": "search",
+      "summary": "Searches for any Case matching the criteria",
+      "description": "Search cases by filter criteria to get matching case IDs, which can then be passed to the lookup endpoint for full details.",
+      "tags": [
+       "Case"
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/CaseSearchRequest"
+         },
+         "examples": {
+          "newHighUnassigned": {
+           "summary": "Search for all Cases with Status 'New', Priorities 'Moderate' or 'High', which are unassigned.",
+           "value": {
+            "statuses": [
+             "New"
+            ],
+            "priorities": [
+             "Moderate",
+             "High"
+            ],
+            "assignees": [
+             ""
+            ]
+           }
+          },
+          "resolvedInformationalIncluded": {
+           "summary": "Search for all Cases which were modified in April 2025, assigned to a specific user.",
+           "value": {
+            "assignees": [
+             "uhash:123124"
+            ],
+            "modified": {
+             "from": "2025-04-01T00:00:00.000+02:00",
+             "to": "2025-05-01T00:00:00.000+02:00"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CaseSearchResponse"
+          },
+          "example": {
+           "status": {
+            "status_code": "OK",
+            "status_message": "Case search successful."
+           },
+           "data": [
+            "task:ff470692-3225-4e05-881c-1e7409c803b3",
+            "task:9cc649f8-68e7-417c-bb8b-2de34f11ff8d",
+            "task:c155e367-6be3-44b4-8c25-2c1e11c85eb9",
+            "task:d8a3edcb-8cec-450e-a3a3-508e5e36d10b",
+            "task:8993234b-96a7-43a5-941c-1823ae621ac3"
+           ],
+           "counts": {
+            "returned": 5,
+            "total": 5
+           },
+           "next_offset": "eyJvZmZzZXQiOlsxNzYxMTI4MDgwNTAxLCJ0YXNrOjg5OTMyMzRiLTk2YTctNDNhNS05NDFjLTE4MjNhZTYyMWFjMyJdfQ=="
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "CaseSearchRequest": {
+      "type": "object",
+      "properties": {
+       "owners": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/UserIdentity"
+        }
+       },
+       "creators": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/UserIdentity"
+        },
+        "maxItems": 100
+       },
+       "statuses": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/CaseStatus"
+        },
+        "maxItems": 4
+       },
+       "priorities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/CasePriority"
+        },
+        "maxItems": 3
+       },
+       "assignees": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "maxItems": 100
+       },
+       "modified": {
+        "type": "object",
+        "$ref": "#/components/schemas/DateRange"
+       },
+       "created": {
+        "type": "object",
+        "$ref": "#/components/schemas/DateRange"
+       },
+       "direction": {
+        "$ref": "#/components/schemas/Direction"
+       },
+       "order_by": {
+        "$ref": "#/components/schemas/OrderBy"
+       },
+       "limit": {
+        "type": "integer",
+        "maxValue": 100,
+        "minValue": 1
+       },
+       "offset": {
+        "type": "string",
+        "description": "Pagination offset"
+       }
+      },
+      "description": "Search criteria for filtering cases. Omitting a filter matches all values for that property."
+     },
+     "CaseSearchResponse": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "object",
+        "$ref": "#/components/schemas/Status"
+       },
+       "data": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/TaskIdentity"
+        }
+       },
+       "counts": {
+        "type": "object",
+        "$ref": "#/components/schemas/SearchResponseCounts"
+       },
+       "next_offset": {
+        "type": "string",
+        "description": "Provide this value in the offset-field for the next page of results.",
+        "example": "eyJvZmZzZXQiOlswLCJyZXBvcnQ6cFdyb2dxIl19"
+       }
+      },
+      "description": "Paginated case search results."
+     },
+     "CaseStatus": {
+      "type": "string",
+      "enum": [
+       "New",
+       "InProgress",
+       "Dismissed",
+       "Resolved"
+      ],
+      "description": "The Status of the Case",
+      "example": "InProgress"
+     },
+     "CasePriority": {
+      "type": "string",
+      "enum": [
+       "Informational",
+       "Moderate",
+       "High"
+      ],
+      "description": "The Priority of the Case",
+      "example": "High"
+     },
+     "Status": {
+      "type": "object",
+      "properties": {
+       "status_code": {
+        "type": "string"
+       },
+       "status_message": {
+        "type": "string"
+       }
+      },
+      "description": "API response status with code and message."
+     },
+     "DateRange": {
+      "type": "object",
+      "properties": {
+       "from": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 30
+       },
+       "to": {
+        "type": "string",
+        "format": "date-time",
+        "maxLength": 30
+       }
+      },
+      "description": "Date range filter with from/to bounds."
+     },
+     "OrderBy": {
+      "description": "Order results by created or modified data.",
+      "type": "string",
+      "enum": [
+       "created",
+       "modified"
+      ]
+     },
+     "Direction": {
+      "description": "Order results ascending or descending.",
+      "type": "string",
+      "enum": [
+       "asc",
+       "desc"
+      ]
+     },
+     "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "example": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+      "maxLength": 41
+     },
+     "UserIdentity": {
+      "type": "string",
+      "format": "identity",
+      "example": "uhash:2vefBNqkbi",
+      "maxLength": 24,
+      "description": "Organization identity string in uhash:<hash> format (e.g., uhash:2vefBNqkbi). This is the organization ID, not a user identity."
+     },
+     "SearchResponseCounts": {
+      "type": "object",
+      "properties": {
+       "returned": {
+        "type": "integer",
+        "example": 100
+       },
+       "total": {
+        "type": "integer",
+        "example": 156
+       }
+      },
+      "description": "Pagination counts for search results."
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/cases-update.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "version": "0.1.0",
+    "title": "Case",
+    "description": "A very descriptive description will be available Soon(TM)",
+    "contact": {
+     "name": "Alerts Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/case"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "Case",
+     "description": "Endpoints related to Case"
+    }
+   ],
+   "paths": {
+    "/update": {
+     "put": {
+      "operationId": "update",
+      "summary": "Update Assignee, Status, Priority, Title or Description of a Case",
+      "description": "Update assignee, status, priority, title, or description on an existing case.",
+      "tags": [
+       "Case"
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "$ref": "#/components/schemas/UpdateRequest"
+         },
+         "examples": {
+          "escalate": {
+           "summary": "Set the Status to In Progress, Priority High, and Assign a User to the Case",
+           "value": {
+            "id": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+            "status": "InProgress",
+            "priority": "High",
+            "assignee": "uhash:2vefBNqkbi"
+           }
+          },
+          "removeAssignee": {
+           "summary": "Set Case as Unassigned with a blank String",
+           "value": {
+            "id": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+            "assignee": ""
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "$ref": "#/components/schemas/UpdateCaseResponse"
+          },
+          "example": {
+           "status": {
+            "status_code": "OK",
+            "status_message": "Successfully updated Case."
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "UpdateRequest": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/TaskIdentity"
+       },
+       "status": {
+        "$ref": "#/components/schemas/CaseStatus"
+       },
+       "priority": {
+        "$ref": "#/components/schemas/CasePriority"
+       },
+       "title": {
+        "type": "string",
+        "maxLength": 256
+       },
+       "description": {
+        "type": "string",
+        "maxLength": 1000
+       },
+       "assignee": {
+        "type": "string",
+        "nullable": true,
+        "maxLength": 20
+       }
+      },
+      "required": [
+       "id"
+      ],
+      "description": "Request to update case properties (status, priority, title, description, assignee)."
+     },
+     "UpdateCaseResponse": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "object",
+        "$ref": "#/components/schemas/Status"
+       }
+      },
+      "description": "Confirmation of a case update operation."
+     },
+     "CaseStatus": {
+      "type": "string",
+      "enum": [
+       "New",
+       "InProgress",
+       "Dismissed",
+       "Resolved"
+      ],
+      "description": "The Status of the Case",
+      "example": "InProgress"
+     },
+     "CasePriority": {
+      "type": "string",
+      "enum": [
+       "Informational",
+       "Moderate",
+       "High"
+      ],
+      "description": "The Priority of the Case",
+      "example": "High"
+     },
+     "Status": {
+      "type": "object",
+      "properties": {
+       "status_code": {
+        "type": "string"
+       },
+       "status_message": {
+        "type": "string"
+       }
+      },
+      "description": "API response status with code and message."
+     },
+     "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "example": "task:96b12d30-b14c-461f-8377-fc36a01c91fe",
+      "maxLength": 41
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ }
+]

@@ -1,0 +1,4 @@
+Canonical: https://recordedfuture.com/.well-known/security.txt
+Contact: https://bugcrowd.com/engagements/recorded-future-mbb-og
+Expires: 2028-01-01T12:00:00Z
+Preferred-Languages: en

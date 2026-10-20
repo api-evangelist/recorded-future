@@ -1,0 +1,3650 @@
+openapi: 3.1.0
+info:
+  title: ASI Project API
+  description: '
+
+    The Attack Surface Intelligence (ASI) Project API is designed to allow you full-featured access
+
+    to all of the `Assets` within all of the `Project`s as well as , most importantly, the `Exposures` that our
+
+    system has identified on those assets, including proposed remediations.
+
+
+    You can create new user-defined `Tags` and apply them to `Assets` either individually or in bulk.
+
+
+    You can use either the GET-based listing endpoint to find assets or the /_search endpoint which
+
+    accepts a more structured request and, in the future, will allow for even more complex boolean queries.
+
+
+    Using it only requires a standard Security Trails API access key.
+
+    '
+  version: v1.7.0
+servers:
+- url: https://api.securitytrails.com/v2
+  description: Security Trails API
+paths:
+  /projects:
+    get:
+      tags:
+      - Project
+      summary: List Projects
+      description: List all accessible ASI projects and their IDs.
+      operationId: Project-list_projects
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: sort_direction
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+          description: The direction to sort by, either `asc` or `desc`.
+          default: desc
+        description: The direction to sort by, either `asc` or `desc`.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/assets:
+    get:
+      tags:
+      - Assets
+      summary: Find Assets
+      description: List and filter project assets using query-parameter-based criteria with OR logic.
+      operationId: Assets-find_assets
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Opaque string provided in `next_cursor` of previous results
+          title: Cursor
+        description: Opaque string provided in `next_cursor` of previous results
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: The number of assets to return
+          default: 50
+          title: Limit
+        description: The number of assets to return
+      - name: sort_by
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/AssetSortField'
+          description: The field to sort by
+          default: exposure_score
+        description: The field to sort by
+      - name: sort_direction
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+          description: The direction to sort by, either `asc` or `desc`.
+          default: desc
+        description: The direction to sort by, either `asc` or `desc`.
+      - name: asset_type
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^(domain|host|ip)$
+          description: 'The type of asset, one of: `ip`, `domain` and `host`(where `domain` and `host` represent the same asset type).'
+          title: Asset Type
+        description: 'The type of asset, one of: `ip`, `domain` and `host`(where `domain` and `host` represent the same asset type).'
+      - name: custom_tags
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project.
+          title: Custom Tags
+        description: Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project.
+      - name: custom_tags_strict
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project.
+          title: Custom Tags Strict
+        description: Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project.
+      - name: has_custom_tags
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Filter for assets that have at least one custom tag applied. Overrides any other custom tag filtering specified.
+          title: Has Custom Tags
+        description: Filter for assets that have at least one custom tag applied. Overrides any other custom tag filtering specified.
+      - name: added_to_project_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: Filter on the date (Y-m-d) the asset was added to the project. This may be different than when the asset was discovered.
+          title: Added To Project Before
+        description: Filter on the date (Y-m-d) the asset was added to the project. This may be different than when the asset was discovered.
+      - name: added_to_project_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: Filter on the date (Y-m-d) the asset was added to the project. This may be different than when the asset was discovered.
+          title: Added To Project After
+        description: Filter on the date (Y-m-d) the asset was added to the project. This may be different than when the asset was discovered.
+      - name: discovered_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: Filter on the date (Y-m-d) the asset was discovered by Recorded Future ASI. This may be different than when the asset was added to the project. IPv4 addresses will have a fixed point in the past for their discovery date.
+          title: Discovered Before
+        description: Filter on the date (Y-m-d) the asset was discovered by Recorded Future ASI. This may be different than when the asset was added to the project. IPv4 addresses will have a fixed point in the past for their discovery date.
+      - name: discovered_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: Filter on the date (Y-m-d) the asset was discovered by Recorded Future ASI. This may be different than when the asset was added to the project. IPv4 addresses will have a fixed point in the past for their discovery date.
+          title: Discovered After
+        description: Filter on the date (Y-m-d) the asset was discovered by Recorded Future ASI. This may be different than when the asset was added to the project. IPv4 addresses will have a fixed point in the past for their discovery date.
+      - name: apex
+        in: query
+        required: false
+        schema:
+          type: string
+          description: 'Filter on the apex domain of the assets. Only makes sense for `domain` asset types. Example: `example.com`'
+          title: Apex
+        description: 'Filter on the apex domain of the assets. Only makes sense for `domain` asset types. Example: `example.com`'
+      - name: referenced_ip
+        in: query
+        required: false
+        schema:
+          type: string
+          format: ipvanynetwork
+          title: Referenced Ip
+        description: Filter on an A or CNAME record pointing to the IP address. Use `eq` or `in` for exact IP matching. Use `contains` with a trailing `.` for CIDR range matching, or without for prefix matching.
+      - name: referenced_ip_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: If filtering on a `referenced_ip`, include additional criteria that the record existed during a date range. In this case, the reference must have started before this date.
+          title: Referenced Ip Before
+        description: If filtering on a `referenced_ip`, include additional criteria that the record existed during a date range. In this case, the reference must have started before this date.
+      - name: referenced_ip_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: If filtering on a `referenced_ip`, include additional criteria that the record existed during a date range. In this case, the referenced must have existing after this date.
+          title: Referenced Ip After
+        description: If filtering on a `referenced_ip`, include additional criteria that the record existed during a date range. In this case, the referenced must have existing after this date.
+      - name: has_dns_record_type
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for assets that have this DNS record type, e.g. `A`,`CNAME`,`MX`.
+          title: Has Dns Record Type
+        description: Filter for assets that have this DNS record type, e.g. `A`,`CNAME`,`MX`.
+      - name: dns_resolves
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Filter for assets that in the end resolve to a valid IP currently, either via an `A` or `CNAME`. `IP`-assets is included when filtering for assets that resolve.
+          title: Dns Resolves
+        description: Filter for assets that in the end resolve to a valid IP currently, either via an `A` or `CNAME`. `IP`-assets is included when filtering for assets that resolve.
+      - name: asn
+        in: query
+        required: false
+        schema:
+          type: integer
+          description: Filter for assets which either are, or point to, an IP address announced by the provided ASN (e.g. `16509`).
+          title: Asn
+        description: Filter for assets which either are, or point to, an IP address announced by the provided ASN (e.g. `16509`).
+      - name: cname_reference
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter on a domain that is referenced by a CNAME record. Only makes sense for `domain` asset types. Treated as a wildcard, so `example.com` will match `www.example.com`.
+          title: Cname Reference
+        description: Filter on a domain that is referenced by a CNAME record. Only makes sense for `domain` asset types. Treated as a wildcard, so `example.com` will match `www.example.com`.
+      - name: geo_country_iso
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^[a-zA-Z]{2}$
+          description: Filter for assets which either are, or point to, an IP address located in the provided ISO country code (e.g. `US`).
+          title: Geo Country Iso
+        description: Filter for assets which either are, or point to, an IP address located in the provided ISO country code (e.g. `US`).
+      - name: ip_owner
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for assets which either are, or point to, an IP address owned by the provided organization. This will often be an ISP or hosting provider or simply the name of the AS owning the IP.
+          title: Ip Owner
+        description: Filter for assets which either are, or point to, an IP address owned by the provided organization. This will often be an ISP or hosting provider or simply the name of the AS owning the IP.
+      - name: whois_email
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for assets where the WHOIS email address matches the provided value. For subdomains the parent record will be partially used. The `current` variant will only return results where the email is on the current (rather than historical) versions of the WHOIS.
+          format: email
+          title: Whois Email
+        description: Filter for assets where the WHOIS email address matches the provided value. For subdomains the parent record will be partially used. The `current` variant will only return results where the email is on the current (rather than historical) versions of the WHOIS.
+      - name: whois_email_current
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for assets where the WHOIS email address matches the provided value. For subdomains the parent record will be partially used. The `current` variant will only return results where the email is on the current (rather than historical) versions of the WHOIS.
+          format: email
+          title: Whois Email Current
+        description: Filter for assets where the WHOIS email address matches the provided value. For subdomains the parent record will be partially used. The `current` variant will only return results where the email is on the current (rather than historical) versions of the WHOIS.
+      - name: open_port_number
+        in: query
+        required: false
+        schema:
+          type: integer
+          exclusiveMaximum: 65536
+          exclusiveMinimum: -1
+          description: Filter for assets which have an open port with the provided number (e.g. `80`).
+          title: Open Port Number
+        description: Filter for assets which have an open port with the provided number (e.g. `80`).
+      - name: open_port_protocol
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for assets which have an open port on the provided protocol (e.g. `tcp`, `udp`).
+          title: Open Port Protocol
+        description: Filter for assets which have an open port on the provided protocol (e.g. `tcp`, `udp`).
+      - name: open_port_service
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for assets which have an open port that appears to support the provided protocol (e.g. `http`, `rdp`, `ftp`).
+          title: Open Port Service
+        description: Filter for assets which have an open port that appears to support the provided protocol (e.g. `http`, `rdp`, `ftp`).
+      - name: open_port_technology
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for assets which have a specific product listening on an open port (e.g. `nginx`, `apache httpd`)
+          title: Open Port Technology
+        description: Filter for assets which have a specific product listening on an open port (e.g. `nginx`, `apache httpd`)
+      - name: technology_name
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for the name of a technology found on the asset. Could be directly attached to the port (`nginx`, etc) or a web technology (e.g. 'jQuery', 'Wordpress')
+          title: Technology Name
+        description: Filter for the name of a technology found on the asset. Could be directly attached to the port (`nginx`, etc) or a web technology (e.g. 'jQuery', 'Wordpress')
+      - name: web_technology_name
+        in: query
+        required: false
+        schema:
+          type: string
+          description: 'Filter for the name of a technology specifically associated with ''web'' resources, such as `jQuery` or `Wordpress`). **NOTE**: In some cases where a port has been closed we may still report findings of web technologies that we previously saw on those ports.'
+          title: Web Technology Name
+        description: 'Filter for the name of a technology specifically associated with ''web'' resources, such as `jQuery` or `Wordpress`). **NOTE**: In some cases where a port has been closed we may still report findings of web technologies that we previously saw on those ports.'
+      - name: certificate_issuer
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter where the certificate (or in the chain) issuer's common name or organization matches the provided value
+          title: Certificate Issuer
+        description: Filter where the certificate (or in the chain) issuer's common name or organization matches the provided value
+      - name: certificate_expires_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: Filter where the certificate expiration matches the provided value Use this to find potentially expired certificates.
+          title: Certificate Expires Before
+        description: Filter where the certificate expiration matches the provided value Use this to find potentially expired certificates.
+      - name: certificate_expires_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: Filter where the certificate expiration matches the provided value use this to find certificates that likely haven't expired yet.
+          title: Certificate Expires After
+        description: Filter where the certificate expiration matches the provided value use this to find certificates that likely haven't expired yet.
+      - name: certificate_issued_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: Filter where the certificate issuance date matches the provided value
+          title: Certificate Issued Before
+        description: Filter where the certificate issuance date matches the provided value
+      - name: certificate_issued_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+          description: Filter where the certificate issuance date matches the provided value
+          title: Certificate Issued After
+        description: Filter where the certificate issuance date matches the provided value
+      - name: certificate_subject
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter where certificate `subject` or `organizationName` matches the provided value
+          title: Certificate Subject
+        description: Filter where certificate `subject` or `organizationName` matches the provided value
+      - name: certificate_subject_alt_name
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter here the certificate Subject Alternate Names section matches the provided value
+          title: Certificate Subject Alt Name
+        description: Filter here the certificate Subject Alternate Names section matches the provided value
+      - name: certificate_sha256
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter where the certificate public key sha256 value matches the provided value
+          title: Certificate Sha256
+        description: Filter where the certificate public key sha256 value matches the provided value
+      - name: certificate_covers_domain
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter where the certificate's subject common name domain or one of the Subject Alternate Names exactly matches or is a wildcard covering the provided value
+          title: Certificate Covers Domain
+        description: Filter where the certificate's subject common name domain or one of the Subject Alternate Names exactly matches or is a wildcard covering the provided value
+      - name: waf_detected
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Filter for assets where a WAF (Web Application Firewall) is detected.
+          title: Waf Detected
+        description: Filter for assets where a WAF (Web Application Firewall) is detected.
+      - name: waf_name
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for assets where a specific WAF is detected. Will attempt to match both vendor and product, e.g. `Cloudflare`.
+          title: Waf Name
+        description: Filter for assets where a specific WAF is detected. Will attempt to match both vendor and product, e.g. `Cloudflare`.
+      - name: is_responsive
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Filter for assets that are unresponsive over ICMP and no ports are open. This is a boolean filter, so it will return assets that are either responsive or not responsive.
+          title: Is Responsive
+        description: Filter for assets that are unresponsive over ICMP and no ports are open. This is a boolean filter, so it will return assets that are either responsive or not responsive.
+      - name: exposure_score_gte
+        in: query
+        required: false
+        schema:
+          type: integer
+          description: Filter for assets which have an exposure score within the provided range. This is a score from 0-100 that indicates the potential risk of the asset based on various factors. You may specify only one 'end' based on your needs.
+          title: Exposure Score Gte
+        description: Filter for assets which have an exposure score within the provided range. This is a score from 0-100 that indicates the potential risk of the asset based on various factors. You may specify only one 'end' based on your needs.
+      - name: exposure_score_lte
+        in: query
+        required: false
+        schema:
+          type: integer
+          description: Filter for assets which have an exposure score within the provided range. This is a score from 0-100 that indicates the potential risk of the asset based on various factors. You may specify only one 'end' based on your needs.
+          title: Exposure Score Lte
+        description: Filter for assets which have an exposure score within the provided range. This is a score from 0-100 that indicates the potential risk of the asset based on various factors. You may specify only one 'end' based on your needs.
+      - name: exposure_severity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ExposureSeverity'
+          description: 'Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical.'
+        description: 'Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical.'
+      - name: exposure_id
+        in: query
+        required: false
+        schema:
+          type: string
+          description: 'Filter for assets which have an exposure with the provided ASI Signature ID. Note that some signatures line up with CVEs, but this should not be relied upon. Examples: `cve-2024-6387`, `cve-OpenSSH`.'
+          title: Exposure Id
+        description: 'Filter for assets which have an exposure with the provided ASI Signature ID. Note that some signatures line up with CVEs, but this should not be relied upon. Examples: `cve-2024-6387`, `cve-OpenSSH`.'
+      - name: additional_fields
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          description: 'A list of additional fields to include in the response from the following. You may specify this field multiple times or pass a comma-separated list from: `custom_tags`, `dns_records`, `whois`, `ip_metadata`, `open_tcp_ports`, `open_udp_ports`, `web_technologies`, `certificates`, `certificate_chain`, `defenses`, `exposures`, `exposure_instance_details`. By default the custom tags will be returned.'
+          title: Additional Fields
+        description: 'A list of additional fields to include in the response from the following. You may specify this field multiple times or pass a comma-separated list from: `custom_tags`, `dns_records`, `whois`, `ip_metadata`, `open_tcp_ports`, `open_udp_ports`, `web_technologies`, `certificates`, `certificate_chain`, `defenses`, `exposures`, `exposure_instance_details`. By default the custom tags will be returned.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiListResponse_Asset_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/assets/_search:
+    post:
+      tags:
+      - Assets
+      summary: Search Assets
+      description: Perform advanced compound asset queries using structured JSON filters with AND logic.
+      operationId: Assets-search_assets
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetSearchRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiListResponse_Asset_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/assets/{asset_id}:
+    get:
+      tags:
+      - Assets
+      summary: Read Asset
+      description: Retrieve the full risk profile for a single asset with optional enrichment fields.
+      operationId: Assets-read_asset
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: asset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+          title: Asset Id
+        description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+      - name: additional_fields
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          description: 'A list of additional fields to include in the response from the following. You may specify this field multiple times or pass a comma-separated list from: `custom_tags`, `dns_records`, `whois`, `ip_metadata`, `open_tcp_ports`, `open_udp_ports`, `web_technologies`, `certificates`, `certificate_chain`, `defenses`, `exposures`, `exposure_instance_details`. By default the custom tags will be returned.'
+          title: Additional Fields
+        description: 'A list of additional fields to include in the response from the following. You may specify this field multiple times or pass a comma-separated list from: `custom_tags`, `dns_records`, `whois`, `ip_metadata`, `open_tcp_ports`, `open_udp_ports`, `web_technologies`, `certificates`, `certificate_chain`, `defenses`, `exposures`, `exposure_instance_details`. By default the custom tags will be returned.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/assets/{asset_id}/exposures:
+    get:
+      tags:
+      - Assets
+      summary: List Asset Exposures
+      description: Retrieve all exposures for a specific asset with CVE/CWE identifiers, severity, and remediation steps.
+      operationId: Assets-list_asset_exposures
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: asset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+          title: Asset Id
+        description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiListResponse_AssetExposure_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/assets/{asset_id}/tags:
+    post:
+      tags:
+      - Assets
+      summary: Bulk Add Remove Asset Tags
+      description: Add and remove multiple custom tags on a single asset atomically in one request.
+      operationId: Assets-bulk_add_remove_asset_tags
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: asset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+          title: Asset Id
+        description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagAssetRequest'
+              description: Tags to add and remove from the asset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetTagAPIResponse'
+        '422':
+          description: Validation error — a tag cannot appear in both add_tags and remove_tags in the same request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      validation_errors:
+                        type: array
+  /projects/{project_id}/assets/{asset_id}/tags/{tag_name}:
+    put:
+      tags:
+      - Assets
+      summary: Apply Tag To Asset
+      description: Apply a custom tag to an asset, auto-creating the tag if needed.
+      operationId: Assets-apply_tag_to_asset
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: asset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+          title: Asset Id
+        description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+      - name: tag_name
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The tag name to apply to the asset. This tag will be created if it does not exist already.
+          title: Tag Name
+        description: The tag name to apply to the asset. This tag will be created if it does not exist already.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetTagAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Assets
+      summary: Remove Tag From Asset
+      description: Remove a custom tag from an asset idempotently without deleting the tag definition.
+      operationId: Assets-remove_tag_from_asset
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: asset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+          title: Asset Id
+        description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+      - name: tag_name
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Tag to be removed from the asset.
+          title: Tag Name
+        description: Tag to be removed from the asset.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetTagAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/exposures:
+    get:
+      tags:
+      - Exposures
+      summary: List Exposures
+      description: Retrieve a deduplicated, project-wide list of exposure signatures with affected-asset counts.
+      operationId: Exposures-list_exposures
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Opaque string provided in `next_cursor` of previous results
+          title: Cursor
+        description: Opaque string provided in `next_cursor` of previous results
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: The number of exposures
+          default: 100
+          title: Limit
+        description: The number of exposures
+      - name: filter_cve_id
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter for asset or exposure tied to a vulnerability with the provided CVE. Example `CVE-2024-6387`.
+          title: Filter Cve Id
+        description: Filter for asset or exposure tied to a vulnerability with the provided CVE. Example `CVE-2024-6387`.
+      - name: filter_cvss_score_gte
+        in: query
+        required: false
+        schema:
+          type: number
+          maximum: 10
+          minimum: 0
+          description: Filter for asset or exposure tied to a vulnerability with the provided CVSS score range. Example `7.5`. You will generally just use the 'low' end of the range.
+          title: Filter Cvss Score Gte
+        description: Filter for asset or exposure tied to a vulnerability with the provided CVSS score range. Example `7.5`. You will generally just use the 'low' end of the range.
+      - name: filter_cvss_score_lte
+        in: query
+        required: false
+        schema:
+          type: number
+          maximum: 10
+          minimum: 0
+          description: Filter for asset or exposure tied to a vulnerability with the provided CVSS score range. Example `7.5`. You will generally just use the 'low' end of the range.
+          title: Filter Cvss Score Lte
+        description: Filter for asset or exposure tied to a vulnerability with the provided CVSS score range. Example `7.5`. You will generally just use the 'low' end of the range.
+      - name: filter_cwe_id
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: CWE-[0-9]+
+          description: 'Filter for asset or exposure tied to a vulnerability associated with the provided CWE (see: https://cwe.mitre.org/). Example `CWE-79`.'
+          title: Filter Cwe Id
+        description: 'Filter for asset or exposure tied to a vulnerability associated with the provided CWE (see: https://cwe.mitre.org/). Example `CWE-79`.'
+      - name: filter_severity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ExposureSeverity'
+          description: '**DEPRECATED**: Use filter_severity_exact or filter_severity_min instead. Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical.'
+          deprecated: true
+        description: '**DEPRECATED**: Use filter_severity_exact or filter_severity_min instead. Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical.'
+        deprecated: true
+      - name: filter_severity_exact
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ExposureSeverity'
+          description: 'Filter for assets which have an exposure severity matching the provided value. Acceptable values: unknown, informational, moderate, critical.'
+        description: 'Filter for assets which have an exposure severity matching the provided value. Acceptable values: unknown, informational, moderate, critical.'
+      - name: filter_severity_min
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ExposureSeverity'
+          description: 'Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical.'
+        description: 'Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiListResponse_ExposureSummary_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/exposures/{signature_id}:
+    get:
+      tags:
+      - Exposures
+      summary: Get Exposure Assets
+      description: List all assets affected by a specific exposure signature with per-asset extracted evidence.
+      operationId: Exposures-get_exposure_assets
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: signature_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Signature Id
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Opaque string provided in `next_cursor` of previous results
+          title: Cursor
+        description: Opaque string provided in `next_cursor` of previous results
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: The number of assets to return
+          default: 100
+          title: Limit
+        description: The number of assets to return
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExposureAssetsListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/filters:
+    post:
+      tags:
+      - Assets
+      summary: Get Filters With Filter
+      description: Retrieve filter facets narrowed to a specific asset subset using structured search filters.
+      operationId: Assets-get_filters_with_filter
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetsFilterRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiltersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Assets
+      summary: Get Filters
+      description: Discover available filter facets and their values across all project assets.
+      operationId: Assets-get_filters
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: filter_fields
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: string
+          - type: 'null'
+          description: 'A list of additional fields to include in the response.You may specify this field multiple times or pass a comma-separated list from: `asset_type`, `asn`, `custom_tags`, `added_to_project`, `discovered`, `apex`, `ip_geo_country_iso`, `ip_owner`, `static_asset`, `registry`, `referenced_ip`, `exposure_id`, `severity`, `asset_exposure_score`, `last_scanned_at`, `open_port_number`, `open_port_service`, `open_port_protocol`, `waf_detected`, `waf_name`, `technology_name`, `is_responsive`, `certificate_issuer`, `certificate_expires_at`, `certificate_issued_at`.By default `asset_type`, `custom_tags`, `ip_owner`, `severity`, `open_port_number`, `certificate_expires_at` is returned.If one query input is equal to all, all fields are returned.'
+          title: Filter Fields
+        description: 'A list of additional fields to include in the response.You may specify this field multiple times or pass a comma-separated list from: `asset_type`, `asn`, `custom_tags`, `added_to_project`, `discovered`, `apex`, `ip_geo_country_iso`, `ip_owner`, `static_asset`, `registry`, `referenced_ip`, `exposure_id`, `severity`, `asset_exposure_score`, `last_scanned_at`, `open_port_number`, `open_port_service`, `open_port_protocol`, `waf_detected`, `waf_name`, `technology_name`, `is_responsive`, `certificate_issuer`, `certificate_expires_at`, `certificate_issued_at`.By default `asset_type`, `custom_tags`, `ip_owner`, `severity`, `open_port_number`, `certificate_expires_at` is returned.If one query input is equal to all, all fields are returned.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiltersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/rules/_bulk_static_assets:
+    post:
+      tags:
+      - Rules
+      summary: Add Static Assets
+      description: Bulk add or remove up to 1,000 static asset scope rules in a single asynchronous request.
+      operationId: Rules-add_static_assets
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of the project
+          title: Project Id
+        description: The ID of the project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStaticAssetsRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateStaticAssetsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/rules/static_assets:
+    get:
+      tags:
+      - Rules
+      summary: Get Static Assets
+      description: List the manually defined scope rules (included/excluded hostnames, IPs, wildcards) for a project.
+      operationId: Rules-get_static_assets
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of the project
+          title: Project Id
+        description: The ID of the project
+      - name: asset
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter by asset (exact string match)
+          title: Asset
+        description: Filter by asset (exact string match)
+      - name: static_type
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/StaticType'
+          description: Filter by static type
+        description: Filter by static type
+      - name: membership_type
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/MembershipType'
+          description: Filter by membership type
+        description: Filter by membership type
+      - name: last_applied_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+          description: Filter by last applied before this date (`YYYY-MM-DDTHH:MM:SS`)
+          title: Last Applied Before
+        description: Filter by last applied before this date (`YYYY-MM-DDTHH:MM:SS`)
+      - name: last_applied_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+          description: Filter by last applied after this date (`YYYY-MM-DDTHH:MM:SS`)
+          title: Last Applied After
+        description: Filter by last applied after this date (`YYYY-MM-DDTHH:MM:SS`)
+      - name: include_deleted
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Include records that has been deleted from project. Deleted records will contain `deleted_at` value key
+          default: false
+          title: Include Deleted
+        description: Include records that has been deleted from project. Deleted records will contain `deleted_at` value key
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Maximum number of results to return
+          default: 100
+          title: Limit
+        description: Maximum number of results to return
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Base 64 string for pagination included in `meta.pagination.next_cursor` field in previous response. If provided, will return the next page of results
+          title: Cursor
+        description: Base 64 string for pagination included in `meta.pagination.next_cursor` field in previous response. If provided, will return the next page of results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiListResponse_StaticAsset_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/tags:
+    get:
+      tags:
+      - Tagging
+      summary: Get Tags
+      description: Retrieve all custom tags defined for a project, including unused tags.
+      operationId: Tagging-get_tags
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiListResponse_CustomTagPublic_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/tags/_bulk_tag_assets:
+    post:
+      tags:
+      - Tagging
+      summary: Bulk Add Remove Assets
+      description: Add and remove tags across multiple assets in a single request with per-asset control.
+      operationId: Tagging-bulk_add_remove_assets
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkTagAssetsRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetTagAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/tags/_task_status/{task_id}:
+    get:
+      tags:
+      - Tagging
+      summary: Get Custom Tag Task Status
+      description: Poll the completion status of an asynchronous tagging operation by task ID.
+      operationId: Tagging-get_custom_tag_task_status
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Task id which was returned in a prior asset tagging request.
+          title: Task Id
+        description: Task id which was returned in a prior asset tagging request.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetTagAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/tags/{tag_name}:
+    post:
+      tags:
+      - Tagging
+      summary: Add Tag
+      description: Create a custom tag at the project level, idempotently returning the tag if it already exists.
+      operationId: Tagging-add_tag
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Project Id
+      - name: tag_name
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The tag you wish to add. This will be added with the casing specified in your request, but filtering and usage are case-insensitive.
+          title: Tag Name
+        description: The tag you wish to add. This will be added with the casing specified in your request, but filtering and usage are case-insensitive.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiListResponse_CustomTagPublic_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AssetTagAPIResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/AssetTagResponse'
+      type: object
+      required:
+      - data
+      title: AssetTagAPIResponse
+      description: Response wrapper for asset tag operations.
+    AssetTagResponse:
+      properties:
+        add_tags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Add Tags
+          description: List of tag names to apply to the assets
+        remove_tags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Remove Tags
+          description: List of tag names to remove from the assets
+        assets:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Assets
+          description: The assets tha were involved in this tagging action
+        complete:
+          type: boolean
+          title: Complete
+          description: Whether or not all tag actions have been sent to the tag indexing service. There may be a delay of up to 5 minutes even if this is true
+          default: false
+        task_ids:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Task Ids
+          description: 'An opaque value which should be passed as the `task_id` to retrieve the status of the operation. If None or not present the operation is complete. '
+      type: object
+      title: AssetTagResponse
+      description: Result of an asset tag operation.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+      description: Validation error response with detail about which fields failed.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      description: Individual field validation error with location and message.
+    TagAssetRequest:
+      properties:
+        add_tags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Add Tags
+          description: List of tag names to apply to the assets
+        remove_tags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Remove Tags
+          description: List of tag names to remove from the assets
+      type: object
+      title: TagAssetRequest
+      description: Add and/or remove tag operations for a single asset.
+    ApiCount:
+      properties:
+        total:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total
+        returned:
+          type: integer
+          title: Returned
+      type: object
+      required:
+      - returned
+      title: ApiCount
+      description: Result count metadata.
+    ApiListResponse_Asset_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Asset'
+          type: array
+          title: Data
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      type: object
+      required:
+      - data
+      - meta
+      title: ApiListResponse[Asset]
+      description: Paginated list of assets in a project.
+    ApiMeta:
+      properties:
+        params:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Params
+        counts:
+          anyOf:
+          - $ref: '#/components/schemas/ApiCount'
+          - type: 'null'
+        pagination:
+          anyOf:
+          - $ref: '#/components/schemas/PaginationResponse'
+          - type: 'null'
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Id
+      type: object
+      title: ApiMeta
+      description: Response metadata including pagination, counts, and request parameters.
+    Asset:
+      properties:
+        project_id:
+          type: string
+          title: Project Id
+          description: Project ID being displayed
+        id:
+          type: string
+          title: Id
+          description: The asset identifier. Same as `name` currently. In the future this may become a more opaque value.
+          examples:
+          - foo.example.com
+          - 192.0.2.101
+        name:
+          type: string
+          title: Name
+          description: The asset identifier. Same as `id` currently.
+          examples:
+          - foo.example.com
+          - 192.0.2.101
+        type:
+          type: string
+          title: Type
+          description: Indicates the type of assets. Currently will be one of `domain` or `ip
+          examples:
+          - ip
+          - domain
+        discovered_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Discovered At
+          description: Indicates when Recorded Future ASI first identified this asset on the Internet. For IP assets this is a fixed value
+        added_to_project_at:
+          type: string
+          format: date-time
+          title: Added To Project At
+          description: Indicates when this asset became part of your project, which may be when it was first discovered or when a rule allowed it in
+        last_scanned_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Scanned At
+          description: Indicates the last occurrence of some scanning activity on this asset, which could be port or vulnerability scans. On-Demand scans will 'bump' this date.
+        apex_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Apex Domain
+          description: For `domain` assets, the 'top' domain this is a part of. E.g. for `foo.bar.example.com` this would be `example.com`
+          examples:
+          - example.com
+        exposure_score:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Exposure Score
+          description: The Recorded Future ASI-calculated score based on the Exposures found on your asset.
+          examples:
+          - 50
+          - 95
+          gte: 0
+          lte: 100
+        is_static_asset:
+          type: boolean
+          title: Is Static Asset
+          description: Indicates whether this asset was discovered as part of project rules (`false`) or was added manually (`true`).
+          default: false
+        custom_tags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Custom Tags
+          description: 'User-defined tags which have been put on this asset. **NOTE**: After calling tagging endpoints, there may be a delay of up to a couple minutes before tags appear.'
+        resolved_ips:
+          anyOf:
+          - items:
+              type: string
+              format: ipvanyaddress
+            type: array
+          - type: 'null'
+          title: Resolved Ips
+          description: A convenience list of the IP addresses that A or CNAME records resolve to for this asset, or the aset iself.
+        dns_records:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/DNSRecord'
+            type: array
+          - type: 'null'
+          title: Dns Records
+          description: List of DNS records we have queried with
+        whois:
+          anyOf:
+          - $ref: '#/components/schemas/WHOISRecord'
+          - type: 'null'
+          description: WHOIS or RDAP data for a domain asset, such as contact emails
+        certificates:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/CertificateInstance'
+            type: array
+          - type: 'null'
+          title: Certificates
+          description: The unique certificates found on this asset (when requested). Includes ports and IPs when available. This information will also be contained in `scanned_ips` when requested
+        defenses:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/DefensiveControl'
+            type: array
+          - type: 'null'
+          title: Defenses
+          description: Defensive measures in place for the asset
+        exposures:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Exposure'
+            type: array
+          - type: 'null'
+          title: Exposures
+          description: Exposures found on this asset. Some information will overlap with tah contained within `scanned_ips`
+        scanned_ips:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ScannedIP'
+            type: array
+          - type: 'null'
+          title: Scanned Ips
+          description: IP addresses that have been scanned for this asset
+      type: object
+      required:
+      - project_id
+      - id
+      - name
+      - type
+      - discovered_at
+      - added_to_project_at
+      title: Asset
+      description: 'An Asset is a representation of a domain or IP address in the system.
+
+
+        A large number of enrichment fields can be enabled or disabled by the requestor.'
+    AssetSortField:
+      type: string
+      enum:
+      - discovered_at
+      - added_to_project_at
+      - last_scanned_at
+      - exposure_score
+      - asset_id
+      - apex_domain
+      title: AssetSortField
+      description: Field to sort asset results by.
+    Certificate:
+      properties:
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+        issued_at:
+          type: string
+          format: date-time
+          title: Issued At
+        sha256:
+          type: string
+          title: Sha256
+        subject:
+          $ref: '#/components/schemas/CertificateEntity'
+        subject_alt_names:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Subject Alt Names
+        issuer:
+          anyOf:
+          - $ref: '#/components/schemas/CertificateEntity'
+          - type: 'null'
+        chain:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Certificate'
+            type: array
+          - type: 'null'
+          title: Chain
+        signature_algorithm:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signature Algorithm
+      type: object
+      required:
+      - expires_at
+      - issued_at
+      - sha256
+      - subject
+      title: Certificate
+      description: TLS/SSL certificate details found on an asset.
+    CertificateEntity:
+      properties:
+        common_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Common Name
+        organization_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization Name
+        organizational_unit_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organizational Unit Name
+        country_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country Name
+      type: object
+      title: CertificateEntity
+      description: Certificate entity (subject or issuer) with organization details.
+    CertificateInstance:
+      properties:
+        certificate:
+          $ref: '#/components/schemas/Certificate'
+          description: The details of the certificate iself.
+        seen_ports:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Port'
+            type: array
+          - type: 'null'
+          title: Seen Ports
+          description: When available, indicates 'where' we saw this certificate. An asset may have serviced different certificaes on different ports, at different times
+      type: object
+      required:
+      - certificate
+      title: CertificateInstance
+      description: A `CertificateInstance` represents the linkage between a Certificate (unique on sha256) and the `Port`s an IPs it was seen on for this asset.
+    DNSRecord:
+      properties:
+        record_type:
+          type: string
+          title: Record Type
+        value:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/DNSValue'
+            type: array
+          - type: 'null'
+          title: Value
+        is_virtual:
+          type: boolean
+          title: Is Virtual
+          description: Is this a virtual DNS record?
+          default: false
+      type: object
+      required:
+      - record_type
+      - value
+      title: DNSRecord
+      description: A DNS record associated with an asset.
+    DNSValue:
+      properties:
+        value:
+          anyOf:
+          - type: string
+          - type: object
+          title: Value
+        seen_from:
+          items:
+            type: string
+          type: array
+          title: Seen From
+        first_seen_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: First Seen At
+        last_resolved_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Resolved At
+      type: object
+      required:
+      - value
+      - last_resolved_at
+      title: DNSValue
+      description: A DNS record value with type and resolution details.
+    DefensiveControl:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the technology, sometimes prefixed with the vendor
+          examples:
+          - Apache httpd
+          - OpenSSH
+        vendor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vendor
+          description: If available, the vendor of the product
+          examples:
+          - Microsoft
+          - Apache
+        technology_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Technology Type
+          description: If available, the type of technology
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+          description: If available, the specific version of the product
+          examples:
+          - v1.0.0
+          - v2.3-p1
+        instances:
+          items:
+            $ref: '#/components/schemas/TechnologyInstance'
+          type: array
+          title: Instances
+          description: Specific instances of this technology
+      type: object
+      required:
+      - name
+      title: DefensiveControl
+      description: A defensive security control (e.g., WAF, CDN) detected on an asset.
+    Exposure:
+      properties:
+        id:
+          type: string
+          title: Id
+        detection_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Detection Id
+        severity:
+          $ref: '#/components/schemas/ExposureSeverity'
+        instances:
+          items:
+            $ref: '#/components/schemas/ExposureInstance'
+          type: array
+          title: Instances
+        details:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Details
+        supports_evidence:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Supports Evidence
+          description: Does this exposure support evidence downloads?
+      type: object
+      required:
+      - id
+      - detection_id
+      - severity
+      - instances
+      title: Exposure
+      description: A security exposure (vulnerability, misconfiguration, or risk) detected on an asset.
+    ExposureInstance:
+      properties:
+        port_number:
+          type: integer
+          title: Port Number
+        url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Url
+        details:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Details
+      type: object
+      required:
+      - port_number
+      title: ExposureInstance
+      description: A specific instance of an exposure found on an asset.
+    ExposureSeverity:
+      type: string
+      enum:
+      - unknown
+      - informational
+      - moderate
+      - critical
+      title: ExposureSeverity
+      description: Exposure severity level.
+    GeoLocation:
+      properties:
+        continent:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Continent
+          description: Continent of the IP address
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+          description: Country of the IP address
+        city:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+          description: City of the IP address
+        country_iso:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country Iso
+          description: ISO code of the country of the IP address
+      type: object
+      title: GeoLocation
+      description: Geographic location data for an IP address.
+    IPMetadata:
+      properties:
+        as_number:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: As Number
+          description: Autonomous System Number which IP/block is registered to
+        owner_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Name
+          description: AS or Org Name of the IP/block is registered to
+        registry:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Registry
+          description: Nearest or top-level RIR
+          examples:
+          - RIPE
+          - ARIN
+        owner_geo:
+          anyOf:
+          - $ref: '#/components/schemas/GeoLocation'
+          - type: 'null'
+          description: Geolocation information for the IP address
+      type: object
+      title: IPMetadata
+      description: Metadata about an IP address including ASN and geolocation.
+    PaginationResponse:
+      properties:
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+          description: An opaque value which should be passed as the `cursor` to retrieve the next page of results. If None or not present there are no remaining pages. This value should not be interpreted by the client.
+        limit:
+          type: integer
+          title: Limit
+          description: The number of items returned
+          default: 50
+        total:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total
+        sort:
+          anyOf:
+          - items:
+              prefixItems:
+              - type: string
+              - type: string
+              type: array
+              maxItems: 2
+              minItems: 2
+            type: array
+          - type: 'null'
+          title: Sort
+          description: The sort order of the results
+      type: object
+      title: PaginationResponse
+      description: Cursor-based pagination data in responses.
+    Port:
+      properties:
+        port:
+          type: integer
+          title: Port
+          description: The open port number
+        protocol:
+          type: string
+          title: Protocol
+          description: The protocol of the open port, should be one of UDP or TCP
+        instances:
+          items:
+            $ref: '#/components/schemas/PortInstance'
+          type: array
+          title: Instances
+          description: The specific instances of this port on an IP
+        certificate:
+          anyOf:
+          - $ref: '#/components/schemas/Certificate'
+          - type: 'null'
+      type: object
+      required:
+      - port
+      - protocol
+      title: Port
+      description: An open port detected on an asset.
+    PortInstance:
+      properties:
+        seen_ip:
+          anyOf:
+          - type: string
+            format: ipvanyaddress
+          - type: string
+            format: ipv6
+          title: Seen Ip
+        seen_at:
+          type: string
+          format: date-time
+          title: Seen At
+        service:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Service
+          description: The service protocol running on the open port
+        technology:
+          anyOf:
+          - $ref: '#/components/schemas/TechnologyWithInstances'
+          - type: 'null'
+          description: The application running on the open port
+        web_technologies:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/TechnologyWithInstances'
+            type: array
+          - type: 'null'
+          title: Web Technologies
+          description: Web technologies detected on this port
+        exposures:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Exposure'
+            type: array
+          - type: 'null'
+          title: Exposures
+          description: Exposures detected on this port
+        defenses:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/DefensiveControl'
+            type: array
+          - type: 'null'
+          title: Defenses
+          description: Defensive measures in place for the port
+      type: object
+      required:
+      - seen_ip
+      - seen_at
+      title: PortInstance
+      description: A specific port instance with service and protocol details.
+    ScannedIP:
+      properties:
+        ip:
+          type: string
+          format: ipvanyaddress
+          title: Ip
+        last_scanned_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Scanned At
+          description: Datetime when a port scan was run on this IP address
+        whois:
+          anyOf:
+          - $ref: '#/components/schemas/WHOISRecord'
+          - type: 'null'
+        open_ports:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Port'
+            type: array
+          - type: 'null'
+          title: Open Ports
+        metadata:
+          anyOf:
+          - $ref: '#/components/schemas/IPMetadata'
+          - type: 'null'
+          description: Ownership and ASN information about this IP address
+        is_responsive:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Responsive
+          description: Indicates whether this IP address is unresponsive over ICMP and no ports were found open
+      type: object
+      required:
+      - ip
+      title: ScannedIP
+      description: 'A `ScannedIP` is a container for a specific IP address that an asset resolves to and that we have performed scanning
+
+        activities on.
+
+
+        There may be cases where we discover different technologies or vulnerabilities depending on which IP was looked at.'
+    SortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortDirection
+      description: Sort direction (ascending or descending).
+    TechnologyInstance:
+      properties:
+        seen_at:
+          type: string
+          format: date-time
+          title: Seen At
+        seen_port:
+          type: integer
+          title: Seen Port
+        seen_url:
+          anyOf:
+          - type: string
+            minLength: 1
+            format: uri
+          - type: 'null'
+          title: Seen Url
+          description: The URL where this technology was seen, if applicable
+      type: object
+      required:
+      - seen_at
+      - seen_port
+      title: TechnologyInstance
+      description: A technology (software/framework) detected on an asset.
+    TechnologyWithInstances:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the technology, sometimes prefixed with the vendor
+          examples:
+          - Apache httpd
+          - OpenSSH
+        vendor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vendor
+          description: If available, the vendor of the product
+          examples:
+          - Microsoft
+          - Apache
+        technology_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Technology Type
+          description: If available, the type of technology
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+          description: If available, the specific version of the product
+          examples:
+          - v1.0.0
+          - v2.3-p1
+        instances:
+          items:
+            $ref: '#/components/schemas/TechnologyInstance'
+          type: array
+          title: Instances
+          description: Specific instances of this technology
+      type: object
+      required:
+      - name
+      title: TechnologyWithInstances
+      description: A technology with all instances where it was detected.
+    WHOISContact:
+      properties:
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+          description: Email address of the contact
+          examples:
+          - contact@example.com
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+          description: Name of the contact, if available
+          examples:
+          - John Doe
+        organization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization
+          description: Organization of the contact
+          examples:
+          - Your Company Here
+        is_current:
+          type: boolean
+          title: Is Current
+          description: Is this still a current contact?
+          default: true
+      type: object
+      title: WHOISContact
+      description: A WHOIS contact record (registrant, admin, tech).
+    WHOISRecord:
+      properties:
+        registrar:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Registrar
+          description: Registrar of the domain if known
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+          description: Expiration date of the domain
+        updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updated At
+          description: Last updated date of the domain
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+          description: Creation date of the domain
+        is_private:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Private
+          description: Is the domain registration private?
+        is_from_parent:
+          type: boolean
+          title: Is From Parent
+          description: Is this WHOIS record from the parent domain?
+          default: false
+        contacts:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/WHOISContact'
+            type: array
+          - type: 'null'
+          title: Contacts
+          description: Contacts associated with the domain
+        name_servers:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Name Servers
+          description: Primary nameservers for the domain
+      type: object
+      title: WHOISRecord
+      description: 'From proposal:
+
+        contact.email
+
+        contact.organization
+
+        contact.name
+
+        expires
+
+        created
+
+        updated
+
+        registrar'
+    AssetCountDateRangeFilter:
+      properties:
+        name:
+          type: string
+          title: Name
+        asset_count:
+          type: integer
+          title: Asset Count
+        start:
+          anyOf:
+          - type: string
+            format: date
+          - type: number
+          - type: 'null'
+          title: Start
+        end:
+          anyOf:
+          - type: string
+            format: date
+          - type: number
+          - type: 'null'
+          title: End
+      type: object
+      required:
+      - name
+      - asset_count
+      - start
+      - end
+      title: AssetCountDateRangeFilter
+      description: Date range filter with asset count context.
+    AssetCountEqFilter:
+      properties:
+        name:
+          type: string
+          title: Name
+        asset_count:
+          type: integer
+          title: Asset Count
+        value:
+          anyOf:
+          - type: string
+          - type: integer
+          title: Value
+      type: object
+      required:
+      - name
+      - asset_count
+      - value
+      title: AssetCountEqFilter
+      description: Equality filter with asset count context.
+    AssetCountValueRangeFilter:
+      properties:
+        name:
+          type: string
+          title: Name
+        asset_count:
+          type: integer
+          title: Asset Count
+        start:
+          type: integer
+          title: Start
+        end:
+          type: integer
+          title: End
+      type: object
+      required:
+      - name
+      - asset_count
+      - start
+      - end
+      title: AssetCountValueRangeFilter
+      description: Value range filter with asset count context.
+    AssetFilter:
+      properties:
+        asset_properties:
+          $ref: '#/components/schemas/AssetPropertiesFilter'
+          description: Properties directly tied to the asset or DNS you want to filter on
+        certificate_properties:
+          $ref: '#/components/schemas/CertificatePropertiesFilter'
+          description: Properties related to certificates on the asset you want to filter on
+        exposure_properties:
+          $ref: '#/components/schemas/ExposurePropertiesFilter'
+          description: Properties relating to exposures found on assets you wish to filter on
+        technology_properties:
+          $ref: '#/components/schemas/TechnologyPropertiesFilter'
+          description: Properties related to open ports and technologies identified on the asset
+        quick_search:
+          anyOf:
+          - $ref: '#/components/schemas/QuickSearchFilter'
+          - type: 'null'
+          description: Quick search across asset name, IP addresses, and technology fields
+      type: object
+      title: AssetFilter
+      description: Filter criteria for asset search queries.
+    AssetPropertiesFilter:
+      properties:
+        asset_id:
+          $ref: '#/components/schemas/EqFilter'
+          description: 'Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`).'
+        name:
+          anyOf:
+          - $ref: '#/components/schemas/ContainsFilter'
+          - type: 'null'
+          description: Filter on the name of the asset(IP address or domain).
+        static_asset:
+          anyOf:
+          - $ref: '#/components/schemas/BooleanFilter'
+          - type: 'null'
+          description: Filter static and non static assets.
+        apex:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          title: Apex
+          description: 'Filter on the apex domain of the assets. Only makes sense for `domain` asset types. Example: `example.com`'
+        added_to_project:
+          $ref: '#/components/schemas/DateRangeFilter'
+          description: Filter on the date (Y-m-d) the asset was added to the project. This may be different than when the asset was discovered.
+        discovered:
+          $ref: '#/components/schemas/DateRangeFilter'
+          description: Filter on the date (Y-m-d) the asset was discovered by Recorded Future ASI. This may be different than when the asset was added to the project. IPv4 addresses will have a fixed point in the past for their discovery date.
+        asset_type:
+          $ref: '#/components/schemas/EqFilter'
+          description: 'The type of asset, one of: `ip`, `domain` and `host`(where `domain` and `host` represent the same asset type).'
+        referenced_ip:
+          anyOf:
+          - $ref: '#/components/schemas/ContainsFilter'
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          title: Referenced Ip
+          description: Filter on an A or CNAME record pointing to the IP address. Use `eq` or `in` for exact IP matching. Use `contains` with a trailing `.` for CIDR range matching, or without for prefix matching.
+        cname_reference:
+          anyOf:
+          - $ref: '#/components/schemas/ContainsFilter'
+          - $ref: '#/components/schemas/EqFilter'
+          title: Cname Reference
+          description: Filter on a domain that is referenced by a CNAME record. Only makes sense for `domain` asset types. Treated as a wildcard, so `example.com` will match `www.example.com`.
+        referenced_ip_at:
+          $ref: '#/components/schemas/DateRangeFilter'
+          description: If filtering on a `referenced_ip`, include additional criteria that the record existed during a date range.
+        valid_record_type:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - $ref: '#/components/schemas/NeqFilter'
+          title: Valid Record Type
+          description: Filter for assets that have this DNS record type, e.g. `A`,`CNAME`,`MX`.
+        dns_resolves:
+          $ref: '#/components/schemas/BooleanFilter'
+          description: Filter for assets that in the end resolve to a valid IP currently, either via an `A` or `CNAME`. `IP`-assets is included when filtering for assets that resolve.
+        custom_tags:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - $ref: '#/components/schemas/RequireAllFilter'
+          title: Custom Tags
+          description: Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project. By using `*` you can filter for assets that have at least one custom tag applied. By using an empty(`[]`) list you can filter for assets that have no custom tags applied.
+        custom_tags_strict:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - $ref: '#/components/schemas/RequireAllFilter'
+          title: Custom Tags Strict
+          description: Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project. By using `*` you can filter for assets that have at least one custom tag applied. By using an empty(`[]`) list you can filter for assets that have no custom tags applied.
+        asn:
+          anyOf:
+          - $ref: '#/components/schemas/IntEqFilter'
+          - $ref: '#/components/schemas/IntInFilter'
+          title: Asn
+          description: Filter for assets which either are, or point to, an IP address announced by the provided ASN (e.g. `16509`).
+        ip_geo_country_iso:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          title: Ip Geo Country Iso
+          description: Filter for assets which either are, or point to, an IP address located in the provided ISO country code (e.g. `US`).
+        ip_owner:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          title: Ip Owner
+          description: Filter for assets which either are, or point to, an IP address owned by the provided organization. This will often be an ISP or hosting provider or simply the name of the AS owning the IP.
+        registry:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - type: 'null'
+          title: Registry
+          description: Filter for assets by their IP registry source (e.g., 'arin', 'ripe', 'apnic').
+        whois_email_current:
+          anyOf:
+          - $ref: '#/components/schemas/EmailEqFilter'
+          - $ref: '#/components/schemas/EmailInFilter'
+          title: Whois Email Current
+          description: Filter for assets where the WHOIS email address matches the provided value. For subdomains the parent record will be partially used. The `current` variant will only return results where the email is on the current (rather than historical) versions of the WHOIS.
+        whois_email:
+          anyOf:
+          - $ref: '#/components/schemas/EmailEqFilter'
+          - $ref: '#/components/schemas/EmailInFilter'
+          title: Whois Email
+          description: Filter for assets where the WHOIS email address matches the provided value. For subdomains the parent record will be partially used. The `current` variant will only return results where the email is on the current (rather than historical) versions of the WHOIS.
+      type: object
+      title: AssetPropertiesFilter
+      description: Filter options for asset properties (hostname, IP, tags, ports, etc.).
+    AssetPropertiesFilterOptions:
+      properties:
+        asset_type:
+          $ref: '#/components/schemas/FilterOptionsEq'
+          description: 'The type of asset, one of: `ip`, `domain` and `host`(where `domain` and `host` represent the same asset type).'
+        asn:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter for assets which either are, or point to, an IP address announced by the provided ASN (e.g. `16509`).
+        custom_tags:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project.
+        added_to_project:
+          $ref: '#/components/schemas/FilterOptionsDateRange'
+          description: Filter on the date (Y-m-d) the asset was added to the project. This may be different than when the asset was discovered.
+        discovered:
+          $ref: '#/components/schemas/FilterOptionsDateRange'
+          description: Filter on the date (Y-m-d) the asset was discovered by Recorded Future ASI. This may be different than when the asset was added to the project. IPv4 addresses will have a fixed point in the past for their discovery date.
+        apex:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: 'Filter on the apex domain of the assets. Only makes sense for `domain` asset types. Example: `example.com`'
+        static_asset:
+          $ref: '#/components/schemas/FilterOptionsEq'
+          description: Filter static and non static assets.
+        ip_geo_country_iso:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter for assets which either are, or point to, an IP address located in the provided ISO country code (e.g. `US`).
+        ip_owner:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter for assets which either are, or point to, an IP address owned by the provided organization. This will often be an ISP or hosting provider or simply the name of the AS owning the IP.
+        registry:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter for assets by their IP registry source (e.g., 'arin', 'ripe', 'apnic').
+        referenced_ip:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter on an A or CNAME record pointing to the IP address. Use `eq` or `in` for exact IP matching. Use `contains` with a trailing `.` for CIDR range matching, or without for prefix matching.
+      type: object
+      title: AssetPropertiesFilterOptions
+      description: Available asset property filter facets with value counts.
+    AssetsFilterRequest:
+      properties:
+        filter:
+          anyOf:
+          - $ref: '#/components/schemas/AssetFilter'
+          - type: 'null'
+          examples:
+          - {}
+        filter_fields:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Filter Fields
+          description: 'List of filterable fields to return filter options for. Valid values: `asset_type`, `asn`, `custom_tags`, `added_to_project`, `discovered`, `apex`, `ip_geo_country_iso`, `ip_owner`, `static_asset`, `registry`, `referenced_ip`, `exposure_id`, `severity`, `asset_exposure_score`, `last_scanned_at`, `open_port_number`, `open_port_service`, `open_port_protocol`, `waf_detected`, `waf_name`, `technology_name`, `is_responsive`, `certificate_issuer`, `certificate_expires_at`, `certificate_issued_at`. You can also use `all` to return all available filterable fields.'
+      type: object
+      title: AssetsFilterRequest
+      description: Request body for filtered filter facets (drill-down filtering).
+    BooleanFilter:
+      properties:
+        eq:
+          type: boolean
+          title: Eq
+      type: object
+      required:
+      - eq
+      title: BooleanFilter
+      description: Boolean filter (true/false).
+    CertificatePropertiesFilter:
+      properties:
+        certificate_subject:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - $ref: '#/components/schemas/ContainsFilter'
+          - type: 'null'
+          title: Certificate Subject
+          description: Filter where certificate `subject` or `organizationName` matches the provided value
+        certificate_subject_alt_name:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - $ref: '#/components/schemas/ContainsFilter'
+          - type: 'null'
+          title: Certificate Subject Alt Name
+          description: Filter here the certificate Subject Alternate Names section matches the provided value
+        certificate_sha256:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - type: 'null'
+          description: Filter where the certificate public key sha256 value matches the provided value
+        certificate_expires_at:
+          anyOf:
+          - $ref: '#/components/schemas/DateRangeFilter'
+          - type: 'null'
+          description: Filter where the certificate expiration matches the provided value
+        certificate_issued_at:
+          anyOf:
+          - $ref: '#/components/schemas/DateRangeFilter'
+          - type: 'null'
+          description: Filter where the certificate issuance date matches the provided value
+        certificate_issuer:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - type: 'null'
+          title: Certificate Issuer
+          description: Filter where the certificate (or in the chain) issuer's common name or organization matches the provided value
+        certificate_covers_domain:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - $ref: '#/components/schemas/ContainsFilter'
+          - type: 'null'
+          title: Certificate Covers Domain
+          description: Filter where the certificate's subject common name domain or one of the Subject Alternate Names exactly matches or is a wildcard covering the provided value
+      type: object
+      title: CertificatePropertiesFilter
+      description: Filter options for certificate properties (issuer, expiration, etc.).
+    CertificatePropertiesFilterOptions:
+      properties:
+        certificate_issuer:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter where the certificate (or in the chain) issuer's common name or organization matches the provided value
+        certificate_expires_at:
+          $ref: '#/components/schemas/FilterOptionsDateRange'
+          description: Filter where the certificate expiration matches the provided value
+        certificate_issued_at:
+          $ref: '#/components/schemas/FilterOptionsDateRange'
+          description: Filter where the certificate issuance date matches the provided value
+      type: object
+      title: CertificatePropertiesFilterOptions
+      description: Available certificate property filter facets with value counts.
+    ContainsFilter:
+      properties:
+        contains:
+          type: string
+          title: Contains
+      type: object
+      required:
+      - contains
+      title: ContainsFilter
+      description: Substring containment filter.
+    DateRangeFilter:
+      properties:
+        start:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start
+        end:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End
+      type: object
+      title: DateRangeFilter
+      description: Date range filter with from/to bounds.
+    EmailEqFilter:
+      properties:
+        eq:
+          type: string
+          format: email
+          title: Eq
+      type: object
+      required:
+      - eq
+      title: EmailEqFilter
+      description: Exact email address match filter.
+    EmailInFilter:
+      properties:
+        in:
+          items:
+            type: string
+            format: email
+          type: array
+          title: In
+      type: object
+      required:
+      - in
+      title: EmailInFilter
+      description: Email address inclusion filter (matches any in list).
+    EqFilter:
+      properties:
+        eq:
+          anyOf:
+          - type: string
+          - type: integer
+          - type: string
+            format: ipvanyaddress
+          - type: string
+            format: ipvanynetwork
+          - type: string
+            format: date
+          title: Eq
+      type: object
+      required:
+      - eq
+      title: EqFilter
+      description: Exact value match filter.
+    ExposurePropertiesFilter:
+      properties:
+        severity:
+          anyOf:
+          - $ref: '#/components/schemas/InFilter'
+          - $ref: '#/components/schemas/EqFilter'
+          title: Severity
+          description: 'Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical.'
+        signature_id:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          title: Signature Id
+          description: 'Filter for assets which have an exposure with the provided ASI Signature ID. Note that some signatures line up with CVEs, but this should not be relied upon. Examples: `cve-2024-6387`, `cve-OpenSSH`.'
+        asset_exposure_score:
+          $ref: '#/components/schemas/IntRangeFilter'
+          description: Filter for assets which have an exposure score within the provided range. This is a score from 0-100 that indicates the potential risk of the asset based on various factors. You may specify only one 'end' based on your needs.
+        last_scanned_at:
+          anyOf:
+          - $ref: '#/components/schemas/DateRangeFilter'
+          - type: 'null'
+          description: Filter on the date (Y-m-d) when the asset was last scanned for exposures.
+      type: object
+      title: ExposurePropertiesFilter
+      description: Filter options for exposure properties (severity, signature, etc.).
+    ExposurePropertiesFilterOptions:
+      properties:
+        signature_id:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: 'Filter for assets which have an exposure with the provided ASI Signature ID. Note that some signatures line up with CVEs, but this should not be relied upon. Examples: `cve-2024-6387`, `cve-OpenSSH`.'
+        severity:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: 'Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical.'
+        asset_exposure_score:
+          $ref: '#/components/schemas/FilterOptionsValueRange'
+          description: Filter for assets which have an exposure score within the provided range. This is a score from 0-100 that indicates the potential risk of the asset based on various factors. You may specify only one 'end' based on your needs.
+        last_scanned_at:
+          $ref: '#/components/schemas/FilterOptionsDateRange'
+          description: Filter on the date (Y-m-d) when the asset was last scanned for exposures.
+      type: object
+      title: ExposurePropertiesFilterOptions
+      description: Available exposure property filter facets with value counts.
+    FilterOptionsDateRange:
+      properties:
+        name:
+          type: string
+          title: Name
+        filter_query:
+          items:
+            type: string
+          type: array
+          title: Filter Query
+        filter_path:
+          type: string
+          title: Filter Path
+        filter_type:
+          type: string
+          title: Filter Type
+          default: date_range
+        filters:
+          items:
+            $ref: '#/components/schemas/AssetCountDateRangeFilter'
+          type: array
+          title: Filters
+      type: object
+      required:
+      - name
+      - filter_query
+      - filter_path
+      - filters
+      title: FilterOptionsDateRange
+      description: Date range filter option with available values and counts.
+    FilterOptionsEq:
+      properties:
+        name:
+          type: string
+          title: Name
+        filter_query:
+          items:
+            type: string
+          type: array
+          title: Filter Query
+        filter_path:
+          type: string
+          title: Filter Path
+        filter_type:
+          type: string
+          title: Filter Type
+          default: eq
+        filters:
+          items:
+            $ref: '#/components/schemas/AssetCountEqFilter'
+          type: array
+          title: Filters
+      type: object
+      required:
+      - name
+      - filter_query
+      - filter_path
+      - filters
+      title: FilterOptionsEq
+      description: Equality filter option with available values and counts.
+    FilterOptionsIn:
+      properties:
+        name:
+          type: string
+          title: Name
+        filter_query:
+          items:
+            type: string
+          type: array
+          title: Filter Query
+        filter_path:
+          type: string
+          title: Filter Path
+        filter_type:
+          type: string
+          title: Filter Type
+          default: in
+        filters:
+          items:
+            $ref: '#/components/schemas/AssetCountEqFilter'
+          type: array
+          title: Filters
+      type: object
+      required:
+      - name
+      - filter_query
+      - filter_path
+      - filters
+      title: FilterOptionsIn
+      description: Inclusion filter option with available values and counts.
+    FilterOptionsValueRange:
+      properties:
+        name:
+          type: string
+          title: Name
+        filter_query:
+          items:
+            type: string
+          type: array
+          title: Filter Query
+        filter_path:
+          type: string
+          title: Filter Path
+        filter_type:
+          type: string
+          title: Filter Type
+          default: value_range
+        filters:
+          items:
+            $ref: '#/components/schemas/AssetCountValueRangeFilter'
+          type: array
+          title: Filters
+      type: object
+      required:
+      - name
+      - filter_query
+      - filter_path
+      - filters
+      title: FilterOptionsValueRange
+      description: Value range filter option with available values and counts.
+    FiltersResponse:
+      properties:
+        asset_properties:
+          $ref: '#/components/schemas/AssetPropertiesFilterOptions'
+        exposure_properties:
+          $ref: '#/components/schemas/ExposurePropertiesFilterOptions'
+        technology_properties:
+          $ref: '#/components/schemas/TechnologyPropertiesFilterOptions'
+        certificate_properties:
+          $ref: '#/components/schemas/CertificatePropertiesFilterOptions'
+      type: object
+      required:
+      - asset_properties
+      - exposure_properties
+      - technology_properties
+      - certificate_properties
+      title: FiltersResponse
+      description: Available filter facets with asset counts for building search queries. Each property contains the available filter options for that category.
+    InFilter:
+      properties:
+        in:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: string
+              format: ipvanyaddress
+            - type: string
+              format: ipvanynetwork
+            - type: string
+              format: date
+            - $ref: '#/components/schemas/ExposureSeverity'
+          type: array
+          title: In
+      type: object
+      required:
+      - in
+      title: InFilter
+      description: Value inclusion filter (matches any in list).
+    IntEqFilter:
+      properties:
+        eq:
+          type: integer
+          title: Eq
+      type: object
+      required:
+      - eq
+      title: IntEqFilter
+      description: Exact integer match filter.
+    IntInFilter:
+      properties:
+        in:
+          items:
+            type: integer
+          type: array
+          title: In
+      type: object
+      required:
+      - in
+      title: IntInFilter
+      description: Integer inclusion filter.
+    IntRangeFilter:
+      properties:
+        start:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Start
+        end:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: End
+      type: object
+      required:
+      - start
+      - end
+      title: IntRangeFilter
+      description: Integer range filter with min/max bounds.
+    NeqFilter:
+      properties:
+        neq:
+          anyOf:
+          - type: string
+          - type: integer
+          - type: string
+            format: ipvanyaddress
+          - type: string
+            format: ipvanynetwork
+          - type: string
+            format: date
+          title: Neq
+      type: object
+      required:
+      - neq
+      title: NeqFilter
+      description: Not-equal filter (excludes matching values).
+    QuickSearchFilter:
+      properties:
+        search:
+          type: string
+          title: Search
+          description: Search term to match against asset name, IP addresses, and technology fields
+      type: object
+      required:
+      - search
+      title: QuickSearchFilter
+      description: Quick search text filter for assets.
+    RequireAllFilter:
+      properties:
+        in:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: string
+              format: ipvanyaddress
+            - type: string
+              format: ipvanynetwork
+            - type: string
+              format: date
+            - $ref: '#/components/schemas/ExposureSeverity'
+          type: array
+          title: In
+      type: object
+      required:
+      - in
+      title: RequireAllFilter
+      description: Filter requiring all specified values to match.
+    TechnologyPropertiesFilter:
+      properties:
+        open_port_number:
+          anyOf:
+          - $ref: '#/components/schemas/IntEqFilter'
+          - $ref: '#/components/schemas/IntInFilter'
+          - type: 'null'
+          title: Open Port Number
+          description: Filter for assets which have an open port with the provided number (e.g. `80`).
+        open_port_service:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - type: 'null'
+          title: Open Port Service
+          description: Filter for assets which have an open port that appears to support the provided protocol (e.g. `http`, `rdp`, `ftp`).
+        open_port_protocol:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - type: 'null'
+          title: Open Port Protocol
+          description: Filter for assets which have an open port on the provided protocol (e.g. `tcp`, `udp`).
+        open_port_technology:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - type: 'null'
+          title: Open Port Technology
+          description: Filter for assets which have a specific product listening on an open port (e.g. `nginx`, `apache httpd`)
+        waf_detected:
+          anyOf:
+          - $ref: '#/components/schemas/BooleanFilter'
+          - type: 'null'
+          description: Filter for assets where a WAF (Web Application Firewall) is detected.
+        waf_name:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - type: 'null'
+          title: Waf Name
+          description: Filter for assets where a specific WAF is detected. Will attempt to match both vendor and product, e.g. `Cloudflare`.
+        technology_name:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - type: 'null'
+          title: Technology Name
+          description: Filter for the name of a technology found on the asset. Could be directly attached to the port (`nginx`, etc) or a web technology (e.g. 'jQuery', 'Wordpress')
+        web_technology_name:
+          anyOf:
+          - $ref: '#/components/schemas/EqFilter'
+          - $ref: '#/components/schemas/InFilter'
+          - type: 'null'
+          title: Web Technology Name
+          description: 'Filter for the name of a technology specifically associated with ''web'' resources, such as `jQuery` or `Wordpress`). **NOTE**: In some cases where a port has been closed we may still report findings of web technologies that we previously saw on those ports.'
+        is_responsive:
+          anyOf:
+          - $ref: '#/components/schemas/BooleanFilter'
+          - type: 'null'
+          description: Filter for assets that are unresponsive over ICMP and no ports are open. This is a boolean filter, so it will return assets that are either responsive or not responsive.
+      type: object
+      title: TechnologyPropertiesFilter
+      description: Filter options for technology properties (name, version, vendor, etc.).
+    TechnologyPropertiesFilterOptions:
+      properties:
+        open_port_number:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter for assets which have an open port with the provided number (e.g. `80`).
+        open_port_service:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter for assets which have an open port that appears to support the provided protocol (e.g. `http`, `rdp`, `ftp`).
+        open_port_protocol:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter for assets which have an open port on the provided protocol (e.g. `tcp`, `udp`).
+        waf_detected:
+          $ref: '#/components/schemas/FilterOptionsEq'
+          description: Filter for assets where a WAF (Web Application Firewall) is detected.
+        waf_name:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter for assets where a specific WAF is detected. Will attempt to match both vendor and product, e.g. `Cloudflare`.
+        technology_name:
+          $ref: '#/components/schemas/FilterOptionsIn'
+          description: Filter for the name of a technology found on the asset. Could be directly attached to the port (`nginx`, etc) or a web technology (e.g. 'jQuery', 'Wordpress')
+        is_responsive:
+          $ref: '#/components/schemas/FilterOptionsEq'
+          description: Filter for assets that are unresponsive over ICMP and no ports are open. This is a boolean filter, so it will return assets that are either responsive or not responsive.
+      type: object
+      title: TechnologyPropertiesFilterOptions
+      description: Available technology property filter facets with value counts.
+    ApiListResponse_AssetExposure_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/AssetExposure'
+          type: array
+          title: Data
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      type: object
+      required:
+      - data
+      - meta
+      title: ApiListResponse[AssetExposure]
+      description: Paginated list of exposure instances affecting an asset.
+    AssetExposure:
+      properties:
+        asset_id:
+          type: string
+          title: Asset Id
+        instances:
+          items:
+            $ref: '#/components/schemas/ExposureInstance'
+          type: array
+          title: Instances
+        details:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Details
+        signature:
+          $ref: '#/components/schemas/ExposureSignatureResponse'
+      type: object
+      required:
+      - asset_id
+      - instances
+      - details
+      - signature
+      title: AssetExposure
+      description: An exposure instance affecting a specific asset.
+    ExposureSignatureResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        severity:
+          anyOf:
+          - $ref: '#/components/schemas/ExposureSeverity'
+          - type: 'null'
+        remediation_steps:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Remediation Steps
+        added_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Added At
+          description: Date when this signature was added to ASI
+        references:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: References
+        vulnerabilities:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/VulnerabilityPublic'
+            type: array
+          - type: 'null'
+          title: Vulnerabilities
+      type: object
+      required:
+      - id
+      - name
+      - description
+      - severity
+      - references
+      title: ExposureSignatureResponse
+      description: "Attributes:\n    name (str):\n    remediation_steps (Union['ExposureSignaturePublicRemediationStepsType0', None]):\n    static_references (list[str]):\n    id (str):\n    slug (str):\n    description (Union[None, Unset, str]):\n    long_description (Union[None, Unset, str]):\n    classification (Union[Unset, ClassificationEnum]):\n    signature_type (Union[Unset, SignatureType]):\n    updated_at (Union[None, Unset, datetime.datetime]):\n    added_at (Union[None, Unset, datetime.datetime]):\n    asi_risk_score (Union[None, Unset, int]): Base risk score for the signature. The actual risk score may be higher\n        Default: 15.\n    rf_risk_score (Union[None, Unset, float]):\n    hidden (Union[Unset, bool]):  Default: False.\n    last_genai_update (Union[None, Unset, datetime.datetime]):\n    is_enhanced (Union[None, Unset, bool]):  Default: False."
+    VulnerabilityPublic:
+      properties:
+        name:
+          type: string
+          title: Name
+        cve_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cve Id
+          description: The Common Vulnerabilities and Exposures (CVE) identifier for this vulnerability.
+        slug:
+          type: string
+          title: Slug
+          description: The unique identifier for this vulnerability
+        cwe_ids:
+          items:
+            anyOf:
+            - type: string
+            - type: 'null'
+          type: array
+          title: Cwe Ids
+          description: Common Weakness Enumeration (CWE) IDs associated with this vulnerability
+        cvss_score:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cvss Score
+        cvss_metrics:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cvss Metrics
+        epss_score:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Epss Score
+          description: Exploit Prediction Scoring System (EPPS) score for this vulnerability. May be out of date.
+        references:
+          items:
+            type: string
+          type: array
+          title: References
+      type: object
+      required:
+      - name
+      - slug
+      - cvss_score
+      - cvss_metrics
+      - references
+      title: VulnerabilityPublic
+      description: A known vulnerability (CVE) affecting an asset.
+    AssetResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Asset'
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      type: object
+      required:
+      - data
+      - meta
+      title: AssetResponse
+      description: Single asset with full detail including enrichment data.
+    AssetEnrichment:
+      type: string
+      enum:
+      - custom_tags
+      - dns_records
+      - whois
+      - ip_metadata
+      - open_tcp_ports
+      - open_udp_ports
+      - web_technologies
+      - certificates
+      - certificate_chain
+      - defenses
+      - exposures
+      - exposure_instance_details
+      title: AssetEnrichment
+      description: Optional enrichment data to include with asset results.
+    AssetSearchRequest:
+      properties:
+        filter:
+          anyOf:
+          - $ref: '#/components/schemas/AssetFilter'
+          - type: 'null'
+          examples:
+          - {}
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+          examples:
+          - limit: 100
+        enrichments:
+          items:
+            $ref: '#/components/schemas/AssetEnrichment'
+          type: array
+          title: Enrichments
+        sort:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/AssetSortField'
+            type: array
+          - items:
+              prefixItems:
+              - $ref: '#/components/schemas/AssetSortField'
+              - $ref: '#/components/schemas/SortDirection'
+              type: array
+              maxItems: 2
+              minItems: 2
+            type: array
+          title: Sort
+      type: object
+      title: AssetSearchRequest
+      description: Search request body for querying assets with filters, sorting, and pagination.
+    Pagination:
+      properties:
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+          description: An opaque value which should be passed as the `cursor` to retrieve the next page of results. If None or not present there are no remaining pages. This value should not be interpreted by the client.
+        limit:
+          type: integer
+          maximum: 1000
+          title: Limit
+          description: The number of items to return
+          default: 50
+      type: object
+      title: Pagination
+      description: Cursor-based pagination parameters for requests.
+    AssetWithExposureInstances:
+      properties:
+        asset_id:
+          type: string
+          title: Asset Id
+        instances:
+          items:
+            $ref: '#/components/schemas/ExposureInstance'
+          type: array
+          title: Instances
+        details:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Details
+      type: object
+      required:
+      - asset_id
+      - instances
+      - details
+      title: AssetWithExposureInstances
+      description: An asset with its associated exposure instances.
+    ExposureAssets:
+      properties:
+        signature:
+          $ref: '#/components/schemas/ExposureSignatureResponse'
+        asset_exposures:
+          items:
+            $ref: '#/components/schemas/AssetWithExposureInstances'
+          type: array
+          title: Asset Exposures
+      type: object
+      required:
+      - signature
+      - asset_exposures
+      title: ExposureAssets
+      description: Assets affected by a specific exposure.
+    ExposureAssetsListResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ExposureAssets'
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      type: object
+      required:
+      - data
+      - meta
+      title: ExposureAssetsListResponse
+      description: Paginated list of assets affected by a specific exposure.
+    ApiListResponse_ExposureSummary_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ExposureSummary'
+          type: array
+          title: Data
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      type: object
+      required:
+      - data
+      - meta
+      title: ApiListResponse[ExposureSummary]
+      description: Paginated list of exposure summaries for a project.
+    ExposureSummary:
+      properties:
+        signature:
+          $ref: '#/components/schemas/ExposureSignatureResponse'
+        asset_count:
+          type: integer
+          title: Asset Count
+      type: object
+      required:
+      - signature
+      - asset_count
+      title: ExposureSummary
+      description: Summary of an exposure type with count of affected assets.
+    Project:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        title:
+          type: string
+          title: Title
+        scanning_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Scanning Enabled
+        last_scanned_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Scanned At
+        inserted_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Inserted At
+        max_exposure_score:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Exposure Score
+      type: object
+      required:
+      - id
+      - title
+      title: Project
+      description: An ASI (Attack Surface Intelligence) project representing a monitored attack surface.
+    ProjectListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Project'
+          type: array
+          title: Data
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      type: object
+      required:
+      - data
+      - meta
+      title: ProjectListResponse
+      description: List of ASI projects accessible to the authenticated user.
+    MembershipType:
+      type: string
+      enum:
+      - include
+      - exclude
+      title: MembershipType
+      description: Asset membership type (include or exclude from attack surface).
+    StaticAssetRule:
+      properties:
+        asset:
+          type: string
+          title: Asset
+        membership_type:
+          $ref: '#/components/schemas/MembershipType'
+        static_type:
+          $ref: '#/components/schemas/StaticType'
+      type: object
+      required:
+      - asset
+      - membership_type
+      - static_type
+      title: StaticAssetRule
+      description: A rule specifying an asset to include or exclude from the attack surface.
+    StaticAssetRuleError:
+      properties:
+        rule:
+          anyOf:
+          - $ref: '#/components/schemas/StaticAssetRule'
+          - type: 'null'
+          description: Params passed in add_rules/remove_rules action
+        failed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Failed
+          description: Indicates if this is a warning or if the operation failed
+        messages:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Messages
+          description: List of errors & warnings encountered during the operation
+      type: object
+      title: StaticAssetRuleError
+      description: An error encountered when processing a static asset rule.
+    StaticAssetsOperations:
+      properties:
+        add_rules:
+          items:
+            $ref: '#/components/schemas/StaticAssetRule'
+          type: array
+          title: Add Rules
+          description: List of new static asset rules to add
+        remove_rules:
+          items:
+            $ref: '#/components/schemas/StaticAssetRule'
+          type: array
+          title: Remove Rules
+          description: List of static asset rules to remove
+      type: object
+      title: StaticAssetsOperations
+      description: Add and remove operations for static asset rules.
+    StaticAssetsResult:
+      properties:
+        added:
+          items:
+            $ref: '#/components/schemas/StaticAssetRule'
+          type: array
+          title: Added
+          description: List of static asset rules that were added
+        removed:
+          items:
+            $ref: '#/components/schemas/StaticAssetRule'
+          type: array
+          title: Removed
+          description: List of static asset rules that were removed
+        errors:
+          items:
+            $ref: '#/components/schemas/StaticAssetRuleError'
+          type: array
+          title: Errors
+          description: List of errors encountered during the operation
+      type: object
+      title: StaticAssetsResult
+      description: Result of processing static asset rule operations.
+    StaticType:
+      type: string
+      enum:
+      - ipv4
+      - hostname
+      - wildcard
+      title: StaticType
+      description: Static asset type (hostname, domain, ip, cidr).
+    UpdateStaticAssetsRequest:
+      properties:
+        static_assets:
+          $ref: '#/components/schemas/StaticAssetsOperations'
+      type: object
+      required:
+      - static_assets
+      title: UpdateStaticAssetsRequest
+      description: Request body for bulk adding/removing static asset rules.
+    UpdateStaticAssetsResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/StaticAssetsResult'
+        meta:
+          anyOf:
+          - $ref: '#/components/schemas/ApiMeta'
+            description: Metadata field for `count`, `params` and `pagination`
+          - type: 'null'
+      type: object
+      required:
+      - data
+      title: UpdateStaticAssetsResponse
+      description: Result of a bulk static asset rule update operation.
+    ApiListResponse_StaticAsset_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/StaticAsset'
+          type: array
+          title: Data
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      type: object
+      required:
+      - data
+      - meta
+      title: ApiListResponse[StaticAsset]
+      description: List of static asset rules defining the project's attack surface scope.
+    AssetState:
+      properties:
+        added:
+          anyOf:
+          - type: string
+            description: Description of added asset
+          - type: 'null'
+          title: Added
+        errors:
+          items:
+            type: string
+          type: array
+          title: Errors
+      type: object
+      title: AssetState
+      description: Current state of an asset or rule (active, inactive, etc.).
+    StaticAsset:
+      properties:
+        asset:
+          type: string
+          title: Asset
+        membership_type:
+          $ref: '#/components/schemas/MembershipType'
+        static_type:
+          $ref: '#/components/schemas/StaticType'
+        global_state:
+          $ref: '#/components/schemas/AssetState'
+        project_state:
+          $ref: '#/components/schemas/AssetState'
+        inserted_at:
+          anyOf:
+          - type: string
+            format: date-time
+            description: When the asset was added
+          - type: 'null'
+          title: Inserted At
+        last_applied_at:
+          anyOf:
+          - type: string
+            format: date-time
+            description: When the asset was last applied
+          - type: 'null'
+          title: Last Applied At
+        delete_requested_at:
+          anyOf:
+          - type: string
+            format: date-time
+            description: When the asset was requested to be deleted from project
+          - type: 'null'
+          title: Delete Requested At
+        deleted_at:
+          anyOf:
+          - type: string
+            format: date-time
+            description: When the asset was deleted from the project
+          - type: 'null'
+          title: Deleted At
+      type: object
+      required:
+      - asset
+      - membership_type
+      - static_type
+      - global_state
+      - project_state
+      title: StaticAsset
+      description: A static asset rule defining an include/exclude entry for the project's attack surface scope.
+    ApiListResponse_CustomTagPublic_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CustomTagPublic'
+          type: array
+          title: Data
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      type: object
+      required:
+      - data
+      - meta
+      title: ApiListResponse[CustomTagPublic]
+      description: List of user-defined tags in a project.
+    CustomTagPublic:
+      properties:
+        title:
+          type: string
+          title: Title
+      type: object
+      required:
+      - title
+      title: CustomTagPublic
+      description: A user-defined tag that can be applied to assets for organization and filtering.
+    BulkTagAssetsRequest:
+      properties:
+        asset_tags:
+          additionalProperties:
+            $ref: '#/components/schemas/TagAssetRequest'
+          type: object
+          title: Asset Tags
+          description: Add/Remove options keyed on the asset you would like to be updated
+          examples:
+          - sample.example.com:
+              add_tags:
+              - tag1
+              - tag2
+              remove_tags:
+              - tag3
+              - tag4
+          - sample2.example.com:
+              add_tags:
+              - tag1
+              - tag2
+          - sample3.example.com:
+              remove_tags:
+              - tag1
+              - tag2
+      type: object
+      required:
+      - asset_tags
+      title: BulkTagAssetsRequest
+      description: Request body for bulk adding/removing tags across multiple assets. Keyed by asset identifier.
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: apikey
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/assets-apply-tag.md
+  - https://docs.recordedfuture.com/reference/assets-bulk-tag.md
+  - https://docs.recordedfuture.com/reference/assets-find.md
+  - https://docs.recordedfuture.com/reference/assets-get-filtered-filters.md
+  - https://docs.recordedfuture.com/reference/assets-get-filters.md
+  - https://docs.recordedfuture.com/reference/assets-list-exposures.md
+  - https://docs.recordedfuture.com/reference/assets-read.md
+  - https://docs.recordedfuture.com/reference/assets-remove-tag.md
+  - https://docs.recordedfuture.com/reference/assets-search.md
+  - https://docs.recordedfuture.com/reference/exposures-get-assets.md
+  - https://docs.recordedfuture.com/reference/exposures-list.md
+  - https://docs.recordedfuture.com/reference/project-list.md
+  - https://docs.recordedfuture.com/reference/rules-add-static-assets.md
+  - https://docs.recordedfuture.com/reference/rules-get-static-assets.md
+  - https://docs.recordedfuture.com/reference/tagging-add-tag.md
+  - https://docs.recordedfuture.com/reference/tagging-bulk-tag-assets.md
+  - https://docs.recordedfuture.com/reference/tagging-get-tags.md
+  - https://docs.recordedfuture.com/reference/tagging-get-task-status.md
+  merge:
+    pages: 18
+    deduped: 174
+    conflicts_kept_first: 0

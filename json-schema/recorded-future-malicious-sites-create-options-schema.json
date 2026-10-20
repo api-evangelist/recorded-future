@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-malicious-sites-create-options-schema.json",
+  "title": "MaliciousSitesCreateOptions",
+  "description": "Optional overrides applied to the created Malicious Sites alert.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-playbook-alerts-api-openapi.yml#/components/schemas/MaliciousSitesCreateOptions",
+  "type": "object",
+  "properties": {
+    "targets": {
+      "description": "Domains or other entities that are related to this alert.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assignee": {
+      "description": "The assignee of the alert. Defaults to the assignee in the alert rule.",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/PlaybookAlertStatus"
+    },
+    "priority": {
+      "$ref": "#/$defs/PlaybookAlertPriority"
+    },
+    "description": {
+      "description": "Optional free-text description of the alert.",
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "PlaybookAlertPriority": {
+      "type": "string",
+      "enum": [
+        "High",
+        "Moderate",
+        "Informational"
+      ],
+      "description": "The priority of the Playbook Alert."
+    },
+    "PlaybookAlertStatus": {
+      "type": "string",
+      "enum": [
+        "New",
+        "InProgress",
+        "Dismissed",
+        "Resolved"
+      ],
+      "description": "The status of the Playbook Alert."
+    }
+  }
+}

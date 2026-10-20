@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-entity-lookup-response-schema.json",
+  "title": "EntityLookupResponse",
+  "description": "Metadata for a single entity resolved by its Recorded Future ID.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-entity-match-api-openapi.yml#/components/schemas/EntityLookupResponse",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "description": "Entity summary",
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "attributes"
+      ],
+      "properties": {
+        "id": {
+          "description": "Entity ID",
+          "type": "string"
+        },
+        "type": {
+          "description": "Entity type",
+          "type": "string"
+        },
+        "attributes": {
+          "description": "Entity attributes",
+          "type": "object",
+          "required": [
+            "name",
+            "common_names",
+            "alias",
+            "is_threat_actor"
+          ],
+          "properties": {
+            "name": {
+              "description": "Primary display name",
+              "type": "string"
+            },
+            "common_names": {
+              "description": "Well-known alternative names",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "alias": {
+              "description": "All known aliases",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "is_threat_actor": {
+              "description": "Whether this entity is classified as a threat actor",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  }
+}

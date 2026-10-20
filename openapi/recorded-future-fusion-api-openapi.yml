@@ -1,0 +1,285 @@
+openapi: 3.1.1
+info:
+  title: Fusion API
+  version: 3.0.0
+  description: 'A Recorded Future API for managing Fusion flows, files and custom blocks
+
+
+    Please read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360000713994-Introduction-to-the-Fusion-API) before using this API.
+
+    '
+  x-rf-service-id: service:fusion-v3
+servers:
+- url: https://api.recordedfuture.com/fusion/v3
+paths:
+  /files/directory/{path}:
+    get:
+      summary: Fetch the content of a directory
+      tags:
+      - File
+      description: List files and subdirectories in a Fusion file system directory to discover available outputs before downloading.
+      security:
+      - ApiKeyAuth: []
+      - idp: []
+      parameters:
+      - $ref: '#/components/parameters/DirectoryPath'
+      responses:
+        '200':
+          description: Directory listing that shows the content of a directory.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileDirectoryResponse'
+  /files/{path}:
+    head:
+      summary: Stat a feed file
+      tags:
+      - File
+      description: Check file metadata (ETag, Last-Modified) without downloading content, enabling efficient polling for changes before a full download.
+      security:
+      - ApiKeyAuth: []
+      - idp: []
+      parameters:
+      - $ref: '#/components/parameters/FilePath'
+      responses:
+        '200':
+          description: Feed file headers
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+                example: attachment; filename="default_ip_risklist.csv"
+            ETag:
+              schema:
+                type: string
+                example: 1894a19c85ba153acbf743ac4e43fc004c891604b26f8c69e1e83ea2afc7c48f
+            Last-Modified:
+              schema:
+                type: string
+                example: Tue, 22 Oct 2024 14:09:00 GMT
+    delete:
+      summary: Delete a feed file
+      tags:
+      - File
+      description: Remove a file from your organization's Fusion file system by path (public Recorded Future-managed files cannot be deleted).
+      security:
+      - ApiKeyAuth: []
+      - idp: []
+      parameters:
+      - $ref: '#/components/parameters/FilePath'
+      responses:
+        '200':
+          description: Result of operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResult'
+    get:
+      summary: Fetch a feed file
+      tags:
+      - File
+      description: Download a file from the Fusion file system by path, including Fusion flow outputs and public Recorded Future-managed files.
+      security:
+      - ApiKeyAuth: []
+      - idp: []
+      parameters:
+      - $ref: '#/components/parameters/FilePath'
+      responses:
+        '200':
+          description: Feed file in binary format
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+    post:
+      summary: Upload a feed file
+      tags:
+      - File
+      description: Upload a file to your organization's Fusion file system, making it available for Fusion flows or retrieval via the download endpoint.
+      security:
+      - ApiKeyAuth: []
+      - idp: []
+      parameters:
+      - $ref: '#/components/parameters/FilePath'
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Uploaded feed file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileUploadResponse'
+components:
+  parameters:
+    DirectoryPath:
+      in: path
+      name: path
+      required: true
+      schema:
+        type: string
+      description: 'Directory path. Special characters may be required to be URL encoded depending on which HTTP client is used.
+
+
+        For example, the path ''/public/risklists'' would be URL encoded as ''%2Fpublic%2Frisklists''
+
+        where the ''/'' character is encoded as ''%2F''. See an HTML URL Encoding Reference for the full encoding table.
+
+        '
+      example: /public/risklists
+    FilePath:
+      in: path
+      name: path
+      required: true
+      schema:
+        type: string
+      description: 'File path. Special characters may be required to be URL encoded depending on which HTTP client is used.
+
+
+        For example, the path ''/public/risklists/default_ip_risklist.csv'' would be URL encoded as ''%2Fpublic%2Frisklists%2Fdefault_ip_risklist.csv''
+
+        where the ''/'' character is encoded as ''%2F''. See an HTML URL Encoding Reference for the full encoding table.
+
+        '
+      example: /public/risklists/default_ip_risklist.csv
+  schemas:
+    FileDirectory:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - directory
+        name:
+          type: string
+          example: some-user
+        path:
+          type: string
+          example: /home/some-user
+    File:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+        name:
+          type: string
+          example: ip10.csv
+        path:
+          type: string
+          example: /home/some-user/ip10.csv
+        format:
+          type: string
+          example: csv
+        hash:
+          type: string
+          example: 1894a19c85ba153acbf743ac4e43fc004c891604b26f8c69e1e83ea2afc7c48f
+        flow:
+          type: string
+          description: Flow that produced the file
+          example: my-flow
+        created:
+          type: string
+          format: date-string
+          example: '2024-10-22T14:09:00.000Z'
+        size:
+          type: number
+          description: File size in bytes.
+          example: 1024
+        owner:
+          type: string
+          description: The owner of the file.
+          example: e1kq4elk1l
+    FileDirectoryResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - directory
+        name:
+          type: string
+          example: home
+        path:
+          type: string
+          example: /home
+        files:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FileDirectory'
+            - $ref: '#/components/schemas/File'
+    OperationResult:
+      type: object
+      properties:
+        result:
+          type: string
+          description: Result of operation
+          example: ok
+    FileResponse:
+      type: string
+      format: binary
+    FileUploadResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+        name:
+          type: string
+          example: ip10.csv
+        path:
+          type: string
+          example: /home/some-user/ip10.csv
+        format:
+          type: string
+          example: csv
+        hash:
+          type: string
+          example: 1894a19c85ba153acbf743ac4e43fc004c891604b26f8c69e1e83ea2afc7c48f
+        created:
+          type: string
+          format: date-string
+          example: '2024-10-22T14:09:00.000Z'
+        size:
+          type: number
+          description: File size in bytes.
+          example: 1024
+  securitySchemes:
+    ApiKeyAuth:
+      description: API Credential
+      type: apiKey
+      in: header
+      name: X-RFToken
+    idp:
+      description: Click on "Authorize" to be redirected to the login page.
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://id.recordedfuture.com/authorize
+          tokenUrl: https://id.recordedfuture.com/token
+          refreshUrl: https://id.recordedfuture.com/token
+          scopes: {}
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/fusion-files-delete.md
+  - https://docs.recordedfuture.com/reference/fusion-files-get.md
+  - https://docs.recordedfuture.com/reference/fusion-files-list-directory.md
+  - https://docs.recordedfuture.com/reference/fusion-files-stat.md
+  - https://docs.recordedfuture.com/reference/fusion-files-upload.md
+  merge:
+    pages: 5
+    deduped: 11
+    conflicts_kept_first: 0

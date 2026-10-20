@@ -1,0 +1,3129 @@
+openapi: 3.1.0
+info:
+  title: Recorded Future Identity API
+  version: 1.0.0
+  x-rf-service-id: service:identity
+  description: 'API to lookup identity leaks data.<br><br>
+
+    [Identity API](https://support.recordedfuture.com/hc/en-us/articles/4402477586707-Identity-API)<br>
+
+    [Identity Lookup API Response](https://support.recordedfuture.com/hc/en-us/articles/8914757600403-Identity-Lookup-API-Response)<br><br>
+
+    [Integrations](https://support.recordedfuture.com/hc/en-us/articles/20552287586067-Identity-Intelligence-Integrations)
+
+    '
+  contact:
+    name: Identity Intelligence
+    email: identity-team@recordedfuture.com
+servers:
+- url: https://api.recordedfuture.com
+  description: Recorded Future Production Server
+  x-internal: 'false'
+paths:
+  /identity/credentials/lookup:
+    post:
+      operationId: lookupCredentials
+      summary: Lookup
+      description: Retrieve full exposure history for specific email addresses, usernames, or credential hashes.
+      tags:
+      - Credentials
+      security:
+      - RecordedFutureOAuth2: []
+      - RecordedFutureApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialsLookupRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+              example:
+                identities:
+                - identity:
+                    subjects:
+                    - jordan.jordan@norsegods.online
+                  count: 2
+                  credentials:
+                  - subject: jordan.jordan@norsegods.online
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: identity-module-source-data/malware_log_hashed_output/43b1f6/43b1f635cd7c1b247472fbb1333a269cc751acc62e40739a59f12fb6973002cd.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T12:45:32.441Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T12:45:32.441Z'
+                    latest_downloaded: '2026-06-02T12:45:32.441Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: 1465901e291d3d7e0bb5b49ca30e8f23ecf8101a
+                      - algorithm: SHA256
+                        hash: ca5275502d9ea63318a04f0f04d16c48aef8cbc701ec537794b3177b20dd7bdc
+                      - algorithm: NTLM
+                        hash: aa2a03d64366cb33750ebeae0578bc31
+                      - algorithm: MD5
+                        hash: bd55f770e6676d31e4e5697cf3665c91
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: wt
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/user/account
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/user/account
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                  - subject: jordan.jordan@norsegods.online
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: s3://rf-id-outbox/malware_logs/raw/2026-06-02/ID-DEMO-MALWARE-LOG-06-02-26/ID-DEMO-MALWARE-LOG-06-02-26/lumma/754749a1c667a771c32e77d0b4295646aa0b54353d92e5ce94173d6843e81f38.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T15:30:37.000Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T15:30:37.000Z'
+                    latest_downloaded: '2026-06-02T15:30:37.000Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: 1465901e291d3d7e0bb5b49ca30e8f23ecf8101a
+                      - algorithm: SHA256
+                        hash: ca5275502d9ea63318a04f0f04d16c48aef8cbc701ec537794b3177b20dd7bdc
+                      - algorithm: NTLM
+                        hash: aa2a03d64366cb33750ebeae0578bc31
+                      - algorithm: MD5
+                        hash: bd55f770e6676d31e4e5697cf3665c91
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: wt
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/user/account
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/user/account
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                count: 1
+                next_offset: eyJzdWJqZWN0Ijoiam9yZGFuLmpvcmRhbkBub3JzZWdvZHMub25saW5lIiwicGFzc3dvcmRIYXNoIjoiY2E1Mjc1NTAyZDllYTYzMzE4YTA0ZjBmMDRkMTZjNDhhZWY4Y2JjNzAxZWM1Mzc3OTRiMzE3N2IyMGRkN2JkYyIsIm1hbHdhcmVfZmFtaWx5Lm5hbWUiOiJMdW1tYUMyIiwiYXV0aG9yaXphdGlvbl9zZXJ2aWNlIjoibm9yc2Vnb2RzLm9ubGluZSIsImxvZ2luIjoiam9yZGFuLmpvcmRhbkBub3JzZWdvZHMub25saW5lIn0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+  /identity/credentials/search:
+    post:
+      operationId: searchCredentials
+      summary: Search
+      description: Find compromised identities across breach data and stealer logs for one or more domains.
+      tags:
+      - Credentials
+      security:
+      - RecordedFutureOAuth2: []
+      - RecordedFutureApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialsSearchRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+              example:
+                identities:
+                - login: '!'
+                  domain: norsegods.online
+                - login: '!!huawei'
+                  domain: 192.168.norsegods.online
+                - login: '!_sharkexx_!'
+                  domain: norsegods.online
+                - login: '!andrг©s'
+                  domain: www.norsegods.online
+                - login: '"jlcc"'
+                  domain: 192.168.norsegods.online
+                count: 5
+                next_offset: eyJzdWJqZWN0IjpudWxsLCJhdXRob3JpemF0aW9uX3NlcnZpY2UiOiIxOTIuMTY4Lm5vcnNlZ29kcy5vbmxpbmUiLCJsb2dpbiI6IlwiamxjY1wiIn0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+  /identity/detections:
+    post:
+      operationId: getDetections
+      summary: Detections
+      description: Retrieve identity exposure detections with novel-only filtering and malware family attribution.
+      tags:
+      - Detections
+      security:
+      - RecordedFutureOAuth2: []
+      - RecordedFutureApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DetectionsRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetectionsResponse'
+              example:
+                total: 396118
+                detections:
+                - id: 51fd9e2c9b580752b15b71f87b5ad707
+                  novel: false
+                  type: Workforce
+                  source_type: MalwareLogs
+                  subject: jordan.jordan@norsegods.online
+                  password:
+                    type: clear
+                    hashes:
+                    - algorithm: SHA1
+                      hash: 1465901e291d3d7e0bb5b49ca30e8f23ecf8101a
+                    - algorithm: SHA256
+                      hash: ca5275502d9ea63318a04f0f04d16c48aef8cbc701ec537794b3177b20dd7bdc
+                    - algorithm: NTLM
+                      hash: aa2a03d64366cb33750ebeae0578bc31
+                    - algorithm: MD5
+                      hash: bd55f770e6676d31e4e5697cf3665c91
+                    properties:
+                    - Letter
+                    - Number
+                    - Symbol
+                    - UpperCase
+                    - LowerCase
+                    - AtLeast12Characters
+                    cleartext_hint: wt
+                  authorization_service:
+                    url: https://norsegods.online/user/account
+                    domain: norsegods.online
+                    fqdn: norsegods.online
+                    technology: []
+                    protocols:
+                    - https
+                  cookies: []
+                  malware_family:
+                    name: LummaC2
+                    id: nlflWX
+                  dump:
+                    name: Stealer Malware Logs 2026-06-02
+                    source: s3://rf-id-outbox/malware_logs/raw/2026-06-02/ID-DEMO-MALWARE-LOG-06-02-26/ID-DEMO-MALWARE-LOG-06-02-26/lumma/754749a1c667a771c32e77d0b4295646aa0b54353d92e5ce94173d6843e81f38.zip
+                    description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                    downloaded: '2026-06-02T15:30:37.000Z'
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                      os: Windows 10 Pro (10.0.19045) x64
+                      os_username: demo_user_hwattt
+                      malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                      timezone: UTC+02:00
+                      computer_name: DEMO-PC-K3OCF7OT
+                      antivirus:
+                      - Windows Defender
+                    infrastructure:
+                      ip: 203.0.113.234
+                    location:
+                      country:
+                        name: Poland
+                        displayName: Poland
+                        countryCode: '616'
+                        alpha2Code: PL
+                        alpha3Code: POL
+                  created: '2026-06-02T15:45:19.173Z'
+                - id: 6bfef2aafe63ba8ad9752f29e7fcfbb9
+                  novel: false
+                  type: Workforce
+                  source_type: MalwareLogs
+                  subject: aegir.ymirsson@norsegods.online
+                  password:
+                    type: clear
+                    hashes:
+                    - algorithm: SHA1
+                      hash: 6a17e39be9a5221db7da61e99dd4789f8b1298ee
+                    - algorithm: SHA256
+                      hash: b82d246ebad8fc78379486182ac64721df39ab8d9cf7115f0e3b158ad190d87f
+                    - algorithm: NTLM
+                      hash: 0eda17a1607b2e519a7f2baf3884dfc6
+                    - algorithm: MD5
+                      hash: 1981967177da4cb9843500633b24d5f7
+                    properties:
+                    - Letter
+                    - Number
+                    - UpperCase
+                    - LowerCase
+                    - AtLeast12Characters
+                    cleartext_hint: ja
+                  authorization_service:
+                    url: https://norsegods.online/DesktopWeb/
+                    domain: norsegods.online
+                    fqdn: norsegods.online
+                    technology:
+                    - name: Virtual Desktop
+                      id: Ig409I
+                    - name: Citrix Virtual Apps and Desktops
+                      id: ZNkiC2
+                      category: Ig409I
+                    protocols:
+                    - https
+                  cookies: []
+                  malware_family:
+                    name: Vidar
+                    id: YuDlEm
+                  dump:
+                    name: Stealer Malware Logs 2026-06-02
+                    source: s3://rf-id-outbox/malware_logs/raw/2026-06-02/ID-DEMO-MALWARE-LOG-06-02-26/ID-DEMO-MALWARE-LOG-06-02-26/vidar/9ab54b58ef4ee748b24892177346667bc9e350c9736f22e38e62585936661c77.zip
+                    description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                    downloaded: '2026-06-02T15:30:37.000Z'
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                      os: Windows 10 Enterprise
+                      os_username: demo_user_sxwxml
+                      malware_file: C:\Users\demo_user_sxwxml\AppData\Local\Temp\46109461997\WXslz2L.exe
+                      timezone: UTC+05:00
+                      computer_name: DEMO-ANNHDOFG
+                      antivirus:
+                      - Windows Defender
+                    infrastructure:
+                      ip: 198.51.100.137
+                    location:
+                      country:
+                        name: France
+                        displayName: France
+                        countryCode: '250'
+                        alpha2Code: FR
+                        alpha3Code: FRA
+                  created: '2026-06-02T15:45:19.097Z'
+                - id: 7e6ec12affde9ea28efdf081f6012221
+                  novel: false
+                  type: External
+                  source_type: MalwareLogs
+                  subject: admin@vpn.app
+                  password:
+                    type: clear
+                    hashes:
+                    - algorithm: SHA1
+                      hash: afa727c8efcb763c885bbdcacff50cef5d7de5ba
+                    - algorithm: SHA256
+                      hash: dbdcf1f7d4f71c4360871917befc36ac0b0b5a572d61d899bc6ce07f51943dcd
+                    - algorithm: NTLM
+                      hash: fb2cd17673638d3c5703627f9c239b3a
+                    - algorithm: MD5
+                      hash: 9a9f9217610e7cc776db380ceb4f91f2
+                    properties:
+                    - Letter
+                    - Number
+                    - Symbol
+                    - UpperCase
+                    - LowerCase
+                    - AtLeast12Characters
+                    cleartext_hint: Jj
+                  authorization_service:
+                    url: https://norsegods.online/dana/
+                    domain: norsegods.online
+                    fqdn: norsegods.online
+                    technology:
+                    - name: VPN
+                      id: CAfZv
+                    - name: Pulse
+                      id: OJf1gQ
+                      category: CAfZv
+                    protocols:
+                    - https
+                  cookies: []
+                  malware_family:
+                    name: Vidar
+                    id: YuDlEm
+                  dump:
+                    name: Stealer Malware Logs 2026-06-02
+                    source: s3://rf-id-outbox/malware_logs/raw/2026-06-02/ID-DEMO-MALWARE-LOG-06-02-26/ID-DEMO-MALWARE-LOG-06-02-26/vidar/9ab54b58ef4ee748b24892177346667bc9e350c9736f22e38e62585936661c77.zip
+                    description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                    downloaded: '2026-06-02T15:30:37.000Z'
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                      os: Windows 10 Enterprise
+                      os_username: demo_user_sxwxml
+                      malware_file: C:\Users\demo_user_sxwxml\AppData\Local\Temp\46109461997\WXslz2L.exe
+                      timezone: UTC+05:00
+                      computer_name: DEMO-ANNHDOFG
+                      antivirus:
+                      - Windows Defender
+                    infrastructure:
+                      ip: 198.51.100.137
+                    location:
+                      country:
+                        name: France
+                        displayName: France
+                        countryCode: '250'
+                        alpha2Code: FR
+                        alpha3Code: FRA
+                  created: '2026-06-02T15:45:19.097Z'
+                - id: 1aa72057baa1c038225ddb648138a822
+                  novel: false
+                  type: External
+                  source_type: MalwareLogs
+                  subject: jordan_support@ironclad.co
+                  password:
+                    type: clear
+                    hashes:
+                    - algorithm: SHA1
+                      hash: a4226c6c69fba15d0d4267027012a0ed63fc100c
+                    - algorithm: SHA256
+                      hash: 901e78868e905990c8f94affc98348408307a032c63d1ed4ef809108f271198e
+                    - algorithm: NTLM
+                      hash: 6a8e81827f4af0cf9b6384236d17e843
+                    - algorithm: MD5
+                      hash: 669dd9a76ac3b12c976d6e18462b8c3c
+                    properties:
+                    - Letter
+                    - Number
+                    - Symbol
+                    - UpperCase
+                    - LowerCase
+                    - AtLeast12Characters
+                    cleartext_hint: O6
+                  authorization_service:
+                    url: https://norsegods.online/login
+                    domain: norsegods.online
+                    fqdn: norsegods.online
+                    technology: []
+                    protocols:
+                    - https
+                  cookies: []
+                  malware_family:
+                    name: LummaC2
+                    id: nlflWX
+                  dump:
+                    name: Stealer Malware Logs 2026-06-02
+                    source: s3://rf-id-outbox/malware_logs/raw/2026-06-02/ID-DEMO-MALWARE-LOG-06-02-26/ID-DEMO-MALWARE-LOG-06-02-26/lumma/754749a1c667a771c32e77d0b4295646aa0b54353d92e5ce94173d6843e81f38.zip
+                    description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                    downloaded: '2026-06-02T15:30:37.000Z'
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                      os: Windows 10 Pro (10.0.19045) x64
+                      os_username: demo_user_hwattt
+                      malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                      timezone: UTC+02:00
+                      computer_name: DEMO-PC-K3OCF7OT
+                      antivirus:
+                      - Windows Defender
+                    infrastructure:
+                      ip: 203.0.113.234
+                    location:
+                      country:
+                        name: Poland
+                        displayName: Poland
+                        countryCode: '616'
+                        alpha2Code: PL
+                        alpha3Code: POL
+                  created: '2026-06-02T15:45:19.097Z'
+                - id: 8fe5827ccd3871571de9ee1ca74a886a
+                  novel: false
+                  type: External
+                  source_type: MalwareLogs
+                  subject: svc-sam@oakbridge.com
+                  password:
+                    type: clear
+                    hashes:
+                    - algorithm: SHA1
+                      hash: 5785a22c3364eb22d4470a4082a634eef9773303
+                    - algorithm: SHA256
+                      hash: ab7d6d2b30193718607897ccc4e3bd267135bad061123b6cd0dcf011d9d413a4
+                    - algorithm: NTLM
+                      hash: 44ce9e2e1cdc02379fe12aa46beb7d34
+                    - algorithm: MD5
+                      hash: 1e92308d26625c855211f7df87f943c9
+                    properties:
+                    - Letter
+                    - Number
+                    - Symbol
+                    - UpperCase
+                    - LowerCase
+                    - AtLeast16Characters
+                    cleartext_hint: $1
+                  authorization_service:
+                    url: https://norsegods.online/user/account
+                    domain: norsegods.online
+                    fqdn: norsegods.online
+                    technology: []
+                    protocols:
+                    - https
+                  cookies: []
+                  malware_family:
+                    name: Acreed Stealer
+                    id: 6CRpeB
+                  dump:
+                    name: Stealer Malware Logs 2026-06-02
+                    source: s3://rf-id-outbox/malware_logs/raw/2026-06-02/ID-DEMO-MALWARE-LOG-06-02-26/ID-DEMO-MALWARE-LOG-06-02-26/acreed/ca9da8d35a2552d787960a3015e55265f7f08bbff0922b0209a4ab9c45902657.zip
+                    description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                    downloaded: '2026-06-02T15:30:37.000Z'
+                    compromise:
+                      exfiltration_date: '2026-06-02T15:30:37.000Z'
+                      os: Windows 10
+                      os_username: demo_user_qigmwh
+                      computer_name: DEMO-HZJ5JKS
+                    infrastructure:
+                      ip: 203.0.113.184
+                    location:
+                      country:
+                        name: United Kingdom of Great Britain and Northern Ireland (the)
+                        displayName: United Kingdom of Great Britain and Northern Ireland
+                        countryCode: '826'
+                        alpha2Code: GB
+                        alpha3Code: GBR
+                      postal_code: '71751'
+                  created: '2026-06-02T15:45:19.097Z'
+                next_offset: MTc4MDQxNTExOTA5Nw==:MjAyNi0wNi0wMlQxNTozMDozNzoyNjM5NDBhYmY2MWJlMjA4ZjRiNjQ2NTFhZDMxZWZiMQ==
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+  /identity/hostname/lookup:
+    post:
+      operationId: lookupHostname
+      summary: Hostname Lookup
+      description: Find credentials compromised from a specific hostname (e.g., internal servers, VPN endpoints).
+      tags:
+      - Credentials
+      security:
+      - RecordedFutureOAuth2: []
+      - RecordedFutureApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HostnameLookupRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+              example:
+                identities:
+                - identity:
+                    subjects:
+                    - jordan.guest@quantumsecure.io
+                  count: 1
+                  credentials:
+                  - subject: jordan.guest@quantumsecure.io
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: identity-module-source-data/malware_log_hashed_output/43b1f6/43b1f635cd7c1b247472fbb1333a269cc751acc62e40739a59f12fb6973002cd.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T12:45:32.442Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T12:45:32.442Z'
+                    latest_downloaded: '2026-06-02T12:45:32.442Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: c5e28458e0119d982d830f896906cca1c2fcd69b
+                      - algorithm: SHA256
+                        hash: c0403e597042f805f7be2cb882b55e2f91d57b786f8f72e96b823d49b460076e
+                      - algorithm: NTLM
+                        hash: 6054e67332dad14e8fc72b80231a4699
+                      - algorithm: MD5
+                        hash: b8ea053d88a6ff8bd909a24972386674
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: 'ON'
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/portal/access
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/portal/access
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                - identity:
+                    subjects:
+                    - billing@banking.org
+                  count: 1
+                  credentials:
+                  - subject: billing@banking.org
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: identity-module-source-data/malware_log_hashed_output/43b1f6/43b1f635cd7c1b247472fbb1333a269cc751acc62e40739a59f12fb6973002cd.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T12:45:32.442Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T12:45:32.442Z'
+                    latest_downloaded: '2026-06-02T12:45:32.442Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: 25993780be72266f46677ca1bed88b866848d9c9
+                      - algorithm: SHA256
+                        hash: d7316865a424a9373dd1a0c0c2010c3c5edf3addc95fa264f8b7cd276eedd918
+                      - algorithm: NTLM
+                        hash: 210572d33ebebe76f0bcdee3e0e9ef78
+                      - algorithm: MD5
+                        hash: 872b6390438aaa4dbf20c02dcb1287a9
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: '%V'
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/citrix/
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology:
+                      - name: Virtual Server
+                        id: CAKBu
+                      - name: Citrix Systems
+                        id: B_Lg2
+                        category: CAKBu
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/citrix/
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology:
+                      - name: Virtual Server
+                        id: CAKBu
+                      - name: Citrix Systems
+                        id: B_Lg2
+                        category: CAKBu
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                - identity:
+                    subjects:
+                    - jordan.jordan@norsegods.online
+                  count: 1
+                  credentials:
+                  - subject: jordan.jordan@norsegods.online
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: identity-module-source-data/malware_log_hashed_output/43b1f6/43b1f635cd7c1b247472fbb1333a269cc751acc62e40739a59f12fb6973002cd.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T12:45:32.441Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T12:45:32.441Z'
+                    latest_downloaded: '2026-06-02T12:45:32.441Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: 1465901e291d3d7e0bb5b49ca30e8f23ecf8101a
+                      - algorithm: SHA256
+                        hash: ca5275502d9ea63318a04f0f04d16c48aef8cbc701ec537794b3177b20dd7bdc
+                      - algorithm: NTLM
+                        hash: aa2a03d64366cb33750ebeae0578bc31
+                      - algorithm: MD5
+                        hash: bd55f770e6676d31e4e5697cf3665c91
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: wt
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/user/account
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/user/account
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                - identity:
+                    subjects:
+                    - operator.support@norsegods.online
+                  count: 1
+                  credentials:
+                  - subject: operator.support@norsegods.online
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: identity-module-source-data/malware_log_hashed_output/43b1f6/43b1f635cd7c1b247472fbb1333a269cc751acc62e40739a59f12fb6973002cd.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T12:45:32.441Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T12:45:32.441Z'
+                    latest_downloaded: '2026-06-02T12:45:32.441Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: 22f46226635a5593794dd24729bcfa95a86dafd2
+                      - algorithm: SHA256
+                        hash: 00033c210c80dc645e5f961beb96134cce041e150febbae6be4c5ae8aae4212f
+                      - algorithm: NTLM
+                        hash: 27177c5858db144d600ff7d4c474ee5e
+                      - algorithm: MD5
+                        hash: 49e4e92397b2f4607406612c4d82e590
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast10Characters
+                        clear_text_hint: wc
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://acme.com/portal/access
+                      domain: acme.com
+                      fqdn: acme.com
+                      technology: []
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://acme.com/portal/access
+                      domain: acme.com
+                      fqdn: acme.com
+                      technology: []
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                - identity:
+                    subjects:
+                    - jordan_support@ironclad.co
+                  count: 1
+                  credentials:
+                  - subject: jordan_support@ironclad.co
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: identity-module-source-data/malware_log_hashed_output/43b1f6/43b1f635cd7c1b247472fbb1333a269cc751acc62e40739a59f12fb6973002cd.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T12:45:32.441Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T12:45:32.441Z'
+                    latest_downloaded: '2026-06-02T12:45:32.441Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: a4226c6c69fba15d0d4267027012a0ed63fc100c
+                      - algorithm: SHA256
+                        hash: 901e78868e905990c8f94affc98348408307a032c63d1ed4ef809108f271198e
+                      - algorithm: NTLM
+                        hash: 6a8e81827f4af0cf9b6384236d17e843
+                      - algorithm: MD5
+                        hash: 669dd9a76ac3b12c976d6e18462b8c3c
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: O6
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/login
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/login
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                count: 5
+                next_offset: eyJzdWJqZWN0Ijoib3BlcmF0b3Iuc3VwcG9ydEBub3JzZWdvZHMub25saW5lIiwicGFzc3dvcmRIYXNoIjoiMDAwMzNjMjEwYzgwZGM2NDVlNWY5NjFiZWI5NjEzNGNjZTA0MWUxNTBmZWJiYWU2YmU0YzVhZThhYWU0MjEyZiIsIm1hbHdhcmVfZmFtaWx5Lm5hbWUiOiJMdW1tYUMyIiwiYXV0aG9yaXphdGlvbl9zZXJ2aWNlIjoiYWNtZS5jb20iLCJsb2dpbiI6bnVsbH0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+  /identity/incident/report:
+    post:
+      operationId: getIncidentReport
+      summary: Incident Report
+      description: Get a detailed exposure incident report for a single malware log, including compromised credentials, device details, and malware attribution.
+      tags:
+      - Credentials
+      security:
+      - RecordedFutureOAuth2: []
+      - RecordedFutureApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncidentReportRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentReportResponse'
+              example:
+                details:
+                  malware_family: LummaC2
+                  os: Windows 10 Pro (10.0.19045) x64
+                  os_username: demo_user_hwattt
+                  malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                  timezone: UTC+02:00
+                  exfiltration_date: '2026-06-02T12:45:00.000Z'
+                  antivirus: Windows Defender
+                  ip_address: 203.0.113.234
+                count: 3
+                total_count: 17
+                next_offset: eyJmcWRuIjoiYWNtZS5jb20iLCJsb2dpbiI6bnVsbCwiZW1haWwiOiJqb3JkYW4udGVzdHVzZXJAcXVhbnR1bXNlY3VyZS5pbyIsInBhc3N3b3JkSGFzaCI6Ijg0Y2EwY2RlNGZmODJlN2E1OTM3MjFkYThhNjQwZmJlYmE3MzNkNGJhMzhiN2Y5NzNiMzc1YzA2ZGVmZjExNzgifQ
+                credentials:
+                - authorization_domain: acme.com
+                  email_or_login: admin@vantagepoint.app
+                  password: sS4*******
+                  password_sha1: d079ece0f64169472be56daf4afa584327ad3a82
+                  contains_high_risk_technologies: false
+                  contains_cookies: true
+                  contains_active_cookies: false
+                - authorization_domain: acme.com
+                  email_or_login: alex@banking.org
+                  password: K36*************
+                  password_sha1: 7f3ee7c0ae4567c42cf65111aaefc9b2dbbb96e6
+                  contains_high_risk_technologies: false
+                  contains_cookies: true
+                  contains_active_cookies: false
+                - authorization_domain: acme.com
+                  email_or_login: jordan.testuser@quantumsecure.io
+                  password: waB*************
+                  password_sha1: 168bf36bc1b7d1605bc9f0224b80ec9c9fb25f8e
+                  contains_high_risk_technologies: false
+                  contains_cookies: true
+                  contains_active_cookies: false
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+  /identity/ip/lookup:
+    post:
+      operationId: lookupIP
+      summary: IP Lookup
+      description: Find credentials compromised from a specific IP address or IP range.
+      tags:
+      - Credentials
+      security:
+      - RecordedFutureOAuth2: []
+      - RecordedFutureApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IpLookupRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+              example:
+                identities:
+                - identity:
+                    subjects:
+                    - jordan.guest@quantumsecure.io
+                  count: 2
+                  credentials:
+                  - subject: jordan.guest@quantumsecure.io
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: identity-module-source-data/malware_log_hashed_output/43b1f6/43b1f635cd7c1b247472fbb1333a269cc751acc62e40739a59f12fb6973002cd.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T12:45:32.442Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T12:45:32.442Z'
+                    latest_downloaded: '2026-06-02T12:45:32.442Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: c5e28458e0119d982d830f896906cca1c2fcd69b
+                      - algorithm: SHA256
+                        hash: c0403e597042f805f7be2cb882b55e2f91d57b786f8f72e96b823d49b460076e
+                      - algorithm: NTLM
+                        hash: 6054e67332dad14e8fc72b80231a4699
+                      - algorithm: MD5
+                        hash: b8ea053d88a6ff8bd909a24972386674
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: 'ON'
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/portal/access
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/portal/access
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                  - subject: jordan.guest@quantumsecure.io
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: s3://rf-id-outbox/malware_logs/raw/2026-06-02/ID-DEMO-MALWARE-LOG-06-02-26/ID-DEMO-MALWARE-LOG-06-02-26/lumma/754749a1c667a771c32e77d0b4295646aa0b54353d92e5ce94173d6843e81f38.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T15:30:37.000Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T15:30:37.000Z'
+                    latest_downloaded: '2026-06-02T15:30:37.000Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: c5e28458e0119d982d830f896906cca1c2fcd69b
+                      - algorithm: SHA256
+                        hash: c0403e597042f805f7be2cb882b55e2f91d57b786f8f72e96b823d49b460076e
+                      - algorithm: NTLM
+                        hash: 6054e67332dad14e8fc72b80231a4699
+                      - algorithm: MD5
+                        hash: b8ea053d88a6ff8bd909a24972386674
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: 'ON'
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/portal/access
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/portal/access
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                - identity:
+                    subjects:
+                    - billing@banking.org
+                  count: 2
+                  credentials:
+                  - subject: billing@banking.org
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: identity-module-source-data/malware_log_hashed_output/43b1f6/43b1f635cd7c1b247472fbb1333a269cc751acc62e40739a59f12fb6973002cd.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T12:45:32.442Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T12:45:32.442Z'
+                    latest_downloaded: '2026-06-02T12:45:32.442Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: 25993780be72266f46677ca1bed88b866848d9c9
+                      - algorithm: SHA256
+                        hash: d7316865a424a9373dd1a0c0c2010c3c5edf3addc95fa264f8b7cd276eedd918
+                      - algorithm: NTLM
+                        hash: 210572d33ebebe76f0bcdee3e0e9ef78
+                      - algorithm: MD5
+                        hash: 872b6390438aaa4dbf20c02dcb1287a9
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: '%V'
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/citrix/
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology:
+                      - name: Virtual Server
+                        id: CAKBu
+                      - name: Citrix Systems
+                        id: B_Lg2
+                        category: CAKBu
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/citrix/
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology:
+                      - name: Virtual Server
+                        id: CAKBu
+                      - name: Citrix Systems
+                        id: B_Lg2
+                        category: CAKBu
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                  - subject: billing@banking.org
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: s3://rf-id-outbox/malware_logs/raw/2026-06-02/ID-DEMO-MALWARE-LOG-06-02-26/ID-DEMO-MALWARE-LOG-06-02-26/lumma/754749a1c667a771c32e77d0b4295646aa0b54353d92e5ce94173d6843e81f38.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T15:30:37.000Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T15:30:37.000Z'
+                    latest_downloaded: '2026-06-02T15:30:37.000Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: 25993780be72266f46677ca1bed88b866848d9c9
+                      - algorithm: SHA256
+                        hash: d7316865a424a9373dd1a0c0c2010c3c5edf3addc95fa264f8b7cd276eedd918
+                      - algorithm: NTLM
+                        hash: 210572d33ebebe76f0bcdee3e0e9ef78
+                      - algorithm: MD5
+                        hash: 872b6390438aaa4dbf20c02dcb1287a9
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: '%V'
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/citrix/
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology:
+                      - name: Virtual Server
+                        id: CAKBu
+                      - name: Citrix Systems
+                        id: B_Lg2
+                        category: CAKBu
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/citrix/
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology:
+                      - name: Virtual Server
+                        id: CAKBu
+                      - name: Citrix Systems
+                        id: B_Lg2
+                        category: CAKBu
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                - identity:
+                    subjects:
+                    - jordan.jordan@norsegods.online
+                  count: 1
+                  credentials:
+                  - subject: jordan.jordan@norsegods.online
+                    dumps:
+                    - name: Stealer Malware Logs 2026-06-02
+                      source: identity-module-source-data/malware_log_hashed_output/43b1f6/43b1f635cd7c1b247472fbb1333a269cc751acc62e40739a59f12fb6973002cd.zip
+                      description: This credential data was derived from stealer malware logs. These logs are legally obtained through proprietary methods from multiple underground sources. Most data is available within 48 hours after the infection. Refer to exfiltration date for each specific exposure.
+                      downloaded: '2026-06-02T12:45:32.441Z'
+                      compromise:
+                        exfiltration_date: '2026-06-02T12:45:00.000Z'
+                        os: Windows 10 Pro (10.0.19045) x64
+                        os_username: demo_user_hwattt
+                        malware_file: C:\Users\demo_user_hwattt\Desktop\Release\Nеw-Inst[x64].exe
+                        timezone: UTC+02:00
+                        computer_name: DEMO-PC-K3OCF7OT
+                        antivirus:
+                        - Windows Defender
+                      infrastructure:
+                        ip: 203.0.113.234
+                      location:
+                        country:
+                          name: Poland
+                          displayName: Poland
+                          countryCode: '616'
+                          alpha2Code: PL
+                          alpha3Code: POL
+                    first_downloaded: '2026-06-02T12:45:32.441Z'
+                    latest_downloaded: '2026-06-02T12:45:32.441Z'
+                    exposed_secret:
+                      type: clear
+                      hashes:
+                      - algorithm: SHA1
+                        hash: 1465901e291d3d7e0bb5b49ca30e8f23ecf8101a
+                      - algorithm: SHA256
+                        hash: ca5275502d9ea63318a04f0f04d16c48aef8cbc701ec537794b3177b20dd7bdc
+                      - algorithm: NTLM
+                        hash: aa2a03d64366cb33750ebeae0578bc31
+                      - algorithm: MD5
+                        hash: bd55f770e6676d31e4e5697cf3665c91
+                      details:
+                        properties:
+                        - Letter
+                        - Number
+                        - Symbol
+                        - UpperCase
+                        - LowerCase
+                        - AtLeast12Characters
+                        clear_text_hint: wt
+                      effectively_clear: true
+                    compromise:
+                      exfiltration_date: '2026-06-02T12:45:00.000Z'
+                    authorization_service:
+                      url: https://norsegods.online/user/account
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    authorization_services:
+                    - url: https://norsegods.online/user/account
+                      domain: norsegods.online
+                      fqdn: norsegods.online
+                      technology: []
+                      protocols:
+                      - https
+                    malware_family:
+                      name: LummaC2
+                      id: nlflWX
+                count: 3
+                next_offset: eyJzdWJqZWN0Ijoiam9yZGFuLmpvcmRhbkBub3JzZWdvZHMub25saW5lIiwicGFzc3dvcmRIYXNoIjoiY2E1Mjc1NTAyZDllYTYzMzE4YTA0ZjBmMDRkMTZjNDhhZWY4Y2JjNzAxZWM1Mzc3OTRiMzE3N2IyMGRkN2JkYyIsIm1hbHdhcmVfZmFtaWx5Lm5hbWUiOiJMdW1tYUMyIiwiYXV0aG9yaXphdGlvbl9zZXJ2aWNlIjoibm9yc2Vnb2RzLm9ubGluZSIsImxvZ2luIjpudWxsfQ
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+  /identity/metadata/dump/search:
+    post:
+      operationId: getDumpMetadata
+      summary: Dump Metadata Search
+      description: Search metadata for data dumps and breach databases by name.
+      tags:
+      - Credentials
+      security:
+      - RecordedFutureOAuth2: []
+      - RecordedFutureApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DumpMetadataSearchRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataDumpResponse'
+              example:
+                dumps:
+                - name: LinkedIn
+                  source: dump:RaidForums/raid_forums_sql_dumps/LinkedIn/1.sql
+                  description: In May 2016, LinkedIn had 164 million email addresses and passwords exposed. Originally hacked in 2012, the data remained out of sight until being offered for sale on a dark market site 4 years later.
+                  downloaded: '2021-07-22T00:00:00.000Z'
+                  type: SQL Dump
+                  breaches:
+                  - name: LinkedIn
+                    domain: linkedin.com
+                    type: Database
+                    start: '2012-05-05T00:00:00.000Z'
+                    stop: '2012-05-05T23:59:59.000Z'
+                    precision: day
+                    description: In May 2016, LinkedIn had 164 million email addresses and passwords exposed. Originally hacked in 2012, the data remained out of sight until being offered for sale on a dark market site 4 years later. The passwords in the breach were stored as SHA1 hashes without salt, the vast majority of which were quickly cracked in the days following the release of the data.
+                    site_description: LinkedIn is an American business and employment-oriented online service that operates via websites and mobile apps. Launched on May 5, 2003, the platform is mainly used for professional networking, and allows job seekers to post their CVs and employers to post jobs.
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+  /identity/password/lookup:
+    post:
+      operationId: lookupPassword
+      summary: Lookup passwords for exposure
+      description: Checks if specified passwords were exposed.
+      tags:
+      - Credentials
+      security:
+      - RecordedFutureOAuth2: []
+      - RecordedFutureApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordLookupRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordLookupResponse'
+              example:
+                results:
+                - password:
+                    algorithm: SHA1
+                    hash: 1465901e291d3d7e0bb5b49ca30e8f23ecf8101a
+                  exposure_status: Uncommon
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+components:
+  responses:
+    DefaultResponse:
+      description: Error
+      content:
+        text/plain:
+          schema:
+            type: string
+            maxLength: 200
+            pattern: .+
+            example: An unexpected error occurred while processing the request.
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        status_code:
+          type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
+        message:
+          type: string
+          maxLength: 200
+          pattern: .+
+          example: The provided organization ID does not exist.
+        trace_id:
+          type: string
+          maxLength: 36
+          minLength: 36
+          format: uuid
+          example: fa1d4940-f35f-4dc1-84d1-de2f27a8b95e
+      required:
+      - status_code
+      - message
+      - trace_id
+    DumpMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Antiscam Log 2024-07-22
+        type:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Stealer Log
+        source:
+          type: string
+          maxLength: 200
+          pattern: .+
+          example: dump-antiscam-2024-07-22-045
+        description:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Log data from Antiscam malware campaign.
+        infrastructure:
+          $ref: '#/components/schemas/Infrastructure'
+        compromise:
+          $ref: '#/components/schemas/Compromise'
+        location:
+          $ref: '#/components/schemas/Location'
+        breaches:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/BreachMetadata'
+        downloaded:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2025-07-22T08:00:00Z'
+      required:
+      - name
+      - source
+      - downloaded
+      - breaches
+    Infrastructure:
+      type: object
+      properties:
+        ip:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 203.0.113.55
+      required:
+      - ip
+    Compromise:
+      type: object
+      properties:
+        os:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Windows 11
+        os_username:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: victim_user
+        malware_file:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: C:\Windows\Temp\update.exe
+        timezone:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: (UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius
+        computer_name:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: DESKTOP-A1B2C3D
+        uac:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: UAC-Limited
+        antivirus:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: Avast
+        exfiltration_date:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2025-07-21T12:00:00Z'
+      required:
+      - exfiltration_date
+    Location:
+      type: object
+      properties:
+        country:
+          $ref: '#/components/schemas/CountryCode'
+        city:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: New York
+        address:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 123 Main Street, Apt 4B
+        address1:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 123 Main Street
+        address2:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Apt 4B
+        state:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: NY
+        postal_code:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: '10001'
+        zip:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: '10001'
+    CountryCode:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: UNITED_STATES
+        displayName:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: United States
+        countryCode:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: USA
+        alpha2Code:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: US
+        alpha3Code:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: USA
+      required:
+      - name
+      - displayName
+      - countryCode
+      - alpha2Code
+      - alpha3Code
+    BreachMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: SocialNet Breach
+        domain:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: socialnet.com
+        type:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Database Breach
+        breached:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2023-11-01T00:00:00Z'
+        start:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2023-10-15T00:00:00Z'
+        stop:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2023-10-20T00:00:00Z'
+        precision:
+          $ref: '#/components/schemas/DateTimePrecision'
+        description:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: User database with emails and hashed passwords was compromised.
+        site_description:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Social networking platform.
+      required:
+      - name
+      - domain
+      - type
+      - description
+    DateTimePrecision:
+      type: string
+      enum:
+      - YEAR
+      - MONTH
+      - DAY
+    DumpMetadataSearchRequest:
+      type: object
+      properties:
+        names:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: Collection 1
+          description: Dump or breach names to search for
+        limit:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+          description: Maximum number of results to return
+    MetadataDumpResponse:
+      type: object
+      properties:
+        dumps:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/DumpMetadata'
+      required:
+      - dumps
+    UnauthorizedResponse:
+      type: string
+      const: The supplied authentication is invalid
+    BadRequestResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Invalid input for 'domains' field.
+        status_code:
+          type: integer
+          format: int32
+          const: 400
+          minimum: 100
+          maximum: 599
+        trace_id:
+          type: string
+          format: uuid
+          maxLength: 36
+          minLength: 36
+          example: fa1d4940-f35f-4dc1-84d1-de2f27a8b95e
+    ForbiddenResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Access to the requested resource is forbidden.
+        status_code:
+          type: integer
+          format: int32
+          const: 403
+          minimum: 100
+          maximum: 599
+        trace_id:
+          type: string
+          format: uuid
+          maxLength: 36
+          minLength: 36
+          example: fa1d4940-f35f-4dc1-84d1-de2f27a8b95e
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: An internal server error occurred.
+        status_code:
+          type: integer
+          format: int32
+          const: 500
+          minimum: 100
+          maximum: 599
+        trace_id:
+          type: string
+          format: uuid
+          maxLength: 36
+          minLength: 36
+          example: fa1d4940-f35f-4dc1-84d1-de2f27a8b95e
+    IdentityRequestFilter:
+      type: object
+      properties:
+        first_downloaded_gte:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2024-01-01T00:00:00Z'
+          description: The first date when these credentials were received and indexed by Recorded Future.
+        latest_downloaded_gte:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2024-01-01T00:00:00Z'
+          description: Latest date when these credentials were received and indexed by Recorded Future. It is not unusual for the same credentials to be exposed multiple times, in data from different dumps and/or logs.
+        exfiltration_date_gte:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2024-01-01T00:00:00Z'
+          description: 'The date when data was exfiltrated (stolen) from the victim. Note: Only applicable for malware-based exposures.'
+        properties:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/PasswordProperty'
+          description: Password property filters
+        username_properties:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/UsernameProperty'
+        breach_properties:
+          $ref: '#/components/schemas/BreachProperties'
+        dump_properties:
+          $ref: '#/components/schemas/DumpProperties'
+        authorization_technologies:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: SAML
+          description: Filter results by specific authorization technologies (e.g., SAML, LDAP)
+        authorization_protocols:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: RDP
+        malware_families:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: RedLine Stealer
+          description: Filter by malware family names
+    BreachProperties:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: ExampleCorp Breach 2024
+        date:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2024-03-15T00:00:00Z'
+    DumpProperties:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Collection
+        date:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2019-01-07T00:00:00Z'
+    PasswordProperty:
+      type: string
+      enum:
+      - Letter
+      - Number
+      - Symbol
+      - UpperCase
+      - LowerCase
+      - MixedCase
+      - AtLeast8Characters
+      - AtLeast10Characters
+      - AtLeast12Characters
+      - AtLeast16Characters
+      - AtLeast24Characters
+      - Cookies
+      - UnexpiredCookies
+      - AuthorizationTechnology
+      - MalwareOnly
+    UsernameProperty:
+      type: string
+      enum:
+      - Email
+    LookupResponse:
+      type: object
+      properties:
+        identities:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/LeakedIdentity'
+        count:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+        next_offset:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: cD1lMzE5NTQ2OS1hYjYxLTQ1NTgtYjkyOC1iYjE3MWNkM2QyY2U=
+      required:
+      - identities
+      - count
+    LeakedIdentity:
+      type: object
+      properties:
+        identity:
+          $ref: '#/components/schemas/IdentityDetails'
+        count:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+        credentials:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/Credentials'
+      required:
+      - identity
+      - count
+      - credentials
+    IdentityDetails:
+      type: object
+      properties:
+        subjects:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: j.doe@example-corp.com
+      required:
+      - subjects
+    SourceType:
+      type: string
+      enum:
+      - MalwareLogs
+      - DatabaseDumps
+      - MalwareCombolists
+      - DatabaseCombolists
+    Credentials:
+      type: object
+      properties:
+        subject:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: j.doe@example-corp.com
+        authorization_service:
+          $ref: '#/components/schemas/AuthorizationService'
+        authorization_services:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/AuthorizationService'
+        exposed_secret:
+          $ref: '#/components/schemas/SecretDetails'
+        compromise:
+          $ref: '#/components/schemas/DeprecatedCompromise'
+        cookies:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/Cookie'
+        malware_family:
+          $ref: '#/components/schemas/MalwareFamily'
+        dumps:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/DumpMetadata'
+        first_downloaded:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2025-07-25T09:30:00Z'
+        latest_downloaded:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2025-07-25T09:30:00Z'
+        source_type:
+          $ref: '#/components/schemas/SourceType'
+      required:
+      - subject
+      - exposed_secret
+      - dumps
+      - first_downloaded
+      - latest_downloaded
+      - authorization_services
+      - cookies
+    AuthorizationService:
+      type: object
+      properties:
+        url:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: https://signin.example-corp.com/login
+        domain:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: example-corp.com
+        fqdn:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: signin.example-corp.com
+        protocols:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: HTTPS
+        technology:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/Technology'
+      required:
+      - url
+      - domain
+      - fqdn
+      - protocols
+      - technology
+    Technology:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: tech-wordpress
+        name:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: WordPress
+        category:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: CMS
+      required:
+      - name
+    SecretDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Password
+        effectively_clear:
+          type: boolean
+        hashes:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/PasswordHash'
+        details:
+          $ref: '#/components/schemas/CleartextPasswordDetails'
+      required:
+      - type
+      - effectively_clear
+      - hashes
+    PasswordHash:
+      oneOf:
+      - $ref: '#/components/schemas/FullPasswordHash'
+      - $ref: '#/components/schemas/PrefixPasswordHash'
+    FullPasswordHash:
+      type: object
+      properties:
+        algorithm:
+          $ref: '#/components/schemas/HashAlgorithm'
+        hash:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
+      required:
+      - algorithm
+      - hash
+    PrefixPasswordHash:
+      type: object
+      properties:
+        algorithm:
+          $ref: '#/components/schemas/HashAlgorithm'
+        hash_prefix:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 5baa6
+      required:
+      - algorithm
+      - hash_prefix
+    CleartextPasswordDetails:
+      type: object
+      properties:
+        clear_text_value:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: password123
+        clear_text_hint:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: p***3
+        properties:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/PasswordProperty'
+      required:
+      - properties
+    DeprecatedCompromise:
+      type: object
+      properties:
+        exfiltration_date:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2025-01-10T18:00:00Z'
+      required:
+      - exfiltration_date
+    Cookie:
+      type: object
+      properties:
+        dns:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: .example.com
+        name:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: session_id
+        http:
+          type: boolean
+        expiration:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2025-08-25T09:57:39Z'
+        secure:
+          type: boolean
+        value:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 3a2d5f8b-9e4c-4a1d-b8f9-c6e7d8f9a0b1
+      required:
+      - dns
+      - name
+      - http
+      - expiration
+      - secure
+    MalwareFamily:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: mal-vidar
+        name:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Vidar Stealer
+      required:
+      - id
+      - name
+    HashAlgorithm:
+      type: string
+      enum:
+      - SHA1
+      - SHA256
+      - HASH32
+      - HASH40
+      - HASH64
+      - HASH96
+      - HASH128
+      - BCRYPT
+      - PHPASS
+      - HASHCAT_HEX
+      - BASE64
+      - SSHA
+      - PBKDF2_SHA256
+      - BASE64_HASH32
+      - BASE64_HASH40
+      - BASE64_HASH128
+      - BASE64_INTEGER_HASH32
+      - BASE64_INTEGER_HASH40
+      - BASE64_INTEGER_HASH64
+      - BASE64_INTEGER_HASH96
+      - BASE64_INTEGER_HASH128
+      - MYSQL_SHA_V41PLUS
+      - NTLM
+      - MD5
+    HostnameLookupRequest:
+      type: object
+      properties:
+        organization_id:
+          $ref: '#/components/schemas/UhashId'
+        hostname:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: server-01.us-east.example-corp.com
+        filter:
+          $ref: '#/components/schemas/IdentityRequestFilter'
+        limit:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+        offset:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: cD1lMzE5NTQ2OS1hYjYxLTQ1NTgtYjkyOC1iYjE3MWNkM2QyY2U=
+      required:
+      - hostname
+    UhashId:
+      type: string
+      maxLength: 20
+      pattern: ^uhash:[a-zA-Z0-9]+$
+      example: uhash:a1b2c3d4
+    IncidentReportRequest:
+      type: object
+      properties:
+        organization_id:
+          $ref: '#/components/schemas/UhashId'
+        source:
+          type: string
+          maxLength: 200
+          pattern: .+
+          example: dump-redline-2024-07-21-001
+          description: The dump source identifier (e.g., dump-redline-2024-07-21-001)
+        include_details:
+          type: boolean
+          description: Include extended device and malware details in the response
+        limit:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 1000
+          description: Maximum number of credential entries to return
+        offset:
+          type: string
+          maxLength: 200
+          pattern: .+
+          example: eyJsaW1pdCI6IDEwMCwgIm9mZnNldCI6IDEwMH0=
+          description: Pagination token for next page
+      required:
+      - source
+      - include_details
+    IncidentReportResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 1000
+        total_count:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 1000
+        credentials:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/IncidentReportCredentials'
+        details:
+          $ref: '#/components/schemas/IncidentReportDetails'
+        next_offset:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: eyJsaW1pdCI6IDEwMCwgIm9mZnNldCI6IDIwMH0=
+      required:
+      - count
+      - total_count
+      - credentials
+    IncidentReportCredentials:
+      type: object
+      properties:
+        authorization_domain:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: login.microsoftonline.com
+        email_or_login:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: admin_user
+        password:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: CompanySecret!2024
+        password_sha1:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 2ef7bde608ce5404e97d5f042f95f89f1c232871
+        domain_category:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Cloud Provider
+        domain_technology:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Microsoft Office 365
+        contains_cookies:
+          type: boolean
+        contains_active_cookies:
+          type: boolean
+        contains_high_risk_technologies:
+          type: boolean
+      required:
+      - email_or_login
+      - password
+      - contains_cookies
+      - contains_active_cookies
+      - contains_high_risk_technologies
+    IncidentReportDetails:
+      type: object
+      properties:
+        malware_family:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: RedLine Stealer
+        os:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Windows 10 Pro
+        os_username:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: jsmith
+        malware_file:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: C:\Users\jsmith\AppData\Local\Temp\winmgr.exe
+        timezone:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: America/New_York
+        uac:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: UAC-Admin
+        exfiltration_date:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2025-07-24T14:30:00Z'
+        antivirus:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Windows Defender
+        ip_address:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 198.51.100.14
+        postal_code:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: '90210'
+        country:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: United States
+    IpLookupRequest:
+      type: object
+      properties:
+        organization_id:
+          $ref: '#/components/schemas/UhashId'
+        ip:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 198.51.100.1
+        range:
+          $ref: '#/components/schemas/IPRange'
+        filter:
+          $ref: '#/components/schemas/IdentityRequestFilter'
+        limit:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+        offset:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: cD1lMzE5NTQ2OS1hYjYxLTQ1NTgtYjkyOC1iYjE3MWNkM2QyY2U=
+    IPRange:
+      type: object
+      properties:
+        gte:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 192.0.2.0
+        gt:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 192.0.2.0
+        lte:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 192.0.2.255
+        lt:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 192.0.2.255
+    CredentialsLookupRequest:
+      type: object
+      properties:
+        organization_id:
+          $ref: '#/components/schemas/UhashId'
+        subjects:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: j.doe@personal-email.com
+          description: Email addresses to look up (e.g., user@example.com)
+        subjects_sha1:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: 05c75cd3c20e234a9195f148489f660d5e8a5b1e
+          description: SHA1 hashes of email addresses for privacy-preserving lookups
+        subjects_login:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/DomainLogin'
+          description: Domain + login pairs for authorization-domain lookups
+        filter:
+          $ref: '#/components/schemas/IdentityRequestFilter'
+          description: Filter options (same as Search)
+        limit:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+          description: Maximum number of results to return
+        offset:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: cD1lMzE5NTQ2OS1hYjYxLTQ1NTgtYjkyOC1iYjE3MWNkM2QyY2U=
+          description: Pagination token from a previous response's next_offset
+    DomainLogin:
+      type: object
+      properties:
+        login:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: j.doe
+        login_sha1:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: 7a827725b8a6886f376174a813470783472e3952
+        domain:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: example-corp.com
+      required:
+      - domain
+    PasswordLookupRequest:
+      type: object
+      properties:
+        passwords:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/PasswordHash'
+      required:
+      - passwords
+    PasswordLookupResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/SinglePasswordLookupResult'
+      required:
+      - results
+    SinglePasswordLookupResult:
+      type: object
+      properties:
+        password:
+          $ref: '#/components/schemas/PasswordHash'
+        exposure_status:
+          $ref: '#/components/schemas/PasswordExposureStatus'
+      required:
+      - password
+      - exposure_status
+    PasswordExposureStatus:
+      type: string
+      enum:
+      - NeverExposed
+      - Uncommon
+      - Common
+    CredentialsSearchRequest:
+      type: object
+      properties:
+        organization_id:
+          $ref: '#/components/schemas/UhashId'
+        domains:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: example-corp.com
+          description: A domain or multiple domains to be queried
+        domain_types:
+          type: array
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/DomainType'
+          description: '"Email", "Authorization" or both can be specified in the array'
+          default:
+          - Email
+        filter:
+          $ref: '#/components/schemas/IdentityRequestFilter'
+          description: Filter options
+        offset:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: cD1lMzE5NTQ2OS1hYjYxLTQ1NTgtYjkyOC1iYjE3MWNkM2QyY2U=
+          description: Pagination token from a previous response's next_offset
+        limit:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+          description: Maximum number of results to return (up to 1000)
+    SearchResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+        count_relation:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: gte
+        identities:
+          type: array
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/SearchResponseIdentity'
+        next_offset:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: cD1lMzE5NTQ2OS1hYjYxLTQ1NTgtYjkyOC1iYjE3MWNkM2QyY2U=
+    SearchResponseIdentity:
+      oneOf:
+      - $ref: '#/components/schemas/EmailSubjectResponseIdentity'
+      - $ref: '#/components/schemas/DomainLoginResponseIdentity'
+    EmailSubjectResponseIdentity:
+      type: string
+      maxLength: 100
+      pattern: .+
+      example: jane.doe@example-corp.com
+    DomainLoginResponseIdentity:
+      type: object
+      properties:
+        login:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: jane.doe
+        domain:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: example-corp.com
+      required:
+      - login
+      - domain
+    DomainType:
+      type: string
+      enum:
+      - Email
+      - Authorization
+    DetectionsRequest:
+      type: object
+      properties:
+        organization_id:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/UhashId'
+          description: Organization IDs to scope the detections query
+        include_enterprise_level:
+          type: boolean
+          description: Include enterprise-level detections across all organizations
+        filter:
+          $ref: '#/components/schemas/DetectionsFilter'
+          description: Detection-specific filters
+        limit:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+          description: Maximum number of detections to return
+        offset:
+          type: string
+          maxLength: 200
+          pattern: .+
+          example: cD1lMzE5NTQ2OS1hYjYxLTQ1NTgtYjkyOC1iYjE3MWNkM2QyY2U
+          description: Pagination token for next page
+    DetectionsResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1000
+        detections:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/Detection'
+        next_offset:
+          type: string
+          maxLength: 200
+          pattern: .+
+          example: cD1lMzE5NTQ2OS1hYjYxLTQ1NTgtYjkyOC1iYjE3MWNkM2QyY2U
+      required:
+      - total
+      - detections
+    DetectionsFilter:
+      type: object
+      properties:
+        novel_only:
+          type: boolean
+        malware_only:
+          type: boolean
+        domains:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: example-corp.com
+        detection_types:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/DetectionType'
+        source_type:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/SourceType'
+        detection_type:
+          $ref: '#/components/schemas/DetectionType'
+        authorization_technology:
+          $ref: '#/components/schemas/DetectionsAuthTechnologyFilter'
+        cookies:
+          type: string
+          enum:
+          - Cookies
+          - UnexpiredCookies
+        created:
+          $ref: '#/components/schemas/DetectionsDateFilter'
+    DetectionsAuthTechnologyFilter:
+      type: object
+      properties:
+        any:
+          type: boolean
+        id:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: tech-okta-sso
+        name:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 100
+            pattern: .+
+            example: Okta Single Sign-On
+    DetectionsDateFilter:
+      type: object
+      properties:
+        gte:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2024-07-20T10:00:00Z'
+        lt:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2024-07-25T10:00:00Z'
+    Detection:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: f47ac10b58cc4372a5670e02b2c3d479
+        organization_id:
+          $ref: '#/components/schemas/UhashId'
+        novel:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/DetectionType'
+        source_type:
+          $ref: '#/components/schemas/SourceType'
+        subject:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: john.smith@example-corp.com
+        password:
+          $ref: '#/components/schemas/DetectionsLeakedPassword'
+        authorization_service:
+          $ref: '#/components/schemas/AuthorizationService'
+        cookies:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/Cookie'
+        malware_family:
+          $ref: '#/components/schemas/MalwareFamily'
+        dump:
+          $ref: '#/components/schemas/DumpMetadata'
+        created:
+          type: string
+          format: date-time
+          maxLength: 29
+          example: '2025-07-25T09:57:39Z'
+      required:
+      - id
+      - novel
+      - type
+      - subject
+      - dump
+      - created
+    DetectionsLeakedPassword:
+      type: object
+      properties:
+        type:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Cleartext
+        hashes:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/PasswordHash'
+        properties:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/PasswordProperty'
+        cleartext_hint:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Pass
+        cleartext:
+          type: string
+          maxLength: 100
+          pattern: .+
+          example: Passw0rd123!
+      required:
+      - type
+      - hashes
+      - properties
+    DetectionType:
+      type: string
+      enum:
+      - Workforce
+      - External
+      - Vip
+  securitySchemes:
+    RecordedFutureOAuth2:
+      type: oauth2
+      description: JWT-based OAuth2 security scheme supporting RFC8725 for OAuth 2.0 Access Tokens.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://id.recordedfuture.com/authorize
+          tokenUrl: https://id.recordedfuture.com/token
+          refreshUrl: https://id.recordedfuture.com/token
+          scopes: {}
+    RecordedFutureApiKey:
+      type: apiKey
+      in: header
+      name: X-RFToken
+tags:
+- name: Credentials
+- name: Detections
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/identity-detections.md
+  - https://docs.recordedfuture.com/reference/identity-dump-metadata.md
+  - https://docs.recordedfuture.com/reference/identity-hostname.md
+  - https://docs.recordedfuture.com/reference/identity-incident-report.md
+  - https://docs.recordedfuture.com/reference/identity-ip.md
+  - https://docs.recordedfuture.com/reference/identity-lookup.md
+  - https://docs.recordedfuture.com/reference/identity-password.md
+  - https://docs.recordedfuture.com/reference/identity-search.md
+  merge:
+    pages: 8
+    deduped: 150
+    conflicts_kept_first: 0

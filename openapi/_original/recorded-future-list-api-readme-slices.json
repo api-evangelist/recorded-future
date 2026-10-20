@@ -1,0 +1,2672 @@
+[
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-add-entity.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "parameters": {
+     "listId": {
+      "name": "listId",
+      "in": "path",
+      "description": "Unique identifier for a list (format: `report:XXXXX`) or a named watch list identifier, obtained from `POST /list/search` or `POST /list/create`.",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "example": "report:P6LnLw"
+      }
+     }
+    },
+    "schemas": {
+     "EntityById": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "ip:8.8.8.8"
+       }
+      }
+     },
+     "EntityByTypeAndName": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "IpAddress",
+         "InternetDomainName",
+         "Hash",
+         "CyberVulnerability",
+         "ASNumber",
+         "Company",
+         "Organization",
+         "Product",
+         "Technology",
+         "CyberExploitTargetCategory",
+         "ProductIdentifier",
+         "Industry",
+         "City",
+         "Country",
+         "Continent",
+         "Region",
+         "ProvinceOrState",
+         "Operation",
+         "Person",
+         "CyberThreatActorCategory",
+         "Username",
+         "Malware",
+         "MalwareCategory",
+         "AttackVector",
+         "MitreAttackIdentifier",
+         "MitreAttackICSIdentifier",
+         "Facility",
+         "Airport",
+         "Embassy",
+         "MilitaryBase",
+         "Port",
+         "MICR"
+        ],
+        "description": "Different lists have different limitations in terms of entity types, some lists have no limitations in terms of entity types, consult the specific list you are trying to update."
+       },
+       "name": {
+        "type": "string"
+       }
+      }
+     },
+     "Entity": {
+      "oneOf": [
+       {
+        "$ref": "#/components/schemas/EntityById"
+       },
+       {
+        "$ref": "#/components/schemas/EntityByTypeAndName"
+       }
+      ]
+     },
+     "AddOperationResponse": {
+      "type": "object",
+      "properties": {
+       "result": {
+        "type": "string",
+        "enum": [
+         "added",
+         "updated",
+         "unchanged"
+        ],
+        "description": "`added` if the entity was newly added, `updated` if it already existed and its context was changed, or `unchanged` if it already existed with the same context."
+       }
+      },
+      "required": [
+       "result"
+      ]
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/list/{listId}/entity/add": {
+     "post": {
+      "tags": [
+       "List"
+      ],
+      "description": "Adds a single entity to the specified list, optionally with context metadata.",
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/listId"
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "entity": {
+            "$ref": "#/components/schemas/Entity"
+           },
+           "context": {
+            "type": "object",
+            "description": "Optional arbitrary key-value metadata to attach to the entity in this list. These values are stored and returned when retrieving entities via the Get Entities endpoint.",
+            "additionalProperties": true
+           }
+          },
+          "required": [
+           "entity"
+          ]
+         },
+         "examples": {
+          "byId": {
+           "summary": "Add entity by Recorded Future ID",
+           "value": {
+            "entity": {
+             "id": "ip:8.8.8.8"
+            }
+           }
+          },
+          "byTypeAndName": {
+           "summary": "Add entity by type and name",
+           "value": {
+            "entity": {
+             "type": "IpAddress",
+             "name": "8.8.8.8"
+            }
+           }
+          },
+          "withContext": {
+           "summary": "Add entity with context metadata",
+           "value": {
+            "entity": {
+             "id": "ip:8.8.8.8"
+            },
+            "context": {
+             "source": "threat-feed",
+             "priority": "high"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/AddOperationResponse"
+          },
+          "example": {
+           "result": "added"
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Invalid Request",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "example": {
+           "message": "Missing parameters: entity",
+           "status_code": 400,
+           "trace_id": "14428264-41d0-4d74-a82c-2ae3ee7bc30a"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "List not found",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       },
+       "429": {
+        "description": "Too Many Requests",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-entities.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "parameters": {
+     "listId": {
+      "name": "listId",
+      "in": "path",
+      "description": "Unique identifier for a list (format: `report:XXXXX`) or a named watch list identifier, obtained from `POST /list/search` or `POST /list/create`.",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "example": "report:P6LnLw"
+      }
+     }
+    },
+    "schemas": {
+     "EntityEntry": {
+      "type": "object",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/ResolvedEntity"
+       },
+       "context": {
+        "type": "object",
+        "description": "Optional metadata attached to this entity when it was added to the list. Contains arbitrary key-value pairs set by the caller via the Add Entity endpoint. Only present if context was provided when the entity was added.",
+        "additionalProperties": true
+       },
+       "status": {
+        "$ref": "#/components/schemas/ProcessingStatus"
+       },
+       "added": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp when the entity was added to the list"
+       }
+      },
+      "required": [
+       "entity",
+       "status",
+       "added"
+      ]
+     },
+     "ResolvedEntity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "ip:8.8.8.8"
+       },
+       "type": {
+        "type": "string",
+        "example": "IpAddress"
+       },
+       "name": {
+        "type": "string",
+        "example": "8.8.8.8"
+       }
+      },
+      "required": [
+       "id",
+       "type",
+       "name"
+      ]
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     },
+     "ProcessingStatus": {
+      "type": "string",
+      "description": "`pending` — awaiting initial processing after being added; `processing` — currently being indexed; `ready` — fully processed and available for use in alerts and queries.",
+      "enum": [
+       "pending",
+       "processing",
+       "ready"
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/list/{listId}/entities": {
+     "parameters": [
+      {
+       "$ref": "#/components/parameters/listId"
+      }
+     ],
+     "get": {
+      "tags": [
+       "List"
+      ],
+      "description": "Returns all entities in the specified list as a JSON array with no pagination.",
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "array",
+           "items": {
+            "$ref": "#/components/schemas/EntityEntry"
+           }
+          },
+          "example": [
+           {
+            "entity": {
+             "id": "ip:8.8.8.8",
+             "type": "IpAddress",
+             "name": "8.8.8.8"
+            },
+            "status": "ready",
+            "added": "2026-03-20T01:34:21.133Z"
+           }
+          ]
+         }
+        }
+       },
+       "400": {
+        "description": "List is not migrated",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "No such list",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-remove-entity.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "parameters": {
+     "listId": {
+      "name": "listId",
+      "in": "path",
+      "description": "Unique identifier for a list (format: `report:XXXXX`) or a named watch list identifier, obtained from `POST /list/search` or `POST /list/create`.",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "example": "report:P6LnLw"
+      }
+     }
+    },
+    "schemas": {
+     "EntityById": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "ip:8.8.8.8"
+       }
+      }
+     },
+     "EntityByTypeAndName": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "IpAddress",
+         "InternetDomainName",
+         "Hash",
+         "CyberVulnerability",
+         "ASNumber",
+         "Company",
+         "Organization",
+         "Product",
+         "Technology",
+         "CyberExploitTargetCategory",
+         "ProductIdentifier",
+         "Industry",
+         "City",
+         "Country",
+         "Continent",
+         "Region",
+         "ProvinceOrState",
+         "Operation",
+         "Person",
+         "CyberThreatActorCategory",
+         "Username",
+         "Malware",
+         "MalwareCategory",
+         "AttackVector",
+         "MitreAttackIdentifier",
+         "MitreAttackICSIdentifier",
+         "Facility",
+         "Airport",
+         "Embassy",
+         "MilitaryBase",
+         "Port",
+         "MICR"
+        ],
+        "description": "Different lists have different limitations in terms of entity types, some lists have no limitations in terms of entity types, consult the specific list you are trying to update."
+       },
+       "name": {
+        "type": "string"
+       }
+      }
+     },
+     "Entity": {
+      "oneOf": [
+       {
+        "$ref": "#/components/schemas/EntityById"
+       },
+       {
+        "$ref": "#/components/schemas/EntityByTypeAndName"
+       }
+      ]
+     },
+     "RemoveOperationResponse": {
+      "type": "object",
+      "properties": {
+       "result": {
+        "type": "string",
+        "enum": [
+         "removed",
+         "unchanged"
+        ],
+        "description": "`removed` if the entity was removed, or `unchanged` if the entity was not on the list."
+       }
+      },
+      "required": [
+       "result"
+      ]
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/list/{listId}/entity/remove": {
+     "post": {
+      "tags": [
+       "List"
+      ],
+      "description": "Removes a single entity from the specified list.",
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/listId"
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "entity": {
+            "$ref": "#/components/schemas/Entity"
+           }
+          },
+          "required": [
+           "entity"
+          ]
+         },
+         "examples": {
+          "byId": {
+           "summary": "Remove entity by Recorded Future ID",
+           "value": {
+            "entity": {
+             "id": "ip:8.8.8.8"
+            }
+           }
+          },
+          "byTypeAndName": {
+           "summary": "Remove entity by type and name",
+           "value": {
+            "entity": {
+             "type": "IpAddress",
+             "name": "8.8.8.8"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Success — returns `unchanged` if the entity was not on the list.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/RemoveOperationResponse"
+          },
+          "example": {
+           "result": "removed"
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Invalid Request",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "List not found",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       },
+       "429": {
+        "description": "Too Many Requests",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-text-entries.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "parameters": {
+     "listId": {
+      "name": "listId",
+      "in": "path",
+      "description": "Unique identifier for a list (format: `report:XXXXX`) or a named watch list identifier, obtained from `POST /list/search` or `POST /list/create`.",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "example": "report:P6LnLw"
+      }
+     }
+    },
+    "schemas": {
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     },
+     "TextEntry": {
+      "type": "string"
+     }
+    }
+   },
+   "paths": {
+    "/list/{listId}/textEntries": {
+     "parameters": [
+      {
+       "$ref": "#/components/parameters/listId"
+      }
+     ],
+     "get": {
+      "tags": [
+       "List"
+      ],
+      "description": "Returns unstructured text entries stored in the specified list as a JSON array.",
+      "responses": {
+       "200": {
+        "description": "Success — returns a bare JSON array of strings. Empty array if the list has no text entries.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "array",
+           "items": {
+            "$ref": "#/components/schemas/TextEntry"
+           }
+          },
+          "example": [
+           "suspicious-domain.example.com",
+           "10.0.0.0/8"
+          ]
+         }
+        }
+       },
+       "400": {
+        "description": "List is not migrated",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "No such list",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-create.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "schemas": {
+     "ListInfo": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "report:P6LnLw"
+       },
+       "name": {
+        "type": "string",
+        "example": "Russian Hackers"
+       },
+       "type": {
+        "$ref": "#/components/schemas/ListType"
+       },
+       "created": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-01T13:00:00Z"
+       },
+       "updated": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-01T13:00:00Z"
+       },
+       "owner_id": {
+        "$ref": "#/components/schemas/OwnerId"
+       },
+       "owner_name": {
+        "$ref": "#/components/schemas/OwnerName"
+       },
+       "organisation_id": {
+        "$ref": "#/components/schemas/OrganisationId"
+       },
+       "organisation_name": {
+        "$ref": "#/components/schemas/OrganisationName"
+       },
+       "owner_organisation_details": {
+        "$ref": "#/components/schemas/OwnerOrganisationDetails"
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "type",
+       "created",
+       "updated"
+      ]
+     },
+     "OwnerId": {
+      "description": "Id of the Owner",
+      "type": "string",
+      "example": "uhash:3HX1Rn1Ke"
+     },
+     "OwnerName": {
+      "description": "Name of the Owner",
+      "type": "string",
+      "example": "Recorded Future"
+     },
+     "OrganisationId": {
+      "description": "Id of the Organisation",
+      "type": "string",
+      "example": "uhash:3HX3rIn4Kv"
+     },
+     "OrganisationName": {
+      "description": "Name of the Organisation",
+      "type": "string",
+      "example": "Recorded Future"
+     },
+     "EnterpriseId": {
+      "description": "Id of the Enterprise",
+      "type": "string",
+      "example": "uhash:1HX2qIn4Zy"
+     },
+     "EnterpriseName": {
+      "description": "Name of the Enterprise",
+      "type": "string",
+      "example": "Recorded Future"
+     },
+     "Organisation": {
+      "type": "object",
+      "properties": {
+       "organisation_id": {
+        "$ref": "#/components/schemas/OrganisationId"
+       },
+       "organisation_name": {
+        "$ref": "#/components/schemas/OrganisationName"
+       }
+      }
+     },
+     "OwnerOrganisationDetails": {
+      "type": "object",
+      "properties": {
+       "owner_id": {
+        "$ref": "#/components/schemas/OwnerId"
+       },
+       "owner_name": {
+        "$ref": "#/components/schemas/OwnerName"
+       },
+       "organisations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Organisation"
+        }
+       },
+       "enterprise_id": {
+        "$ref": "#/components/schemas/EnterpriseId"
+       },
+       "enterprise_name": {
+        "$ref": "#/components/schemas/EnterpriseName"
+       }
+      },
+      "required": [
+       "organisations",
+       "enterprise_id",
+       "enterprise_name"
+      ]
+     },
+     "ListType": {
+      "type": "string",
+      "enum": [
+       "entity",
+       "source",
+       "text",
+       "custom",
+       "ip",
+       "domain",
+       "tech_stack",
+       "industry",
+       "brand",
+       "partner",
+       "industry_peer",
+       "location",
+       "supplier",
+       "vulnerability",
+       "company",
+       "hash",
+       "operation",
+       "attacker",
+       "target",
+       "method",
+       "executive"
+      ]
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     },
+     "CreateRequest": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "example": "Russian Hackers"
+       },
+       "type": {
+        "$ref": "#/components/schemas/ListType"
+       }
+      },
+      "required": [
+       "name",
+       "type"
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/list/create": {
+     "post": {
+      "tags": [
+       "List"
+      ],
+      "description": "Creates a new empty list and returns its metadata including the list ID.",
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/CreateRequest"
+         },
+         "example": {
+          "name": "Russian Hackers",
+          "type": "entity"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ListInfo"
+          },
+          "example": {
+           "id": "report:BGJhacd",
+           "name": "Russian Hackers",
+           "type": "entity",
+           "created": "2026-03-20T01:18:59.454Z",
+           "updated": "2026-03-20T01:18:59.454Z",
+           "owner_id": "uhash:5LjaPaHYjo",
+           "owner_name": "Custom Tines Workflows",
+           "organisation_id": "uhash:2FLAPRFn9w",
+           "organisation_name": "Acme Corporation",
+           "owner_organisation_details": {
+            "owner_id": "uhash:5LjaPaHYjo",
+            "owner_name": "Custom Tines Workflows",
+            "organisations": [],
+            "enterprise_id": "uhash:2FLAPRFn9w",
+            "enterprise_name": "Acme Corporation"
+           }
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Invalid format or missing required parameters",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "example": {
+           "message": "Missing parameters: type",
+           "status_code": 400,
+           "trace_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-info.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "parameters": {
+     "listId": {
+      "name": "listId",
+      "in": "path",
+      "description": "Unique identifier for a list (format: `report:XXXXX`) or a named watch list identifier, obtained from `POST /list/search` or `POST /list/create`.",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "example": "report:P6LnLw"
+      }
+     }
+    },
+    "schemas": {
+     "ListInfo": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "report:P6LnLw"
+       },
+       "name": {
+        "type": "string",
+        "example": "Russian Hackers"
+       },
+       "type": {
+        "$ref": "#/components/schemas/ListType"
+       },
+       "created": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-01T13:00:00Z"
+       },
+       "updated": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-01T13:00:00Z"
+       },
+       "owner_id": {
+        "$ref": "#/components/schemas/OwnerId"
+       },
+       "owner_name": {
+        "$ref": "#/components/schemas/OwnerName"
+       },
+       "organisation_id": {
+        "$ref": "#/components/schemas/OrganisationId"
+       },
+       "organisation_name": {
+        "$ref": "#/components/schemas/OrganisationName"
+       },
+       "owner_organisation_details": {
+        "$ref": "#/components/schemas/OwnerOrganisationDetails"
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "type",
+       "created",
+       "updated"
+      ]
+     },
+     "OwnerId": {
+      "description": "Id of the Owner",
+      "type": "string",
+      "example": "uhash:3HX1Rn1Ke"
+     },
+     "OwnerName": {
+      "description": "Name of the Owner",
+      "type": "string",
+      "example": "Recorded Future"
+     },
+     "OrganisationId": {
+      "description": "Id of the Organisation",
+      "type": "string",
+      "example": "uhash:3HX3rIn4Kv"
+     },
+     "OrganisationName": {
+      "description": "Name of the Organisation",
+      "type": "string",
+      "example": "Recorded Future"
+     },
+     "EnterpriseId": {
+      "description": "Id of the Enterprise",
+      "type": "string",
+      "example": "uhash:1HX2qIn4Zy"
+     },
+     "EnterpriseName": {
+      "description": "Name of the Enterprise",
+      "type": "string",
+      "example": "Recorded Future"
+     },
+     "Organisation": {
+      "type": "object",
+      "properties": {
+       "organisation_id": {
+        "$ref": "#/components/schemas/OrganisationId"
+       },
+       "organisation_name": {
+        "$ref": "#/components/schemas/OrganisationName"
+       }
+      }
+     },
+     "OwnerOrganisationDetails": {
+      "type": "object",
+      "properties": {
+       "owner_id": {
+        "$ref": "#/components/schemas/OwnerId"
+       },
+       "owner_name": {
+        "$ref": "#/components/schemas/OwnerName"
+       },
+       "organisations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Organisation"
+        }
+       },
+       "enterprise_id": {
+        "$ref": "#/components/schemas/EnterpriseId"
+       },
+       "enterprise_name": {
+        "$ref": "#/components/schemas/EnterpriseName"
+       }
+      },
+      "required": [
+       "organisations",
+       "enterprise_id",
+       "enterprise_name"
+      ]
+     },
+     "ListType": {
+      "type": "string",
+      "enum": [
+       "entity",
+       "source",
+       "text",
+       "custom",
+       "ip",
+       "domain",
+       "tech_stack",
+       "industry",
+       "brand",
+       "partner",
+       "industry_peer",
+       "location",
+       "supplier",
+       "vulnerability",
+       "company",
+       "hash",
+       "operation",
+       "attacker",
+       "target",
+       "method",
+       "executive"
+      ]
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/list/{listId}/info": {
+     "parameters": [
+      {
+       "$ref": "#/components/parameters/listId"
+      }
+     ],
+     "get": {
+      "tags": [
+       "List"
+      ],
+      "description": "Returns metadata for a specific list including name, type, timestamps, and ownership details.",
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ListInfo"
+          },
+          "example": {
+           "id": "report:BGJhacd",
+           "name": "validation-test",
+           "type": "entity",
+           "created": "2026-03-20T01:18:59.454Z",
+           "updated": "2026-03-20T01:20:06.854Z",
+           "owner_id": "uhash:5LjaPaHYjo",
+           "owner_name": "Custom Tines Workflows",
+           "organisation_id": "uhash:2FLAPRFn9w",
+           "organisation_name": "Acme Corporation",
+           "owner_organisation_details": {
+            "owner_id": "uhash:5LjaPaHYjo",
+            "owner_name": "Custom Tines Workflows",
+            "organisations": [],
+            "enterprise_id": "uhash:2FLAPRFn9w",
+            "enterprise_name": "Acme Corporation"
+           }
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "List is not migrated",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "No such list",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "example": {
+           "message": "List not found for id: report:NONEXISTENT",
+           "status_code": 404,
+           "trace_id": "f173bffd-9316-4351-a5da-01408f20dc45"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-search.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "schemas": {
+     "ListInfo": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "report:P6LnLw"
+       },
+       "name": {
+        "type": "string",
+        "example": "Russian Hackers"
+       },
+       "type": {
+        "$ref": "#/components/schemas/ListType"
+       },
+       "created": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-01T13:00:00Z"
+       },
+       "updated": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-01T13:00:00Z"
+       },
+       "owner_id": {
+        "$ref": "#/components/schemas/OwnerId"
+       },
+       "owner_name": {
+        "$ref": "#/components/schemas/OwnerName"
+       },
+       "organisation_id": {
+        "$ref": "#/components/schemas/OrganisationId"
+       },
+       "organisation_name": {
+        "$ref": "#/components/schemas/OrganisationName"
+       },
+       "owner_organisation_details": {
+        "$ref": "#/components/schemas/OwnerOrganisationDetails"
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "type",
+       "created",
+       "updated"
+      ]
+     },
+     "OwnerId": {
+      "description": "Id of the Owner",
+      "type": "string",
+      "example": "uhash:3HX1Rn1Ke"
+     },
+     "OwnerName": {
+      "description": "Name of the Owner",
+      "type": "string",
+      "example": "Recorded Future"
+     },
+     "OrganisationId": {
+      "description": "Id of the Organisation",
+      "type": "string",
+      "example": "uhash:3HX3rIn4Kv"
+     },
+     "OrganisationName": {
+      "description": "Name of the Organisation",
+      "type": "string",
+      "example": "Recorded Future"
+     },
+     "EnterpriseId": {
+      "description": "Id of the Enterprise",
+      "type": "string",
+      "example": "uhash:1HX2qIn4Zy"
+     },
+     "EnterpriseName": {
+      "description": "Name of the Enterprise",
+      "type": "string",
+      "example": "Recorded Future"
+     },
+     "Organisation": {
+      "type": "object",
+      "properties": {
+       "organisation_id": {
+        "$ref": "#/components/schemas/OrganisationId"
+       },
+       "organisation_name": {
+        "$ref": "#/components/schemas/OrganisationName"
+       }
+      }
+     },
+     "OwnerOrganisationDetails": {
+      "type": "object",
+      "properties": {
+       "owner_id": {
+        "$ref": "#/components/schemas/OwnerId"
+       },
+       "owner_name": {
+        "$ref": "#/components/schemas/OwnerName"
+       },
+       "organisations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Organisation"
+        }
+       },
+       "enterprise_id": {
+        "$ref": "#/components/schemas/EnterpriseId"
+       },
+       "enterprise_name": {
+        "$ref": "#/components/schemas/EnterpriseName"
+       }
+      },
+      "required": [
+       "organisations",
+       "enterprise_id",
+       "enterprise_name"
+      ]
+     },
+     "ListType": {
+      "type": "string",
+      "enum": [
+       "entity",
+       "source",
+       "text",
+       "custom",
+       "ip",
+       "domain",
+       "tech_stack",
+       "industry",
+       "brand",
+       "partner",
+       "industry_peer",
+       "location",
+       "supplier",
+       "vulnerability",
+       "company",
+       "hash",
+       "operation",
+       "attacker",
+       "target",
+       "method",
+       "executive"
+      ]
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/list/search": {
+     "post": {
+      "tags": [
+       "List"
+      ],
+      "description": "Searches for lists matching optional name, type, and limit filters.",
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "name": {
+            "type": "string",
+            "description": "Substring match against list names.",
+            "example": "Russian Hackers"
+           },
+           "type": {
+            "$ref": "#/components/schemas/ListType"
+           },
+           "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 25
+           }
+          }
+         },
+         "example": {
+          "name": "Russian",
+          "type": "entity",
+          "limit": 10
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "array",
+           "items": {
+            "$ref": "#/components/schemas/ListInfo"
+           }
+          },
+          "example": [
+           {
+            "id": "report:BGJhacd",
+            "name": "Russian Hackers",
+            "type": "entity",
+            "created": "2026-03-20T01:18:59.454Z",
+            "updated": "2026-03-20T01:34:26.292Z",
+            "owner_id": "uhash:5LjaPaHYjo",
+            "owner_name": "Custom Tines Workflows",
+            "organisation_id": "uhash:2FLAPRFn9w",
+            "organisation_name": "Acme Corporation",
+            "owner_organisation_details": {
+             "owner_id": "uhash:5LjaPaHYjo",
+             "owner_name": "Custom Tines Workflows",
+             "organisations": [],
+             "enterprise_id": "uhash:2FLAPRFn9w",
+             "enterprise_name": "Acme Corporation"
+            }
+           }
+          ]
+         }
+        }
+       },
+       "400": {
+        "description": "Bad query",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-status.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "parameters": {
+     "listId": {
+      "name": "listId",
+      "in": "path",
+      "description": "Unique identifier for a list (format: `report:XXXXX`) or a named watch list identifier, obtained from `POST /list/search` or `POST /list/create`.",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "example": "report:P6LnLw"
+      }
+     }
+    },
+    "schemas": {
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     },
+     "ProcessingStatus": {
+      "type": "string",
+      "description": "`pending` — awaiting initial processing after being added; `processing` — currently being indexed; `ready` — fully processed and available for use in alerts and queries.",
+      "enum": [
+       "pending",
+       "processing",
+       "ready"
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/list/{listId}/status": {
+     "parameters": [
+      {
+       "$ref": "#/components/parameters/listId"
+      }
+     ],
+     "get": {
+      "tags": [
+       "List"
+      ],
+      "description": "Returns the processing status and entity count for a specific list.",
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "properties": {
+            "size": {
+             "type": "integer",
+             "minimum": 0,
+             "description": "Current number of entities in the list."
+            },
+            "status": {
+             "$ref": "#/components/schemas/ProcessingStatus"
+            }
+           },
+           "required": [
+            "size",
+            "status"
+           ]
+          },
+          "example": {
+           "size": 42,
+           "status": "ready"
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "List is not migrated",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "No such list",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-entities-with-tags.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "parameters": {
+     "listId": {
+      "name": "listId",
+      "in": "path",
+      "description": "Unique identifier for a list (format: `report:XXXXX`) or a named watch list identifier, obtained from `POST /list/search` or `POST /list/create`.",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "example": "report:P6LnLw"
+      }
+     }
+    },
+    "schemas": {
+     "EntityEntryWithTags": {
+      "type": "object",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/ResolvedEntity"
+       },
+       "context": {
+        "type": "object",
+        "description": "Optional metadata attached to this entity when it was added to the list. Contains arbitrary key-value pairs set by the caller via the Add Entity endpoint. Only present if context was provided when the entity was added.",
+        "additionalProperties": true
+       },
+       "tags": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "id": {
+           "type": "string",
+           "description": "Tag entity ID in the format `enum:EntityListTag:<tagname>`",
+           "example": "enum:EntityListTag:tier1"
+          },
+          "name": {
+           "type": "string",
+           "description": "Tag name as used in API requests (e.g., `tier1`, `critical`)",
+           "example": "tier1"
+          }
+         },
+         "required": [
+          "id",
+          "name"
+         ]
+        },
+        "description": "Tags associated with this entity in the list. Empty array if no tags are assigned."
+       },
+       "status": {
+        "$ref": "#/components/schemas/ProcessingStatus"
+       },
+       "added": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp when the entity was added to the list"
+       }
+      },
+      "required": [
+       "entity",
+       "tags",
+       "status",
+       "added"
+      ]
+     },
+     "ResolvedEntity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "ip:8.8.8.8"
+       },
+       "type": {
+        "type": "string",
+        "example": "IpAddress"
+       },
+       "name": {
+        "type": "string",
+        "example": "8.8.8.8"
+       }
+      },
+      "required": [
+       "id",
+       "type",
+       "name"
+      ]
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     },
+     "ProcessingStatus": {
+      "type": "string",
+      "description": "`pending` — awaiting initial processing after being added; `processing` — currently being indexed; `ready` — fully processed and available for use in alerts and queries.",
+      "enum": [
+       "pending",
+       "processing",
+       "ready"
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/list/{listId}/entitiesWithTags": {
+     "parameters": [
+      {
+       "$ref": "#/components/parameters/listId"
+      }
+     ],
+     "get": {
+      "tags": [
+       "List"
+      ],
+      "description": "Returns all entities in the specified list along with their assigned tags.",
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "array",
+           "items": {
+            "$ref": "#/components/schemas/EntityEntryWithTags"
+           }
+          },
+          "example": [
+           {
+            "entity": {
+             "id": "CK2WP",
+             "type": "Company",
+             "name": "Rostelecom"
+            },
+            "tags": [
+             {
+              "id": "enum:EntityListTag:tier1",
+              "name": "tier1"
+             }
+            ],
+            "status": "ready",
+            "added": "2026-03-20T01:11:58.014Z"
+           }
+          ]
+         }
+        }
+       },
+       "400": {
+        "description": "List is not migrated",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "No such list",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/lists-replace-entity-tags.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "List API",
+    "description": "External List API for reading and writing user lists\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API) before using this API.\n",
+    "version": "1.0.1",
+    "x-rf-service-id": "service:list"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com",
+     "description": "Recorded Future API"
+    }
+   ],
+   "security": [
+    {
+     "key": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "tags": [
+    {
+     "name": "List"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    },
+    "parameters": {
+     "listId": {
+      "name": "listId",
+      "in": "path",
+      "description": "Unique identifier for a list (format: `report:XXXXX`) or a named watch list identifier, obtained from `POST /list/search` or `POST /list/create`.",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "example": "report:P6LnLw"
+      }
+     }
+    },
+    "schemas": {
+     "EntityById": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "ip:8.8.8.8"
+       }
+      }
+     },
+     "EntityByTypeAndName": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "IpAddress",
+         "InternetDomainName",
+         "Hash",
+         "CyberVulnerability",
+         "ASNumber",
+         "Company",
+         "Organization",
+         "Product",
+         "Technology",
+         "CyberExploitTargetCategory",
+         "ProductIdentifier",
+         "Industry",
+         "City",
+         "Country",
+         "Continent",
+         "Region",
+         "ProvinceOrState",
+         "Operation",
+         "Person",
+         "CyberThreatActorCategory",
+         "Username",
+         "Malware",
+         "MalwareCategory",
+         "AttackVector",
+         "MitreAttackIdentifier",
+         "MitreAttackICSIdentifier",
+         "Facility",
+         "Airport",
+         "Embassy",
+         "MilitaryBase",
+         "Port",
+         "MICR"
+        ],
+        "description": "Different lists have different limitations in terms of entity types, some lists have no limitations in terms of entity types, consult the specific list you are trying to update."
+       },
+       "name": {
+        "type": "string"
+       }
+      }
+     },
+     "Entity": {
+      "oneOf": [
+       {
+        "$ref": "#/components/schemas/EntityById"
+       },
+       {
+        "$ref": "#/components/schemas/EntityByTypeAndName"
+       }
+      ]
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "description": "Standard error response returned by all endpoints on failure.",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message describing what went wrong.",
+        "example": "List not found for id: report:NONEXISTENT"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code repeated in the response body.",
+        "example": 404
+       },
+       "trace_id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique trace identifier for this request, useful when contacting support.",
+        "example": "f173bffd-9316-4351-a5da-01408f20dc45"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ]
+     },
+     "TagOperationRequest": {
+      "type": "object",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/Entity"
+       },
+       "tags": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Complete set of tag names to apply; replaces all existing tags",
+        "example": [
+         "tier1",
+         "critical",
+         "financial"
+        ]
+       }
+      },
+      "required": [
+       "entity",
+       "tags"
+      ]
+     },
+     "TagOperationResponse": {
+      "type": "object",
+      "properties": {
+       "entity_id": {
+        "type": "string",
+        "description": "The entity ID",
+        "example": "CK2WP"
+       },
+       "operation": {
+        "oneOf": [
+         {
+          "$ref": "#/components/schemas/TagsUpdated"
+         },
+         {
+          "$ref": "#/components/schemas/TagsUnchanged"
+         }
+        ],
+        "discriminator": {
+         "propertyName": "status",
+         "mapping": {
+          "tags_updated": "#/components/schemas/TagsUpdated",
+          "tags_unchanged": "#/components/schemas/TagsUnchanged"
+         }
+        }
+       }
+      },
+      "required": [
+       "entity_id",
+       "operation"
+      ]
+     },
+     "TagsUpdated": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "string",
+        "enum": [
+         "tags_updated"
+        ]
+       },
+       "tags_before": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Tags that were on the entity before the update"
+       },
+       "tags_after": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Tags that are on the entity after the update"
+       },
+       "tags_added": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Tags that were added in this update"
+       },
+       "tags_removed": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Tags that were removed in this update"
+       },
+       "updated": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp when the update occurred"
+       }
+      },
+      "required": [
+       "status",
+       "tags_before",
+       "tags_after",
+       "tags_added",
+       "tags_removed",
+       "updated"
+      ]
+     },
+     "TagsUnchanged": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "string",
+        "enum": [
+         "tags_unchanged"
+        ]
+       },
+       "current_tags": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        },
+        "description": "Current tags on the entity"
+       },
+       "message": {
+        "type": "string",
+        "description": "Explanation of why tags were unchanged",
+        "default": "Tags are already set to the requested values"
+       }
+      },
+      "required": [
+       "status",
+       "current_tags",
+       "message"
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/list/{listId}/entity/tags": {
+     "post": {
+      "tags": [
+       "List"
+      ],
+      "description": "Replaces all tags on an entity in a Third-Parties Watch List.",
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/listId"
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/TagOperationRequest"
+         },
+         "examples": {
+          "byId": {
+           "summary": "Update tags using entity ID",
+           "value": {
+            "entity": {
+             "id": "CK2WP"
+            },
+            "tags": [
+             "tier1",
+             "critical",
+             "financial"
+            ]
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Tags successfully updated or unchanged",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/TagOperationResponse"
+          },
+          "examples": {
+           "updated": {
+            "summary": "Tags were updated",
+            "value": {
+             "entity_id": "CK2WP",
+             "operation": {
+              "status": "tags_updated",
+              "tags_before": [
+               "tier2",
+               "monitoring"
+              ],
+              "tags_after": [
+               "tier1",
+               "critical",
+               "monitoring"
+              ],
+              "tags_added": [
+               "tier1",
+               "critical"
+              ],
+              "tags_removed": [
+               "tier2"
+              ],
+              "updated": "2025-10-16T10:30:00.000Z"
+             }
+            }
+           },
+           "unchanged": {
+            "summary": "Tags were already set to requested values",
+            "value": {
+             "entity_id": "CK2WP",
+             "operation": {
+              "status": "tags_unchanged",
+              "current_tags": [
+               "tier1",
+               "critical"
+              ],
+              "message": "Tags are already set to the requested values"
+             }
+            }
+           }
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Invalid request — invalid tag name, invalid entity, or list not found",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       },
+       "403": {
+        "description": "Forbidden — tag updates are not enabled for this list type",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "example": {
+           "message": "Tag updates are not enabled for this list type",
+           "status_code": 403,
+           "trace_id": "9e6cae17-2f72-4b7d-a2d8-e03a5bcaf7fa"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "Entity not found on list",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+]

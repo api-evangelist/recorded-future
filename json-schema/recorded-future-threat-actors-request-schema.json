@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-threat-actors-request-schema.json",
+  "title": "ThreatActorsRequest",
+  "description": "JSON object specifying pagination of the threat actor list",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-threat-api-openapi.yml#/components/schemas/ThreatActorsRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "This string value can be used for a case insensitive, free text search of threat actor names, common names, or aliases.  For example, using `name\":\"panda\"` will yield a search result with over 300 threat actors that have the word \"panda\" somewhere in its name, common names, or aliases. Advanced searches are supported using a prefix in the search string. For example, using `\"name\":\"exact:panda\"`yields only threat actor(s) whose name is just \"Panda\". <table>   <tr>     <th>Prefix</th>     <th>Match type</th>     <th>Description</th>   </tr>   <tr>     <td>no prefix</td>     <td>freetext match (default)</td>     <td>Returns threat actors where the search string matches somewhere in a name, a common name or an alias (case-insensitive).</td>   </tr>   <tr>     <td>exact:</td>     <td>exact match</td>     <td>Returns threat actors where the search string exactly matches a name, a common name or an alias.</td>   </tr>   <tr>     <td>prefix:</td>     <td>prefix match</td>     <td>Returns threat actors where the search string matches the beginning of a name, a common name or an alias.</td>   </tr>   <tr>     <td>infix:</td>     <td>infix match</td>     <td>Returns threat actors where the search string is contained anywhere in a name, a common name or an alias.</td>   </tr>   <tr>     <td>relevance:</td>     <td>1 word: relevance match<br/> 2+ words: relevance phrase match</td>     <td>Returns threat actors that have text attributes relevant to the given search word or search phrase (in the same order). The results are sorted by decreasing relevance.</td>   </tr> </table>",
+      "type": "string"
+    },
+    "limit": {
+      "description": "This integer value sets the upper limit on the number of threat actors returned.",
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 10000
+    },
+    "offset": {
+      "description": "This string value should be received in a prior search, and is used to deliver the next set of threat actors in the search response.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "limit"
+  ]
+}

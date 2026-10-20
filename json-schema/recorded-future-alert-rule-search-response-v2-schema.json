@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-alert-rule-search-response-v2-schema.json",
+  "title": "AlertRuleSearchResponseV2",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertRuleSearchResponseV2",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AlertRule"
+          }
+        }
+      },
+      "required": [
+        "results"
+      ]
+    },
+    "counts": {
+      "$ref": "#/$defs/Counts"
+    }
+  },
+  "required": [
+    "data",
+    "counts"
+  ],
+  "$defs": {
+    "AlertRule": {
+      "type": "object",
+      "description": "An alert rule",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id of the alert rule"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the alert rule"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation date of the alert rule"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the alert rule is enabled"
+        },
+        "priority": {
+          "type": "boolean",
+          "description": "Whether the rule is a priority rule"
+        },
+        "tags": {
+          "deprecated": true,
+          "type": "array",
+          "description": "Deprecated. Always empty.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "use_case_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Id of the rule's use case. `null` for custom rules."
+        },
+        "owner": {
+          "description": "The rule owner (a user or an organisation). Only present when the owner entity can be resolved; typically an organisation for standard use cases and an individual user for custom rules.\n",
+          "$ref": "#/$defs/IdName"
+        },
+        "intelligence_goals": {
+          "type": "array",
+          "description": "Intelligence goals that the alert rule is associated with",
+          "items": {
+            "$ref": "#/$defs/IdName"
+          }
+        },
+        "notification_settings": {
+          "type": "object",
+          "description": "Notification settings for the rule",
+          "properties": {
+            "email_subscribers": {
+              "type": "array",
+              "description": "A list of email subscribers for the rule",
+              "items": {
+                "$ref": "#/$defs/IdName"
+              }
+            },
+            "mobile_subscribers": {
+              "type": "array",
+              "description": "A list of mobile subscribers for the rule",
+              "items": {
+                "$ref": "#/$defs/IdName"
+              }
+            }
+          },
+          "required": [
+            "email_subscribers",
+            "mobile_subscribers"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "created",
+        "enabled",
+        "priority",
+        "tags",
+        "use_case_id",
+        "intelligence_goals",
+        "notification_settings"
+      ]
+    },
+    "Counts": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of alerts returned"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total number of alerts matching the query"
+        }
+      },
+      "required": [
+        "returned",
+        "total"
+      ]
+    },
+    "IdName": {
+      "type": "object",
+      "description": "A generic id/name reference (user, organisation, subscriber or intelligence goal)",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Entity id, format varies by entity type"
+        },
+        "name": {
+          "type": "string",
+          "description": "Entity display name"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    }
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-search-response-schema.json",
+  "title": "SearchResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/SearchResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "$ref": "#/$defs/NoteSearchResponseAttributes"
+          },
+          "id": {
+            "type": "string",
+            "description": "Note id"
+          },
+          "source": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "required": [
+          "id",
+          "source"
+        ]
+      }
+    },
+    "next_offset": {
+      "type": "string"
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "returned",
+        "total"
+      ]
+    }
+  },
+  "required": [
+    "data",
+    "counts"
+  ],
+  "$defs": {
+    "DiamondModel": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "malicious_infrastructure": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "adversary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "target": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        }
+      }
+    },
+    "NoteEntity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "NoteSearchResponseAttributes": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "published": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "note_entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "context_entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "topic": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "validation_urls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "validated_on": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date when analyst note was validated"
+        },
+        "diamond_model": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DiamondModel"
+          }
+        },
+        "header_image": {
+          "$ref": "#/$defs/NoteEntity"
+        },
+        "recommended_queries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Query"
+          }
+        },
+        "attachment": {
+          "type": "string",
+          "description": "attachment file name"
+        },
+        "detection_rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        }
+      },
+      "required": [
+        "title",
+        "text",
+        "published"
+      ]
+    },
+    "Query": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "$ref": "#/$defs/NoteEntity"
+        }
+      }
+    }
+  }
+}

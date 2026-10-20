@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-queue-response-status-schema.json",
+  "title": "queue.ResponseStatus",
+  "description": "Current status of a queue item.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-payment-fraud-intelligence-api-openapi.yml#/components/schemas/queue.ResponseStatus",
+  "properties": {
+    "completedAt": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "integer"
+    },
+    "error": {
+      "type": "string"
+    },
+    "events": {
+      "type": "integer"
+    },
+    "filename": {
+      "type": "string"
+    },
+    "startedAt": {
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

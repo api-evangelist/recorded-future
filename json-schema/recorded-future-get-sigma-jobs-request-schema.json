@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-get-sigma-jobs-request-schema.json",
+  "title": "GetSigmaJobsRequest",
+  "description": "Request to list Auto Sigma jobs with optional filtering.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-malware-intelligence-api-openapi.yml#/components/schemas/GetSigmaJobsRequest",
+  "type": "object",
+  "properties": {
+    "limit": {
+      "title": "Limit",
+      "description": "Max number of jobs to return 10, cannot exceed 1000",
+      "default": 10,
+      "type": "number"
+    },
+    "offset": {
+      "title": "Offset",
+      "description": "Number of jobs to skip before returning results",
+      "default": 0,
+      "type": "number"
+    }
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-create-case-request-schema.json",
+  "title": "CreateCaseRequest",
+  "description": "Request to create a new case from an alert context.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-case-api-openapi.yml#/components/schemas/CreateCaseRequest",
+  "type": "object",
+  "properties": {
+    "context": {
+      "$ref": "#/$defs/CreateContext"
+    },
+    "organization": {
+      "$ref": "#/$defs/UserIdentity"
+    },
+    "status": {
+      "$ref": "#/$defs/CaseStatus"
+    },
+    "priority": {
+      "$ref": "#/$defs/CasePriority"
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "assignee": {
+      "$ref": "#/$defs/UserIdentity"
+    }
+  },
+  "$defs": {
+    "AlertNotificationId": {
+      "type": "string",
+      "format": "identity",
+      "description": "Internal alert notification ID (e.g., 4e4GmW). This is NOT the same as alert IDs returned by the v3 Alerts API — it is an internal notification identifier. Using alert IDs from the Alerts API will result in errors.",
+      "maxLength": 16
+    },
+    "AlertRuleId": {
+      "type": "string",
+      "pattern": "^report:[a-zA-Z0-9]{3,20}$",
+      "description": "The id of of an alert rule, prefixed with 'report:'",
+      "maxLength": 20
+    },
+    "CasePriority": {
+      "type": "string",
+      "enum": [
+        "Informational",
+        "Moderate",
+        "High"
+      ],
+      "description": "The Priority of the Case"
+    },
+    "CaseStatus": {
+      "type": "string",
+      "enum": [
+        "New",
+        "InProgress",
+        "Dismissed",
+        "Resolved"
+      ],
+      "description": "The Status of the Case"
+    },
+    "CreateContext": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/CreateReferenceAlertContext"
+        },
+        {
+          "$ref": "#/$defs/CreateSignalAlertContext"
+        }
+      ],
+      "description": "Alert context for case creation. Uses discriminator to select between reference and signal alert types."
+    },
+    "CreateReferenceAlertContext": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "reference_alert"
+          ]
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReferenceId"
+          },
+          "maxItems": 100
+        },
+        "alert_notification": {
+          "$ref": "#/$defs/AlertNotificationId"
+        },
+        "alert_rule": {
+          "$ref": "#/$defs/AlertRuleId"
+        }
+      },
+      "required": [
+        "type",
+        "references",
+        "alert_notification",
+        "alert_rule"
+      ],
+      "description": "Alert context for reference-based cases, linking to document references and alert notifications."
+    },
+    "CreateSignalAlertContext": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "signal_alert"
+          ]
+        },
+        "entity": {
+          "$ref": "#/$defs/Identity"
+        },
+        "alert_rule": {
+          "$ref": "#/$defs/AlertRuleId"
+        },
+        "alert_notification": {
+          "$ref": "#/$defs/AlertNotificationId"
+        },
+        "risk_evidences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RiskEvidence"
+          },
+          "maxItems": 100
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReferenceId"
+          },
+          "maxItems": 100
+        },
+        "cyber_level": {
+          "$ref": "#/$defs/CyberLevel"
+        }
+      },
+      "required": [
+        "type",
+        "entity",
+        "alert_rule",
+        "alert_notification"
+      ],
+      "oneOf": [
+        {
+          "required": [
+            "risk_evidences"
+          ],
+          "not": {
+            "required": [
+              "references"
+            ]
+          }
+        },
+        {
+          "required": [
+            "references"
+          ],
+          "not": {
+            "required": [
+              "risk_evidences"
+            ]
+          }
+        }
+      ],
+      "description": "Alert context for signal-based cases, linking to entities, risk evidence, and alert notifications."
+    },
+    "CyberLevel": {
+      "type": "object",
+      "properties": {
+        "attacker": {
+          "type": "integer",
+          "maximum": 4,
+          "minimum": 1
+        },
+        "method": {
+          "type": "integer",
+          "maximum": 4,
+          "minimum": 1
+        },
+        "operation": {
+          "type": "integer",
+          "maximum": 4,
+          "minimum": 1
+        },
+        "target": {
+          "type": "integer",
+          "maximum": 4,
+          "minimum": 1
+        }
+      },
+      "description": "Cyber kill chain level classification (attacker, method, operation, target)."
+    },
+    "Identity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The id of an entity",
+      "maxLength": 10
+    },
+    "ReferenceId": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a Reference",
+      "maxLength": 16
+    },
+    "RiskEvidence": {
+      "type": "object",
+      "properties": {
+        "rule_description": {
+          "type": "string",
+          "description": "The Description field of the risk rule",
+          "maxLength": 128
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 24
+        }
+      },
+      "description": "Risk evidence linking a risk rule to a timestamp."
+    },
+    "UserIdentity": {
+      "type": "string",
+      "format": "identity",
+      "maxLength": 24,
+      "description": "Organization identity string in uhash:<hash> format (e.g., uhash:2vefBNqkbi). This is the organization ID, not a user identity."
+    }
+  }
+}

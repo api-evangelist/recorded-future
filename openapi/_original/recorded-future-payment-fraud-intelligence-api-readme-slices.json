@@ -1,0 +1,3783 @@
+[
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-bank-account-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.BankAccountsClientConfig": {
+      "properties": {
+       "query": {
+        "example": "{\"query\":{\"match_all\":{}}}",
+        "type": "string"
+       },
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "type": "object",
+      "description": "Client configuration for bank accounts data preset."
+     },
+     "preset.ClientRequest-preset_BankAccountsClientConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.BankAccountsClientConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for bank accounts data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/bankAccounts": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_BankAccountsClientConfig",
+          "summary": "data",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from bank account preset input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of compromised bank account records scoped to your organization."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-check-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.ChecksClientConfig": {
+      "properties": {
+       "query": {
+        "example": "{\"query\":{\"match_all\":{}}}",
+        "type": "string"
+       },
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "type": "object",
+      "description": "Client configuration for compromised checks data preset."
+     },
+     "preset.ClientRequest-preset_ChecksClientConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.ChecksClientConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for compromised checks data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/checks": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_ChecksClientConfig",
+          "summary": "data",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from bank check preset input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of compromised bank check records for your organization."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-cpp-merchant-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.CPPConfig": {
+      "properties": {
+       "query": {
+        "example": "{\"query\":{\"match_all\":{}}}",
+        "type": "string"
+       },
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "type": "object",
+      "description": "Client configuration for card-present payment fraud preset."
+     },
+     "preset.ClientRequest-preset_CPPConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.CPPConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for card-present payment data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError403": {
+      "properties": {
+       "message": {
+        "example": "forbidden access",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Forbidden error for preset operations (insufficient permissions)."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/merchantsCpp": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_CPPConfig",
+          "summary": "data",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "403": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError403"
+          }
+         }
+        },
+        "description": "Forbidden"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from CPP preset input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of Common Point of Purchase (CPP) merchant records identifying potential points-of-compromise."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-full-card-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.ClientRequest-preset_FullCardClientConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.FullCardClientConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for full card number data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.FullCardClientConfig": {
+      "properties": {
+       "query": {
+        "example": "{\"query\":{\"match_all\":{}}}",
+        "type": "string"
+       },
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "type": "object",
+      "description": "Client configuration for full card number fraud data preset."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/cardsFullData": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_FullCardClientConfig",
+          "summary": "request",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from full card preset input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of compromised full payment card records scoped to your organization."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-magecart-domain-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.ClientRequest-preset_MagecartDomainClientConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.MagecartDomainClientConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for Magecart domain data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.MagecartDomainClientConfig": {
+      "properties": {
+       "query": {
+        "example": "{\"query\":{\"match_all\":{}}}",
+        "type": "string"
+       },
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "type": "object",
+      "description": "Client configuration for Magecart domain skimmer detection preset."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/merchantsMagecartDomain": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_MagecartDomainClientConfig",
+          "summary": "request",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from magecart domain input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of Magecart domain records tracking detected JavaScript card-skimming activity."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-magecart-merchant-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.ClientRequest-preset_MagecartMerchantClientConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.MagecartMerchantClientConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for Magecart merchant data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.MagecartMerchantClientConfig": {
+      "properties": {
+       "query": {
+        "example": "{\"query\":{\"match_all\":{}}}",
+        "type": "string"
+       },
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "type": "object",
+      "description": "Client configuration for Magecart merchant skimmer detection preset."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/merchantsMagecartMerchant": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_MagecartMerchantClientConfig",
+          "summary": "request",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from magecart merchant input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of merchant-level Magecart records enriched with merchant name and MID."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-magescanner-scan-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.ClientRequest-preset_MagescannerScansClientConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.MagescannerScansClientConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for Magescanner scan data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.MagescannerScansClientConfig": {
+      "properties": {
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "required": [
+       "queryRange"
+      ],
+      "type": "object",
+      "description": "Client configuration for Magescanner scan results preset."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/merchantsMagescannerScans": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_MagescannerScansClientConfig",
+          "summary": "request",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from magescanner scans input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of Magescanner scan results for e-commerce card-skimming threat visibility."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-partial-card-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.ClientRequest-preset_PartialCardClientConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.PartialCardClientConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for partial card number data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.PartialCardClientConfig": {
+      "properties": {
+       "query": {
+        "example": "{\"query\":{\"match_all\":{}}}",
+        "type": "string"
+       },
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "type": "object",
+      "description": "Client configuration for partial card number fraud data preset."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError403": {
+      "properties": {
+       "message": {
+        "example": "forbidden access",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Forbidden error for preset operations (insufficient permissions)."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/cardsPartialData": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_PartialCardClientConfig",
+          "summary": "request",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "403": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError403"
+          }
+         }
+        },
+        "description": "Forbidden"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from partial card input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of compromised partial card records with BIN-level data from e-skimmer activity."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-sold-partial-card-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.ClientRequest-preset_PartialCardSoldClientConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.PartialCardSoldClientConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for partial card sold data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.PartialCardSoldClientConfig": {
+      "properties": {
+       "query": {
+        "example": "{\"query\":{\"match_all\":{}}}",
+        "type": "string"
+       },
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "type": "object",
+      "description": "Client configuration for partial card sold data preset."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError403": {
+      "properties": {
+       "message": {
+        "example": "forbidden access",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Forbidden error for preset operations (insufficient permissions)."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/cardsPartialDataSold": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_PartialCardSoldClientConfig",
+          "summary": "request",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "403": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError403"
+          }
+         }
+        },
+        "description": "Forbidden"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from partial card sold input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of partial card records filtered by sold date rather than first-observed date."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-tester-merchant-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "malformed query",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for preset operations."
+     },
+     "pipeline.ResponseCount": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       }
+      },
+      "type": "object",
+      "description": "Count of records in the data pipeline."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     },
+     "preset.CheckerConfig": {
+      "properties": {
+       "query": {
+        "example": "{\"query\":{\"match_all\":{}}}",
+        "type": "string"
+       },
+       "queryRange": {
+        "$ref": "#/components/schemas/preset.ElasticsearchRange"
+       }
+      },
+      "type": "object",
+      "description": "Client configuration for card checker detection preset."
+     },
+     "preset.ClientRequest-preset_CheckerConfig": {
+      "properties": {
+       "dryRun": {
+        "example": false,
+        "type": "boolean"
+       },
+       "input": {
+        "$ref": "#/components/schemas/preset.CheckerConfig"
+       },
+       "output": {
+        "$ref": "#/components/schemas/preset.Output"
+       }
+      },
+      "type": "object",
+      "description": "Preset creation request for card checker detection data."
+     },
+     "preset.ElasticsearchRange": {
+      "properties": {
+       "from": {
+        "example": "now-1h/h",
+        "type": "string"
+       },
+       "to": {
+        "example": "now/h",
+        "type": "string"
+       }
+      },
+      "required": [
+       "from",
+       "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+     },
+     "preset.Output": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "filename": {
+        "example": "file-yyyy-MM-ddTHH.csv",
+        "type": "string"
+       }
+      },
+      "required": [
+       "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+     },
+     "preset.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for preset operations."
+     },
+     "preset.ResponseError403": {
+      "properties": {
+       "message": {
+        "example": "forbidden access",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Forbidden error for preset operations (insufficient permissions)."
+     },
+     "preset.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for preset operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/pipeline/merchantsTester": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/preset.ClientRequest-preset_CheckerConfig",
+          "summary": "data",
+          "description": "preset config"
+         }
+        }
+       },
+       "description": "preset config",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCount"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/gitlab_regemini_com_dev_vandelay_v5_api_model_preset.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "403": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError403"
+          }
+         }
+        },
+        "description": "Forbidden"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/preset.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Generate and run new a pipeline from checker preset input",
+      "tags": [
+       "pipeline"
+      ],
+      "description": "Queue a bulk export of tester merchant records used by fraudsters to validate stolen cards."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-pickup-data.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "file.Request": {
+      "properties": {
+       "columns": {
+        "example": [
+         "_id",
+         "bin6",
+         "exp"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+       },
+       "format": {
+        "default": "json",
+        "enum": [
+         "json",
+         "csv"
+        ],
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Request to download a specific data file. For JSON format, columns may be an empty array to return all fields; for CSV format, columns are required."
+     },
+     "file.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "empty task id",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for file operations."
+     },
+     "file.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for file operations."
+     },
+     "file.ResponseError404": {
+      "properties": {
+       "message": {
+        "example": "task not found",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "File not found error."
+     },
+     "file.ResponseError425": {
+      "properties": {
+       "message": {
+        "example": "task is not completed'",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "File not yet available (processing in progress)."
+     },
+     "file.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for file operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/file/{id}": {
+     "post": {
+      "parameters": [
+       {
+        "description": "task id",
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+         "type": "string"
+        }
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/file.Request",
+          "summary": "request",
+          "description": "output config"
+         }
+        }
+       },
+       "description": "output config"
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/x-ndjson": {
+          "schema": {
+           "type": "string",
+           "description": "Newline-delimited JSON (NDJSON) for JSON format, or CSV for CSV format. Each line is a standalone JSON object."
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "400": {
+        "content": {
+         "application/octet-stream": {
+          "schema": {
+           "$ref": "#/components/schemas/file.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/octet-stream": {
+          "schema": {
+           "$ref": "#/components/schemas/file.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "404": {
+        "content": {
+         "application/octet-stream": {
+          "schema": {
+           "$ref": "#/components/schemas/file.ResponseError404"
+          }
+         }
+        },
+        "description": "Not Found"
+       },
+       "425": {
+        "content": {
+         "application/octet-stream": {
+          "schema": {
+           "$ref": "#/components/schemas/file.ResponseError425"
+          }
+         }
+        },
+        "description": "Too Early"
+       },
+       "429": {
+        "content": {
+         "application/octet-stream": {
+          "schema": {
+           "$ref": "#/components/schemas/file.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Get resulted file for the task",
+      "tags": [
+       "file"
+      ],
+      "description": "Download the completed results of a PFI bulk data task in NDJSON or CSV format."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-bank-account-images.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "birlimage.RequestBankAccounts": {
+      "properties": {
+       "ids": {
+        "items": {
+         "type": "string"
+        },
+        "maxItems": 100,
+        "type": "array",
+        "uniqueItems": true
+       }
+      },
+      "required": [
+       "ids"
+      ],
+      "type": "object",
+      "description": "Request to retrieve images for bank account records by their IDs."
+     },
+     "birlimage.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "your request cannot be processed",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error response."
+     },
+     "birlimage.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error response."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/image/bankAccounts": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/birlimage.RequestBankAccounts",
+          "summary": "data",
+          "description": "images ids"
+         }
+        }
+       },
+       "description": "images ids",
+       "required": true
+      },
+      "responses": {
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/birlimage.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/birlimage.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Create task to prepare bank account images for download.",
+      "tags": [
+       "image"
+      ],
+      "description": "Queue bank account document images for download by record IDs."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-check-images.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "birlimage.RequestChecks": {
+      "properties": {
+       "ids": {
+        "items": {
+         "type": "string"
+        },
+        "maxItems": 100,
+        "type": "array",
+        "uniqueItems": true
+       }
+      },
+      "required": [
+       "ids"
+      ],
+      "type": "object",
+      "description": "Request to retrieve images for check records by their IDs."
+     },
+     "birlimage.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "your request cannot be processed",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error response."
+     },
+     "birlimage.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error response."
+     },
+     "pipeline.ResponseCreated": {
+      "properties": {
+       "count": {
+        "example": 18177,
+        "type": "integer"
+       },
+       "taskId": {
+        "example": "67afc0989ef1e4e2f3ba46aa",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of pipeline resource creation."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/image/checks": {
+     "put": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/birlimage.RequestChecks",
+          "summary": "data",
+          "description": "images ids"
+         }
+        }
+       },
+       "description": "images ids",
+       "required": true
+      },
+      "responses": {
+       "201": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/pipeline.ResponseCreated"
+          }
+         }
+        },
+        "description": "Created"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/birlimage.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/birlimage.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Create task to prepare checks images for download.",
+      "tags": [
+       "image"
+      ],
+      "description": "Queue check document images for download by record IDs."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-add-scan-domains.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "mage.RequestAddToQueue": {
+      "properties": {
+       "urls": {
+        "example": [
+         "szewskihurt.com",
+         "roset.ca",
+         "videoly.co"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "maxItems": 10000,
+        "type": "array",
+        "uniqueItems": false
+       }
+      },
+      "type": "object",
+      "description": "Request to add items to the processing queue."
+     },
+     "mage.ResponseAddToQueue": {
+      "properties": {
+       "added": {
+        "example": 3911,
+        "type": "integer"
+       },
+       "hopperSize": {
+        "example": 41000,
+        "type": "integer"
+       },
+       "reason": {
+        "example": "queue is full",
+        "type": "string"
+       },
+       "success": {
+        "type": "boolean"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of items added to the processing queue."
+     },
+     "mage.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "your request cannot be processed",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for processing operations."
+     },
+     "mage.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for processing operations."
+     },
+     "mage.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for processing operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/mage/queue/add": {
+     "post": {
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/mage.RequestAddToQueue",
+          "summary": "request",
+          "description": "new urls for scan"
+         }
+        }
+       },
+       "description": "new urls for scan",
+       "required": true
+      },
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/mage.ResponseAddToQueue"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "202": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/mage.ResponseAddToQueue"
+          }
+         }
+        },
+        "description": "Accepted"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/mage.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/mage.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/mage.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Adds new domains to the customer specific scanning queue",
+      "tags": [
+       "mage"
+      ],
+      "description": "Submit up to 10,000 domains to your organization's custom Magecart e-skimmer scanning queue."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-clear-scan-queue.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "mage.ResponseClearQueue": {
+      "properties": {
+       "hopperSize": {
+        "example": 41000,
+        "type": "integer"
+       },
+       "success": {
+        "type": "boolean"
+       }
+      },
+      "type": "object",
+      "description": "Confirmation of queue cleared."
+     },
+     "mage.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "your request cannot be processed",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for processing operations."
+     },
+     "mage.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for processing operations."
+     },
+     "mage.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for processing operations."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/mage/queue/clear": {
+     "post": {
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/mage.ResponseClearQueue"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/mage.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/mage.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/mage.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Empties the customer specific scanning queue",
+      "tags": [
+       "mage"
+      ],
+      "description": "Remove all domains from your organization's custom Magecart scanning queue."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-delete-task.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "queue.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "empty task id",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for queue operations."
+     },
+     "queue.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for queue operations."
+     },
+     "queue.ResponseError404": {
+      "properties": {
+       "message": {
+        "example": "task not found",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Queue item not found."
+     },
+     "queue.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for queue operations."
+     },
+     "queue.ResponseStatus": {
+      "properties": {
+       "completedAt": {
+        "example": "2025-01-18T20:39:11.000Z",
+        "type": "string"
+       },
+       "duration": {
+        "example": 11923,
+        "type": "integer"
+       },
+       "error": {
+        "example": "pipeline has been terminated due to execution limit",
+        "type": "string"
+       },
+       "events": {
+        "example": 120,
+        "type": "integer"
+       },
+       "filename": {
+        "example": "file-2024-11-11T01.csv",
+        "type": "string"
+       },
+       "startedAt": {
+        "example": "2025-01-18T20:34:00.000Z",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Current status of a queue item."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/task/{id}": {
+     "delete": {
+      "parameters": [
+       {
+        "description": "task id",
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+         "type": "string"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseStatus"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "404": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError404"
+          }
+         }
+        },
+        "description": "Not Found"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Get task status",
+      "tags": [
+       "task"
+      ],
+      "description": "Remove a queued PFI bulk data task before it starts executing."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-list-tasks.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "queue.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for queue operations."
+     },
+     "queue.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for queue operations."
+     },
+     "queue.ResponseList": {
+      "properties": {
+       "tasks": {
+        "example": [
+         "67afc0989ef1e4e2f3ba46aa",
+         "67afc0989ef1e4e2f3ba48ac",
+         "67afc0989ef1e4e2f3ag91br"
+        ],
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": false
+       }
+      },
+      "type": "object",
+      "description": "List of items in the processing queue."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/task/list": {
+     "get": {
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseList"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Get tasks in queue",
+      "tags": [
+       "task"
+      ],
+      "description": "Retrieve all PFI bulk data tasks in the queue, most recent first."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/pfi-task-status.md",
+  "definition": {
+   "components": {
+    "schemas": {
+     "queue.ResponseError400": {
+      "properties": {
+       "message": {
+        "example": "empty task id",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Bad request error for queue operations."
+     },
+     "queue.ResponseError401": {
+      "properties": {
+       "message": {
+        "example": "unauthorized user",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Unauthorized error for queue operations."
+     },
+     "queue.ResponseError404": {
+      "properties": {
+       "message": {
+        "example": "task not found",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Queue item not found."
+     },
+     "queue.ResponseError429": {
+      "properties": {
+       "message": {
+        "example": "please try again later",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Rate limit exceeded for queue operations."
+     },
+     "queue.ResponseStatus": {
+      "properties": {
+       "completedAt": {
+        "example": "2025-01-18T20:39:11.000Z",
+        "type": "string"
+       },
+       "duration": {
+        "example": 11923,
+        "type": "integer"
+       },
+       "error": {
+        "example": "pipeline has been terminated due to execution limit",
+        "type": "string"
+       },
+       "events": {
+        "example": 120,
+        "type": "integer"
+       },
+       "filename": {
+        "example": "file-2024-11-11T01.csv",
+        "type": "string"
+       },
+       "startedAt": {
+        "example": "2025-01-18T20:34:00.000Z",
+        "type": "string"
+       }
+      },
+      "type": "object",
+      "description": "Current status of a queue item."
+     }
+    },
+    "securitySchemes": {
+     "TokenAuth": {
+      "in": "header",
+      "name": "X-RFToken",
+      "type": "apiKey"
+     }
+    }
+   },
+   "info": {
+    "title": "Payment Fraud Intelligence API",
+    "version": "1.1"
+   },
+   "externalDocs": {
+    "description": "",
+    "url": ""
+   },
+   "paths": {
+    "/task/{id}": {
+     "get": {
+      "parameters": [
+       {
+        "description": "task id",
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+         "type": "string"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseStatus"
+          }
+         }
+        },
+        "description": "OK"
+       },
+       "400": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError400"
+          }
+         }
+        },
+        "description": "Bad Request"
+       },
+       "401": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError401"
+          }
+         }
+        },
+        "description": "Unauthorized"
+       },
+       "404": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError404"
+          }
+         }
+        },
+        "description": "Not Found"
+       },
+       "429": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/queue.ResponseError429"
+          }
+         }
+        },
+        "description": "Too Many Requests"
+       }
+      },
+      "security": [
+       {
+        "TokenAuth": []
+       }
+      ],
+      "summary": "Get task status",
+      "tags": [
+       "task"
+      ],
+      "description": "Poll the processing status of a PFI bulk data task to determine when results are ready."
+     }
+    }
+   },
+   "openapi": "3.1.0",
+   "servers": [
+    {
+     "url": "https://pfi.regemini.com/api/v1"
+    }
+   ],
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ }
+]

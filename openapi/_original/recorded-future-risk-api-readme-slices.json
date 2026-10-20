@@ -1,0 +1,1219 @@
+[
+ {
+  "page": "https://docs.recordedfuture.com/reference/risk-get-active-risk-rule.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Risk API",
+    "version": "1.1.0",
+    "description": "A Recorded Future API for fetching risk and risk risk history information.\n",
+    "contact": {
+     "name": "TPI Team",
+     "email": "tpi-team@recordedfuture.com"
+    },
+    "x-rf-service-id": "service:risk"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/risk"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Active Risks",
+     "description": "Operations related to active risk rules"
+    }
+   ],
+   "paths": {
+    "/active/rule": {
+     "post": {
+      "operationId": "get-active-risk-rule",
+      "summary": "Get a single active risk rule with enriched evidence",
+      "tags": [
+       "Active Risks"
+      ],
+      "description": "Fetch a single active risk rule for a company with paginated, rule-type-specific enriched evidence (open ports, leaked credentials, vulnerable products).",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/GetActiveRiskRuleRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "A single active risk rule (if active).",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/GetActiveRiskRuleResponse"
+          },
+          "example": {
+           "entity": {
+            "id": "JBhgT2",
+            "provided_id": "JBhgT2",
+            "type": "Company",
+            "name": "Example Corporation"
+           },
+           "risk_rule": {
+            "risk_id": "attr:15a44457-a959-4848-bf62-241484376fc0",
+            "risk_name": "Historical Reported Cyber Attack",
+            "rule_alias": "reportedCyberAttack",
+            "criticality": 1,
+            "evidence": "1 sighting on 1 source: <e id=source:7xCvN3>Recorded Future Breach Intelligence</e>. A cyber attack was targeted at <e id=JBhgT2>Example Corporation</e> on Jan 01, 2024. Most recent link (Feb 8, 2024): https://www.bleepingcomputer.com/news/security/data-breaches-at-viamedis-and-almerys-impact-33-million-in-france/",
+            "added": "2025-09-23T21:12:56.378Z"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "Entity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "B_E7B"
+       },
+       "provided_id": {
+        "type": "string",
+        "description": "Entity id provided in request",
+        "example": "B_E7B"
+       },
+       "type": {
+        "type": "string",
+        "description": "Entity type",
+        "example": "Company"
+       },
+       "name": {
+        "type": "string",
+        "description": "Entity name",
+        "example": "Microsoft"
+       }
+      },
+      "required": [
+       "id",
+       "provided_id",
+       "type",
+       "name"
+      ],
+      "example": {
+       "id": "B_E7B",
+       "provided_id": "B_E7B",
+       "type": "Company",
+       "name": "Microsoft"
+      }
+     },
+     "GetActiveRiskRuleRequest": {
+      "type": "object",
+      "properties": {
+       "company": {
+        "type": "string",
+        "example": "B_E7B"
+       },
+       "rule_alias": {
+        "type": "string",
+        "example": "openPort"
+       },
+       "limit": {
+        "type": "integer",
+        "description": "Max number of evidence records to return (where supported)",
+        "example": 10
+       },
+       "offset": {
+        "type": "integer",
+        "description": "Evidence offset for pagination (where supported)",
+        "example": 5
+       }
+      },
+      "required": [
+       "company",
+       "rule_alias"
+      ],
+      "example": {
+       "company": "B_E7B",
+       "rule_alias": "openPort",
+       "limit": 10,
+       "offset": 5
+      }
+     },
+     "GetActiveRiskRuleResponse": {
+      "type": "object",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/Entity"
+       },
+       "risk_rule": {
+        "nullable": true,
+        "$ref": "#/components/schemas/ActiveRiskRule"
+       }
+      },
+      "required": [
+       "entity"
+      ],
+      "example": {
+       "entity": {
+        "id": "B_E7B",
+        "provided_id": "B_E7B",
+        "type": "Company",
+        "name": "Microsoft"
+       },
+       "risk_rule": {
+        "risk_id": "attr:d3079850-9fd1-11ec-ab46-acde48001122",
+        "risk_name": "Company IP With Often-Exploited Open Port",
+        "rule_alias": "openPort",
+        "criticality": 2,
+        "evidence": "100000+ sightings: 116847 company-owned IP addresses observed with open ports that are often exploited or insecure including <e id=ip:1.186.218.51>1.186.218.51</e> (1 port: <e id=iHVYYW>1433</e>; last seen September 19, 2025), <e id=ip:1.186.233.10>1.186.233.10</e> (1 port: <e id=gf0wYX>21</e>; last seen October 05, 2025), <e id=ip:1.186.248.158>1.186.248.158</e> (1 port: <e id=iHVx_1>445</e>; last seen September 13, 2025).",
+        "added": "2025-10-09T05:29:33.302Z",
+        "enriched_evidence": {
+         "evidence_type": "openPort",
+         "total": 123685,
+         "results": [
+          {
+           "ip": "ip:1.186.28.20",
+           "port": 23,
+           "first_seen": "2025-06-05T22:46:00.000Z",
+           "last_seen": "2025-10-06T01:12:00.000Z"
+          },
+          {
+           "ip": "ip:1.186.60.85",
+           "port": 21,
+           "first_seen": "2025-06-05T15:49:00.000Z",
+           "last_seen": "2025-10-05T19:38:00.000Z"
+          },
+          {
+           "ip": "ip:1.186.69.135",
+           "port": 445,
+           "first_seen": "2025-05-19T21:56:00.000Z",
+           "last_seen": "2025-09-13T21:14:00.000Z"
+          },
+          {
+           "ip": "ip:1.186.69.135",
+           "port": 3389,
+           "first_seen": "2025-05-19T21:56:00.000Z",
+           "last_seen": "2025-09-13T21:14:00.000Z"
+          },
+          {
+           "ip": "ip:1.186.85.65",
+           "port": 23,
+           "first_seen": "2025-06-05T22:46:00.000Z",
+           "last_seen": "2025-10-06T01:12:00.000Z"
+          }
+         ]
+        }
+       }
+      }
+     },
+     "ActiveRiskRule": {
+      "type": "object",
+      "properties": {
+       "risk_id": {
+        "type": "string",
+        "example": "attr:d3079850-9fd1-11ec-ab46-acde48001122"
+       },
+       "risk_name": {
+        "type": "string",
+        "example": "Company IP With Often-Exploited Open Port"
+       },
+       "rule_alias": {
+        "type": "string",
+        "example": "openPort"
+       },
+       "criticality": {
+        "type": "integer",
+        "example": 2
+       },
+       "evidence": {
+        "type": "string",
+        "example": "100000+ sightings: 116847 company-owned IP addresses observed with open ports that are often exploited or insecure including <e id=ip:1.186.218.51>1.186.218.51</e> (1 port: <e id=iHVYYW>1433</e>; last seen September 19, 2025)."
+       },
+       "added": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2025-10-09T05:29:33.302Z"
+       },
+       "removed": {
+        "type": "string",
+        "format": "date-time",
+        "nullable": true
+       },
+       "enriched_evidence": {
+        "nullable": true,
+        "oneOf": [
+         {
+          "$ref": "#/components/schemas/OpenPortEvidence"
+         },
+         {
+          "$ref": "#/components/schemas/LeakedCredentialsEvidence"
+         },
+         {
+          "$ref": "#/components/schemas/ReferenceListEvidence"
+         },
+         {
+          "$ref": "#/components/schemas/AttributeEvidence"
+         },
+         {
+          "$ref": "#/components/schemas/CompanyIpEvidence"
+         },
+         {
+          "$ref": "#/components/schemas/CompanySusceptibleToEvidence"
+         },
+         {
+          "$ref": "#/components/schemas/ProductRiskEvidence"
+         },
+         {
+          "$ref": "#/components/schemas/PatternEvidence"
+         },
+         {
+          "$ref": "#/components/schemas/CyberTrendsEvidence"
+         }
+        ],
+        "discriminator": {
+         "propertyName": "evidence_type",
+         "mapping": {
+          "openPort": "#/components/schemas/OpenPortEvidence",
+          "credentialDetails": "#/components/schemas/LeakedCredentialsEvidence",
+          "referenceList": "#/components/schemas/ReferenceListEvidence",
+          "attribute": "#/components/schemas/AttributeEvidence",
+          "companyIp": "#/components/schemas/CompanyIpEvidence",
+          "companySusceptibleTo": "#/components/schemas/CompanySusceptibleToEvidence",
+          "productRisk": "#/components/schemas/ProductRiskEvidence",
+          "pattern": "#/components/schemas/PatternEvidence",
+          "cyberTrends": "#/components/schemas/CyberTrendsEvidence"
+         }
+        }
+       }
+      },
+      "required": [
+       "risk_id",
+       "risk_name",
+       "rule_alias",
+       "criticality",
+       "evidence"
+      ]
+     },
+     "OpenPortEvidence": {
+      "type": "object",
+      "properties": {
+       "evidence_type": {
+        "type": "string",
+        "enum": [
+         "openPort"
+        ],
+        "description": "Discriminator identifying this evidence type",
+        "example": "openPort"
+       },
+       "total": {
+        "type": "integer",
+        "nullable": true,
+        "example": 123685
+       },
+       "results": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "ip": {
+           "type": "string",
+           "example": "ip:1.186.28.20"
+          },
+          "port": {
+           "type": "integer",
+           "example": 23
+          },
+          "first_seen": {
+           "type": "string",
+           "format": "date-time",
+           "example": "2025-06-05T22:46:00.000Z"
+          },
+          "last_seen": {
+           "type": "string",
+           "format": "date-time",
+           "example": "2025-10-06T01:12:00.000Z"
+          }
+         },
+         "required": [
+          "ip",
+          "port",
+          "first_seen",
+          "last_seen"
+         ]
+        }
+       },
+       "next_offset": {
+        "type": "integer",
+        "nullable": true
+       }
+      },
+      "required": [
+       "evidence_type",
+       "results"
+      ],
+      "example": {
+       "evidence_type": "openPort",
+       "total": 123685,
+       "results": [
+        {
+         "ip": "ip:1.186.28.20",
+         "port": 23,
+         "first_seen": "2025-06-05T22:46:00.000Z",
+         "last_seen": "2025-10-06T01:12:00.000Z"
+        },
+        {
+         "ip": "ip:1.186.60.85",
+         "port": 21,
+         "first_seen": "2025-06-05T15:49:00.000Z",
+         "last_seen": "2025-10-05T19:38:00.000Z"
+        },
+        {
+         "ip": "ip:1.186.69.135",
+         "port": 445,
+         "first_seen": "2025-05-19T21:56:00.000Z",
+         "last_seen": "2025-09-13T21:14:00.000Z"
+        },
+        {
+         "ip": "ip:1.186.69.135",
+         "port": 3389,
+         "first_seen": "2025-05-19T21:56:00.000Z",
+         "last_seen": "2025-09-13T21:14:00.000Z"
+        },
+        {
+         "ip": "ip:1.186.85.65",
+         "port": 23,
+         "first_seen": "2025-06-05T22:46:00.000Z",
+         "last_seen": "2025-10-06T01:12:00.000Z"
+        }
+       ]
+      }
+     },
+     "LeakedCredentialsEvidence": {
+      "type": "object",
+      "properties": {
+       "evidence_type": {
+        "type": "string",
+        "enum": [
+         "credentialDetails"
+        ],
+        "description": "Discriminator identifying this evidence type"
+       },
+       "entity_id": {
+        "type": "string"
+       },
+       "rule_alias": {
+        "type": "string"
+       },
+       "total": {
+        "type": "integer"
+       },
+       "results": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "email": {
+           "type": "string"
+          },
+          "password": {
+           "type": "string"
+          },
+          "document_title": {
+           "type": "string"
+          },
+          "document_publish_date": {
+           "type": "string",
+           "format": "date-time"
+          }
+         },
+         "required": [
+          "email",
+          "password",
+          "document_title",
+          "document_publish_date"
+         ]
+        }
+       }
+      },
+      "required": [
+       "evidence_type",
+       "entity_id",
+       "rule_alias",
+       "total",
+       "results"
+      ]
+     },
+     "ReferenceListEvidence": {
+      "type": "object",
+      "properties": {
+       "evidence_type": {
+        "type": "string",
+        "enum": [
+         "referenceList"
+        ],
+        "description": "Discriminator identifying this evidence type"
+       },
+       "total": {
+        "type": "integer",
+        "format": "int64",
+        "description": "Total count of event evidence items"
+       },
+       "results": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EventRiskEvidenceItem"
+        }
+       }
+      },
+      "required": [
+       "evidence_type",
+       "total",
+       "results"
+      ]
+     },
+     "AttributeEvidence": {
+      "type": "object",
+      "properties": {
+       "evidence_type": {
+        "type": "string",
+        "enum": [
+         "attribute"
+        ],
+        "description": "Discriminator identifying this evidence type"
+       },
+       "value_type": {
+        "type": "string",
+        "enum": [
+         "domain"
+        ],
+        "description": "Type of attribute value"
+       },
+       "results": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "value": {
+           "type": "string",
+           "description": "Domain entity identifier"
+          },
+          "added": {
+           "type": "string",
+           "format": "date-time",
+           "description": "Date when the attribute was added"
+          },
+          "domain_owner": {
+           "type": "string",
+           "nullable": true,
+           "description": "Domain owner entity identifier"
+          }
+         },
+         "required": [
+          "value",
+          "added"
+         ]
+        }
+       }
+      },
+      "required": [
+       "evidence_type",
+       "value_type",
+       "results"
+      ]
+     },
+     "CompanyIpEvidence": {
+      "type": "object",
+      "properties": {
+       "evidence_type": {
+        "type": "string",
+        "enum": [
+         "companyIp"
+        ],
+        "description": "Discriminator identifying this evidence type"
+       },
+       "total": {
+        "type": "integer"
+       },
+       "results": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "ip": {
+           "type": "string"
+          },
+          "ip_risk_rule": {
+           "type": "string"
+          },
+          "added": {
+           "type": "string",
+           "format": "date-time"
+          }
+         },
+         "required": [
+          "ip",
+          "ip_risk_rule",
+          "added"
+         ]
+        }
+       },
+       "next_offset": {
+        "type": "integer",
+        "nullable": true
+       }
+      },
+      "required": [
+       "evidence_type",
+       "total",
+       "results"
+      ]
+     },
+     "CompanySusceptibleToEvidence": {
+      "type": "object",
+      "properties": {
+       "evidence_type": {
+        "type": "string",
+        "enum": [
+         "companySusceptibleTo"
+        ],
+        "description": "Discriminator identifying this evidence type"
+       },
+       "total": {
+        "type": "integer",
+        "nullable": true
+       },
+       "results": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "cve_id": {
+           "type": "string"
+          },
+          "ip": {
+           "type": "string"
+          },
+          "owner": {
+           "type": "string"
+          },
+          "timestamp": {
+           "type": "string",
+           "format": "date-time"
+          }
+         },
+         "required": [
+          "cve_id",
+          "ip",
+          "owner",
+          "timestamp"
+         ]
+        }
+       },
+       "next_offset": {
+        "type": "integer",
+        "nullable": true
+       }
+      },
+      "required": [
+       "evidence_type",
+       "results"
+      ]
+     },
+     "ProductRiskEvidence": {
+      "type": "object",
+      "properties": {
+       "evidence_type": {
+        "type": "string",
+        "enum": [
+         "productRisk"
+        ],
+        "description": "Discriminator identifying this evidence type"
+       },
+       "total": {
+        "type": "integer",
+        "nullable": true
+       },
+       "results_in_page": {
+        "type": "integer"
+       },
+       "results": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "domain": {
+           "type": "string"
+          },
+          "product_identifier": {
+           "type": "string"
+          },
+          "cve_id": {
+           "type": "string",
+           "description": "Optional CVE identifier (may be null)",
+           "nullable": true
+          },
+          "first_seen": {
+           "type": "string",
+           "format": "date-time"
+          },
+          "last_seen": {
+           "type": "string",
+           "format": "date-time"
+          },
+          "product_risk_rule_name": {
+           "type": "string"
+          }
+         },
+         "required": [
+          "domain",
+          "product_identifier",
+          "first_seen",
+          "last_seen",
+          "product_risk_rule_name"
+         ]
+        }
+       },
+       "next_offset": {
+        "type": "integer",
+        "nullable": true
+       }
+      },
+      "required": [
+       "evidence_type",
+       "results_in_page",
+       "results"
+      ]
+     },
+     "PatternEvidence": {
+      "type": "object",
+      "properties": {
+       "evidence_type": {
+        "type": "string",
+        "enum": [
+         "pattern"
+        ],
+        "description": "Discriminator identifying this evidence type"
+       },
+       "total": {
+        "type": "integer",
+        "format": "int64",
+        "description": "Total count of event evidence items"
+       },
+       "results": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EventRiskEvidenceItem"
+        }
+       }
+      },
+      "required": [
+       "evidence_type",
+       "total",
+       "results"
+      ]
+     },
+     "CyberTrendsEvidence": {
+      "type": "object",
+      "properties": {
+       "evidence_type": {
+        "type": "string",
+        "enum": [
+         "cyberTrends"
+        ],
+        "description": "Discriminator identifying this evidence type"
+       },
+       "total": {
+        "type": "integer",
+        "format": "int64",
+        "description": "Total count of event evidence items"
+       },
+       "results": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/EventRiskEvidenceItem"
+        }
+       }
+      },
+      "required": [
+       "evidence_type",
+       "total",
+       "results"
+      ]
+     },
+     "EventRiskEvidenceItem": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string",
+        "nullable": true,
+        "description": "Event title"
+       },
+       "fragment": {
+        "type": "string",
+        "nullable": true,
+        "description": "Event fragment/excerpt"
+       },
+       "published": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Event publication date"
+       },
+       "document_url": {
+        "type": "string",
+        "nullable": true,
+        "description": "URL to the source document"
+       },
+       "source": {
+        "type": "string",
+        "nullable": true,
+        "description": "Source identifier"
+       }
+      },
+      "required": [
+       "published"
+      ]
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/risk-search-risk-history.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Risk API",
+    "version": "1.1.0",
+    "description": "A Recorded Future API for fetching risk and risk risk history information.\n",
+    "contact": {
+     "name": "TPI Team",
+     "email": "tpi-team@recordedfuture.com"
+    },
+    "x-rf-service-id": "service:risk"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/risk"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Risk History",
+     "description": "Operations related to risk history"
+    }
+   ],
+   "paths": {
+    "/history": {
+     "post": {
+      "operationId": "search-risk-histories",
+      "summary": "Search for risk history",
+      "tags": [
+       "Risk History"
+      ],
+      "description": "Returns change events (not daily snapshots) for the risk score, criticality, and individual risk rules of one or more entities, so you can see when each value became active and when it was replaced.",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/SearchRiskHistoriesRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "A list of risk histories.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/SearchRiskHistoriesResponse"
+          },
+          "example": {
+           "data": [
+            {
+             "entity": {
+              "id": "ip:45.207.192.190",
+              "provided_id": "ip:45.207.192.190",
+              "type": "IpAddress",
+              "name": "45.207.192.190"
+             },
+             "scores": [
+              {
+               "score": 97,
+               "added": "2026-05-02T03:25:41.894Z",
+               "removed": "2026-05-05T03:06:30.236Z"
+              },
+              {
+               "score": 93,
+               "added": "2026-05-05T03:06:30.236Z",
+               "removed": "2026-05-06T05:40:33.718Z"
+              },
+              {
+               "score": 97,
+               "added": "2026-05-06T05:40:33.718Z",
+               "removed": "2026-05-06T23:17:51.079Z"
+              },
+              {
+               "score": 98,
+               "added": "2026-05-06T23:17:51.079Z",
+               "removed": "2026-05-07T03:20:50.512Z"
+              },
+              {
+               "score": 99,
+               "added": "2026-05-07T03:20:50.512Z",
+               "removed": "2026-05-09T03:05:04.133Z"
+              }
+             ],
+             "levels": [
+              {
+               "criticality": 4,
+               "added": "2026-04-03T14:59:59.337Z"
+              }
+             ],
+             "risk_rules": [
+              {
+               "risk_id": "attr:77568580-d06e-468e-96ea-964ebad0e08b",
+               "risk_name": "Validated C&C Server",
+               "criticality": 4,
+               "evidence": "6 sightings on 1 source: <e id=source:qGriFQ>Insikt Group Command & Control Validation</e>. Recorded Future analysis validated <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on Jun 02, 2026",
+               "sightings_count": 6,
+               "added": "2026-06-03T01:13:04.025Z"
+              },
+              {
+               "risk_id": "attr:85e4a053-08f5-4932-a321-81293c8337ac",
+               "risk_name": "Historically Reported C&C Server",
+               "criticality": 2,
+               "evidence": "192 sightings on 1 source: <e id=source:qU_q-9>Recorded Future Command & Control Reports</e>. <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> was reported as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on May 20, 2026. The URL found was <e id=url:http://45.207.192.190:30078/iMNX>http://45.207.192.190:30078/iMNX</e>.",
+               "sightings_count": 192,
+               "added": "2026-06-03T01:13:04.025Z"
+              },
+              {
+               "risk_id": "attr:a8a13505-7734-48c8-bf1c-f9539d580d7e",
+               "risk_name": "Recently Reported C&C Server",
+               "criticality": 3,
+               "evidence": "26 sightings on 1 source: <e id=source:qU_q-9>Recorded Future Command & Control Reports</e>. <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> was reported as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on Jun 02, 2026. The URL found was <e id=url:http://45.207.192.190:30078/nIr3>http://45.207.192.190:30078/nIr3</e>.",
+               "sightings_count": 26,
+               "added": "2026-06-03T01:13:04.025Z"
+              },
+              {
+               "risk_id": "attr:7912adc3-e7e2-4934-a6c9-30972cf7a439",
+               "risk_name": "Recent Suspected C&C Server",
+               "criticality": 2,
+               "evidence": "27 sightings on 1 source: <e id=source:sIoEOQ>ThreatFox Infrastructure Analysis</e>. ThreatFox identified <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> as possible <e id=mitre:TA0011>TA0011 (Command and Control)</e> for Cobalt Strike on June 02, 2026. Most recent link (Jun 2, 2026): https://threatfox.abuse.ch/ioc/1807906",
+               "sightings_count": 27,
+               "added": "2026-06-03T01:13:04.025Z"
+              },
+              {
+               "risk_id": "attr:0fb22a2e-ddf1-4b7d-a53d-336b0d8fc13c",
+               "risk_name": "Previously Validated C&C Server",
+               "criticality": 2,
+               "evidence": "504 sightings on 1 source: <e id=source:qGriFQ>Insikt Group Command & Control Validation</e>. Recorded Future analysis validated <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m3uiru>50050</e> as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on Jun 01, 2026",
+               "sightings_count": 504,
+               "added": "2026-06-03T01:13:04.025Z"
+              }
+             ]
+            }
+           ],
+           "counts": {
+            "returned": 1,
+            "total": 1
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "SearchRiskHistoriesRequest": {
+      "type": "object",
+      "properties": {
+       "entities": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "string",
+         "description": "Entity id"
+        }
+       },
+       "from": {
+        "format": "date-time",
+        "description": "Default value is minus 30 days from `to` date or current date if `to` date is missing",
+        "example": "2024-11-21T17:32:28.000Z"
+       },
+       "to": {
+        "format": "date-time",
+        "description": "Default value is plus 30 days from `from` date or current date if `from` date is missing",
+        "example": "2024-11-21T17:32:28.000Z"
+       }
+      },
+      "required": [
+       "entities"
+      ]
+     },
+     "SearchRiskHistoriesResponse": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "attributes": {
+           "$ref": "#/components/schemas/EntityRiskHistories"
+          }
+         }
+        }
+       },
+       "counts": {
+        "type": "object",
+        "properties": {
+         "returned": {
+          "type": "integer"
+         },
+         "total": {
+          "type": "integer"
+         }
+        },
+        "required": [
+         "returned",
+         "total"
+        ]
+       }
+      },
+      "required": [
+       "data",
+       "counts"
+      ]
+     },
+     "EntityRiskHistories": {
+      "type": "object",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/Entity"
+       },
+       "scores": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/RiskScoreHistory"
+        }
+       },
+       "levels": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/RiskLevelHistory"
+        }
+       },
+       "risk_rules": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/RiskRuleHistory"
+        }
+       }
+      }
+     },
+     "Entity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "B_E7B"
+       },
+       "provided_id": {
+        "type": "string",
+        "description": "Entity id provided in request",
+        "example": "B_E7B"
+       },
+       "type": {
+        "type": "string",
+        "description": "Entity type",
+        "example": "Company"
+       },
+       "name": {
+        "type": "string",
+        "description": "Entity name",
+        "example": "Microsoft"
+       }
+      },
+      "required": [
+       "id",
+       "provided_id",
+       "type",
+       "name"
+      ],
+      "example": {
+       "id": "B_E7B",
+       "provided_id": "B_E7B",
+       "type": "Company",
+       "name": "Microsoft"
+      }
+     },
+     "RiskScoreHistory": {
+      "type": "object",
+      "properties": {
+       "score": {
+        "type": "integer",
+        "description": "Entity risk score",
+        "example": 99
+       },
+       "added": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "removed": {
+        "type": "string",
+        "format": "date-time"
+       }
+      },
+      "required": [
+       "score"
+      ]
+     },
+     "RiskLevelHistory": {
+      "type": "object",
+      "properties": {
+       "criticality": {
+        "type": "integer",
+        "description": "Entity risk criticality",
+        "example": 1
+       },
+       "added": {
+        "type": "string",
+        "description": "Date when risk was added to the entity",
+        "format": "date-time"
+       },
+       "removed": {
+        "type": "string",
+        "description": "Date when risk was removed from the entity",
+        "format": "date-time"
+       }
+      },
+      "required": [
+       "criticality"
+      ]
+     },
+     "RiskRuleHistory": {
+      "type": "object",
+      "properties": {
+       "risk_id": {
+        "type": "string",
+        "description": "Risk rule id",
+        "example": "attr:51c15fcd-c6b4-4b06-94d6-f19f6c784c9d"
+       },
+       "risk_name": {
+        "type": "string",
+        "description": "Risk rule name",
+        "example": "Recent Validated Cyber Attack"
+       },
+       "criticality": {
+        "type": "integer",
+        "description": "Risk criticality",
+        "example": 1
+       },
+       "evidence": {
+        "type": "string",
+        "description": "Risk evidence",
+        "example": "evidence string"
+       },
+       "sightings_count": {
+        "type": "integer",
+        "description": "Number of sightings for this risk rule",
+        "example": 10
+       },
+       "added": {
+        "type": "string",
+        "description": "Date when risk was added to the entity",
+        "format": "date-time"
+       },
+       "removed": {
+        "type": "string",
+        "description": "Date when risk was removed from the entity",
+        "format": "date-time"
+       }
+      },
+      "required": [
+       "risk_id",
+       "risk_name",
+       "criticality",
+       "evidence"
+      ]
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ }
+]

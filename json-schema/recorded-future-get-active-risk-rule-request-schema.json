@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-get-active-risk-rule-request-schema.json",
+  "title": "GetActiveRiskRuleRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-risk-api-openapi.yml#/components/schemas/GetActiveRiskRuleRequest",
+  "type": "object",
+  "properties": {
+    "company": {
+      "type": "string"
+    },
+    "rule_alias": {
+      "type": "string"
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Max number of evidence records to return (where supported)"
+    },
+    "offset": {
+      "type": "integer",
+      "description": "Evidence offset for pagination (where supported)"
+    }
+  },
+  "required": [
+    "company",
+    "rule_alias"
+  ]
+}

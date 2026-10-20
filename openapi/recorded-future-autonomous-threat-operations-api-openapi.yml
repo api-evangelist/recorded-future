@@ -1,0 +1,1135 @@
+openapi: 3.1.1
+info:
+  title: Autonomous Threat Operations API
+  description: APIs for interacting with Recorded Future Autonomous Threat Operations
+  contact:
+    name: Threat Intelligence Team
+  version: 1.0.0
+  x-rf-service-id: service:autonomous-threat-operations
+servers:
+- url: https://api.recordedfuture.com/autonomous-threat-operations
+security:
+- key: []
+- idp: []
+paths:
+  /v1/detection/profiles/query:
+    post:
+      tags:
+      - Threat Detection
+      summary: Query Profiles
+      description: Discover threat detection profiles with continuously-updated indicators and detection rules.
+      operationId: threatDetectionProfilesQuery
+      requestBody:
+        $ref: '#/components/requestBodies/ProfileQuery'
+      responses:
+        '200':
+          description: List of threat detection profiles matching the query
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/ProfileId'
+                        name:
+                          type: string
+                          description: Name of the profile
+                        description:
+                          type: string
+                          description: Description of the profile
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                      required:
+                      - id
+                      - name
+                      - createdAt
+                      - updatedAt
+                required:
+                - items
+              example:
+                items: []
+        '400':
+          description: Too many profiles requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/detection/profiles/{id}/indicators:
+    post:
+      tags:
+      - Threat Detection
+      summary: Get Profile Indicators
+      description: Fetch continuously-updated threat indicators from a detection profile with optional risk score enrichment.
+      operationId: threatDetectionProfilesIndicators
+      parameters:
+      - $ref: '#/components/parameters/ProfileId'
+      requestBody:
+        $ref: '#/components/requestBodies/IndicatorQuery'
+      responses:
+        '200':
+          $ref: '#/components/responses/Indicators'
+          description: List of current indicators for the profile
+        '404':
+          description: Profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/detection/profiles/{id}/rules:
+    post:
+      tags:
+      - Threat Detection
+      summary: Get Profile Detection Rules
+      description: Fetch deployable detection rules (Sigma, Snort, YARA) from a detection profile.
+      operationId: threatDetectionProfilesRules
+      parameters:
+      - $ref: '#/components/parameters/ProfileId'
+      requestBody:
+        $ref: '#/components/requestBodies/DetectionRuleQuery'
+      responses:
+        '200':
+          $ref: '#/components/responses/DetectionRules'
+          description: List of current detection rules for the profile
+        '404':
+          description: Profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/hunting/jobs/pending:
+    get:
+      tags:
+      - Threat Hunting
+      summary: Get Pending Jobs
+      description: Poll for threat hunt jobs awaiting execution by an integration.
+      operationId: threatHuntingJobsPending
+      parameters:
+      - $ref: '#/components/parameters/Integration'
+      responses:
+        '200':
+          description: List of pending threat hunt jobs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/ThreatHuntJobId'
+                        profile:
+                          $ref: '#/components/schemas/ProfileId'
+                        status:
+                          $ref: '#/components/schemas/ThreatHuntJobStatus'
+                        timeRange:
+                          type: object
+                          description: Time range of the threat hunt job
+                          properties:
+                            start:
+                              type: string
+                              format: date-time
+                            end:
+                              type: string
+                              format: date-time
+                          required:
+                          - start
+                          - end
+                      required:
+                      - id
+                      - profile
+                      - status
+                      - timeRange
+                required:
+                - items
+              example:
+                items:
+                - id: 6a0bc087-c3f5-4907-b417-745d9ea58050
+                  profile: c0aca9fe-2374-4bae-b9bc-f2e8b594bde0
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-03-04T21:14:46.155223240Z'
+                    end: '2026-03-05T21:14:46.155223240Z'
+                - id: fa9e19b5-7b80-4fa2-9d86-0d21ae2fe40d
+                  profile: ef1bad68-5ef8-4843-b2bd-335f078d1b0c
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-02-22T08:54:30.376814946Z'
+                    end: '2026-03-24T08:54:30.376814946Z'
+                - id: 40f611ea-e407-45d0-9407-8fe7daf41966
+                  profile: e18382bd-10fb-47de-a564-b04a137e57da
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-02-24T04:08:44.621893649Z'
+                    end: '2026-03-26T04:08:44.621893649Z'
+                - id: aca2670a-6dcc-4fe8-9471-7910a86180c7
+                  profile: b76b6e34-a3e4-41ee-bd73-5d1467e8f1f3
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-03-28T03:19:46.422963900Z'
+                    end: '2026-04-27T03:19:46.422963900Z'
+                - id: 0706e8f3-b5ad-4688-9227-7199d4204efc
+                  profile: 34062f6f-d13f-42a9-b380-85f43f4a96d9
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-04-26T10:29:43.764417194Z'
+                    end: '2026-05-26T10:29:43.764417194Z'
+                - id: cee4188a-608d-4177-b435-c2338bcdf74b
+                  profile: 67430d95-ca5c-4a19-bdbe-3fc6eafac2e4
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-04-26T15:36:14.542911693Z'
+                    end: '2026-05-26T15:36:14.542911693Z'
+                - id: c60c7773-1f13-44aa-8330-20773c9b3ffd
+                  profile: 69c7ee45-1f62-4d3e-b820-a6c9ed243898
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-05-01T17:00:01.025019256Z'
+                    end: '2026-05-31T17:00:01.025019256Z'
+                - id: a92ab3ed-be48-4078-bf91-95f1b12e8a58
+                  profile: 179766ea-2a6c-4236-8db1-c12e3b920abc
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-05-02T08:00:01.060697457Z'
+                    end: '2026-06-01T08:00:01.060697457Z'
+                - id: ee7bfa1c-0bb5-466c-8bd7-04b417e4974a
+                  profile: 8492ef84-a977-4cd8-a2ba-13401b8ec0d7
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-05-02T13:00:01.115675682Z'
+                    end: '2026-06-01T13:00:01.115675682Z'
+                - id: b39b07b2-df41-40e9-8c01-1082c2055daa
+                  profile: f08d219c-788e-484f-9a0d-b0288c2dc6c3
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-05-18T07:48:10.744933481Z'
+                    end: '2026-06-02T07:48:10.744933481Z'
+                - id: 9e0d95c8-b679-4041-964b-d68db63604df
+                  profile: dc78f159-081f-4ea1-9980-794cfde08db9
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-05-03T07:51:22.663820069Z'
+                    end: '2026-06-02T07:51:22.663820069Z'
+                - id: 5f1d8be6-ccdd-4b36-8a96-eadb59a6ee46
+                  profile: e69c371d-7b8e-4b37-8d1c-7818f5ea215e
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-05-03T09:12:04.097164863Z'
+                    end: '2026-06-02T09:12:04.097164863Z'
+                - id: a1f6c6d1-3c2c-4321-a8de-6a3bd43db683
+                  profile: 1bb034a6-8b70-48df-907c-a841826b7033
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-05-03T11:00:01.073819148Z'
+                    end: '2026-06-02T11:00:01.073819148Z'
+                - id: 6685094a-231d-4794-b388-ebd094539e01
+                  profile: 6d574c36-ecc4-45c3-a4bf-ec05972c5683
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-05-03T11:53:39.698428049Z'
+                    end: '2026-06-02T11:53:39.698428049Z'
+                - id: c2dd0a1d-9b61-47e9-8305-293ca6d6da22
+                  profile: 55247b94-5295-4884-82e3-8d81541e7c60
+                  status: ready
+                  organization: uhash:5XdwuI1B1E
+                  timeRange:
+                    start: '2026-05-03T15:53:18.998826609Z'
+                    end: '2026-06-02T15:53:18.998826609Z'
+  /v1/hunting/jobs/{id}/indicators:
+    post:
+      tags:
+      - Threat Hunting
+      summary: Get Job Indicators
+      description: Fetch threat indicators from a completed hunt job, optionally enriched with risk scores.
+      operationId: threatHuntingJobsIndicators
+      parameters:
+      - $ref: '#/components/parameters/ThreatHuntJobId'
+      requestBody:
+        $ref: '#/components/requestBodies/IndicatorQuery'
+      responses:
+        '200':
+          $ref: '#/components/responses/Indicators'
+          description: List of indicators for the threat hunt job
+        '404':
+          description: Threat hunt job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/hunting/jobs/{id}/rules:
+    post:
+      tags:
+      - Threat Hunting
+      summary: Get Job Detection Rules
+      description: Fetch detection rules from a threat hunt job scoped to its time window.
+      operationId: threatHuntingJobsRules
+      parameters:
+      - $ref: '#/components/parameters/ThreatHuntJobId'
+      requestBody:
+        $ref: '#/components/requestBodies/DetectionRuleQuery'
+      responses:
+        '200':
+          $ref: '#/components/responses/DetectionRules'
+          description: List of current detection rules for the job
+        '404':
+          description: Threat hunt job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/hunting/jobs/{id}/status:
+    post:
+      tags:
+      - Threat Hunting
+      summary: Update Job Status
+      description: Transition a threat hunt job through its lifecycle (started, completed, failed) with optional outcome details.
+      operationId: threatHuntingJobsStatus
+      parameters:
+      - $ref: '#/components/parameters/ThreatHuntJobId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - started
+                  - completed
+                  - failed
+                message:
+                  type: string
+                externalId:
+                  type: string
+              required:
+              - status
+        required: true
+      responses:
+        '200':
+          description: Status updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  previousStatus:
+                    $ref: '#/components/schemas/ThreatHuntJobStatus'
+                    description: Status of the job before this endpoint was called
+                  currentStatus:
+                    $ref: '#/components/schemas/ThreatHuntJobStatus'
+                    description: Current status of the job after this endpoint was called
+                description: Result of the status transition, showing both the previous and current status of the threat hunt job.
+        '404':
+          description: Threat hunt job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/hunting/profiles/query:
+    post:
+      tags:
+      - Threat Hunting
+      summary: Query Profiles
+      description: Discover threat hunting profiles configured for your organization with schedules and lookback windows.
+      operationId: threatHuntingProfilesQuery
+      requestBody:
+        $ref: '#/components/requestBodies/ProfileQuery'
+      responses:
+        '200':
+          description: List of threat hunt profiles matching the query
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/ProfileId'
+                        name:
+                          type: string
+                          description: Name of the profile
+                        description:
+                          type: string
+                          description: Description of the profile
+                        nextRun:
+                          type: string
+                          format: date-time
+                          description: The next time this profile is scheduled to run
+                        schedule:
+                          type: string
+                          description: The schedule for the profile
+                        lookback:
+                          type: integer
+                          format: int32
+                          description: Threat hunt lookback in seconds
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                      required:
+                      - id
+                      - name
+                      - createdAt
+                      - updatedAt
+                required:
+                - items
+              example:
+                items:
+                - id: c0aca9fe-2374-4bae-b9bc-f2e8b594bde0
+                  name: Blue Bravo - Behavioral Hunt
+                  enterprise: uhash:2FLAPRFn9w
+                  lookback: 86400
+                  organization: uhash:5XdwuI1B1E
+                  createdAt: '2026-03-05T21:14:46.023542378Z'
+                  updatedAt: '2026-03-05T21:14:46.023542378Z'
+        '400':
+          description: Too many profiles requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/prevention/profiles/query:
+    post:
+      tags:
+      - Threat Prevention
+      summary: Query Profiles
+      description: Discover threat prevention profiles with curated block lists of confirmed-malicious indicators.
+      operationId: threatPreventionProfilesQuery
+      requestBody:
+        $ref: '#/components/requestBodies/ProfileQuery'
+      responses:
+        '200':
+          description: List of threat prevention profiles matching the query
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/ProfileId'
+                        name:
+                          type: string
+                          description: Name of the profile
+                        description:
+                          type: string
+                          description: Description of the profile
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                      required:
+                      - id
+                      - name
+                      - createdAt
+                      - updatedAt
+                required:
+                - items
+              example:
+                items: []
+        '400':
+          description: Too many profiles requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/prevention/profiles/{id}/indicators:
+    post:
+      tags:
+      - Threat Prevention
+      summary: Get Profile Indicators
+      description: Fetch the block list of confirmed-malicious indicators from a prevention profile.
+      operationId: threatPreventionProfilesIndicators
+      parameters:
+      - $ref: '#/components/parameters/ProfileId'
+      requestBody:
+        $ref: '#/components/requestBodies/IndicatorQuery'
+      responses:
+        '200':
+          $ref: '#/components/responses/Indicators'
+          description: List of current indicators for the profile
+        '404':
+          description: Profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/prevention/profiles/{id}/rules:
+    post:
+      tags:
+      - Threat Prevention
+      summary: Get Profile Detection Rules
+      description: Fetch supplementary detection rules from a prevention profile tagged with MITRE ATT&CK techniques.
+      operationId: threatPreventionProfilesRules
+      parameters:
+      - $ref: '#/components/parameters/ProfileId'
+      requestBody:
+        $ref: '#/components/requestBodies/DetectionRuleQuery'
+      responses:
+        '200':
+          $ref: '#/components/responses/DetectionRules'
+          description: List of current detection rules for the profile
+        '404':
+          description: Profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/sources:
+    post:
+      tags:
+      - Intelligence Sources
+      summary: Create Source
+      description: Register a new custom intelligence source as a container for publishing threat reports.
+      operationId: sourcesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the source
+                description:
+                  type: string
+                  description: Description of the source
+              required:
+              - name
+        required: true
+      responses:
+        '200':
+          description: Intelligence source was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Source'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+      - Intelligence Sources
+      summary: Get Sources
+      description: List all custom intelligence sources in your account.
+      operationId: sourcesList
+      responses:
+        '200':
+          description: List of all custom intelligence sources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Source'
+              example:
+              - id: df9131f6-0dfd-4f8f-83e1-62aad16d3b28
+                name: Test Source R3 Updated
+                description: Updated by R3 assessment
+                createdAt: '2026-03-12T22:19:37.336952005Z'
+                updatedAt: '2026-03-13T08:16:21.484003550Z'
+  /v1/sources/{id}:
+    get:
+      tags:
+      - Intelligence Sources
+      summary: Get Source
+      description: Retrieve metadata for a specific custom intelligence source.
+      operationId: sourcesGet
+      parameters:
+      - $ref: '#/components/parameters/SourceId'
+      responses:
+        '200':
+          description: Intelligence source corresponding to the id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Source'
+              example:
+                id: df9131f6-0dfd-4f8f-83e1-62aad16d3b28
+                name: Test Source R3 Updated
+                description: Updated by R3 assessment
+                createdAt: '2026-03-12T22:19:37.336952005Z'
+                updatedAt: '2026-03-13T08:16:21.484003550Z'
+        '404':
+          description: Intelligence source not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+      - Intelligence Sources
+      summary: Update Source
+      description: Modify the name or description of an existing custom intelligence source.
+      operationId: sourcesUpdate
+      parameters:
+      - $ref: '#/components/parameters/SourceId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the source
+                description:
+                  type: string
+                  description: Description of the source
+        required: true
+      responses:
+        '200':
+          description: Intelligence source was successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Source'
+              example:
+                id: df9131f6-0dfd-4f8f-83e1-62aad16d3b28
+                name: Test Source R3 Updated
+                description: Updated by R3 assessment
+                createdAt: '2026-03-12T22:19:37.336952005Z'
+                updatedAt: '2026-06-03T03:34:58.604353532Z'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Intelligence source not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/sources/{id}/reports:
+    post:
+      tags:
+      - Intelligence Sources
+      summary: Publish Reports
+      description: Submit threat intelligence reports with observables, TTPs, and threat actor associations to a custom source.
+      operationId: sourcesPublishReports
+      parameters:
+      - $ref: '#/components/parameters/SourceId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                description: Intelligence Report
+                properties:
+                  externalId:
+                    type: string
+                    description: Report identifier from the external intelligence source
+                    example: 1234-112233-abcd
+                  observables:
+                    type: array
+                    items:
+                      type: string
+                      description: Recorded Future entity id
+                    minItems: 1
+                    description: IPs, domains, hashes and URLs related to the report
+                    example:
+                    - ip:127.0.0.1
+                  tlp:
+                    type: string
+                    enum:
+                    - clear
+                    - green
+                    - amber
+                    - amber+strict
+                    - red
+                    description: TLP
+                    example: green
+                  ttp:
+                    type: array
+                    items:
+                      type: string
+                      description: Recorded Future entity id
+                    description: TTPs
+                    example:
+                    - mitre:T1082
+                  malware:
+                    type: array
+                    items:
+                      type: string
+                      description: Recorded Future entity id
+                    description: Malware
+                    example:
+                    - Kl70JR
+                    - MZycd3
+                  threatActor:
+                    type: array
+                    items:
+                      type: string
+                      description: Recorded Future entity id
+                    description: Threat Actors
+                    example:
+                    - I2QcS_
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Date and time of the reported event
+                required:
+                - observables
+        required: true
+      responses:
+        '202':
+          description: Reports were published for processing
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Intelligence source not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid malware, threat actor or TTP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Source:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/SourceId'
+        name:
+          type: string
+          description: Name of the source
+        description:
+          type: string
+          description: Description of the source
+        createdAt:
+          type: string
+          format: date-time
+          description: Date and time the source was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date and time the source was last updated
+      required:
+      - id
+      - name
+      - createdAt
+      - updatedAt
+    SourceId:
+      type: string
+      format: uuid
+      description: Identity of the source
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the error.
+        status_code:
+          type: integer
+          description: HTTP status code of the response.
+        trace_id:
+          type: string
+          description: Unique request identifier to reference when contacting support.
+      required:
+      - message
+      - status_code
+    HashAlgorithm:
+      type: string
+      enum:
+      - MD5
+      - SHA-1
+      - SHA-256
+      - SHA-384
+      - SHA-512
+    Indicator:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - domain
+          - hash
+          - ip
+          - url
+        observable:
+          type: string
+          minLength: 10
+          maxLength: 1000
+        algorithm:
+          $ref: '#/components/schemas/HashAlgorithm'
+        risk:
+          type: object
+          properties:
+            score:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 99
+            rules:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: Unique risk rule id
+                  level:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 5
+                    description: Risk level of this risk rule
+                  sightings:
+                    type: integer
+                    format: int64
+                    minimum: 1
+                    description: Number of sightings causing this risk rule to trigger
+                  description:
+                    type: string
+                    example: Description of the details on why this rule triggered
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Date and time that the risk rule triggered
+                required:
+                - id
+                - level
+              maxItems: 100
+        ttp:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              name:
+                type: string
+      required:
+      - type
+      - observable
+    ProfileId:
+      type: string
+      format: uuid
+      description: Identity of an automation profile
+    DetectionRule:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The entity id of this detection rule
+        noteId:
+          type: string
+          description: The Insikt note document id of this detection rule
+        type:
+          $ref: '#/components/schemas/DetectionRuleType'
+        name:
+          type: string
+          description: The name of the detection rule
+        content:
+          type: string
+          description: The content of the detection rule
+        ttp:
+          type: array
+          description: The TTPs associated with this detection rule
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              name:
+                type: string
+      required:
+      - id
+      - type
+      - name
+      - observable
+      - content
+    DetectionRuleType:
+      type: string
+      description: The type of detection rule
+      enum:
+      - fql
+      - kql
+      - s1ql
+      - sigma
+      - snort
+      - yara
+      - yaral
+    UserId:
+      type: string
+      minLength: 10
+      maxLength: 20
+      example: uhash:ABCDEF
+    ThreatHuntJobId:
+      type: string
+      format: uuid
+      description: Threat Hunt Job ID
+    ThreatHuntJobStatus:
+      type: string
+      enum:
+      - ready
+      - started
+      - completed
+      - abandoned
+      - failed
+  securitySchemes:
+    key:
+      type: apiKey
+      name: X-RFToken
+      in: header
+    idp:
+      type: oauth2
+      description: 'OAuth 2.0 Authorization Code Flow. This API issues and accepts JWTs that are compliant with RFC8725 (JSON Web Token Best Current Practices).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://id.recordedfuture.com/authorize
+          tokenUrl: https://id.recordedfuture.com/token
+          refreshUrl: https://id.recordedfuture.com/token
+          scopes: {}
+  parameters:
+    SourceId:
+      name: id
+      in: path
+      description: Identity of the source
+      required: true
+      schema:
+        $ref: '#/components/schemas/SourceId'
+    ProfileId:
+      name: id
+      in: path
+      description: Threat Automation Profile ID
+      required: true
+      schema:
+        $ref: '#/components/schemas/ProfileId'
+    ThreatHuntJobId:
+      name: id
+      in: path
+      description: Threat Hunt Job ID
+      required: true
+      schema:
+        $ref: '#/components/schemas/ThreatHuntJobId'
+    Integration:
+      name: integration
+      in: query
+      description: Identity of the integration
+      schema:
+        $ref: '#/components/schemas/UserId'
+  requestBodies:
+    IndicatorQuery:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              filter:
+                type: object
+                properties:
+                  types:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - domain
+                      - hash
+                      - ip
+                      - url
+                    minItems: 1
+                    uniqueItems: true
+                    description: Decides what observable types are included in the results
+                  algorithms:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HashAlgorithm'
+                    minItems: 1
+                    uniqueItems: true
+                    description: Decides what hash algorithms are included in the results
+              include:
+                type: object
+                properties:
+                  risk:
+                    type: object
+                    properties:
+                      score:
+                        type: boolean
+                        description: Decides if risk score is included in the results
+                      rules:
+                        type: boolean
+                        description: Decides if risk rules are included in the results
+              limit:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 1000
+              offset:
+                type: string
+      required: true
+    DetectionRuleQuery:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              filter:
+                type: object
+                properties:
+                  types:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DetectionRuleType'
+                    minItems: 1
+                    uniqueItems: true
+                    description: Decides what detection rule types are included in the results
+            required:
+            - filter
+      required: true
+    ProfileQuery:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ids:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileId'
+                maxItems: 100
+                description: Profile IDs to filter by. Must be a non-empty array if provided. Required if enterprise is not specified.
+              enterprise:
+                $ref: '#/components/schemas/UserId'
+                description: Enterprise user ID to filter profiles by. Required if ids is not specified. Effectively required for profile discovery.
+              integration:
+                $ref: '#/components/schemas/UserId'
+                description: Profile integration to filter by
+            description: Query parameters for filtering automation profiles. At least one of `ids` (non-empty array) or `enterprise` must be provided. An empty body or empty `ids` array will return a 400 error.
+      required: true
+  responses:
+    Indicators:
+      description: Indicators for this profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                description: Number of indicators matching the filter
+              totalCount:
+                type: integer
+                description: Total number of indicators matching the filter
+              nextOffset:
+                type: string
+                maxLength: 512
+                description: Offset to use for getting the next batch of data when paging
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Indicator'
+                description: A batch of indicators matching the filter
+            required:
+            - count
+            - totalCount
+            - items
+    DetectionRules:
+      description: Detection rules for this profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DetectionRule'
+                description: A batch of detection rules matching the filter
+            required:
+            - items
+tags:
+- name: Intelligence Sources
+  description: Endpoints for managing custom intelligence sources
+- name: Threat Detection
+  description: Endpoints for managing threat detection
+- name: Threat Hunting
+  description: Endpoints for managing threat hunting
+- name: Threat Prevention
+  description: Endpoints for managing threat prevention
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/sources-create.md
+  - https://docs.recordedfuture.com/reference/sources-get.md
+  - https://docs.recordedfuture.com/reference/sources-list.md
+  - https://docs.recordedfuture.com/reference/sources-publish-reports.md
+  - https://docs.recordedfuture.com/reference/sources-update.md
+  - https://docs.recordedfuture.com/reference/threat-detection-profile-indicators.md
+  - https://docs.recordedfuture.com/reference/threat-detection-profile-rules.md
+  - https://docs.recordedfuture.com/reference/threat-detection-profiles-query.md
+  - https://docs.recordedfuture.com/reference/threat-hunting-job-indicators.md
+  - https://docs.recordedfuture.com/reference/threat-hunting-job-rules.md
+  - https://docs.recordedfuture.com/reference/threat-hunting-job-status.md
+  - https://docs.recordedfuture.com/reference/threat-hunting-jobs-pending.md
+  - https://docs.recordedfuture.com/reference/threat-hunting-profiles-query.md
+  - https://docs.recordedfuture.com/reference/threat-prevention-profile-indicators.md
+  - https://docs.recordedfuture.com/reference/threat-prevention-profile-rules.md
+  - https://docs.recordedfuture.com/reference/threat-prevention-profiles-query.md
+  merge:
+    pages: 16
+    deduped: 89
+    conflicts_kept_first: 0

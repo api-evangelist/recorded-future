@@ -1,0 +1,256 @@
+openapi: 3.0.1
+info:
+  title: Customer APIs V0
+  version: '0'
+servers:
+- url: https://api.sandbox.riskrecon.com
+  variables:
+    protocol:
+      enum:
+      - http
+      - https
+      default: https
+- url: /
+  variables:
+    protocol:
+      enum:
+      - http
+      - https
+      default: https
+security:
+- bearerAuth: []
+paths:
+  /v0/industry_trends/toe_id/{toe_id}:
+    get:
+      tags:
+      - IndustryTrends
+      summary: Gets Industry trends data given a TOE id
+      description: Gets Industry trends data given a TOE id
+      operationId: CustomerApisWeb.V0.IndustryTrendsController.industry_trends
+      parameters:
+      - name: toe_id
+        in: path
+        description: Toe ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndustryTrends'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+  /v0/portfolio/member/toe_id/{toe_id}:
+    get:
+      tags:
+      - Portfolio
+      summary: Portfolio member data including company description and domain ratings by security domain. If you are reading this and were filtering by analysis_id, please switch over to TOE_ID at your earliest convenience
+      description: Portfolio member data including company description and domain ratings by security domain. If you are reading this and were filtering by analysis_id, please switch over to TOE_ID at your earliest convenience
+      operationId: CustomerApisWeb.V0.PortfolioController.portfolio_member_by_analysis_id
+      parameters:
+      - name: toe_id
+        in: path
+        description: Toe ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioMember'
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+components:
+  schemas:
+    IndustryTrendsSecurityCriteria:
+      type: object
+      properties:
+        web_encryption:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+        web_app_security:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+        threat_intel:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+        system_hosting:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+        software_patching:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+        overall:
+          type: number
+        governance:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+        email_security:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+        dns_security:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+        defensibility:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+        data_loss:
+          allOf:
+          - type: object
+            properties:
+              overall:
+                type: number
+    IndustryTrends:
+      type: object
+      properties:
+        toe_id:
+          type: string
+        industry_trends:
+          allOf:
+          - type: object
+            properties:
+              toe_id:
+                type: string
+              industry_min:
+                $ref: '#/components/schemas/IndustryTrendsSecurityCriteria'
+              industry_mean:
+                $ref: '#/components/schemas/IndustryTrendsSecurityCriteria'
+              industry_max:
+                $ref: '#/components/schemas/IndustryTrendsSecurityCriteria'
+              industry:
+                type: string
+              date:
+                type: string
+              analysis_rating:
+                $ref: '#/components/schemas/IndustryTrendsSecurityCriteria'
+              analysis_percentile:
+                $ref: '#/components/schemas/IndustryTrendsSecurityCriteria'
+              analysis_id:
+                type: string
+    SecurityDomainRatings:
+      type: object
+      properties:
+        web_encryption:
+          $ref: '#/components/schemas/SecurityDomainRating'
+        web_app_security:
+          $ref: '#/components/schemas/SecurityDomainRating'
+        threat_intell:
+          $ref: '#/components/schemas/SecurityDomainRating'
+        system_hosting:
+          $ref: '#/components/schemas/SecurityDomainRating'
+        software_patching:
+          $ref: '#/components/schemas/SecurityDomainRating'
+        governance:
+          $ref: '#/components/schemas/SecurityDomainRating'
+        email_security:
+          $ref: '#/components/schemas/SecurityDomainRating'
+        dns_security:
+          $ref: '#/components/schemas/SecurityDomainRating'
+        defensibility:
+          $ref: '#/components/schemas/SecurityDomainRating'
+        data_loss:
+          $ref: '#/components/schemas/SecurityDomainRating'
+    SecurityDomainRating:
+      type: object
+      properties:
+        security_domain_rating_numeric:
+          type: number
+        security_domain_rating:
+          type: string
+    PortfolioMemberToes:
+      type: array
+      items:
+        $ref: '#/components/schemas/PortfolioMemberToe'
+    PortfolioMemberToe:
+      type: object
+      properties:
+        toe_short_name:
+          type: string
+        toe_id:
+          type: string
+        security_domain_ratings:
+          $ref: '#/components/schemas/SecurityDomainRatings'
+        overall_rating_numeric:
+          type: number
+        overall_rating:
+          type: string
+        last_analysis_ts:
+          type: string
+        frequency:
+          type: string
+        description:
+          type: string
+        analysis_id:
+          type: string
+    PortfolioMember:
+      title: PortfolioMember
+      type: object
+      properties:
+        toes:
+          $ref: '#/components/schemas/PortfolioMemberToes'
+        customer_name:
+          type: string
+        customer_id:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/customerapiswebv0industrytrendscontrollerindustry_trends.md
+  - https://docs.recordedfuture.com/reference/customerapiswebv0portfoliocontrollerportfolio_member_by_analysis_id.md
+  merge:
+    pages: 2
+    deduped: 1
+    conflicts_kept_first: 0

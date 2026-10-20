@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-file-upload-response-schema.json",
+  "title": "FileUploadResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-fusion-api-openapi.yml#/components/schemas/FileUploadResponse",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "file"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "format": {
+      "type": "string"
+    },
+    "hash": {
+      "type": "string"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-string"
+    },
+    "size": {
+      "type": "number",
+      "description": "File size in bytes."
+    }
+  }
+}

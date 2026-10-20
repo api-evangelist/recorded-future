@@ -1,0 +1,58 @@
+name: Recorded Future API changelog
+generated: '2026-10-20'
+method: searched
+source: https://docs.recordedfuture.com/changelog/llms.txt
+docs: https://docs.recordedfuture.com/changelog
+scheme: per-API semantic versions
+note: Entry pages carry no dates in their markdown twins; date left null rather than guessed.
+entries:
+- version: Playbook Alerts API v1.4.0
+  date: null
+  breaking: true
+  highlights:
+  - panel_log and panel_log_v2 entries now sorted by created descending instead of ascending
+- version: RiskRecon APIs
+  date: null
+  breaking: false
+  highlights:
+  - RiskRecon APIs added; they require their own key
+- version: Playbook Alerts API v1.3.1
+  date: null
+  breaking: false
+  highlights:
+  - Request body made optional for domain_abuse, vulnerability and code_repo_leakage detail endpoints
+- version: Malware Intelligence API v1.7.3
+  date: null
+  breaking: false
+  highlights:
+  - Optionally sanitize Query results
+- version: Playbook Alerts API v1.3.0
+  date: null
+  breaking: false
+  highlights:
+  - alert_rule.id, alert_rule.label and alert_rule.name added to /search and /common/{id}
+- version: ASI Project API v1.7.0
+  date: null
+  breaking: false
+  highlights:
+  - _search filtering extended; new POST /filters endpoint
+- version: Malware Intelligence API v1.7.1
+  date: null
+  breaking: false
+  highlights:
+  - Tags added to query results for SHA256 aggregations
+- version: Playbook Alerts API v1.2.0
+  date: null
+  breaking: false
+  highlights:
+  - offset parameter and rule_id field on /search
+- version: Malware Intelligence API v1.7.0
+  date: null
+  breaking: false
+  highlights:
+  - File extension tag added to SHA256 aggregation results
+- version: Risk API
+  date: null
+  breaking: false
+  highlights:
+  - New version of the Risk API, including Active Risks endpoint

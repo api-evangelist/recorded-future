@@ -1,0 +1,1316 @@
+openapi: 3.1.1
+info:
+  title: Soar API
+  version: 3.0.0
+  description: 'The SOAR API is designed for high throughput risk checks using Recorded Future''s threat intelligence in bulk.
+
+
+    It supports five IOC types, IP Address, Domain, Hash, URL and Vulnerability.
+
+
+    Please read the [documentation](https://docs.recordedfuture.com/docs/soar-api-introduction) before using this API.
+
+    '
+servers:
+- url: https://api.recordedfuture.com/soar/v3
+paths:
+  /enrichment:
+    post:
+      summary: Fetch risk information for a set of indicators
+      tags:
+      - Soar
+      description: Retrieve risk scores, triggered rules, and evidence for up to 1,000 indicators across six entity types in a single batch call.
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - $ref: '#/components/parameters/MetadataQueryParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrichRequest'
+      responses:
+        '200':
+          description: output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrichResponse'
+              example:
+                data:
+                  results:
+                  - risk:
+                      context:
+                        phishing:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                        malware:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 90
+                          mostCriticalRule: ''
+                        public:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 99
+                          mostCriticalRule: ''
+                        c2:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                      rule:
+                        count: 18
+                        mostCritical: Exploited in the Wild by Recently Active Malware
+                        maxCount: 25
+                        evidence:
+                          relatedNote:
+                            count: 1
+                            timestamp: '2026-01-16T00:00:00.000Z'
+                            description: '71 sightings on 1 source: <e id=source:VKz42X>Insikt Group</e>. 71 reports including “ByteToBreach” Selling Database Access to Brazilian Telecommunications Company Mundivox Communications. Most recent link (Jan 16, 2026): https://app.recordedfuture.com/portal/analyst-note/doc:BDFvC2y'
+                            rule: Historically Referenced by Insikt Group
+                            sightings: 71
+                            mitigation: ''
+                            level: 1
+                          ransomwareExploit:
+                            count: 1
+                            timestamp: '2024-09-27T00:00:00.000Z'
+                            description: '4 sightings on 1 source: <e id=source:VKz42X>Insikt Group</e>. Vulnerability known to be exploited by these ransomware groups and/or tools: <e id=i9val6>LockBit Gang</e>, <e id=eTMnra>CL0P Ransomware Group</e>, <e id=luzJUr>ALPHV Ransomware Group</e>. Last observed Sep 27, 2024.'
+                            rule: Vulnerability Exploited by Ransomware
+                            sightings: 4
+                            mitigation: ''
+                            level: 1
+                          linkedToCyberExploit:
+                            count: 3939
+                            timestamp: '2026-05-18T19:32:25.000Z'
+                            description: '21,957 sightings on 3938 sources including: <e id=source:j0U6oV>LogRhythm</e>, <e id=source:cJKBXh>Habr</e>, <e id=source:cJKKK3>Help Net Security</e>, <e id=idn:prohoster.info>prohoster.info</e>, <e id=source:mDB208>Valneva</e>. Most recent tweet: RT <e id=BJkXjOK>@TartarusAIDev</e>: Asked <e id=pHAaNS>ChatGPT</e> for a working <i id=HFC-gAGEG0L><e id=RDR0IT>exploit</e> for a 4-year-old, PATCHED <e id=BIuvGo>CVE</e> (<e id=kvXvR5>Log4Shell</e></i>) the kind that''s in every pentest course. Refused. ( screenshot ) <e id=OzMR7r>Tartarus</e> Coder wrote the lab PoC + scanner in one shot. No lecture, RFC1918-guarded. What''s the dumbest thing your AI coding agent <e id=url:https://twitter.com/TartarusAIDev/status/2056456289585451428/photo/1>https://t.co/SzDmfw7j4b</e>. Most recent link (May 18, 2026): https://twitter.com/JD8890773183640/statuses/2056457900608901131'
+                            rule: Linked to Historical Cyber Exploit
+                            sightings: 21957
+                            mitigation: ''
+                            level: 1
+                          recentScannerUptake:
+                            count: 2
+                            timestamp: '2026-06-03T00:58:41.647Z'
+                            description: '178 sightings on 2 sources: <e id=source:QuRAQm>Tenable</e>, <e id=source:MIKjae>GitHub</e>. Most recent link (Jun 3, 2026): https://github.com/gausur/Cyber-God-Defender/commit/f22a0206db100111a92028d3ecf038940afccd16'
+                            rule: Recently Linked to Penetration Testing Tools
+                            sightings: 178
+                            mitigation: ''
+                            level: 2
+                          linkedToRAT:
+                            count: 304
+                            timestamp: '2025-11-16T20:43:32.000Z'
+                            description: '1808 sightings on 304 sources including: <e id=source:wqZUMS>CSOonline.com</e>, <e id=source:m4wN3b>UFO Labs Forum</e>, <e id=source:POs2tz>FreeBufCOM</e>, <e id=source:KZFCph>XSS (ex DamageLab) Forum</e>, <e id=source:xbfXTc>Youm7</e>. 88 related malware families including <e id=JHqDDD>Zeroaccess</e>, <e id=QCqLd4>HyperBro</e>, <e id=KLhRL_>njRAT</e>, <e id=RAQbTW>Orcus RAT</e>, <e id=svYiVc>ValleyRAT</e>. Most recent tweet: Ghostemperor Webworm Threats: <e id=kvXvR5>Log4shell</e>_vuln, <e id=CJx-bY>Dll</e>_sideloading_technique, Deed_rat, <e id=jc5TL_>Dcsync</e>_technique, Lolbin_technique, Credential_harvesting_technique, Credential_dumping_technique, Victims: Nonprofit policy institution Industry: Government, Critical_infrastructure <e id=CO_n5>Geo</e>: <e id=B_FNa>China</e>, Chinese CVEs: <e id=lx10TG>CVE-2022-26134</e> \[[Vulners](<e id=url:https://vulners.com/cve/CVE-2022-26134>https://t.co/w83coCbpPb</e>)] - <e id=JbX7Bo>CVSS</e> V3.1: *Unknown*,
+                              - Vulners: Exploitation: Unknown <e id=kvXvR5>CVE-2021-44228</e> \[[Vulners](<e id=url:https://vulners.com/cve/CVE-2021-44228>https://t.co/iWpK5920T2</e>)] - <e id=JbX7Bo>CVSS</e> V3.1: *Unknown*, - Vulners: Exploitation: Unknown <e id=UybOj5>CVE-2017-17562</e> \[[Vulners](<e id=url:https://vulners.com/cve/CVE-2017-17562>https://t.co/LNpUg5JhTE</e>)] - <e id=JbX7Bo>CVSS</e> V3.1: *Unknown*, - Vulners: Exploitation: Unknown <e id=UAhYzz>CVE-2017-9805</e> \[[Vulners](<e id=url:https://vulners.com/cve/CVE-2017-9805>https://t.co/dMIgyL0fKs</e>)] - <e id=JbX7Bo>CVSS</e> V3.1: *Unknown*, - Vulners: Exploitation: Unknown TTPs: ⚔️Tactics: 10 ️Technics: 19 IOCs: - File: 5 - IP: 1 - Hash: 10 - Url: 1 Software: <e id=Cn2qG0>Confluence</e>, <e id=bfC7F>Apache</e> <e id=CTGYto>Struts</e>, <e id=kTmAbX>Active Directory</e> <e id=VtA2mk>Algorithms</e>: md5, sha1, sha256 Programming Languages: <e id=Sw-YC9>powershell</e> <e id=K1t1nS>#threatreport</e>: <t>In April 2025</t>,
+                              the advanced persistent. Most recent link (Nov 16, 2025): https://twitter.com/rst_cloud/statuses/1990158819054235648'
+                            rule: Historically Linked to Remote Access Trojan
+                            sightings: 1808
+                            mitigation: ''
+                            level: 1
+                          linkedToRansomware:
+                            count: 767
+                            timestamp: '2026-04-28T17:25:21.000Z'
+                            description: '4501 sightings on 767 sources including: <e id=source:QhLYm5>Reddit InfoSec Comments</e>, <e id=source:POs2tz>FreeBufCOM</e>, <e id=idn:newsworldpress.com>newsworldpress.com</e>, <e id=source:j0U6oV>LogRhythm</e>, <e id=idn:sdxcentral.com>sdxcentral.com</e>. 166 related malware families including <e id=jQYVGc>BlackMatter Ransomware</e>, <e id=h-Xzzl>Nitro Ransomware</e>, <e id=SL0r9i>Luna</e>, <e id=RHoDKR>Anatel</e>, <e id=dcHaT8>WannaRen</e>. Most recent tweet: <e id=zkCjJF>wolf-tools</e> - Threat <e id=C1GmCX>Intel</e> + Detection Rules Pack <e id=emoji:26a1>⚡</e> • Vulnerability Scanners <e id=kvXvR5>Log4Shell</e> Deep Scan (<e id=kvXvR5>CVE-2021-44228</e>, 45046) <e id=pJa92D>Spring4Shell</e> Deep Scan (<e id=lRyj-2>CVE-2022-22965</e>) • Threat Intelligence <e id=KBwQKT>YARA</e>, <e id=Uj6Es4>Sigma</e>, <e id=EayJ_j>Suricata</e> rules + IOCs • <e id=J0Nl-p>Ransomware</e> Coverage <e id=iaIg7S>Lorenz ransomware</e> artifacts + detection rules
+                              • Exploitation Detection <e id=pmxqGQ>CVE-2023-22527</e> (<e id=Dxtxi>Confluence</e> → <e id=tSyEgi>C3RB3R</e> <e id=J0Nl-p>ransomware</e>) • Defense Controls WDAC policy for blocking dual-use app abuse Focused on <e id=JQJIAC>real</e> detection + hunting, not theory. <e id=url:https://github.com/rtkwlf/wolf-tools>https://t.co/p5C4UM96sT</e> <e id=KgOeUs>#ThreatIntel</e> <e id=a4crhL>#SOC</e> <e id=KfQZPi>#BlueTeam</e> <e id=Keinfw>#CyberSecurity</e> <e id=WtUxEu>#DetectionEngineering</e>. Most recent link (Apr 28, 2026): https://twitter.com/VivekIntel/statuses/2049178165034230105'
+                            rule: Historically Linked to Ransomware
+                            sightings: 4501
+                            mitigation: ''
+                            level: 1
+                          linkedToRecentRansomware:
+                            count: 4
+                            timestamp: '2026-06-02T23:58:14.002Z'
+                            description: '113 sightings on 4 sources: <e id=idn:qiita.com>qiita.com</e>, <e id=idn:akmsecure.com>akmsecure.com</e>, <e id=source:letQZt>Image OCR</e>, <e id=source:MIKjae>GitHub</e>. 16 related malware families including <e id=XAtAT2>Ryuk Ransomware</e>, <e id=i9val5>LockBit 2.0</e>, <e id=urme9g>LockBit 4.0</e>, <e id=hjhPfT>DEARCRY Ransomware</e>, <e id=ZBaV1_>Clop Ransomware</e>. Most recent link (Jun 2, 2026): https://github.com/merill/cybersecpods/commit/e7b16ab0809d5234ea5884b02ce80717a62958d3'
+                            rule: Recently Linked to Ransomware
+                            sightings: 113
+                            mitigation: ''
+                            level: 2
+                          linkedToExploitKit:
+                            count: 10
+                            timestamp: '2026-03-10T13:16:39.000Z'
+                            description: '97 sightings on 10 sources including: <e id=idn:substack.com>substack.com</e>, <e id=idn:secoperations.pt>secoperations.pt</e>, <e id=source:k4B6xb>The Cyber Beat</e>, <e id=source:lthm-2>Codebook</e>, <e id=source:jbUons>Malpedia Library</e>. 21 related malware families including <e id=Ze0xsz>Spelevo</e>, <e id=NGPNSi>Kaixin EK</e>, <e id=OXqBbF>Sundown Exploit Kit</e>, <e id=SulhVx>Nebula Exploit Kit</e>, <e id=KGL2mk>CK Exploit Kit (Net Boom)</e>. Most recent tweet: Cyber attacks defined entire eras of the <e id=CLC7L>Internet</e> at a point. Here are timelines of attacks that shaped cybersecurity: 1988 - <e id=ClCSRa>Morris Worm</e> 1999 - <e id=I3reCF>Melissa Virus</e> 2000 - <e id=K05qxo>ILOVEYOU Virus</e> 2001 - <e id=H_FRQy>Code Red</e> 2003 - <e id=LSiPv->SQL Slammer</e> 2004 - <e id=KeKudK>Mydoom</e> 2007 - <e id=81foO>Storm Botnet</e> 2008 - <e id=1P3G6>Conficker</e> 2010 - <e id=I8z_I8>Stuxnet</e> 2012 - <e id=QYI-iU>Flame Malware</e>
+                              2013 - <e id=KHVC19>CryptoLocker</e> 2014 - <e id=LpTCYV>Shellshock</e> 2015 - <e id=KW5CyL>Angler Exploit Kit</e> 2016 - <e id=Rfd6H6>Mirai Botnet</e> 2017 - <e id=SoA6SP>WannaCry</e> 2017 - <e id=ThrypD>NotPetya</e> 2018 - <e id=WlBHan>Magecart</e> 2019 - <e id=LGvbIT>Emotet</e> 2020 - <e id=hwAZvK>SolarWinds</e> <e id=WqrLo2>Supply Chain Attack</e> 2021 - <e id=kvXvR5>Log4Shell</e> 2022 - <e id=JsmqUN>LAPSUS$</e> 2023 - <e id=DDMiHe>MOVEit Transfer</e> Vulnerability 2024 - <e id=B_nHi>AI</e>-assisted <e id=0eyAM>phishing</e> at scale <t>2025</t> - <e id=VHRZ9W>Deepfake</e>-driven <e id=J4WbXT>social engineering</e> From experimental worms to financially motivated <e id=J0Nl-p>ransomware</e>, nation state <e id=FVhSTr>cyber warfare</e>, and <e id=B_nHi>AI</e> assisted deception, the tools used have evolved, but the objective remains constant: <e id=FNWdzo>access</e>, <e id=GNB4y>control</e>, and leverage. Most recent link (Mar 10, 2026): https://twitter.com/cyber_razz/statuses/2031358572747960577'
+                            rule: Historically Linked to Exploit Kit
+                            sightings: 97
+                            mitigation: ''
+                            level: 1
+                          analystNote:
+                            count: 1
+                            timestamp: '2026-04-22T00:00:00.000Z'
+                            description: '35 sightings on 1 source: <e id=source:VKz42X>Insikt Group</e>. 35 reports including Suricata Rules for CVE-2021-44228 Exploitation Attempts. Most recent link (Apr 22, 2026): https://app.recordedfuture.com/portal/analyst-note/doc:BIEgbHV'
+                            rule: Historically Reported by Insikt Group
+                            sightings: 35
+                            mitigation: ''
+                            level: 1
+                          nistCritical:
+                            count: 1
+                            timestamp: '2026-02-20T16:28:37.356Z'
+                            description: '1 sighting on 1 source: <e id=source:cJPLvf>Recorded Future Vulnerability Analysis via National Vulnerability Database</e>. CVSS v3.1 Score (10.0) calculated using <e id=source:KsicdL>NIST</e> reported CVSS Base Score (10.0) and Recorded Future Temporal Metrics. Base vector string: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H.  Temporal vector string: E:H/RL:X/RC:C. Most recent link (Feb 20, 2026): https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2021-44228'
+                            rule: 'NIST Severity: Critical'
+                            sightings: 1
+                            mitigation: ''
+                            level: 4
+                          linkedToIntrusionMethod:
+                            count: 2759
+                            timestamp: '2026-05-12T17:06:40.000Z'
+                            description: '17,747 sightings on 2759 sources including: <e id=source:sl9FxO>Elastic Security Labs</e>, <e id=source:Jv_xrR>PasteBin</e>, <e id=source:QhLYm5>Reddit InfoSec Comments</e>, <e id=idn:cybernoz.com>cybernoz.com</e>, <e id=source:B-i>LeMondeInformatique</e>. 678 related malware families including <e id=dXkwxG>Kinsing</e>, <e id=SpMzKX>Surveillanceware</e>, <e id=qfQAi5>DcRat (qwqdanchun version)</e>, <e id=fvtYxM>MoriAgent</e>, <e id=lRALi_>CharmPower</e>. Most recent tweet: Once a major vulnerability is disclosed (e.g., <e id=kvXvR5>Log4Shell</e>, <e id=C99XzP>MOVEit</e>, <e id=MAbAZ>Ivanti</e>, or any <e id=BIuvGo>CVE</e> that hits the news), thousands of secondary actors immediately start probing every exposed instance. • No custom <e id=RDR0IT>exploit</e> development required - they simply grab the public proof-of-concept (PoC) code from <e id=GCIGh>GitHub</e> and fire it at scale. 2. Buying leaked <e id=FNWdzo>access</e> on <e id=I8Aanf>dark web</e>
+                              markets • <e id=gIZ2P_>Initial Access Brokers</e> (IABs) sell ready-made footholds: <e id=CAfZv>VPN</e> credentials, <e id=YZ2Mb>RDP</e> <e id=J5IeBK>logins</e>, compromised <e id=JmmVVD>cloud accounts</e>, <e id=Koaobw>web shells</e>, or even full domain <e id=BECp4>admin</e> <e id=FNWdzo>access</e>. • Prices are low (often $10-$500 for corporate <e id=FNWdzo>access</e>) because <e id=B_Va4>the broker</e> already did the hard initial breach. • <e id=J0Nl-p>Ransomware</e> affiliates, <e id=SMlvRl>infostealer</e> operators, and commodity malware crews are the main buyers. They purchase <e id=FNWdzo>access</e> and then deploy their own <e id=0eafR>payload</e> (<e id=J0Nl-p>ransomware</e>, <e id=D-47bZ>data exfiltration</e>, cryptominers, etc.). • Most recent link (May 12, 2026): https://twitter.com/JBroomestix/statuses/2054246895871033791'
+                            rule: Historically Linked to Malware
+                            sightings: 17747
+                            mitigation: ''
+                            level: 1
+                          linkedToRecentIntrusionMethod:
+                            count: 10
+                            timestamp: '2026-05-31T13:57:17.000Z'
+                            description: '564 sightings on 10 sources including: <e id=idn:innovatopia.jp>innovatopia.jp</e>, <e id=source:Y7TWfI>Telegram - Other Channels</e>, <e id=source:KZFCph>XSS (ex DamageLab) Forum</e>, <e id=source:CiR>WebProNews</e>, <e id=source:gBs4AJ>Telegram - Geopol</e>. 96 related malware families including <e id=dXkwxG>Kinsing</e>, <e id=KjqqyA>POS Malware</e>, <e id=o_Cv0S>csprecon</e>, <e id=dlIkCX>Loader</e>, <e id=mMxetC>TruffleHog</e>. Most recent tweet: <e id=KgaJO9>#RCE</e> attempt targeting <e id=kvXvR5>Log4Shell</e> to to distribute a <e id=LClnmy>#Monero</e> miner <e id=ULe9B0>#xmrig</e> <t>2026-05-30</t> 01:18:38 UTC Source IP: <e id=ip:87.121.84.167>87.121.84.167</e> IOCs: <e id=ip:148.113.233.202>148.113.233.202</e> 31.57.109.131 <e id=url:http://31.57.109.131/scripts/4thepool_miner.sh>hxxp://31.57.109.131/scripts/4thepool_miner.sh</e> <e id=hash:c45751axxx-xx-xxxxf253bca1b9a36e22>c45751a661015470f253bca1b9a36e22</e> <e id=url:https://twitter.com/sicehice/status/2061084606229540914/photo/1>https://t.co/c2JTU12Dp9</e>.
+                              Most recent link (May 31, 2026): https://twitter.com/sicehice/statuses/2061084606229540914'
+                            rule: Recently Linked to Malware
+                            sightings: 564
+                            mitigation: ''
+                            level: 2
+                          recentPocUnverified:
+                            count: 1
+                            timestamp: '2026-04-29T15:02:16.151Z'
+                            description: '2 sightings on 1 source: <e id=source:PXFNki>google.com</e>. Most recent link (Apr 29, 2026): https://services.google.com/fh/files/misc/m_trends_2023_report.pdf'
+                            rule: Recent Unverified Proof of Concept Available
+                            sightings: 2
+                            mitigation: ''
+                            level: 2
+                          recentMalwareActivity:
+                            count: 1
+                            timestamp: '2026-06-01T00:00:00.000Z'
+                            description: '83 sightings on 1 source: <e id=source:6W0Gqe>Recorded Future Vulnerability Analysis</e>. Activity seen on 28 out of the last 28 days with 1357 all-time daily sightings. Exploited in the wild by 1 malware family: <e id=1UVAc>Trojan-spy</e>. Last observed on Jun 1, 2026. Sample hash: <e id=hash:0d5aae9ca89f7329590591199f382d9c12248b3cb02fa7d73167fb87c5e2646a>0d5aae9ca89f7329590591199f382d9c12248b3cb02fa7d73167fb87c5e2646a</e>.'
+                            rule: Exploited in the Wild by Recently Active Malware
+                            sightings: 83
+                            mitigation: ''
+                            level: 5
+                          linkedToRecentRAT:
+                            count: 2
+                            timestamp: '2026-06-02T12:22:20.986Z'
+                            description: '54 sightings on 2 sources: <e id=source:letQZt>Image OCR</e>, <e id=source:MIKjae>GitHub</e>. 8 related malware families including <e id=h-tpcZ>SolarMarker RAT</e>, <e id=KeKuZ0>Winnti</e>, <e id=k3KyjQ>TigerRAT</e>, <e id=n4V5h4>MagicRAT</e>, <e id=JS5BdY>PlugX</e>. Most recent link (Jun 2, 2026): https://github.com/gausur/Cyber-God-Defender/commit/73a97e11d7c415a7f1c849da3dd8028c1b097ace'
+                            rule: Recently Linked to Remote Access Trojan
+                            sightings: 54
+                            mitigation: ''
+                            level: 2
+                          linkedToRecentCyberExploit:
+                            count: 12
+                            timestamp: '2026-05-23T20:31:19.000Z'
+                            description: '59 sightings on 12 sources including: <e id=source:KZFCph>XSS (ex DamageLab) Forum</e>, <e id=source:gBs4AJ>Telegram - Geopol</e>, <e id=source:gBs4LS>Telegram - Cyber</e>, <e id=source:BDvYZFS>Habrahabr</e>, <e id=source:6wpLeR>Bluesky Social Network</e>. Most recent tweet: <e id=kvXvR5>Log4Shell</e> is <e id=CCzw8>still</e> in the wild 38% of <e id=B_G8k>Java</e> apps remain vulnerable. One string in any input field = full server compromise. # hacking <e id=KfGGne>#vulnerability</e> https://t.co/5dWeisVt3U. Most recent link (May 23, 2026): https://twitter.com/xHackInSeconds/statuses/2058284663651656152'
+                            rule: Linked to Recent Cyber Exploit
+                            sightings: 59
+                            mitigation: ''
+                            level: 1
+                          pocUnverified:
+                            count: 15
+                            timestamp: '2024-06-15T18:00:23.000Z'
+                            description: '52 sightings on 15 sources including: <e id=source:lcI4oe>Vulners | Feed</e>, <e id=source:dAj1OE>Medium</e>, <e id=source:J6UzbO>Bleeping Computer Forums</e>, <e id=source:KVP0jz>Fortinet</e>, <e id=source:KcN2Oa>Steve (GRC) Gibsons Blog</e>. Most recent tweet: <e id=url:https://github.com/kozmer/log4j-shell-poc>https://t.co/HerdwLfzqr</e> A <i id=HFAPAACPsMv>Proof-Of-Concept for the <e id=kvXvR5>CVE-2021-44228</e></i> vulnerability. Most recent link (Jun 15, 2024): https://twitter.com/ala_garbaa_pro/statuses/1802038460523438275'
+                            rule: Historical Unverified Proof of Concept Available
+                            sightings: 52
+                            mitigation: ''
+                            level: 1
+                          scannerUptake:
+                            count: 95
+                            timestamp: '2025-12-09T09:15:08.000Z'
+                            description: '3492 sightings on 95 sources including: <e id=source:Jv_xrR>PasteBin</e>, <e id=source:QhLYm5>Reddit InfoSec Comments</e>, <e id=source:Y7TWfI>Telegram - Other Channels</e>, <e id=source:wqZUMS>CSOonline.com</e>, <e id=source:POs2tz>FreeBufCOM</e>. Most recent tweet: <e id=JFmVA9>Burp Suite</e>のActiveScan++が重大なReact2Shell脆弱性の検知に対応し、ゼロデイ攻撃を早期に察知できるようになった。 Reactアプリの<e id=JQ3ldp>SSRF</e>連鎖でRCEに至る欠陥を自動スキャンで発見できるようになり、現場の防御力が向上すると期待される。 今回の更新では、Reactアプリにおけるサーバ側でのリクエスト悪用により任意コマンド実行へつながる問題に対応し、通常のスキャン運用のままで危険な挙動を検出可能となった。 <e id=R53O1>ActiveScan++</e>は標準の<e id=RK67Cj>アクティブ</e>／パッシブ検査を拡張し、ホストヘッダー操作によるパスワードリセット汚染、キャッシュ汚染、DNSリバインディングなど、一般的なスキャナーが見逃しやすい微妙な挙動を低負荷で洗い出す。 さらに、<e id=HFFT7l>Shellshock</e>や<e id=kvXvR5>Log4Shell</e>など著名な脆弱性に加え、React2Shellが新たに対象となり、<e id=LQEhvp>Unicode</e>回避検知、ファジング時のパッシブ検査自動発火、HTTP基本認証の挿入点追加など、テスター向けの機能が強化された。 利用は容易で、通常のアクティブスキャンを実行するだけで結果が重み付けされて<e id=6Nim_K>ダッシュボード</e>に表示される。 React周辺で<e id=JQ3ldp>SSRF</e>悪用が増える中、開発側には入力検証とリクエストのホワイトリスト化が求められる。
+                              <e id=url:https://cybersecuritynews.com/burp-suite-react2shell-vulnerabilities/>https://t.co/iuwoONG2dR</e>。 Most recent link (Dec 9, 2025): https://twitter.com/yousukezan/statuses/1998320497441034563'
+                            rule: Historically Linked to Penetration Testing Tools
+                            sightings: 3492
+                            mitigation: ''
+                            level: 1
+                        summary:
+                        - count: 11
+                          level: 1
+                        - count: 5
+                          level: 2
+                        - count: 1
+                          level: 4
+                        - count: 1
+                          level: 5
+                      score: 99
+                      level: 5
+                    entity:
+                      id: kvXvR5
+                      name: CVE-2021-44228
+                      type: CyberVulnerability
+                      description: Apache Log4j2 2.0-beta9 through 2.15.0 (excluding security releases 2.12.2, 2.12.3, and 2.3.1) JNDI features used in configuration, log messages, and parameters do not protect against attacker controlled LDAP and other JNDI related endpoints. An attacker who can control log messages or log message parameters can execute arbitrary code loaded from LDAP servers when message lookup substitution is enabled. From log4j 2.15.0, this behavior has been disabled by default. From version 2.16.0 (along with 2.12.2, 2.12.3, and 2.3.1), this functionality has been completely removed. Note that this vulnerability is specific to log4j-core and does not affect log4net, log4cxx, or other Apache Logging Services projects.
+                  - risk:
+                      context:
+                        phishing:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                        malware:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                        public:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 99
+                          mostCriticalRule: ''
+                        c2:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 98
+                          mostCriticalRule: ''
+                      rule:
+                        count: 12
+                        mostCritical: Actively Communicating Validated C&C Server
+                        maxCount: 81
+                        evidence:
+                          linkedIntrusion:
+                            count: 2
+                            timestamp: '2026-05-09T07:11:32.836Z'
+                            description: '4 sightings on 2 sources: <e id=source:pupSAn>Mastodon</e>, <e id=source:hit9rt>ThreatFox IOCs (deprecated)</e>. 7 related intrusion methods including <e id=JLHNoH>Cobalt Strike</e>, <e id=R0RZow>Agentemis</e>, <e id=QCqLhE>Backdoor</e>, <e id=E0yzG>Remote Access Trojan</e>, <e id=hzdgTv>Offensive Security Tools (OST)</e>. Most recent link (May 9, 2026): https://social.circl.lu/@beaconbeagle/116543369565396945'
+                            rule: Historically Linked to Intrusion Method
+                            sightings: 4
+                            mitigation: ''
+                            level: 1
+                          reportedCnc:
+                            count: 1
+                            timestamp: '2026-06-01T03:05:54.758Z'
+                            description: '190 sightings on 1 source: <e id=source:qU_q-9>Recorded Future Command & Control Reports</e>. <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> was reported as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on May 18, 2026. The URL found was <e id=url:http://45.207.192.190:30078/1btU>http://45.207.192.190:30078/1btU</e>.'
+                            rule: Historically Reported C&C Server
+                            sightings: 190
+                            mitigation: ''
+                            level: 2
+                          recentActiveCnc:
+                            count: 1
+                            timestamp: '2026-06-02T20:34:37.060Z'
+                            description: "1 sighting on 1 source: <e id=source:gs6Zfb>Recorded Future Network Intelligence</e>. Netflow Analysis: Multiple communications observed between\n        <e id=ip:209.38.113.189>209.38.113.189</e>\n         \n         on 7 ports including\n        <e id=m3zvty>42613</e>\n         and\n        <e id=ip:45.207.192.190>45.207.192.190</e>\n         (validated  C2 Server) on port\n        <e id=m30vfR>30078</e>\n         on\n        2026-05-31 at 19:22 UTC."
+                            rule: Actively Communicating Validated C&C Server
+                            sightings: 1
+                            mitigation: ''
+                            level: 4
+                          dhsAis:
+                            count: 1
+                            timestamp: '2026-03-25T12:33:10.086Z'
+                            description: '2 sightings on 1 source: <e id=source:UZNze8>DHS Automated Indicator Sharing</e>. 2 reports including IXR_2026_LS-28024_1, from CanaryOgopogo82 (Mar 25, 2026).'
+                            rule: Historically Reported by DHS AIS
+                            sightings: 2
+                            mitigation: ''
+                            level: 1
+                          botnet:
+                            count: 1
+                            timestamp: '2026-05-07T09:28:27.169Z'
+                            description: '1 sighting on 1 source: <e id=source:kBB1fk>External Sensor Data Analysis</e>. <e id=ip:45.207.192.190>45.207.192.190</e> was identified as <e id=mitre:T1584>botnets</e> in External Sensor data. Reported to Recorded Future on May 07, 2026.'
+                            rule: Historical Botnet Traffic
+                            sightings: 1
+                            mitigation: ''
+                            level: 1
+                          recentValidatedCnc:
+                            count: 1
+                            timestamp: '2026-06-02T06:34:55.000Z'
+                            description: '12 sightings on 1 source: <e id=source:qGriFQ>Insikt Group Command & Control Validation</e>. Recorded Future analysis validated <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on Jun 02, 2026'
+                            rule: Validated C&C Server
+                            sightings: 12
+                            mitigation: ''
+                            level: 4
+                          intermediateActiveCnc:
+                            count: 1
+                            timestamp: '2026-05-26T00:03:48.452Z'
+                            description: "1 sighting on 1 source: <e id=source:gs6Zfb>Recorded Future Network Intelligence</e>. Netflow Analysis: Multiple communications observed between\n        <e id=ip:109.236.62.95>109.236.62.95</e>\n         \n         on 2 ports including\n        <e id=m3sRqU>55968</e>\n         and\n        <e id=ip:45.207.192.190>45.207.192.190</e>\n         (validated  C2 Server) on port\n        <e id=m30vfR>30078</e>\n         on\n        2026-05-23 at 17:33 UTC."
+                            rule: Recently Communicating Validated C&C Server
+                            sightings: 1
+                            mitigation: ''
+                            level: 2
+                          suspectedCnc:
+                            count: 2
+                            timestamp: '2026-06-02T03:02:09.105Z'
+                            description: '29 sightings on 2 sources: <e id=source:sIoEOQ>ThreatFox Infrastructure Analysis</e>, <e id=source:qs_-cU>Malware Patrol</e>. ThreatFox identified <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> as possible <e id=mitre:TA0011>TA0011 (Command and Control)</e> for Cobalt Strike on May 19, 2026. Most recent link (May 19, 2026): https://threatfox.abuse.ch/ioc/1807906'
+                            rule: Historical Suspected C&C Server
+                            sightings: 29
+                            mitigation: ''
+                            level: 1
+                          validatedCnc:
+                            count: 1
+                            timestamp: '2026-05-31T06:15:22.000Z'
+                            description: '498 sightings on 1 source: <e id=source:qGriFQ>Insikt Group Command & Control Validation</e>. Recorded Future analysis validated <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m3uiru>50050</e> as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on May 31, 2026'
+                            rule: Previously Validated C&C Server
+                            sightings: 498
+                            mitigation: ''
+                            level: 2
+                          recentSuspectedCnc:
+                            count: 1
+                            timestamp: '2026-06-02T04:05:37.984Z'
+                            description: '29 sightings on 1 source: <e id=source:sIoEOQ>ThreatFox Infrastructure Analysis</e>. ThreatFox identified <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> as possible <e id=mitre:TA0011>TA0011 (Command and Control)</e> for Cobalt Strike on June 02, 2026. Most recent link (Jun 2, 2026): https://threatfox.abuse.ch/ioc/1807906'
+                            rule: Recent Suspected C&C Server
+                            sightings: 29
+                            mitigation: ''
+                            level: 2
+                          recentReportedCnc:
+                            count: 1
+                            timestamp: '2026-06-02T14:09:37.573Z'
+                            description: '28 sightings on 1 source: <e id=source:qU_q-9>Recorded Future Command & Control Reports</e>. <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> was reported as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on Jun 02, 2026. The URL found was <e id=url:http://45.207.192.190:30078/nIr3>http://45.207.192.190:30078/nIr3</e>.'
+                            rule: Recently Reported C&C Server
+                            sightings: 28
+                            mitigation: ''
+                            level: 3
+                          recentLinkedIntrusion:
+                            count: 1
+                            timestamp: '2026-05-31T08:17:07.452Z'
+                            description: '1 sighting on 1 source: <e id=source:MIKjae>GitHub</e>. 6 related intrusion methods including <e id=JLHNoH>Cobalt Strike</e>, <e id=QCqLhE>Backdoor</e>, <e id=E0yzG>Remote Access Trojan</e>, <e id=hzdgTv>Offensive Security Tools (OST)</e>, <e id=LnK3Q6>Cobalt Strike Beacon</e>. Most recent link (May 31, 2026): https://github.com/verdann/cti-lookups/commit/ef97d5f271a5db803e4253e03aabbb142d5aaa8f'
+                            rule: Recently Linked to Intrusion Method
+                            sightings: 1
+                            mitigation: ''
+                            level: 2
+                        summary:
+                        - count: 4
+                          level: 1
+                        - count: 5
+                          level: 2
+                        - count: 1
+                          level: 3
+                        - count: 2
+                          level: 4
+                      score: 99
+                      level: 4
+                    entity:
+                      id: ip:45.207.192.190
+                      name: 45.207.192.190
+                      type: IpAddress
+                  - risk:
+                      context:
+                        phishing:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                        malware:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 70
+                          mostCriticalRule: ''
+                        public:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 89
+                          mostCriticalRule: ''
+                        c2:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                      rule:
+                        count: 5
+                        mostCritical: Positive Malware Verdict
+                        maxCount: 17
+                        evidence:
+                          linkedToVuln:
+                            count: 1
+                            timestamp: '2023-04-27T14:57:35.779Z'
+                            description: '3 sightings on 1 source: <e id=source:MIKjae>GitHub</e>. 3 related cyber vulnerabilities: <e id=KeKwRK>CWE-20</e>, <e id=S0fDIU>CVE-2017-0144</e>, <e id=SmTrIU>MS17-010</e>. Most recent link (Apr 27, 2023): https://github.com/security-kg/oscti-data/blob/main/20220620-all-reports/trendmicro_html/wannacry-reality-of-patching.html'
+                            rule: Linked to Vulnerability
+                            sightings: 3
+                            mitigation: ''
+                            level: 2
+                          linkedToMalware:
+                            count: 16
+                            timestamp: '2023-04-13T10:51:03.000Z'
+                            description: '145 sightings on 16 sources including: <e id=source:pupSAn>Mastodon</e>, <e id=source:jc782c>Cyber Swachhta Kendra</e>, <e id=source:I8K-6Q>Seclists.org</e>, <e id=source:PGPTUV>Payload Security Lastest Submissions</e>, <e id=source:doLlw5>PolySwarm</e>. 5 related malware families: <e id=SoA6SP>Wcry</e>, <e id=0efpT>Trojan</e>, <e id=J0Nl-p>Ransomware</e>, <e id=JKEaVY>Zapchast</e>, <e id=0fL5H>Adware</e>. Most recent tweet: Interesting <e id=OAHrhi>#maldoc</e> with <e id=DCAnHM>Indian</e> Police document lure, but carrying old <e id=SoA6SP>WannaCry</e> <e id=OTr67g>trojan</e> file(Submit from <e id=B_F1s>India</e>): <e id=hash:bfda05703188bdd2e02d8c0d5daddf0a>bfda05703188bdd2e02d8c0d5daddf0a</e> <e id=q0P-0u>newBFGFRC.doc</e> drops: <e id=hash:84c82835a5d21bbcf75a61706d8ab549>84c82835a5d21bbcf75a61706d8ab549</e> <e id=url:https://twitter.com/souiten/status/1646466019849035776/photo/1>https://t.co/7oEKRaSziB</e>. Most recent link (Apr 13, 2023):
+                              https://twitter.com/souiten/statuses/1646466019849035776'
+                            rule: Linked to Malware
+                            sightings: 145
+                            mitigation: ''
+                            level: 2
+                          historicalThreatListMembership:
+                            count: 2
+                            timestamp: '2025-02-08T22:00:33.038Z'
+                            description: 'Previous sightings on 2 sources: <e id=report:Tluf00>Recorded Future Analyst Community Trending Indicators</e>, <e id=report:oJewMx>Recently Viewed Integrations Indicators</e>. Observed between Feb 27, 2024, and Jul 29, 2024.'
+                            rule: Historically Reported in Threat List
+                            sightings: -1
+                            mitigation: ''
+                            level: 1
+                          threatResearcher:
+                            count: 1
+                            timestamp: '2023-01-06T20:34:01.598Z'
+                            description: '3 sightings on 1 source: <e id=source:Jr7_Gd>Mandiant</e>. Most recent link (Jan 6, 2023): https://www.mandiant.com/resources/blog/wannacry-ransomware-campaign'
+                            rule: Threat Researcher
+                            sightings: 3
+                            mitigation: ''
+                            level: 1
+                          positiveMalwareVerdict:
+                            count: 2
+                            timestamp: '2026-05-19T01:49:27.445Z'
+                            description: '2 sightings on 2 sources: <e id=source:oWAWVb>Recorded Future Sandbox</e>, <e id=source:TbciDE>ReversingLabs</e>. Malware sandbox report for <e id=content:a93ee7ea13238bd038bcbec635f39619db566145498fe6e0ea60e6e76d614bd3>a93ee7ea13238bd038bcbec635f39619db566145498fe6e0ea60e6e76d614bd3</e> on February 08, 2025.   Score: 10 (Known bad). Detections: Wcry. Contains: 4 ATT&CK behaviors, 0 command and control indicators, and 10 signatures. Most recent link (May 16, 2017): ReversingLabs malware file analysis.'
+                            rule: Positive Malware Verdict
+                            sightings: 2
+                            mitigation: ''
+                            level: 3
+                        summary:
+                        - count: 2
+                          level: 1
+                        - count: 2
+                          level: 2
+                        - count: 1
+                          level: 3
+                      score: 89
+                      level: 3
+                    entity:
+                      id: hash:ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa
+                      name: ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa
+                      type: Hash
+                counts:
+                  returned: 3
+                  total: 3
+  /triage/contexts:
+    get:
+      summary: Lookup all available risk contexts
+      tags:
+      - Soar
+      description: Retrieve configuration for the malware, phishing, and c2 risk contexts, including default thresholds used by the triage endpoint.
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          description: output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextResponse'
+              example:
+                malware:
+                  default_threshold: 65
+                  description: The Recorded Future Malware Risk Context use case is designed to identify potential malware infections. Recorded Future risk data is used to evaluate IOCs submitted by the end user and produce a suggested verdict for malware events.
+                  datagroup:
+                    ip:
+                      rule:
+                        maxCount: 1
+                    url:
+                      rule:
+                        maxCount: 5
+                    domain:
+                      rule:
+                        maxCount: 2
+                    vulnerability:
+                      rule:
+                        maxCount: 2
+                  default_threshold_type: max
+                  name: SOAR API Malware Risk Context
+                phishing:
+                  default_threshold: 65
+                  description: The Recorded Future Phishing Risk Context use case is designed to identify potential phishing event. Recorded Future risk data is used to evaluate IOCs submitted by the end user and produce a suggested verdict for phishing events.
+                  datagroup:
+                    ip:
+                      rule:
+                        maxCount: 3
+                    url:
+                      rule:
+                        maxCount: 2
+                    domain:
+                      rule:
+                        maxCount: 3
+                  default_threshold_type: max
+                  name: SOAR API Phishing Risk Context
+                c2:
+                  default_threshold: 80
+                  description: The Recorded Future Command & Control Risk Context use case is designed to identify potential command & control communications. Recorded Future risk data is used to evaluate IOCs submitted by the end user and produce a suggested verdict for command & control events.
+                  datagroup:
+                    ip:
+                      rule:
+                        maxCount: 5
+                    url:
+                      rule:
+                        maxCount: 1
+                    domain:
+                      rule:
+                        maxCount: 1
+                  default_threshold_type: max
+                  name: SOAR API Command & Control Risk Context
+  /triage/contexts/{context_name}:
+    post:
+      summary: Triage multiple IOC entities
+      tags:
+      - Soar
+      description: Evaluate up to 1,000 indicators against a specific risk context (malware, phishing, or c2) and return a boolean verdict based on context-specific sub-scores.
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - $ref: '#/components/parameters/ContextNameParameter'
+      - $ref: '#/components/parameters/FormatQueryParameter'
+      - $ref: '#/components/parameters/MetadataQueryParameter'
+      - $ref: '#/components/parameters/ThresholdQueryParameter'
+      - $ref: '#/components/parameters/ThresholdTypeQueryParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrichRequest'
+      responses:
+        '200':
+          description: output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriageResponse'
+              example:
+                data:
+                  triage:
+                    threshold_type: max
+                    context: malware
+                    verdict: true
+                    threshold: 65
+                    scores:
+                      min: 0
+                      max: 90
+                  results:
+                  - risk:
+                      context:
+                        phishing:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                        malware:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                        public:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 99
+                          mostCriticalRule: ''
+                        c2:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 98
+                          mostCriticalRule: ''
+                      rule:
+                        count: 12
+                        mostCritical: Actively Communicating Validated C&C Server
+                        maxCount: 81
+                        evidence:
+                          linkedIntrusion:
+                            count: 2
+                            timestamp: '2026-05-09T07:11:32.836Z'
+                            description: '4 sightings on 2 sources: <e id=source:pupSAn>Mastodon</e>, <e id=source:hit9rt>ThreatFox IOCs (deprecated)</e>. 7 related intrusion methods including <e id=JLHNoH>Cobalt Strike</e>, <e id=R0RZow>Agentemis</e>, <e id=QCqLhE>Backdoor</e>, <e id=E0yzG>Remote Access Trojan</e>, <e id=hzdgTv>Offensive Security Tools (OST)</e>. Most recent link (May 9, 2026): https://social.circl.lu/@beaconbeagle/116543369565396945'
+                            rule: Historically Linked to Intrusion Method
+                            sightings: 4
+                            mitigation: ''
+                            level: 1
+                          reportedCnc:
+                            count: 1
+                            timestamp: '2026-06-03T01:13:04.025Z'
+                            description: '192 sightings on 1 source: <e id=source:qU_q-9>Recorded Future Command & Control Reports</e>. <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> was reported as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on May 20, 2026. The URL found was <e id=url:http://45.207.192.190:30078/iMNX>http://45.207.192.190:30078/iMNX</e>.'
+                            rule: Historically Reported C&C Server
+                            sightings: 192
+                            mitigation: ''
+                            level: 2
+                          recentActiveCnc:
+                            count: 1
+                            timestamp: '2026-06-02T20:34:37.060Z'
+                            description: "1 sighting on 1 source: <e id=source:gs6Zfb>Recorded Future Network Intelligence</e>. Netflow Analysis: Multiple communications observed between\n        <e id=ip:209.38.113.189>209.38.113.189</e>\n         \n         on 7 ports including\n        <e id=m3zvty>42613</e>\n         and\n        <e id=ip:45.207.192.190>45.207.192.190</e>\n         (validated  C2 Server) on port\n        <e id=m30vfR>30078</e>\n         on\n        2026-05-31 at 19:22 UTC."
+                            rule: Actively Communicating Validated C&C Server
+                            sightings: 1
+                            mitigation: ''
+                            level: 4
+                          dhsAis:
+                            count: 1
+                            timestamp: '2026-03-25T12:33:10.086Z'
+                            description: '2 sightings on 1 source: <e id=source:UZNze8>DHS Automated Indicator Sharing</e>. 2 reports including IXR_2026_LS-28024_1, from CanaryOgopogo82 (Mar 25, 2026).'
+                            rule: Historically Reported by DHS AIS
+                            sightings: 2
+                            mitigation: ''
+                            level: 1
+                          botnet:
+                            count: 1
+                            timestamp: '2026-05-07T09:28:27.169Z'
+                            description: '1 sighting on 1 source: <e id=source:kBB1fk>External Sensor Data Analysis</e>. <e id=ip:45.207.192.190>45.207.192.190</e> was identified as <e id=mitre:T1584>botnets</e> in External Sensor data. Reported to Recorded Future on May 07, 2026.'
+                            rule: Historical Botnet Traffic
+                            sightings: 1
+                            mitigation: ''
+                            level: 1
+                          recentValidatedCnc:
+                            count: 1
+                            timestamp: '2026-06-02T06:34:55.000Z'
+                            description: '6 sightings on 1 source: <e id=source:qGriFQ>Insikt Group Command & Control Validation</e>. Recorded Future analysis validated <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on Jun 02, 2026'
+                            rule: Validated C&C Server
+                            sightings: 6
+                            mitigation: ''
+                            level: 4
+                          intermediateActiveCnc:
+                            count: 1
+                            timestamp: '2026-05-26T00:03:48.452Z'
+                            description: "1 sighting on 1 source: <e id=source:gs6Zfb>Recorded Future Network Intelligence</e>. Netflow Analysis: Multiple communications observed between\n        <e id=ip:109.236.62.95>109.236.62.95</e>\n         \n         on 2 ports including\n        <e id=m3sRqU>55968</e>\n         and\n        <e id=ip:45.207.192.190>45.207.192.190</e>\n         (validated  C2 Server) on port\n        <e id=m30vfR>30078</e>\n         on\n        2026-05-23 at 17:33 UTC."
+                            rule: Recently Communicating Validated C&C Server
+                            sightings: 1
+                            mitigation: ''
+                            level: 2
+                          suspectedCnc:
+                            count: 2
+                            timestamp: '2026-06-03T01:13:04.025Z'
+                            description: '31 sightings on 2 sources: <e id=source:sIoEOQ>ThreatFox Infrastructure Analysis</e>, <e id=source:qs_-cU>Malware Patrol</e>. ThreatFox identified <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> as possible <e id=mitre:TA0011>TA0011 (Command and Control)</e> for Cobalt Strike on May 20, 2026. Most recent link (May 20, 2026): https://threatfox.abuse.ch/ioc/1807906'
+                            rule: Historical Suspected C&C Server
+                            sightings: 31
+                            mitigation: ''
+                            level: 1
+                          validatedCnc:
+                            count: 1
+                            timestamp: '2026-06-01T07:01:26.000Z'
+                            description: '504 sightings on 1 source: <e id=source:qGriFQ>Insikt Group Command & Control Validation</e>. Recorded Future analysis validated <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m3uiru>50050</e> as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on Jun 01, 2026'
+                            rule: Previously Validated C&C Server
+                            sightings: 504
+                            mitigation: ''
+                            level: 2
+                          recentSuspectedCnc:
+                            count: 1
+                            timestamp: '2026-06-03T01:13:04.025Z'
+                            description: '27 sightings on 1 source: <e id=source:sIoEOQ>ThreatFox Infrastructure Analysis</e>. ThreatFox identified <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> as possible <e id=mitre:TA0011>TA0011 (Command and Control)</e> for Cobalt Strike on June 02, 2026. Most recent link (Jun 2, 2026): https://threatfox.abuse.ch/ioc/1807906'
+                            rule: Recent Suspected C&C Server
+                            sightings: 27
+                            mitigation: ''
+                            level: 2
+                          recentReportedCnc:
+                            count: 1
+                            timestamp: '2026-06-03T01:13:04.025Z'
+                            description: '26 sightings on 1 source: <e id=source:qU_q-9>Recorded Future Command & Control Reports</e>. <e id=ip:45.207.192.190>45.207.192.190</e>:<e id=m30vfR>30078</e> was reported as a command and control server for <e id=LnK3Q6>Cobalt Strike</e> on Jun 02, 2026. The URL found was <e id=url:http://45.207.192.190:30078/nIr3>http://45.207.192.190:30078/nIr3</e>.'
+                            rule: Recently Reported C&C Server
+                            sightings: 26
+                            mitigation: ''
+                            level: 3
+                          recentLinkedIntrusion:
+                            count: 1
+                            timestamp: '2026-05-31T08:17:07.452Z'
+                            description: '1 sighting on 1 source: <e id=source:MIKjae>GitHub</e>. 6 related intrusion methods including <e id=JLHNoH>Cobalt Strike</e>, <e id=QCqLhE>Backdoor</e>, <e id=E0yzG>Remote Access Trojan</e>, <e id=hzdgTv>Offensive Security Tools (OST)</e>, <e id=LnK3Q6>Cobalt Strike Beacon</e>. Most recent link (May 31, 2026): https://github.com/verdann/cti-lookups/commit/ef97d5f271a5db803e4253e03aabbb142d5aaa8f'
+                            rule: Recently Linked to Intrusion Method
+                            sightings: 1
+                            mitigation: ''
+                            level: 2
+                        summary:
+                        - count: 4
+                          level: 1
+                        - count: 5
+                          level: 2
+                        - count: 1
+                          level: 3
+                        - count: 2
+                          level: 4
+                      score: 99
+                      level: 4
+                    entity:
+                      name: 45.207.192.190
+                      id: ip:45.207.192.190
+                      type: IpAddress
+                  - risk:
+                      context:
+                        phishing:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                        malware:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 90
+                          mostCriticalRule: ''
+                        public:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 99
+                          mostCriticalRule: ''
+                        c2:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 90
+                          mostCriticalRule: ''
+                      rule:
+                        count: 7
+                        mostCritical: Recent C&C DNS Name
+                        maxCount: 52
+                        evidence:
+                          relatedNote:
+                            count: 1
+                            timestamp: '2020-12-15T00:00:00.000Z'
+                            description: '1 sighting on 1 source: <e id=source:VKz42X>Insikt Group</e>. 1 report: SITREP: Updates on the SolarWinds Related Intrusion Activity. Most recent link (Dec 15, 2020): https://app.recordedfuture.com/portal/analyst-note/doc:gca1SJ'
+                            rule: Historically Referenced by Insikt Group
+                            sightings: 1
+                            mitigation: ''
+                            level: 1
+                          malwareSiteDetected:
+                            count: 1
+                            timestamp: '2022-02-01T21:22:56.588Z'
+                            description: '1 sighting on 1 source: <e id=source:kBB1fk>External Sensor Data Analysis</e>. <e id=idn:digitalcollege.org>digitalcollege.org</e> is observed to be a <e id=mitre:T1204.001>malware site</e> domain that navigates to malicious content including executables, drive-by infection sites, malicious scripts, viruses, trojans, or code.'
+                            rule: Historically Detected Malware Operation
+                            sightings: 1
+                            mitigation: ''
+                            level: 1
+                          dhsAis:
+                            count: 1
+                            timestamp: '2021-02-03T21:32:08.000Z'
+                            description: '2 sightings on 1 source: <e id=source:UZNze8>DHS Automated Indicator Sharing</e>. 2 reports including AA20-352A APT Compromise of Govt Agencies, Critical Infrastructure, and Private Sector Organizations, from CISA, Government Facilities Sector, CISA, Government Facilities Sector, NCCIC:STIX_Package-673aacd1-1852-4d44-bd93-0c44940a6358 (Feb 3, 2021).'
+                            rule: Historically Reported by DHS AIS
+                            sightings: 2
+                            mitigation: ''
+                            level: 1
+                          recentCncSite:
+                            count: 1
+                            timestamp: '2026-06-02T22:42:43.973Z'
+                            description: '1 sighting on 1 source: <e id=report:QhR8Qs>Bambenek Consulting C&C Blocklist</e>.'
+                            rule: Recent C&C DNS Name
+                            sightings: 1
+                            mitigation: ''
+                            level: 4
+                          analystNote:
+                            count: 1
+                            timestamp: '2020-12-18T00:00:00.000Z'
+                            description: '2 sightings on 1 source: <e id=source:VKz42X>Insikt Group</e>. 2 reports including CISA Warns of Attacks Targeting <e id=B_FAG>US</e> Government Sector, Critical Infrastructure Entities, and Private Sector Organizations. Most recent link (Dec 18, 2020): https://app.recordedfuture.com/portal/analyst-note/doc:gfT_OG'
+                            rule: Historically Reported by Insikt Group
+                            sightings: 2
+                            mitigation: ''
+                            level: 1
+                          historicalThreatListMembership:
+                            count: 2
+                            timestamp: '2026-05-26T19:31:03.941Z'
+                            description: 'Previous sightings on 2 sources: <e id=report:QhR8Qs>Bambenek Consulting C&C Blocklist</e>, <e id=report:oJewMx>Recently Viewed Integrations Indicators</e>. Observed between Jan 26, 2026, and May 26, 2026.'
+                            rule: Historically Reported in Threat List
+                            sightings: -1
+                            mitigation: ''
+                            level: 1
+                          defanged:
+                            count: 10
+                            timestamp: '2025-12-22T01:08:51.106Z'
+                            description: '22 sightings on 10 sources including: <e id=idn:securityscorecard.com>securityscorecard.com</e>, <e id=idn:xpda.com>xpda.com</e>, <e id=source:Z3TZAQ>Sesin at</e>, <e id=source:s1FdiP>Palo Alto Networks</e>, <e id=idn:extrahop.com>extrahop.com</e>. Most recent link (Dec 22, 2025): https://xpda.com/junkmail/junk241/AA20-352A-APT_Compromise_of_Government_Agencies%2C_Critical%20Infrastructure%2C_and_Private_Sector_Organizations.pdf'
+                            rule: Historically Reported as a Defanged DNS Name
+                            sightings: 22
+                            mitigation: ''
+                            level: 1
+                        summary:
+                        - count: 6
+                          level: 1
+                        - count: 1
+                          level: 4
+                      score: 99
+                      level: 4
+                    entity:
+                      name: digitalcollege.org
+                      id: idn:digitalcollege.org
+                      type: InternetDomainName
+                  - risk:
+                      context:
+                        phishing:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                        malware:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 70
+                          mostCriticalRule: ''
+                        public:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 89
+                          mostCriticalRule: ''
+                        c2:
+                          summary: []
+                          rule:
+                            maxCount: 0
+                          score: 0
+                          mostCriticalRule: ''
+                      rule:
+                        count: 5
+                        mostCritical: Positive Malware Verdict
+                        maxCount: 17
+                        evidence:
+                          linkedToVuln:
+                            count: 1
+                            timestamp: '2023-04-27T14:57:35.779Z'
+                            description: '3 sightings on 1 source: <e id=source:MIKjae>GitHub</e>. 3 related cyber vulnerabilities: <e id=KeKwRK>CWE-20</e>, <e id=S0fDIU>CVE-2017-0144</e>, <e id=SmTrIU>MS17-010</e>. Most recent link (Apr 27, 2023): https://github.com/security-kg/oscti-data/blob/main/20220620-all-reports/trendmicro_html/wannacry-reality-of-patching.html'
+                            rule: Linked to Vulnerability
+                            sightings: 3
+                            mitigation: ''
+                            level: 2
+                          linkedToMalware:
+                            count: 16
+                            timestamp: '2023-04-13T10:51:03.000Z'
+                            description: '145 sightings on 16 sources including: <e id=source:pupSAn>Mastodon</e>, <e id=source:jc782c>Cyber Swachhta Kendra</e>, <e id=source:I8K-6Q>Seclists.org</e>, <e id=source:PGPTUV>Payload Security Lastest Submissions</e>, <e id=source:doLlw5>PolySwarm</e>. 5 related malware families: <e id=SoA6SP>Wcry</e>, <e id=0efpT>Trojan</e>, <e id=J0Nl-p>Ransomware</e>, <e id=JKEaVY>Zapchast</e>, <e id=0fL5H>Adware</e>. Most recent tweet: Interesting <e id=OAHrhi>#maldoc</e> with <e id=DCAnHM>Indian</e> Police document lure, but carrying old <e id=SoA6SP>WannaCry</e> <e id=OTr67g>trojan</e> file(Submit from <e id=B_F1s>India</e>): <e id=hash:bfda05703188bdd2e02d8c0d5daddf0a>bfda05703188bdd2e02d8c0d5daddf0a</e> <e id=q0P-0u>newBFGFRC.doc</e> drops: <e id=hash:84c82835a5d21bbcf75a61706d8ab549>84c82835a5d21bbcf75a61706d8ab549</e> <e id=url:https://twitter.com/souiten/status/1646466019849035776/photo/1>https://t.co/7oEKRaSziB</e>. Most recent link (Apr 13, 2023):
+                              https://twitter.com/souiten/statuses/1646466019849035776'
+                            rule: Linked to Malware
+                            sightings: 145
+                            mitigation: ''
+                            level: 2
+                          historicalThreatListMembership:
+                            count: 2
+                            timestamp: '2025-02-08T22:00:33.038Z'
+                            description: 'Previous sightings on 2 sources: <e id=report:Tluf00>Recorded Future Analyst Community Trending Indicators</e>, <e id=report:oJewMx>Recently Viewed Integrations Indicators</e>. Observed between Feb 27, 2024, and Jul 29, 2024.'
+                            rule: Historically Reported in Threat List
+                            sightings: -1
+                            mitigation: ''
+                            level: 1
+                          threatResearcher:
+                            count: 1
+                            timestamp: '2023-01-06T20:34:01.598Z'
+                            description: '3 sightings on 1 source: <e id=source:Jr7_Gd>Mandiant</e>. Most recent link (Jan 6, 2023): https://www.mandiant.com/resources/blog/wannacry-ransomware-campaign'
+                            rule: Threat Researcher
+                            sightings: 3
+                            mitigation: ''
+                            level: 1
+                          positiveMalwareVerdict:
+                            count: 2
+                            timestamp: '2026-05-19T01:49:27.445Z'
+                            description: '2 sightings on 2 sources: <e id=source:oWAWVb>Recorded Future Sandbox</e>, <e id=source:TbciDE>ReversingLabs</e>. Malware sandbox report for <e id=content:a93ee7ea13238bd038bcbec635f39619db566145498fe6e0ea60e6e76d614bd3>a93ee7ea13238bd038bcbec635f39619db566145498fe6e0ea60e6e76d614bd3</e> on February 08, 2025.   Score: 10 (Known bad). Detections: Wcry. Contains: 4 ATT&CK behaviors, 0 command and control indicators, and 10 signatures. Most recent link (May 16, 2017): ReversingLabs malware file analysis.'
+                            rule: Positive Malware Verdict
+                            sightings: 2
+                            mitigation: ''
+                            level: 3
+                        summary:
+                        - count: 2
+                          level: 1
+                        - count: 2
+                          level: 2
+                        - count: 1
+                          level: 3
+                      score: 89
+                      level: 3
+                    entity:
+                      name: ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa
+                      id: hash:ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa
+                      type: Hash
+                counts:
+                  returned: 3
+                  total: 3
+components:
+  parameters:
+    MetadataQueryParameter:
+      in: query
+      name: metadata
+      description: Include metadata in response. Annotates the response with additional metadata explaining the response data elements.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    ContextNameParameter:
+      in: path
+      name: context_name
+      description: The context in which to evaluate the given entities. Available contexts can be fetched using the separate endpoint.
+      schema:
+        type: string
+      required: true
+    FormatQueryParameter:
+      in: query
+      name: format
+      description: Allows for an output format suitable for Splunk SOAR (previously "Phantom"). If no value is given, the default format (used in the Enrichment endpoint) will be used.
+      schema:
+        type: string
+        enum:
+        - phantom
+      required: false
+    ThresholdQueryParameter:
+      in: query
+      name: threshold
+      description: Determines which risk score should be used to deem an entity risky. Each context has its own default value and depends on the context.
+      schema:
+        type: integer
+      required: false
+    ThresholdTypeQueryParameter:
+      in: query
+      name: threshold_type
+      description: Determines if the set of entities are deemed risky if a single entity is above the threshold (max) or if all entities have to be above the threshold (min). The default is specified by the context but is max for all contexts currently defined.
+      schema:
+        type: string
+        enum:
+        - min
+        - max
+        default: max
+      required: false
+  schemas:
+    EnrichRequest:
+      type: object
+      description: Entities to be enriched, grouped by type up to a total of 1000 IOCs.
+      properties:
+        ip:
+          type: array
+          description: IPs to enrich
+          items:
+            type: string
+            example: 8.8.8.8
+        domain:
+          type: array
+          description: Domains to enrich
+          items:
+            type: string
+            example: google.com
+        url:
+          type: array
+          description: URLs to enrich
+          items:
+            type: string
+            example: https://phishing-example.net
+        hash:
+          type: array
+          description: Hashes to enrich
+          items:
+            type: string
+            example: 458d1f83e087d0f613c505086538436d
+        vulnerability:
+          type: array
+          description: Vulnerabilities to enrich
+          items:
+            type: string
+            example: CVE-2021-44228
+        companybydomain:
+          type: array
+          description: Companies to enrich, identified by their domain name.
+          items:
+            type: string
+            example: recordedfuture.com
+    EnrichResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/EnrichResponseData'
+        counts:
+          $ref: '#/components/schemas/Counts'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+      required:
+      - data
+      - counts
+      description: Enrichment results with risk scores, evidence, and threat context for submitted entities.
+    ResultData:
+      type: array
+      items:
+        type: object
+        properties:
+          risk:
+            type: object
+            properties:
+              score:
+                type: number
+                description: Overall risk score for this entity (0-99).
+                example: 15
+              level:
+                type: number
+                description: Risk level category (0=None, 1=Unusual, 2=Suspicious, 3=Malicious, 4=Very Malicious).
+                example: 1
+              context:
+                type: object
+                description: Risk context data keyed by context name (e.g., phishing, c2, malware, public). Each key represents a risk context use case.
+                additionalProperties:
+                  type: object
+                  properties:
+                    score:
+                      type: number
+                      description: Risk score within this context (0-99).
+                      example: 15
+                    summary:
+                      type: array
+                      description: Summary of risk rules triggered in this context, grouped by severity level.
+                      items:
+                        type: object
+                        properties:
+                          level:
+                            type: number
+                            description: Severity level of the rules.
+                            example: 1
+                          count:
+                            type: number
+                            description: Number of rules triggered at this level.
+                            example: 3
+                    rule:
+                      type: object
+                      description: Aggregate rule statistics for this context.
+                      properties:
+                        count:
+                          type: integer
+                          description: Number of rules triggered in this context.
+                          example: 0
+                        maxCount:
+                          type: integer
+                          description: Maximum number of rules available for this context.
+                          example: 5
+                    mostCriticalRule:
+                      type: string
+                      description: Name of the most critical rule triggered in this context. Empty string if no rules triggered.
+                      example: ''
+                  required:
+                  - score
+                  - rule
+              rule:
+                type: object
+                description: Aggregate risk rule data for this entity across all contexts.
+                properties:
+                  summary:
+                    type: array
+                    description: Summary of triggered rules grouped by severity level.
+                    items:
+                      type: object
+                      properties:
+                        level:
+                          type: number
+                          description: Severity level (1=Unusual, 2=Suspicious, 3=Malicious, 4=Very Malicious).
+                          example: 1
+                        count:
+                          type: number
+                          description: Number of rules triggered at this severity level.
+                          example: 3
+                      required:
+                      - level
+                      - count
+                  mostCritical:
+                    type: string
+                    description: Name of the most critical (highest severity) rule triggered.
+                    example: Historically Reported Spam or Unwanted Content
+                  count:
+                    type: integer
+                    description: Total number of risk rules triggered for this entity.
+                    example: 3
+                  maxCount:
+                    type: integer
+                    description: Maximum number of risk rules available for this entity type.
+                    example: 52
+                  evidence:
+                    type: object
+                    description: Evidence data keyed by rule identifier (e.g., spamSiteDetected, historicalThreatListMembership, defanged). Each key is a camelCase rule slug.
+                    additionalProperties:
+                      type: object
+                      description: Evidence detail for a single triggered risk rule.
+                      properties:
+                        count:
+                          type: integer
+                          description: Number of times this rule was triggered.
+                          example: 1
+                        level:
+                          type: integer
+                          description: Severity level of this rule (1=Unusual, 2=Suspicious, 3=Malicious, 4=Very Malicious).
+                          example: 1
+                        timestamp:
+                          type: string
+                          format: date-time
+                          description: Most recent timestamp when this rule was triggered.
+                          example: '2023-08-21T15:17:38.687Z'
+                        description:
+                          type: string
+                          description: Human-readable description of the evidence, including source references in XML-like entity tags.
+                          example: '1 sighting on 1 source: Bitdefender. Detected malicious behavior from an endpoint agent via global telemetry.'
+                        rule:
+                          type: string
+                          description: Human-readable name of the risk rule.
+                          example: Historically Reported Spam or Unwanted Content
+                        sightings:
+                          type: integer
+                          description: Number of sightings that support this rule. -1 indicates sighting count is not applicable.
+                          example: 1
+                        mitigation:
+                          type: string
+                          description: Suggested mitigation action for this risk rule. Empty string if none.
+                      required:
+                      - count
+                      - level
+                      - timestamp
+                      - rule
+                required:
+                - count
+                - maxCount
+            required:
+            - score
+            - level
+            - context
+            - rule
+          entity:
+            type: object
+            properties:
+              id:
+                type: string
+                example: idn:google.com
+              name:
+                type: string
+                example: google.com
+              type:
+                type: string
+                example: InternetDomainName
+              description:
+                type: string
+            required:
+            - id
+            - name
+            - type
+        required:
+        - risk
+        - entity
+      description: Individual enrichment result for a single entity.
+    EnrichResponseData:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/ResultData'
+      required:
+      - results
+      description: Data wrapper containing enrichment result entries.
+    Counts:
+      type: object
+      properties:
+        returned:
+          type: number
+          example: 1
+        total:
+          type: number
+          example: 1000
+      required:
+      - returned
+      - total
+      description: Pagination counts for list responses.
+    Metadata:
+      type: object
+      properties:
+        entries:
+          type: array
+          description: Metadata entries providing additional context about the response data elements.
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: The metadata key or field name.
+              value:
+                type: string
+                description: The metadata value or description.
+      description: Response metadata with additional context about the enrichment operation. Only included when the metadata query parameter is set to true.
+    ContextResponse:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/Context'
+      description: Response wrapper for triage context operations.
+      properties:
+        malware:
+          $ref: '#/components/schemas/Context'
+        phishing:
+          $ref: '#/components/schemas/Context'
+        c2:
+          $ref: '#/components/schemas/Context'
+    Context:
+      type: object
+      properties:
+        default_threshold:
+          type: integer
+          description: Default threshold to determinate verdict
+          minimum: 0
+          maximum: 100
+          example: 65
+        description:
+          type: string
+          example: The Recorded Future Phishing Risk Context use case is designed to identify potential phishing event. Recorded Future risk data is used to evaluate IOCs submitted by the end user and produce a suggested verdict for phishing events.
+        datagroup:
+          type: object
+          description: Includes information on all data groups available for this context
+          additionalProperties:
+            type: object
+            properties:
+              rule:
+                type: object
+                properties:
+                  maxCount:
+                    type: integer
+                    example: 2
+      default_threshold_type:
+        type: string
+        enum:
+        - min
+        - max
+        description: Default algorithm to use the threshold in
+        example: max
+        default: max
+      name:
+        type: string
+        example: SOAR API Phishing Risk Context
+      description: A triage context configuration defining risk thresholds and data group settings for automated triage decisions.
+    TriageData:
+      type: object
+      properties:
+        threshold_type:
+          type: string
+          enum:
+          - min
+          - max
+          example: max
+        context:
+          type: string
+          example: c2
+        verdict:
+          type: boolean
+        threshold:
+          type: integer
+          description: Default value depends on the context
+          minimum: 0
+          maximum: 100
+          example: 80
+        scores:
+          type: object
+          properties:
+            min:
+              type: integer
+              example: 0
+            max:
+              type: integer
+              example: 20
+      description: Automated triage verdict for an entity based on risk threshold evaluation.
+    TriageResponseData:
+      type: object
+      properties:
+        triage:
+          $ref: '#/components/schemas/TriageData'
+        results:
+          $ref: '#/components/schemas/ResultData'
+      description: Data wrapper containing triage verdicts and enrichment results.
+    TriageResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TriageResponseData'
+        counts:
+          $ref: '#/components/schemas/Counts'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+      required:
+      - data
+      - counts
+      description: Triage results with automated verdicts for submitted entities based on configured risk thresholds.
+  securitySchemes:
+    ApiKeyAuth:
+      description: API Credential
+      type: apiKey
+      in: header
+      name: X-RFToken
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/soar-enrich.md
+  - https://docs.recordedfuture.com/reference/soar-get-contexts.md
+  - https://docs.recordedfuture.com/reference/soar-triage-batch.md
+  merge:
+    pages: 3
+    deduped: 7
+    conflicts_kept_first: 0

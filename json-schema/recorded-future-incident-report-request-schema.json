@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-incident-report-request-schema.json",
+  "title": "IncidentReportRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-identity-api-openapi.yml#/components/schemas/IncidentReportRequest",
+  "type": "object",
+  "properties": {
+    "organization_id": {
+      "$ref": "#/$defs/UhashId"
+    },
+    "source": {
+      "type": "string",
+      "maxLength": 200,
+      "pattern": ".+",
+      "description": "The dump source identifier (e.g., dump-redline-2024-07-21-001)"
+    },
+    "include_details": {
+      "type": "boolean",
+      "description": "Include extended device and malware details in the response"
+    },
+    "limit": {
+      "type": "integer",
+      "format": "int64",
+      "minimum": 0,
+      "maximum": 1000,
+      "description": "Maximum number of credential entries to return"
+    },
+    "offset": {
+      "type": "string",
+      "maxLength": 200,
+      "pattern": ".+",
+      "description": "Pagination token for next page"
+    }
+  },
+  "required": [
+    "source",
+    "include_details"
+  ],
+  "$defs": {
+    "UhashId": {
+      "type": "string",
+      "maxLength": 20,
+      "pattern": "^uhash:[a-zA-Z0-9]+$"
+    }
+  }
+}

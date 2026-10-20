@@ -1,0 +1,10 @@
+name: Recorded Future API lifecycle
+generated: '2026-10-20'
+method: searched
+source: https://docs.recordedfuture.com/changelog
+versioning: Per-API semantic versions announced in the docs changelog (e.g. Playbook Alerts API v1.4.0, Malware Intelligence
+  API v1.7.3); Connect API served under /v2.
+deprecation: No published deprecation policy or Sunset/Deprecation header usage found; the Playbook Alerts changelog marks
+  panel_log as deprecated in favour of panel_log_v2.
+status_page: https://status.recordedfuture.com/
+changelog: https://docs.recordedfuture.com/changelog

@@ -1,0 +1,5270 @@
+[
+ {
+  "page": "https://docs.recordedfuture.com/reference/get_alert-id.md",
+  "definition": {
+   "openapi": "3.1.1",
+   "info": {
+    "title": "Alert API",
+    "version": "3.0.0",
+    "description": "The Alert API allows for interacting with Recorded Future Alerts and Alert rules.\n\nPlease read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id) before using this API.\n",
+    "x-rf-service-id": "service:alert-api"
+   },
+   "paths": {
+    "/{alert_id}": {
+     "servers": [
+      {
+       "url": "api.recordedfuture.com/alert/v2",
+       "description": "V2 endpoints",
+       "x-internal": false
+      },
+      {
+       "url": "api.recordedfuture.com/v2/alert",
+       "description": "V2 Proxy Redirect (Legacy)",
+       "x-internal": false
+      }
+     ],
+     "get": {
+      "summary": "Fetch alert by id",
+      "tags": [
+       "Alert (deprecated)"
+      ],
+      "description": "Fetch an alert by id. This endpoint includes all available fields in the response.\n",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/AlertIdQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/TaggedTextQueryParameter"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "The current state of the alert",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/AlertLookupResponseV2"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "AlertIdQueryParameter": {
+      "in": "path",
+      "name": "alert_id",
+      "description": "Id of alert to fetch",
+      "schema": {
+       "type": "string",
+       "example": "5PqsAw"
+      },
+      "required": true
+     },
+     "TaggedTextQueryParameter": {
+      "in": "query",
+      "name": "taggedText",
+      "description": "Include text tags",
+      "schema": {
+       "type": "boolean",
+       "default": false
+      },
+      "required": false
+     }
+    },
+    "schemas": {
+     "AlertLookupResponseV2": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "$ref": "#/components/schemas/AlertV2Detailed"
+       }
+      },
+      "required": [
+       "data"
+      ]
+     },
+     "Entity": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "A Recorded Future entity reference. Returned as `null` if the requesting user does not have access to the entity.\n",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "idn:services.onlinebox.com"
+       },
+       "name": {
+        "type": "string",
+        "description": "Entity display name",
+        "example": "services.onlinebox.com"
+       },
+       "type": {
+        "type": "string",
+        "description": "Entity type\n\nSome examples are Malware, InternetDomainName, IpAddress, Hash and Company\n",
+        "example": "InternetDomainName"
+       },
+       "description": {
+        "type": "string",
+        "description": "Entity description. Only present when the entity has a description attribute."
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "type"
+      ]
+     },
+     "AiInsights": {
+      "type": "object",
+      "description": "Recorded Future AI summary of the alert. `text` and `comment` are mutually exclusive: when a summary is available `text` holds it and `comment` is `null`; otherwise `text` is `null` and `comment` explains why no summary is available.\n",
+      "properties": {
+       "text": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "The generated AI summary text. `null` when no summary is available.",
+        "example": null
+       },
+       "comment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Human-readable explanation shown when no summary text is available (for example \"Summary is disabled for this alert.\" or \"Summary timed out.\"). `null` when `text` is populated.\n",
+        "example": "A summary has not yet been generated for this alert."
+       }
+      },
+      "required": [
+       "text",
+       "comment"
+      ]
+     },
+     "OwnerOrganisationDetails": {
+      "type": "object",
+      "description": "Details about the owner of the alert's rule and their organisation(s)",
+      "properties": {
+       "owner_id": {
+        "type": "string",
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owning user. Only present when the owner is an individual user."
+       },
+       "owner_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the owning user. Only present when the owner is an individual user."
+       },
+       "organisations": {
+        "type": "array",
+        "description": "Organisations the alert is shared with. May be empty.",
+        "minItems": 0,
+        "items": {
+         "type": "object",
+         "properties": {
+          "organisation_id": {
+           "type": "string",
+           "example": "uhash:b2ai0ilv2p",
+           "description": "Id of the organisation"
+          },
+          "organisation_name": {
+           "type": "string",
+           "example": "Recorded Future",
+           "description": "Name of the organisation"
+          }
+         },
+         "required": [
+          "organisation_id",
+          "organisation_name"
+         ]
+        }
+       },
+       "enterprise_id": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owner's enterprise"
+       },
+       "enterprise_name": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "Recorded Future",
+        "description": "Name of the owner's enterprise"
+       }
+      },
+      "required": [
+       "organisations",
+       "enterprise_id",
+       "enterprise_name"
+      ]
+     },
+     "UseCaseDeprecation": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Deprecation notice for the rule's use case. `null` unless the rule's use case is deprecated and the notice is currently active.\n",
+      "properties": {
+       "from": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Date from which the use case is deprecated"
+       },
+       "description": {
+        "type": "string",
+        "description": "Human-readable deprecation description"
+       },
+       "links": {
+        "type": "object",
+        "description": "Related links keyed by label",
+        "additionalProperties": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "EntityPathNode": {
+      "type": "object",
+      "description": "A node in a trigger entity path",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/Entity"
+       },
+       "attribute": {
+        "type": "object",
+        "properties": {
+         "id": {
+          "type": "string",
+          "description": "Id of the attribute connecting this node to the next",
+          "example": "CyberAttack.method"
+         }
+        },
+        "required": [
+         "id"
+        ]
+       },
+       "composite_path": {
+        "type": "array",
+        "description": "Only present for composite attribute paths",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "entity",
+       "attribute"
+      ]
+     },
+     "TriggeredBy": {
+      "type": "object",
+      "description": "One triggering reference and the entity path(s) that matched the alert rule",
+      "properties": {
+       "reference_id": {
+        "type": "string",
+        "description": "Id of the reference that triggered the alert",
+        "example": "Gb8Xd8BQBsq"
+       },
+       "entity_path": {
+        "deprecated": true,
+        "type": "array",
+        "description": "Deprecated. The single, shortest matching entity path. Use `entity_paths` instead.\n",
+        "items": {
+         "$ref": "#/components/schemas/EntityPathNode"
+        }
+       },
+       "entity_paths": {
+        "type": "array",
+        "description": "All relevant matching entity paths. Each path is an ordered array of nodes.",
+        "items": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/EntityPathNode"
+         }
+        }
+       }
+      },
+      "required": [
+       "reference_id",
+       "entity_path",
+       "entity_paths"
+      ]
+     },
+     "RuleV2": {
+      "type": "object",
+      "description": "The alert rule that produced the alert",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "WhkPbn",
+        "description": "Rule id"
+       },
+       "name": {
+        "type": "string",
+        "description": "Rule title, or \"No access to alert rule\" if the rule cannot be accessed",
+        "example": "Identify Typosquats"
+       },
+       "url": {
+        "type": "string",
+        "description": "Portal URL to view the rule",
+        "example": "https://app.recordedfuture.com/live/sc/ViewIdkobra_view_report_item_alert_editor?view_opts=%7B%22reportId%22%3A%22WhkPbn%22%2C%22bTitle%22%3Atrue%2C%22title%22%3A%22Identify+Typosquats%22%7D"
+       },
+       "owner_id": {
+        "type": "string",
+        "description": "Id of the rule owner",
+        "example": "uhash:b2ai0ilv2p"
+       },
+       "owner_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the rule owner"
+       },
+       "organisation_id": {
+        "type": "string",
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the rule owner organisation"
+       },
+       "organisation_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the rule owner organisation"
+       },
+       "use_case_deprecation": {
+        "$ref": "#/components/schemas/UseCaseDeprecation"
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "url",
+       "owner_id",
+       "owner_name",
+       "organisation_id",
+       "organisation_name",
+       "use_case_deprecation"
+      ]
+     },
+     "ReviewV2": {
+      "type": "object",
+      "description": "Triage/review information for the alert",
+      "properties": {
+       "status": {
+        "deprecated": true,
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Deprecated legacy review status. Use `statusInPortal` instead. `null` when the alert has no review status.",
+        "enum": [
+         "unassigned",
+         "assigned",
+         "pending",
+         "dismiss",
+         "no-action",
+         "actionable",
+         "tuning",
+         null
+        ],
+        "example": "no-action"
+       },
+       "statusInPortal": {
+        "type": "string",
+        "description": "Alert review status as shown in the portal. Defaults to \"Unknown\".",
+        "enum": [
+         "New",
+         "Resolved",
+         "Pending",
+         "Dismissed",
+         "Flag for Tuning",
+         "Unknown"
+        ],
+        "example": "New"
+       },
+       "statusDate": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "When the status was last changed"
+       },
+       "statusChangeBy": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "testuser@recordedfuture.com",
+        "description": "Email of the user who last changed the status"
+       },
+       "assignee": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": null,
+        "description": "Email of the assigned user"
+       },
+       "note": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "Hello world",
+        "description": "Review note text"
+       },
+       "noteAuthor": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "testuser@recordedfuture.com",
+        "description": "Email of the note author"
+       },
+       "noteDate": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "When the note was last updated"
+       }
+      },
+      "required": [
+       "status",
+       "statusInPortal",
+       "statusDate",
+       "statusChangeBy",
+       "assignee",
+       "note",
+       "noteAuthor",
+       "noteDate"
+      ]
+     },
+     "EvidenceV2": {
+      "type": "object",
+      "description": "A single piece of risk evidence showing data that is triggering the risk rule",
+      "properties": {
+       "rule": {
+        "type": "string",
+        "example": "Recent Typosquat Similarity - DNS Sandwich",
+        "description": "Risk rule name"
+       },
+       "criticality": {
+        "type": "integer",
+        "example": 2,
+        "format": "int32",
+        "minimum": 0,
+        "maximum": 5,
+        "description": "Risk rule criticality score"
+       },
+       "criticalityLabel": {
+        "type": "string",
+        "example": "Suspicious",
+        "description": "Risk rule criticality label"
+       },
+       "evidenceString": {
+        "type": "string",
+        "description": "Text evidence for the risk rule"
+       },
+       "mitigationString": {
+        "type": "string",
+        "description": "Mitigation text. Empty string when no mitigation is available."
+       },
+       "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of evidence document creation"
+       }
+      },
+      "required": [
+       "rule",
+       "criticality",
+       "criticalityLabel",
+       "evidenceString",
+       "mitigationString",
+       "timestamp"
+      ]
+     },
+     "ReferenceV2": {
+      "type": "object",
+      "description": "A reference (document fragment) supporting a risk rule or trend",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "Gb8Xd8BQBsq",
+        "description": "Reference id"
+       },
+       "fragment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Text fragment summarizing the intelligence match"
+       },
+       "language": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "eng",
+        "description": "Language of the text fragment"
+       },
+       "entities": {
+        "type": "array",
+        "description": "Entities tied to the reference",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        }
+       },
+       "noteId": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Analyst note id. Only present for analyst note / Insikt Group sources."
+       },
+       "noteLink": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Portal link to the analyst note. Only present for analyst note / Insikt Group sources."
+       }
+      },
+      "required": [
+       "id",
+       "fragment",
+       "language",
+       "entities"
+      ]
+     },
+     "DocumentV2": {
+      "type": "object",
+      "description": "A source document that contributed to an entity's risk or trend",
+      "properties": {
+       "title": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Title of the document"
+       },
+       "url": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "URL of the document"
+       },
+       "source": {
+        "$ref": "#/components/schemas/Entity",
+        "description": "Source entity of the document"
+       },
+       "authors": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        },
+        "description": "Authors of the document"
+       },
+       "references": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/ReferenceV2"
+        },
+        "description": "References tied to the document"
+       }
+      },
+      "required": [
+       "title",
+       "url",
+       "source",
+       "authors",
+       "references"
+      ]
+     },
+     "EntityRiskV2": {
+      "description": "Risk information for the entity. Empty for non-risk alerts; individual sub-fields may be `null`.\n",
+      "oneOf": [
+       {
+        "type": "object",
+        "maxProperties": 0
+       },
+       {
+        "type": "object",
+        "properties": {
+         "criticality": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "example": 2,
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Criticality level of the entity"
+         },
+         "criticalityLabel": {
+          "type": [
+           "string",
+           "null"
+          ],
+          "description": "Criticality label of the entity"
+         },
+         "score": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 0,
+          "maximum": 99,
+          "description": "Risk score of the entity"
+         },
+         "evidence": {
+          "type": [
+           "array",
+           "null"
+          ],
+          "description": "List of evidence related to the entity",
+          "items": {
+           "$ref": "#/components/schemas/EvidenceV2"
+          }
+         },
+         "documents": {
+          "type": [
+           "array",
+           "null"
+          ],
+          "description": "List of documents related to the entity",
+          "items": {
+           "$ref": "#/components/schemas/DocumentV2"
+          }
+         }
+        }
+       }
+      ]
+     },
+     "EntityTrendV2": {
+      "description": "Trend information for the entity. Empty object (`{}`) for non-trend alerts.\n",
+      "oneOf": [
+       {
+        "type": "object",
+        "maxProperties": 0
+       },
+       {
+        "type": "object",
+        "properties": {
+         "name": {
+          "type": [
+           "string",
+           "null"
+          ],
+          "example": "Method",
+          "description": "The entity's role in the cyber trend"
+         },
+         "strength": {
+          "type": "integer",
+          "example": 3,
+          "minimum": 0,
+          "maximum": 5,
+          "format": "int32",
+          "description": "Trend signal strength"
+         },
+         "strengthLabel": {
+          "type": "string",
+          "example": "Spike",
+          "description": "Trend strength label"
+         },
+         "documents": {
+          "type": "array",
+          "description": "List of documents related to the entity",
+          "items": {
+           "$ref": "#/components/schemas/DocumentV2"
+          }
+         }
+        },
+        "required": [
+         "name",
+         "strength",
+         "strengthLabel",
+         "documents"
+        ]
+       }
+      ]
+     },
+     "AlertEntityV2": {
+      "type": "object",
+      "description": "An entity involved in the alert, with its risk and/or trend context",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/Entity"
+       },
+       "risk": {
+        "$ref": "#/components/schemas/EntityRiskV2"
+       },
+       "trend": {
+        "$ref": "#/components/schemas/EntityTrendV2"
+       },
+       "documents": {
+        "type": "array",
+        "description": "Documents for event/reference alerts. Usually empty for signal alerts.",
+        "minItems": 0,
+        "items": {
+         "$ref": "#/components/schemas/DocumentV2"
+        }
+       }
+      },
+      "required": [
+       "entity",
+       "risk",
+       "trend",
+       "documents"
+      ]
+     },
+     "AlertCountsV2": {
+      "type": "object",
+      "description": "Per-alert counts of the intelligence that triggered the alert",
+      "properties": {
+       "documents": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Number of distinct documents among the visible references",
+        "example": 6
+       },
+       "entities": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Number of signals/entities",
+        "example": 2
+       },
+       "references": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Number of visible references",
+        "example": 6
+       }
+      },
+      "required": [
+       "documents",
+       "entities",
+       "references"
+      ]
+     },
+     "AlertV2Summary": {
+      "type": "object",
+      "description": "Summary representation of an alert",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "Kr2etl",
+        "description": "Alert id"
+       },
+       "title": {
+        "type": "string",
+        "example": "Infrastructure and Brand Risk, Potential Typosquatting Watch List Domains...",
+        "description": "Alert title"
+       },
+       "type": {
+        "type": "string",
+        "description": "Alert type",
+        "enum": [
+         "ENTITY",
+         "EVENT",
+         "REFERENCE",
+         "OTHER"
+        ],
+        "example": "ENTITY"
+       },
+       "triggered": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2019-01-06T05:05:25.009Z",
+        "description": "Timestamp of when the alert was triggered"
+       },
+       "url": {
+        "type": "string",
+        "description": "Portal URL for the alert",
+        "example": "https://app.recordedfuture.com/live/sc/notification/?id=Kr2etl"
+       },
+       "rule": {
+        "$ref": "#/components/schemas/RuleV2"
+       },
+       "ai_insights": {
+        "$ref": "#/components/schemas/AiInsights"
+       },
+       "review": {
+        "$ref": "#/components/schemas/ReviewV2"
+       },
+       "owner_organisation_details": {
+        "$ref": "#/components/schemas/OwnerOrganisationDetails"
+       }
+      },
+      "required": [
+       "id",
+       "title",
+       "type",
+       "triggered",
+       "url",
+       "rule",
+       "ai_insights",
+       "review",
+       "owner_organisation_details"
+      ]
+     },
+     "AlertV2Detailed": {
+      "description": "Detailed representation of an alert (V2 lookup and search/details endpoints). Extends the summary with the triggering intelligence.\n",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/AlertV2Summary"
+       },
+       {
+        "type": "object",
+        "properties": {
+         "counts": {
+          "$ref": "#/components/schemas/AlertCountsV2"
+         },
+         "entities": {
+          "type": "array",
+          "description": "A list of entities tied to the alert",
+          "items": {
+           "$ref": "#/components/schemas/AlertEntityV2"
+          }
+         },
+         "triggered_by": {
+          "type": "array",
+          "description": "A list of entity path chains showing which entities matched which rules/lists",
+          "items": {
+           "$ref": "#/components/schemas/TriggeredBy"
+          }
+         }
+        },
+        "required": [
+         "counts",
+         "entities",
+         "triggered_by"
+        ]
+       }
+      ]
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/get_search-details.md",
+  "definition": {
+   "openapi": "3.1.1",
+   "info": {
+    "title": "Alert API",
+    "version": "3.0.0",
+    "description": "The Alert API allows for interacting with Recorded Future Alerts and Alert rules.\n\nPlease read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id) before using this API.\n",
+    "x-rf-service-id": "service:alert-api"
+   },
+   "paths": {
+    "/search/details": {
+     "servers": [
+      {
+       "url": "api.recordedfuture.com/alert/v2",
+       "description": "V2 endpoints",
+       "x-internal": false
+      },
+      {
+       "url": "api.recordedfuture.com/v2/alert",
+       "description": "V2 Proxy Redirect (Legacy)",
+       "x-internal": false
+      }
+     ],
+     "get": {
+      "summary": "Search for alerts with extra details",
+      "tags": [
+       "Alert (deprecated)"
+      ],
+      "description": "Search for alerts based on a set of filters. This endpoint includes more data compared to the regular search endpoint.\n",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/TriggeredQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/AssigneeQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/StatusQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/AlertRuleQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/FreetextQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/LimitQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/OffsetQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/TaggedTextQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/OrderByQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/DirectionQueryParameter"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "A list of alerts matching the search criteria with extra details",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/AlertSearchDetailsResponseV2"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "TaggedTextQueryParameter": {
+      "in": "query",
+      "name": "taggedText",
+      "description": "Include text tags",
+      "schema": {
+       "type": "boolean",
+       "default": false
+      },
+      "required": false
+     },
+     "TriggeredQueryParameter": {
+      "in": "query",
+      "name": "triggered",
+      "description": "The triggered time itself has millisecond precision, but can be searched for using parameters of higher granularity on the form [x, y], which is interpreted as beginning of x until end of y.\n\nFor example:\n* [2024-08-01, 2024-08-14] matches alerts triggered since beginning of 2024-08-01 to end of 2023-08-14\n* [2024-09-23 12:02, 2024-09-23 12:03] matches alerts triggered since beginning of 12:02 to end of 12:03, for example including an alert with triggered: 12:03:58.567\n\nThe format of the time is either 2024-09-23 12:03:58.000 or 2024-09-23T12:03:58.000Z (the T and Z are optional). The precision used can range from a year down to milliseconds. On the form [x, y], x and y should have the same level of precision (e.g. date, minutes, milliseconds).\nRelative time expressions are also supported, such as -2d, which means two days prior to today and yesterday. As with absolute time references, both ends of the range still need to be specified. For example, to search for alerts that fired within the last 24 hrs, use triggered = [-24h,].\nOpen-ended ranges is allowed, but will only exclude one single millisecond compared to a closed-ended range, and therefore only make sense to use when filtering on millisecond precision.\n\nFor example:\n- [2024-09-23 12:03:58.000, 2024-09-23 12:03:58.567) will match an alert triggered at 12:03:58.567 but not an alert triggered at 12:03:58.568.\n",
+      "schema": {
+       "type": "string",
+       "example": "2026-01-01"
+      },
+      "required": false
+     },
+     "AssigneeQueryParameter": {
+      "in": "query",
+      "name": "assignee",
+      "description": "Filter by a specific assigned user, using the email address associated with that user account, or use 'NONE' to explicitly match against unassigned alerts.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "StatusQueryParameter": {
+      "in": "query",
+      "name": "status",
+      "description": "Filter by review status.\n",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "unassigned",
+        "assigned",
+        "pending",
+        "dismiss",
+        "no-action",
+        "actionable",
+        "tuning"
+       ]
+      },
+      "required": false
+     },
+     "AlertRuleQueryParameter": {
+      "in": "query",
+      "name": "alertRule",
+      "description": "Filter by alert rule id.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "FreetextQueryParameter": {
+      "in": "query",
+      "name": "freetext",
+      "description": "Filter by any text.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "LimitQueryParameter": {
+      "in": "query",
+      "name": "limit",
+      "description": "Maximum number of items to include\n",
+      "schema": {
+       "type": "integer",
+       "format": "int32",
+       "minimum": 1,
+       "maximum": 1000,
+       "default": 10
+      },
+      "required": false
+     },
+     "OffsetQueryParameter": {
+      "in": "query",
+      "name": "from",
+      "description": "Offset search from previous result. The API may only return the first 1000 results, meaning that limit + from cannot exceed 1000.\n",
+      "schema": {
+       "type": "integer",
+       "format": "int32",
+       "minimum": 1,
+       "maximum": 1000
+      },
+      "required": false
+     },
+     "OrderByQueryParameter": {
+      "in": "query",
+      "name": "orderby",
+      "description": "Sort order",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "triggered"
+       ]
+      },
+      "required": false
+     },
+     "DirectionQueryParameter": {
+      "in": "query",
+      "name": "direction",
+      "description": "Sort direction based on the triggered timestamp",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "asc",
+        "desc"
+       ],
+       "default": "desc"
+      },
+      "required": false
+     }
+    },
+    "schemas": {
+     "AlertSearchDetailsResponseV2": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "object",
+        "properties": {
+         "results": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/AlertV2Detailed"
+          }
+         }
+        },
+        "required": [
+         "results"
+        ]
+       },
+       "counts": {
+        "$ref": "#/components/schemas/Counts"
+       }
+      },
+      "required": [
+       "data",
+       "counts"
+      ]
+     },
+     "Counts": {
+      "type": "object",
+      "properties": {
+       "returned": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1,
+        "description": "Number of alerts returned"
+       },
+       "total": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1000,
+        "description": "Total number of alerts matching the query"
+       }
+      },
+      "required": [
+       "returned",
+       "total"
+      ]
+     },
+     "Entity": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "A Recorded Future entity reference. Returned as `null` if the requesting user does not have access to the entity.\n",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "idn:services.onlinebox.com"
+       },
+       "name": {
+        "type": "string",
+        "description": "Entity display name",
+        "example": "services.onlinebox.com"
+       },
+       "type": {
+        "type": "string",
+        "description": "Entity type\n\nSome examples are Malware, InternetDomainName, IpAddress, Hash and Company\n",
+        "example": "InternetDomainName"
+       },
+       "description": {
+        "type": "string",
+        "description": "Entity description. Only present when the entity has a description attribute."
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "type"
+      ]
+     },
+     "AiInsights": {
+      "type": "object",
+      "description": "Recorded Future AI summary of the alert. `text` and `comment` are mutually exclusive: when a summary is available `text` holds it and `comment` is `null`; otherwise `text` is `null` and `comment` explains why no summary is available.\n",
+      "properties": {
+       "text": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "The generated AI summary text. `null` when no summary is available.",
+        "example": null
+       },
+       "comment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Human-readable explanation shown when no summary text is available (for example \"Summary is disabled for this alert.\" or \"Summary timed out.\"). `null` when `text` is populated.\n",
+        "example": "A summary has not yet been generated for this alert."
+       }
+      },
+      "required": [
+       "text",
+       "comment"
+      ]
+     },
+     "OwnerOrganisationDetails": {
+      "type": "object",
+      "description": "Details about the owner of the alert's rule and their organisation(s)",
+      "properties": {
+       "owner_id": {
+        "type": "string",
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owning user. Only present when the owner is an individual user."
+       },
+       "owner_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the owning user. Only present when the owner is an individual user."
+       },
+       "organisations": {
+        "type": "array",
+        "description": "Organisations the alert is shared with. May be empty.",
+        "minItems": 0,
+        "items": {
+         "type": "object",
+         "properties": {
+          "organisation_id": {
+           "type": "string",
+           "example": "uhash:b2ai0ilv2p",
+           "description": "Id of the organisation"
+          },
+          "organisation_name": {
+           "type": "string",
+           "example": "Recorded Future",
+           "description": "Name of the organisation"
+          }
+         },
+         "required": [
+          "organisation_id",
+          "organisation_name"
+         ]
+        }
+       },
+       "enterprise_id": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owner's enterprise"
+       },
+       "enterprise_name": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "Recorded Future",
+        "description": "Name of the owner's enterprise"
+       }
+      },
+      "required": [
+       "organisations",
+       "enterprise_id",
+       "enterprise_name"
+      ]
+     },
+     "UseCaseDeprecation": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Deprecation notice for the rule's use case. `null` unless the rule's use case is deprecated and the notice is currently active.\n",
+      "properties": {
+       "from": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Date from which the use case is deprecated"
+       },
+       "description": {
+        "type": "string",
+        "description": "Human-readable deprecation description"
+       },
+       "links": {
+        "type": "object",
+        "description": "Related links keyed by label",
+        "additionalProperties": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "EntityPathNode": {
+      "type": "object",
+      "description": "A node in a trigger entity path",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/Entity"
+       },
+       "attribute": {
+        "type": "object",
+        "properties": {
+         "id": {
+          "type": "string",
+          "description": "Id of the attribute connecting this node to the next",
+          "example": "CyberAttack.method"
+         }
+        },
+        "required": [
+         "id"
+        ]
+       },
+       "composite_path": {
+        "type": "array",
+        "description": "Only present for composite attribute paths",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "entity",
+       "attribute"
+      ]
+     },
+     "TriggeredBy": {
+      "type": "object",
+      "description": "One triggering reference and the entity path(s) that matched the alert rule",
+      "properties": {
+       "reference_id": {
+        "type": "string",
+        "description": "Id of the reference that triggered the alert",
+        "example": "Gb8Xd8BQBsq"
+       },
+       "entity_path": {
+        "deprecated": true,
+        "type": "array",
+        "description": "Deprecated. The single, shortest matching entity path. Use `entity_paths` instead.\n",
+        "items": {
+         "$ref": "#/components/schemas/EntityPathNode"
+        }
+       },
+       "entity_paths": {
+        "type": "array",
+        "description": "All relevant matching entity paths. Each path is an ordered array of nodes.",
+        "items": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/EntityPathNode"
+         }
+        }
+       }
+      },
+      "required": [
+       "reference_id",
+       "entity_path",
+       "entity_paths"
+      ]
+     },
+     "RuleV2": {
+      "type": "object",
+      "description": "The alert rule that produced the alert",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "WhkPbn",
+        "description": "Rule id"
+       },
+       "name": {
+        "type": "string",
+        "description": "Rule title, or \"No access to alert rule\" if the rule cannot be accessed",
+        "example": "Identify Typosquats"
+       },
+       "url": {
+        "type": "string",
+        "description": "Portal URL to view the rule",
+        "example": "https://app.recordedfuture.com/live/sc/ViewIdkobra_view_report_item_alert_editor?view_opts=%7B%22reportId%22%3A%22WhkPbn%22%2C%22bTitle%22%3Atrue%2C%22title%22%3A%22Identify+Typosquats%22%7D"
+       },
+       "owner_id": {
+        "type": "string",
+        "description": "Id of the rule owner",
+        "example": "uhash:b2ai0ilv2p"
+       },
+       "owner_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the rule owner"
+       },
+       "organisation_id": {
+        "type": "string",
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the rule owner organisation"
+       },
+       "organisation_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the rule owner organisation"
+       },
+       "use_case_deprecation": {
+        "$ref": "#/components/schemas/UseCaseDeprecation"
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "url",
+       "owner_id",
+       "owner_name",
+       "organisation_id",
+       "organisation_name",
+       "use_case_deprecation"
+      ]
+     },
+     "ReviewV2": {
+      "type": "object",
+      "description": "Triage/review information for the alert",
+      "properties": {
+       "status": {
+        "deprecated": true,
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Deprecated legacy review status. Use `statusInPortal` instead. `null` when the alert has no review status.",
+        "enum": [
+         "unassigned",
+         "assigned",
+         "pending",
+         "dismiss",
+         "no-action",
+         "actionable",
+         "tuning",
+         null
+        ],
+        "example": "no-action"
+       },
+       "statusInPortal": {
+        "type": "string",
+        "description": "Alert review status as shown in the portal. Defaults to \"Unknown\".",
+        "enum": [
+         "New",
+         "Resolved",
+         "Pending",
+         "Dismissed",
+         "Flag for Tuning",
+         "Unknown"
+        ],
+        "example": "New"
+       },
+       "statusDate": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "When the status was last changed"
+       },
+       "statusChangeBy": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "testuser@recordedfuture.com",
+        "description": "Email of the user who last changed the status"
+       },
+       "assignee": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": null,
+        "description": "Email of the assigned user"
+       },
+       "note": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "Hello world",
+        "description": "Review note text"
+       },
+       "noteAuthor": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "testuser@recordedfuture.com",
+        "description": "Email of the note author"
+       },
+       "noteDate": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "When the note was last updated"
+       }
+      },
+      "required": [
+       "status",
+       "statusInPortal",
+       "statusDate",
+       "statusChangeBy",
+       "assignee",
+       "note",
+       "noteAuthor",
+       "noteDate"
+      ]
+     },
+     "EvidenceV2": {
+      "type": "object",
+      "description": "A single piece of risk evidence showing data that is triggering the risk rule",
+      "properties": {
+       "rule": {
+        "type": "string",
+        "example": "Recent Typosquat Similarity - DNS Sandwich",
+        "description": "Risk rule name"
+       },
+       "criticality": {
+        "type": "integer",
+        "example": 2,
+        "format": "int32",
+        "minimum": 0,
+        "maximum": 5,
+        "description": "Risk rule criticality score"
+       },
+       "criticalityLabel": {
+        "type": "string",
+        "example": "Suspicious",
+        "description": "Risk rule criticality label"
+       },
+       "evidenceString": {
+        "type": "string",
+        "description": "Text evidence for the risk rule"
+       },
+       "mitigationString": {
+        "type": "string",
+        "description": "Mitigation text. Empty string when no mitigation is available."
+       },
+       "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of evidence document creation"
+       }
+      },
+      "required": [
+       "rule",
+       "criticality",
+       "criticalityLabel",
+       "evidenceString",
+       "mitigationString",
+       "timestamp"
+      ]
+     },
+     "ReferenceV2": {
+      "type": "object",
+      "description": "A reference (document fragment) supporting a risk rule or trend",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "Gb8Xd8BQBsq",
+        "description": "Reference id"
+       },
+       "fragment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Text fragment summarizing the intelligence match"
+       },
+       "language": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "eng",
+        "description": "Language of the text fragment"
+       },
+       "entities": {
+        "type": "array",
+        "description": "Entities tied to the reference",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        }
+       },
+       "noteId": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Analyst note id. Only present for analyst note / Insikt Group sources."
+       },
+       "noteLink": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Portal link to the analyst note. Only present for analyst note / Insikt Group sources."
+       }
+      },
+      "required": [
+       "id",
+       "fragment",
+       "language",
+       "entities"
+      ]
+     },
+     "DocumentV2": {
+      "type": "object",
+      "description": "A source document that contributed to an entity's risk or trend",
+      "properties": {
+       "title": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Title of the document"
+       },
+       "url": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "URL of the document"
+       },
+       "source": {
+        "$ref": "#/components/schemas/Entity",
+        "description": "Source entity of the document"
+       },
+       "authors": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        },
+        "description": "Authors of the document"
+       },
+       "references": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/ReferenceV2"
+        },
+        "description": "References tied to the document"
+       }
+      },
+      "required": [
+       "title",
+       "url",
+       "source",
+       "authors",
+       "references"
+      ]
+     },
+     "EntityRiskV2": {
+      "description": "Risk information for the entity. Empty for non-risk alerts; individual sub-fields may be `null`.\n",
+      "oneOf": [
+       {
+        "type": "object",
+        "maxProperties": 0
+       },
+       {
+        "type": "object",
+        "properties": {
+         "criticality": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "example": 2,
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Criticality level of the entity"
+         },
+         "criticalityLabel": {
+          "type": [
+           "string",
+           "null"
+          ],
+          "description": "Criticality label of the entity"
+         },
+         "score": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 0,
+          "maximum": 99,
+          "description": "Risk score of the entity"
+         },
+         "evidence": {
+          "type": [
+           "array",
+           "null"
+          ],
+          "description": "List of evidence related to the entity",
+          "items": {
+           "$ref": "#/components/schemas/EvidenceV2"
+          }
+         },
+         "documents": {
+          "type": [
+           "array",
+           "null"
+          ],
+          "description": "List of documents related to the entity",
+          "items": {
+           "$ref": "#/components/schemas/DocumentV2"
+          }
+         }
+        }
+       }
+      ]
+     },
+     "EntityTrendV2": {
+      "description": "Trend information for the entity. Empty object (`{}`) for non-trend alerts.\n",
+      "oneOf": [
+       {
+        "type": "object",
+        "maxProperties": 0
+       },
+       {
+        "type": "object",
+        "properties": {
+         "name": {
+          "type": [
+           "string",
+           "null"
+          ],
+          "example": "Method",
+          "description": "The entity's role in the cyber trend"
+         },
+         "strength": {
+          "type": "integer",
+          "example": 3,
+          "minimum": 0,
+          "maximum": 5,
+          "format": "int32",
+          "description": "Trend signal strength"
+         },
+         "strengthLabel": {
+          "type": "string",
+          "example": "Spike",
+          "description": "Trend strength label"
+         },
+         "documents": {
+          "type": "array",
+          "description": "List of documents related to the entity",
+          "items": {
+           "$ref": "#/components/schemas/DocumentV2"
+          }
+         }
+        },
+        "required": [
+         "name",
+         "strength",
+         "strengthLabel",
+         "documents"
+        ]
+       }
+      ]
+     },
+     "AlertEntityV2": {
+      "type": "object",
+      "description": "An entity involved in the alert, with its risk and/or trend context",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/Entity"
+       },
+       "risk": {
+        "$ref": "#/components/schemas/EntityRiskV2"
+       },
+       "trend": {
+        "$ref": "#/components/schemas/EntityTrendV2"
+       },
+       "documents": {
+        "type": "array",
+        "description": "Documents for event/reference alerts. Usually empty for signal alerts.",
+        "minItems": 0,
+        "items": {
+         "$ref": "#/components/schemas/DocumentV2"
+        }
+       }
+      },
+      "required": [
+       "entity",
+       "risk",
+       "trend",
+       "documents"
+      ]
+     },
+     "AlertCountsV2": {
+      "type": "object",
+      "description": "Per-alert counts of the intelligence that triggered the alert",
+      "properties": {
+       "documents": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Number of distinct documents among the visible references",
+        "example": 6
+       },
+       "entities": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Number of signals/entities",
+        "example": 2
+       },
+       "references": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Number of visible references",
+        "example": 6
+       }
+      },
+      "required": [
+       "documents",
+       "entities",
+       "references"
+      ]
+     },
+     "AlertV2Summary": {
+      "type": "object",
+      "description": "Summary representation of an alert",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "Kr2etl",
+        "description": "Alert id"
+       },
+       "title": {
+        "type": "string",
+        "example": "Infrastructure and Brand Risk, Potential Typosquatting Watch List Domains...",
+        "description": "Alert title"
+       },
+       "type": {
+        "type": "string",
+        "description": "Alert type",
+        "enum": [
+         "ENTITY",
+         "EVENT",
+         "REFERENCE",
+         "OTHER"
+        ],
+        "example": "ENTITY"
+       },
+       "triggered": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2019-01-06T05:05:25.009Z",
+        "description": "Timestamp of when the alert was triggered"
+       },
+       "url": {
+        "type": "string",
+        "description": "Portal URL for the alert",
+        "example": "https://app.recordedfuture.com/live/sc/notification/?id=Kr2etl"
+       },
+       "rule": {
+        "$ref": "#/components/schemas/RuleV2"
+       },
+       "ai_insights": {
+        "$ref": "#/components/schemas/AiInsights"
+       },
+       "review": {
+        "$ref": "#/components/schemas/ReviewV2"
+       },
+       "owner_organisation_details": {
+        "$ref": "#/components/schemas/OwnerOrganisationDetails"
+       }
+      },
+      "required": [
+       "id",
+       "title",
+       "type",
+       "triggered",
+       "url",
+       "rule",
+       "ai_insights",
+       "review",
+       "owner_organisation_details"
+      ]
+     },
+     "AlertV2Detailed": {
+      "description": "Detailed representation of an alert (V2 lookup and search/details endpoints). Extends the summary with the triggering intelligence.\n",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/AlertV2Summary"
+       },
+       {
+        "type": "object",
+        "properties": {
+         "counts": {
+          "$ref": "#/components/schemas/AlertCountsV2"
+         },
+         "entities": {
+          "type": "array",
+          "description": "A list of entities tied to the alert",
+          "items": {
+           "$ref": "#/components/schemas/AlertEntityV2"
+          }
+         },
+         "triggered_by": {
+          "type": "array",
+          "description": "A list of entity path chains showing which entities matched which rules/lists",
+          "items": {
+           "$ref": "#/components/schemas/TriggeredBy"
+          }
+         }
+        },
+        "required": [
+         "counts",
+         "entities",
+         "triggered_by"
+        ]
+       }
+      ]
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/get_search.md",
+  "definition": {
+   "openapi": "3.1.1",
+   "info": {
+    "title": "Alert API",
+    "version": "3.0.0",
+    "description": "The Alert API allows for interacting with Recorded Future Alerts and Alert rules.\n\nPlease read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id) before using this API.\n",
+    "x-rf-service-id": "service:alert-api"
+   },
+   "paths": {
+    "/search": {
+     "servers": [
+      {
+       "url": "api.recordedfuture.com/alert/v2",
+       "description": "V2 endpoints",
+       "x-internal": false
+      },
+      {
+       "url": "api.recordedfuture.com/v2/alert",
+       "description": "V2 Proxy Redirect (Legacy)",
+       "x-internal": false
+      }
+     ],
+     "get": {
+      "summary": "Search for alerts",
+      "tags": [
+       "Alert (deprecated)"
+      ],
+      "description": "Search for alerts based on a set of filters.\n",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/TriggeredQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/AssigneeQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/StatusQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/AlertRuleQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/FreetextQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/LimitQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/OffsetQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/TaggedTextQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/OrderByQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/DirectionQueryParameter"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "A list of alerts matching the search criteria",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/AlertSearchResponseV2"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "TaggedTextQueryParameter": {
+      "in": "query",
+      "name": "taggedText",
+      "description": "Include text tags",
+      "schema": {
+       "type": "boolean",
+       "default": false
+      },
+      "required": false
+     },
+     "TriggeredQueryParameter": {
+      "in": "query",
+      "name": "triggered",
+      "description": "The triggered time itself has millisecond precision, but can be searched for using parameters of higher granularity on the form [x, y], which is interpreted as beginning of x until end of y.\n\nFor example:\n* [2024-08-01, 2024-08-14] matches alerts triggered since beginning of 2024-08-01 to end of 2023-08-14\n* [2024-09-23 12:02, 2024-09-23 12:03] matches alerts triggered since beginning of 12:02 to end of 12:03, for example including an alert with triggered: 12:03:58.567\n\nThe format of the time is either 2024-09-23 12:03:58.000 or 2024-09-23T12:03:58.000Z (the T and Z are optional). The precision used can range from a year down to milliseconds. On the form [x, y], x and y should have the same level of precision (e.g. date, minutes, milliseconds).\nRelative time expressions are also supported, such as -2d, which means two days prior to today and yesterday. As with absolute time references, both ends of the range still need to be specified. For example, to search for alerts that fired within the last 24 hrs, use triggered = [-24h,].\nOpen-ended ranges is allowed, but will only exclude one single millisecond compared to a closed-ended range, and therefore only make sense to use when filtering on millisecond precision.\n\nFor example:\n- [2024-09-23 12:03:58.000, 2024-09-23 12:03:58.567) will match an alert triggered at 12:03:58.567 but not an alert triggered at 12:03:58.568.\n",
+      "schema": {
+       "type": "string",
+       "example": "2026-01-01"
+      },
+      "required": false
+     },
+     "AssigneeQueryParameter": {
+      "in": "query",
+      "name": "assignee",
+      "description": "Filter by a specific assigned user, using the email address associated with that user account, or use 'NONE' to explicitly match against unassigned alerts.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "StatusQueryParameter": {
+      "in": "query",
+      "name": "status",
+      "description": "Filter by review status.\n",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "unassigned",
+        "assigned",
+        "pending",
+        "dismiss",
+        "no-action",
+        "actionable",
+        "tuning"
+       ]
+      },
+      "required": false
+     },
+     "AlertRuleQueryParameter": {
+      "in": "query",
+      "name": "alertRule",
+      "description": "Filter by alert rule id.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "FreetextQueryParameter": {
+      "in": "query",
+      "name": "freetext",
+      "description": "Filter by any text.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "LimitQueryParameter": {
+      "in": "query",
+      "name": "limit",
+      "description": "Maximum number of items to include\n",
+      "schema": {
+       "type": "integer",
+       "format": "int32",
+       "minimum": 1,
+       "maximum": 1000,
+       "default": 10
+      },
+      "required": false
+     },
+     "OffsetQueryParameter": {
+      "in": "query",
+      "name": "from",
+      "description": "Offset search from previous result. The API may only return the first 1000 results, meaning that limit + from cannot exceed 1000.\n",
+      "schema": {
+       "type": "integer",
+       "format": "int32",
+       "minimum": 1,
+       "maximum": 1000
+      },
+      "required": false
+     },
+     "OrderByQueryParameter": {
+      "in": "query",
+      "name": "orderby",
+      "description": "Sort order",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "triggered"
+       ]
+      },
+      "required": false
+     },
+     "DirectionQueryParameter": {
+      "in": "query",
+      "name": "direction",
+      "description": "Sort direction based on the triggered timestamp",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "asc",
+        "desc"
+       ],
+       "default": "desc"
+      },
+      "required": false
+     }
+    },
+    "schemas": {
+     "AlertSearchResponseV2": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "object",
+        "properties": {
+         "results": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/AlertV2Summary"
+          }
+         }
+        },
+        "required": [
+         "results"
+        ]
+       },
+       "counts": {
+        "$ref": "#/components/schemas/Counts"
+       }
+      },
+      "required": [
+       "data",
+       "counts"
+      ]
+     },
+     "Counts": {
+      "type": "object",
+      "properties": {
+       "returned": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1,
+        "description": "Number of alerts returned"
+       },
+       "total": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1000,
+        "description": "Total number of alerts matching the query"
+       }
+      },
+      "required": [
+       "returned",
+       "total"
+      ]
+     },
+     "AiInsights": {
+      "type": "object",
+      "description": "Recorded Future AI summary of the alert. `text` and `comment` are mutually exclusive: when a summary is available `text` holds it and `comment` is `null`; otherwise `text` is `null` and `comment` explains why no summary is available.\n",
+      "properties": {
+       "text": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "The generated AI summary text. `null` when no summary is available.",
+        "example": null
+       },
+       "comment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Human-readable explanation shown when no summary text is available (for example \"Summary is disabled for this alert.\" or \"Summary timed out.\"). `null` when `text` is populated.\n",
+        "example": "A summary has not yet been generated for this alert."
+       }
+      },
+      "required": [
+       "text",
+       "comment"
+      ]
+     },
+     "OwnerOrganisationDetails": {
+      "type": "object",
+      "description": "Details about the owner of the alert's rule and their organisation(s)",
+      "properties": {
+       "owner_id": {
+        "type": "string",
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owning user. Only present when the owner is an individual user."
+       },
+       "owner_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the owning user. Only present when the owner is an individual user."
+       },
+       "organisations": {
+        "type": "array",
+        "description": "Organisations the alert is shared with. May be empty.",
+        "minItems": 0,
+        "items": {
+         "type": "object",
+         "properties": {
+          "organisation_id": {
+           "type": "string",
+           "example": "uhash:b2ai0ilv2p",
+           "description": "Id of the organisation"
+          },
+          "organisation_name": {
+           "type": "string",
+           "example": "Recorded Future",
+           "description": "Name of the organisation"
+          }
+         },
+         "required": [
+          "organisation_id",
+          "organisation_name"
+         ]
+        }
+       },
+       "enterprise_id": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owner's enterprise"
+       },
+       "enterprise_name": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "Recorded Future",
+        "description": "Name of the owner's enterprise"
+       }
+      },
+      "required": [
+       "organisations",
+       "enterprise_id",
+       "enterprise_name"
+      ]
+     },
+     "UseCaseDeprecation": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Deprecation notice for the rule's use case. `null` unless the rule's use case is deprecated and the notice is currently active.\n",
+      "properties": {
+       "from": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Date from which the use case is deprecated"
+       },
+       "description": {
+        "type": "string",
+        "description": "Human-readable deprecation description"
+       },
+       "links": {
+        "type": "object",
+        "description": "Related links keyed by label",
+        "additionalProperties": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "RuleV2": {
+      "type": "object",
+      "description": "The alert rule that produced the alert",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "WhkPbn",
+        "description": "Rule id"
+       },
+       "name": {
+        "type": "string",
+        "description": "Rule title, or \"No access to alert rule\" if the rule cannot be accessed",
+        "example": "Identify Typosquats"
+       },
+       "url": {
+        "type": "string",
+        "description": "Portal URL to view the rule",
+        "example": "https://app.recordedfuture.com/live/sc/ViewIdkobra_view_report_item_alert_editor?view_opts=%7B%22reportId%22%3A%22WhkPbn%22%2C%22bTitle%22%3Atrue%2C%22title%22%3A%22Identify+Typosquats%22%7D"
+       },
+       "owner_id": {
+        "type": "string",
+        "description": "Id of the rule owner",
+        "example": "uhash:b2ai0ilv2p"
+       },
+       "owner_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the rule owner"
+       },
+       "organisation_id": {
+        "type": "string",
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the rule owner organisation"
+       },
+       "organisation_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the rule owner organisation"
+       },
+       "use_case_deprecation": {
+        "$ref": "#/components/schemas/UseCaseDeprecation"
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "url",
+       "owner_id",
+       "owner_name",
+       "organisation_id",
+       "organisation_name",
+       "use_case_deprecation"
+      ]
+     },
+     "ReviewV2": {
+      "type": "object",
+      "description": "Triage/review information for the alert",
+      "properties": {
+       "status": {
+        "deprecated": true,
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Deprecated legacy review status. Use `statusInPortal` instead. `null` when the alert has no review status.",
+        "enum": [
+         "unassigned",
+         "assigned",
+         "pending",
+         "dismiss",
+         "no-action",
+         "actionable",
+         "tuning",
+         null
+        ],
+        "example": "no-action"
+       },
+       "statusInPortal": {
+        "type": "string",
+        "description": "Alert review status as shown in the portal. Defaults to \"Unknown\".",
+        "enum": [
+         "New",
+         "Resolved",
+         "Pending",
+         "Dismissed",
+         "Flag for Tuning",
+         "Unknown"
+        ],
+        "example": "New"
+       },
+       "statusDate": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "When the status was last changed"
+       },
+       "statusChangeBy": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "testuser@recordedfuture.com",
+        "description": "Email of the user who last changed the status"
+       },
+       "assignee": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": null,
+        "description": "Email of the assigned user"
+       },
+       "note": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "Hello world",
+        "description": "Review note text"
+       },
+       "noteAuthor": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "testuser@recordedfuture.com",
+        "description": "Email of the note author"
+       },
+       "noteDate": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "When the note was last updated"
+       }
+      },
+      "required": [
+       "status",
+       "statusInPortal",
+       "statusDate",
+       "statusChangeBy",
+       "assignee",
+       "note",
+       "noteAuthor",
+       "noteDate"
+      ]
+     },
+     "AlertV2Summary": {
+      "type": "object",
+      "description": "Summary representation of an alert",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "Kr2etl",
+        "description": "Alert id"
+       },
+       "title": {
+        "type": "string",
+        "example": "Infrastructure and Brand Risk, Potential Typosquatting Watch List Domains...",
+        "description": "Alert title"
+       },
+       "type": {
+        "type": "string",
+        "description": "Alert type",
+        "enum": [
+         "ENTITY",
+         "EVENT",
+         "REFERENCE",
+         "OTHER"
+        ],
+        "example": "ENTITY"
+       },
+       "triggered": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2019-01-06T05:05:25.009Z",
+        "description": "Timestamp of when the alert was triggered"
+       },
+       "url": {
+        "type": "string",
+        "description": "Portal URL for the alert",
+        "example": "https://app.recordedfuture.com/live/sc/notification/?id=Kr2etl"
+       },
+       "rule": {
+        "$ref": "#/components/schemas/RuleV2"
+       },
+       "ai_insights": {
+        "$ref": "#/components/schemas/AiInsights"
+       },
+       "review": {
+        "$ref": "#/components/schemas/ReviewV2"
+       },
+       "owner_organisation_details": {
+        "$ref": "#/components/schemas/OwnerOrganisationDetails"
+       }
+      },
+      "required": [
+       "id",
+       "title",
+       "type",
+       "triggered",
+       "url",
+       "rule",
+       "ai_insights",
+       "review",
+       "owner_organisation_details"
+      ]
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/get_v3-alert-id.md",
+  "definition": {
+   "openapi": "3.1.1",
+   "info": {
+    "title": "Alert API",
+    "version": "3.0.0",
+    "description": "The Alert API allows for interacting with Recorded Future Alerts and Alert rules.\n\nPlease read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id) before using this API.\n",
+    "x-rf-service-id": "service:alert-api"
+   },
+   "paths": {
+    "/v3/{alert_id}": {
+     "servers": [
+      {
+       "url": "api.recordedfuture.com/alert",
+       "x-internal": false
+      },
+      {
+       "url": "api.recordedfuture.com/v3/alerts",
+       "description": "V3 Proxy Redirect (Legacy)",
+       "x-internal": false
+      }
+     ],
+     "get": {
+      "summary": "Fetch alert by id",
+      "tags": [
+       "Alert V3"
+      ],
+      "description": "Fetch an alert by id.\n\nUsing the fields parameter the response can be set to include a set of fields. If no fields parameter is set, all available fields will be included in the response. For better performance it is recommended to use the fields parameter to limit the response to only return the fields you need.\n",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/AlertIdQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/FieldsQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/TaggedTextQueryParameter"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "The current state of the alert",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/AlertLookupResponseV3"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "AlertIdQueryParameter": {
+      "in": "path",
+      "name": "alert_id",
+      "description": "Id of alert to fetch",
+      "schema": {
+       "type": "string",
+       "example": "5PqsAw"
+      },
+      "required": true
+     },
+     "TaggedTextQueryParameter": {
+      "in": "query",
+      "name": "taggedText",
+      "description": "Include text tags",
+      "schema": {
+       "type": "boolean",
+       "default": false
+      },
+      "required": false
+     },
+     "FieldsQueryParameter": {
+      "in": "query",
+      "name": "fields",
+      "description": "Fields to include in the response. If no specific fields are requested, all available fields are included in the response.\n\nValues should be separated by comma.\n\nAvailable fields are:\n* ai_insights\n* enriched_entities \n* hits \n* id \n* log \n* owner_organisation_details \n* review\n* rule\n* title\n* triggered_by \n* type\n* url\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     }
+    },
+    "schemas": {
+     "AlertLookupResponseV3": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "$ref": "#/components/schemas/AlertV3"
+       }
+      },
+      "required": [
+       "data"
+      ]
+     },
+     "Entity": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "A Recorded Future entity reference. Returned as `null` if the requesting user does not have access to the entity.\n",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "idn:services.onlinebox.com"
+       },
+       "name": {
+        "type": "string",
+        "description": "Entity display name",
+        "example": "services.onlinebox.com"
+       },
+       "type": {
+        "type": "string",
+        "description": "Entity type\n\nSome examples are Malware, InternetDomainName, IpAddress, Hash and Company\n",
+        "example": "InternetDomainName"
+       },
+       "description": {
+        "type": "string",
+        "description": "Entity description. Only present when the entity has a description attribute."
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "type"
+      ]
+     },
+     "AiInsights": {
+      "type": "object",
+      "description": "Recorded Future AI summary of the alert. `text` and `comment` are mutually exclusive: when a summary is available `text` holds it and `comment` is `null`; otherwise `text` is `null` and `comment` explains why no summary is available.\n",
+      "properties": {
+       "text": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "The generated AI summary text. `null` when no summary is available.",
+        "example": null
+       },
+       "comment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Human-readable explanation shown when no summary text is available (for example \"Summary is disabled for this alert.\" or \"Summary timed out.\"). `null` when `text` is populated.\n",
+        "example": "A summary has not yet been generated for this alert."
+       }
+      },
+      "required": [
+       "text",
+       "comment"
+      ]
+     },
+     "OwnerOrganisationDetails": {
+      "type": "object",
+      "description": "Details about the owner of the alert's rule and their organisation(s)",
+      "properties": {
+       "owner_id": {
+        "type": "string",
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owning user. Only present when the owner is an individual user."
+       },
+       "owner_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the owning user. Only present when the owner is an individual user."
+       },
+       "organisations": {
+        "type": "array",
+        "description": "Organisations the alert is shared with. May be empty.",
+        "minItems": 0,
+        "items": {
+         "type": "object",
+         "properties": {
+          "organisation_id": {
+           "type": "string",
+           "example": "uhash:b2ai0ilv2p",
+           "description": "Id of the organisation"
+          },
+          "organisation_name": {
+           "type": "string",
+           "example": "Recorded Future",
+           "description": "Name of the organisation"
+          }
+         },
+         "required": [
+          "organisation_id",
+          "organisation_name"
+         ]
+        }
+       },
+       "enterprise_id": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owner's enterprise"
+       },
+       "enterprise_name": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "Recorded Future",
+        "description": "Name of the owner's enterprise"
+       }
+      },
+      "required": [
+       "organisations",
+       "enterprise_id",
+       "enterprise_name"
+      ]
+     },
+     "UseCaseDeprecation": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Deprecation notice for the rule's use case. `null` unless the rule's use case is deprecated and the notice is currently active.\n",
+      "properties": {
+       "from": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Date from which the use case is deprecated"
+       },
+       "description": {
+        "type": "string",
+        "description": "Human-readable deprecation description"
+       },
+       "links": {
+        "type": "object",
+        "description": "Related links keyed by label",
+        "additionalProperties": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "EntityPathNode": {
+      "type": "object",
+      "description": "A node in a trigger entity path",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/Entity"
+       },
+       "attribute": {
+        "type": "object",
+        "properties": {
+         "id": {
+          "type": "string",
+          "description": "Id of the attribute connecting this node to the next",
+          "example": "CyberAttack.method"
+         }
+        },
+        "required": [
+         "id"
+        ]
+       },
+       "composite_path": {
+        "type": "array",
+        "description": "Only present for composite attribute paths",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "entity",
+       "attribute"
+      ]
+     },
+     "TriggeredBy": {
+      "type": "object",
+      "description": "One triggering reference and the entity path(s) that matched the alert rule",
+      "properties": {
+       "reference_id": {
+        "type": "string",
+        "description": "Id of the reference that triggered the alert",
+        "example": "Gb8Xd8BQBsq"
+       },
+       "entity_path": {
+        "deprecated": true,
+        "type": "array",
+        "description": "Deprecated. The single, shortest matching entity path. Use `entity_paths` instead.\n",
+        "items": {
+         "$ref": "#/components/schemas/EntityPathNode"
+        }
+       },
+       "entity_paths": {
+        "type": "array",
+        "description": "All relevant matching entity paths. Each path is an ordered array of nodes.",
+        "items": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/EntityPathNode"
+         }
+        }
+       }
+      },
+      "required": [
+       "reference_id",
+       "entity_path",
+       "entity_paths"
+      ]
+     },
+     "RuleV3": {
+      "type": "object",
+      "description": "The alert rule that produced the alert",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "WhkPbn",
+        "description": "Rule id"
+       },
+       "name": {
+        "type": "string",
+        "description": "Rule title, or \"No access to alert rule\" if the rule cannot be accessed",
+        "example": "Identify Typosquats"
+       },
+       "url": {
+        "type": "object",
+        "description": "URL to view the rule",
+        "properties": {
+         "portal": {
+          "type": "string",
+          "example": "https://app.recordedfuture.com/live/sc/ViewIdkobra_view_report_item_alert_editor?view_opts=%7B%22reportId%22%3A%22WhkPbn%22%2C%22bTitle%22%3Atrue%2C%22title%22%3A%22Identify+Typosquats%22%7D",
+          "description": "Portal URL to view the rule"
+         }
+        },
+        "required": [
+         "portal"
+        ]
+       },
+       "use_case_deprecation": {
+        "$ref": "#/components/schemas/UseCaseDeprecation"
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "url",
+       "use_case_deprecation"
+      ]
+     },
+     "ReviewV3": {
+      "type": "object",
+      "description": "Triage/review status for the alert. Lifecycle timestamps are in the `log` object.",
+      "properties": {
+       "status": {
+        "deprecated": true,
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Deprecated legacy review status, use `status_in_portal` instead. `null` when the alert has no review status.",
+        "enum": [
+         "unassigned",
+         "assigned",
+         "pending",
+         "dismiss",
+         "no-action",
+         "actionable",
+         "tuning",
+         null
+        ],
+        "example": "no-action"
+       },
+       "status_in_portal": {
+        "type": "string",
+        "description": "Alert review status as shown in the portal. Defaults to \"Unknown\".",
+        "enum": [
+         "New",
+         "Resolved",
+         "Pending",
+         "Dismissed",
+         "Flag for Tuning",
+         "Unknown"
+        ],
+        "example": "New"
+       },
+       "assignee": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "testuser@recordedfuture.com",
+        "description": "Email of the assigned user"
+       },
+       "note": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Review note text"
+       }
+      },
+      "required": [
+       "status",
+       "status_in_portal",
+       "assignee",
+       "note"
+      ]
+     },
+     "LogV3": {
+      "type": "object",
+      "description": "Timestamps and actors for the alert's lifecycle",
+      "properties": {
+       "triggered": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Date when the alert was triggered",
+        "example": "2019-01-06T05:05:25.009Z"
+       },
+       "status_date": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Date when the alert status was last changed"
+       },
+       "status_change_by": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Email of the user who last changed the status"
+       },
+       "note_author": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Email of the user who last changed the note text"
+       },
+       "note_date": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Date when the alert note text was last changed"
+       }
+      },
+      "required": [
+       "triggered",
+       "status_date",
+       "status_change_by",
+       "note_author",
+       "note_date"
+      ]
+     },
+     "UrlV3": {
+      "type": "object",
+      "description": "URLs to access this Alert",
+      "properties": {
+       "portal": {
+        "type": "string",
+        "description": "Portal URL for the alert",
+        "example": "https://app.recordedfuture.com/live/sc/notification/?id=Kr2etl"
+       },
+       "api": {
+        "type": "string",
+        "description": "API URL for the alert",
+        "example": "https://api.recordedfuture.com/v3/alerts/Kr2etl"
+       }
+      },
+      "required": [
+       "portal",
+       "api"
+      ]
+     },
+     "CriticalityV3": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Aggregated criticality for the entity. `null` when no criticality is available.",
+      "properties": {
+       "name": {
+        "type": "string",
+        "example": "Suspicious",
+        "description": "Criticality label of the entity"
+       },
+       "level": {
+        "type": [
+         "integer",
+         "null"
+        ],
+        "example": 2,
+        "minimum": 0,
+        "maximum": 5,
+        "description": "Criticality level of the entity"
+       },
+       "score": {
+        "type": [
+         "integer",
+         "null"
+        ],
+        "minimum": 0,
+        "maximum": 99,
+        "description": "Risk score of the entity"
+       },
+       "triggered": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the alert that captured this criticality snapshot was triggered"
+       },
+       "last_triggered": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Index time of the most recent Intelligence Cloud event contributing to this entity's risk score. null if not available."
+       }
+      },
+      "required": [
+       "name",
+       "level",
+       "score",
+       "triggered",
+       "last_triggered"
+      ]
+     },
+     "EvidenceV3": {
+      "type": "object",
+      "description": "A single piece of risk evidence",
+      "properties": {
+       "rule": {
+        "type": "string",
+        "example": "Recent Typosquat Similarity - DNS Sandwich",
+        "description": "Risk rule name"
+       },
+       "criticality": {
+        "type": "integer",
+        "format": "int32",
+        "example": 2,
+        "minimum": 0,
+        "maximum": 5,
+        "description": "Risk rule criticality score"
+       },
+       "criticality_label": {
+        "type": "string",
+        "example": "Suspicious",
+        "description": "Risk rule criticality label"
+       },
+       "evidence_string": {
+        "type": "string",
+        "description": "Text evidence for the risk rule"
+       },
+       "mitigation_string": {
+        "type": "string",
+        "description": "Mitigation text. Empty string when no mitigation is available."
+       },
+       "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of evidence document creation"
+       }
+      },
+      "required": [
+       "rule",
+       "criticality",
+       "criticality_label",
+       "evidence_string",
+       "mitigation_string",
+       "timestamp"
+      ]
+     },
+     "DocumentV3": {
+      "type": "object",
+      "description": "A source document",
+      "properties": {
+       "title": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Title of the document"
+       },
+       "url": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "URL of the document"
+       },
+       "source": {
+        "$ref": "#/components/schemas/Entity",
+        "description": "Source of the document as an entity"
+       },
+       "authors": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        },
+        "description": "Document authors as a list of entities"
+       }
+      },
+      "required": [
+       "title",
+       "url",
+       "source",
+       "authors"
+      ]
+     },
+     "ReferenceV3": {
+      "type": "object",
+      "description": "A reference (document fragment) supporting an enriched entity",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "Gb8Xd8BQBsq",
+        "description": "Reference id"
+       },
+       "fragment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Text fragment summarizing the intelligence match"
+       },
+       "language": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "eng",
+        "description": "Language of the text fragment"
+       },
+       "primary_entity": {
+        "description": "Primary entity tied to the reference",
+        "$ref": "#/components/schemas/Entity"
+       },
+       "entities": {
+        "type": "array",
+        "description": "A list of entities tied to the reference",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        }
+       },
+       "document": {
+        "description": "Document tied to the reference",
+        "$ref": "#/components/schemas/DocumentV3"
+       }
+      },
+      "required": [
+       "id",
+       "fragment",
+       "language",
+       "primary_entity",
+       "entities",
+       "document"
+      ]
+     },
+     "EnrichedEntityV3": {
+      "description": "An entity involved in a signal alert, enriched with criticality, evidence and references. Empty for other types of alerts.\n",
+      "oneOf": [
+       {
+        "type": "object",
+        "maxProperties": 0
+       },
+       {
+        "type": "object",
+        "properties": {
+         "entity": {
+          "$ref": "#/components/schemas/Entity"
+         },
+         "criticality": {
+          "$ref": "#/components/schemas/CriticalityV3"
+         },
+         "evidence": {
+          "type": "array",
+          "description": "A list of evidence tied to the entity",
+          "items": {
+           "$ref": "#/components/schemas/EvidenceV3"
+          }
+         },
+         "references": {
+          "type": "array",
+          "description": "A list of references tied to the entity",
+          "items": {
+           "$ref": "#/components/schemas/ReferenceV3"
+          }
+         }
+        },
+        "required": [
+         "entity",
+         "criticality",
+         "evidence",
+         "references"
+        ]
+       }
+      ]
+     },
+     "AnalystNote": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Analyst note referenced by the hit. `null` unless the hit's source is an analyst note.",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "ZVUGoO",
+        "description": "Analyst note id"
+       },
+       "url": {
+        "type": "object",
+        "description": "URLs to access the Analyst note",
+        "properties": {
+         "portal": {
+          "type": "string",
+          "example": "https://app.recordedfuture.com/portal/analyst-note/shared/true/doc:ZVUGoO",
+          "description": "Portal URL for the Analyst note"
+         },
+         "api": {
+          "type": "string",
+          "example": "https://api.recordedfuture.com/v2/analystnote/ZVUGoO",
+          "description": "API URL for the Analyst note"
+         }
+        }
+       }
+      }
+     },
+     "HitV3": {
+      "type": "object",
+      "description": "A hit — a piece of Intelligence Cloud data that caused the alert to trigger",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Reference id",
+        "example": "Gb7LZpBRHpP"
+       },
+       "fragment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Text fragment summarizing the intelligence match"
+       },
+       "language": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "eng",
+        "description": "Language of the text fragment"
+       },
+       "document": {
+        "$ref": "#/components/schemas/DocumentV3"
+       },
+       "entities": {
+        "type": "array",
+        "description": "A list of entities related to the hit",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        }
+       },
+       "primary_entity": {
+        "description": "The entity that triggered the signal. `null` for non-signal alerts.",
+        "$ref": "#/components/schemas/Entity"
+       },
+       "analyst_note": {
+        "$ref": "#/components/schemas/AnalystNote"
+       }
+      },
+      "required": [
+       "id",
+       "fragment",
+       "language",
+       "document",
+       "entities",
+       "primary_entity",
+       "analyst_note"
+      ]
+     },
+     "AlertV3": {
+      "type": "object",
+      "description": "An alert. The set of fields returned depends on the `fields` query parameter; when it is not set, all available fields are returned.\n",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "Kr2etl",
+        "description": "Alert id"
+       },
+       "title": {
+        "type": "string",
+        "description": "Alert title"
+       },
+       "type": {
+        "type": "string",
+        "description": "Alert type",
+        "enum": [
+         "ENTITY",
+         "EVENT",
+         "REFERENCE",
+         "OTHER"
+        ],
+        "example": "ENTITY"
+       },
+       "url": {
+        "$ref": "#/components/schemas/UrlV3"
+       },
+       "rule": {
+        "$ref": "#/components/schemas/RuleV3"
+       },
+       "ai_insights": {
+        "$ref": "#/components/schemas/AiInsights"
+       },
+       "review": {
+        "$ref": "#/components/schemas/ReviewV3"
+       },
+       "log": {
+        "$ref": "#/components/schemas/LogV3"
+       },
+       "owner_organisation_details": {
+        "$ref": "#/components/schemas/OwnerOrganisationDetails"
+       },
+       "enriched_entities": {
+        "type": "array",
+        "description": "A list of enriched entities for signal alerts. Empty for other types of alerts.",
+        "minItems": 0,
+        "items": {
+         "$ref": "#/components/schemas/EnrichedEntityV3"
+        }
+       },
+       "hits": {
+        "type": "array",
+        "description": "A list of hits that caused the alert to trigger",
+        "items": {
+         "$ref": "#/components/schemas/HitV3"
+        }
+       },
+       "triggered_by": {
+        "type": "array",
+        "description": "A list of entity path chains showing which entities matched which rules/lists",
+        "items": {
+         "$ref": "#/components/schemas/TriggeredBy"
+        }
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/get_v3-hits.md",
+  "definition": {
+   "openapi": "3.1.1",
+   "info": {
+    "title": "Alert API",
+    "version": "3.0.0",
+    "description": "The Alert API allows for interacting with Recorded Future Alerts and Alert rules.\n\nPlease read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id) before using this API.\n",
+    "x-rf-service-id": "service:alert-api"
+   },
+   "paths": {
+    "/v3/hits": {
+     "servers": [
+      {
+       "url": "api.recordedfuture.com/alert",
+       "x-internal": false
+      },
+      {
+       "url": "api.recordedfuture.com/v3/alerts",
+       "description": "V3 Proxy Redirect (Legacy)",
+       "x-internal": false
+      }
+     ],
+     "get": {
+      "summary": "Fetch a flat collection of hits",
+      "tags": [
+       "Alert V3"
+      ],
+      "description": "Returns only a flat array of all hits (the Intelligence Cloud data that caused the alert to trigger) for one or several alerts.\n\nThis endpoint will also include the alert ID and a numeric index for each hits object.\n",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/AlertIdsQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/TaggedTextQueryParameter"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "A list of hits for the alert(s)",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/AlertHitsResponseV3"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "AlertIdsQueryParameter": {
+      "in": "query",
+      "name": "ids",
+      "description": "Alert ids separated by comma",
+      "schema": {
+       "type": "string",
+       "example": "5PqsAw"
+      },
+      "required": true
+     },
+     "TaggedTextQueryParameter": {
+      "in": "query",
+      "name": "taggedText",
+      "description": "Include text tags",
+      "schema": {
+       "type": "boolean",
+       "default": false
+      },
+      "required": false
+     }
+    },
+    "schemas": {
+     "AlertHitsResponseV3": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/FlatHitV3"
+        }
+       }
+      },
+      "required": [
+       "data"
+      ]
+     },
+     "Entity": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "A Recorded Future entity reference. Returned as `null` if the requesting user does not have access to the entity.\n",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "idn:services.onlinebox.com"
+       },
+       "name": {
+        "type": "string",
+        "description": "Entity display name",
+        "example": "services.onlinebox.com"
+       },
+       "type": {
+        "type": "string",
+        "description": "Entity type\n\nSome examples are Malware, InternetDomainName, IpAddress, Hash and Company\n",
+        "example": "InternetDomainName"
+       },
+       "description": {
+        "type": "string",
+        "description": "Entity description. Only present when the entity has a description attribute."
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "type"
+      ]
+     },
+     "DocumentV3": {
+      "type": "object",
+      "description": "A source document",
+      "properties": {
+       "title": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Title of the document"
+       },
+       "url": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "URL of the document"
+       },
+       "source": {
+        "$ref": "#/components/schemas/Entity",
+        "description": "Source of the document as an entity"
+       },
+       "authors": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        },
+        "description": "Document authors as a list of entities"
+       }
+      },
+      "required": [
+       "title",
+       "url",
+       "source",
+       "authors"
+      ]
+     },
+     "AnalystNote": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Analyst note referenced by the hit. `null` unless the hit's source is an analyst note.",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "ZVUGoO",
+        "description": "Analyst note id"
+       },
+       "url": {
+        "type": "object",
+        "description": "URLs to access the Analyst note",
+        "properties": {
+         "portal": {
+          "type": "string",
+          "example": "https://app.recordedfuture.com/portal/analyst-note/shared/true/doc:ZVUGoO",
+          "description": "Portal URL for the Analyst note"
+         },
+         "api": {
+          "type": "string",
+          "example": "https://api.recordedfuture.com/v2/analystnote/ZVUGoO",
+          "description": "API URL for the Analyst note"
+         }
+        }
+       }
+      }
+     },
+     "HitV3": {
+      "type": "object",
+      "description": "A hit — a piece of Intelligence Cloud data that caused the alert to trigger",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Reference id",
+        "example": "Gb7LZpBRHpP"
+       },
+       "fragment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Text fragment summarizing the intelligence match"
+       },
+       "language": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "eng",
+        "description": "Language of the text fragment"
+       },
+       "document": {
+        "$ref": "#/components/schemas/DocumentV3"
+       },
+       "entities": {
+        "type": "array",
+        "description": "A list of entities related to the hit",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        }
+       },
+       "primary_entity": {
+        "description": "The entity that triggered the signal. `null` for non-signal alerts.",
+        "$ref": "#/components/schemas/Entity"
+       },
+       "analyst_note": {
+        "$ref": "#/components/schemas/AnalystNote"
+       }
+      },
+      "required": [
+       "id",
+       "fragment",
+       "language",
+       "document",
+       "entities",
+       "primary_entity",
+       "analyst_note"
+      ]
+     },
+     "FlatHitV3": {
+      "description": "A hit returned by the flat `/v3/hits` endpoint, including its parent alert id and index within the alert\n",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/HitV3"
+       },
+       {
+        "type": "object",
+        "properties": {
+         "alert_id": {
+          "type": "string",
+          "example": "Yo0T32",
+          "description": "Id of the alert tied to this hit"
+         },
+         "index": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Index of the hit within the alert",
+          "example": 4
+         }
+        },
+        "required": [
+         "alert_id",
+         "index"
+        ]
+       }
+      ]
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/get_v3-image.md",
+  "definition": {
+   "openapi": "3.1.1",
+   "info": {
+    "title": "Alert API",
+    "version": "3.0.0",
+    "description": "The Alert API allows for interacting with Recorded Future Alerts and Alert rules.\n\nPlease read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id) before using this API.\n",
+    "x-rf-service-id": "service:alert-api"
+   },
+   "paths": {
+    "/v3/image": {
+     "servers": [
+      {
+       "url": "api.recordedfuture.com/alert",
+       "x-internal": false
+      },
+      {
+       "url": "api.recordedfuture.com/v3/alerts",
+       "description": "V3 Proxy Redirect (Legacy)",
+       "x-internal": false
+      }
+     ],
+     "get": {
+      "summary": "Fetch raw image data",
+      "tags": [
+       "Alert V3"
+      ],
+      "description": "Fetch the raw image data of an image tied to an alert.\n",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/ImageIdQueryParameter"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "The raw image data",
+        "content": {
+         "application/octet-stream": {
+          "schema": {
+           "type": "string",
+           "format": "binary"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "ImageIdQueryParameter": {
+      "in": "query",
+      "name": "id",
+      "description": "Image id",
+      "schema": {
+       "type": "string",
+       "example": "img:0c11f825-a2ff-454f-aa1a-d7568eaf0a60"
+      },
+      "required": true
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/get_v3.md",
+  "definition": {
+   "openapi": "3.1.1",
+   "info": {
+    "title": "Alert API",
+    "version": "3.0.0",
+    "description": "The Alert API allows for interacting with Recorded Future Alerts and Alert rules.\n\nPlease read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id) before using this API.\n",
+    "x-rf-service-id": "service:alert-api"
+   },
+   "paths": {
+    "/v3": {
+     "servers": [
+      {
+       "url": "api.recordedfuture.com/alert",
+       "x-internal": false
+      },
+      {
+       "url": "api.recordedfuture.com/v3/alerts",
+       "description": "V3 Proxy Redirect (Legacy)",
+       "x-internal": false
+      }
+     ],
+     "get": {
+      "summary": "Search for alerts",
+      "tags": [
+       "Alert V3"
+      ],
+      "description": "Search for alerts based on a set of filters.\n\nUsing the fields parameter the response can be set to include a set of fields. If no fields parameter is set, all available fields will be included in the response. For better performance it is recommended to use the fields parameter to limit the response to only return the fields you need.\n",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/TriggeredQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/AssigneeQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/StatusInPortalQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/AlertRuleQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/FreetextQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/LimitQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/OffsetQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/TaggedTextQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/OrderByQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/DirectionQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/FieldsQueryParameter"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "A list of alerts matching the search criteria\n\nUsing the fields parameter the response can be set to include a set of fields. If no fields parameter is set, all available fields will be included in the response. For better performance it is recommended to use the fields parameter to limit the response to only return the fields you need.\n",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/AlertSearchResponseV3"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "TaggedTextQueryParameter": {
+      "in": "query",
+      "name": "taggedText",
+      "description": "Include text tags",
+      "schema": {
+       "type": "boolean",
+       "default": false
+      },
+      "required": false
+     },
+     "TriggeredQueryParameter": {
+      "in": "query",
+      "name": "triggered",
+      "description": "The triggered time itself has millisecond precision, but can be searched for using parameters of higher granularity on the form [x, y], which is interpreted as beginning of x until end of y.\n\nFor example:\n* [2024-08-01, 2024-08-14] matches alerts triggered since beginning of 2024-08-01 to end of 2023-08-14\n* [2024-09-23 12:02, 2024-09-23 12:03] matches alerts triggered since beginning of 12:02 to end of 12:03, for example including an alert with triggered: 12:03:58.567\n\nThe format of the time is either 2024-09-23 12:03:58.000 or 2024-09-23T12:03:58.000Z (the T and Z are optional). The precision used can range from a year down to milliseconds. On the form [x, y], x and y should have the same level of precision (e.g. date, minutes, milliseconds).\nRelative time expressions are also supported, such as -2d, which means two days prior to today and yesterday. As with absolute time references, both ends of the range still need to be specified. For example, to search for alerts that fired within the last 24 hrs, use triggered = [-24h,].\nOpen-ended ranges is allowed, but will only exclude one single millisecond compared to a closed-ended range, and therefore only make sense to use when filtering on millisecond precision.\n\nFor example:\n- [2024-09-23 12:03:58.000, 2024-09-23 12:03:58.567) will match an alert triggered at 12:03:58.567 but not an alert triggered at 12:03:58.568.\n",
+      "schema": {
+       "type": "string",
+       "example": "2026-01-01"
+      },
+      "required": false
+     },
+     "AssigneeQueryParameter": {
+      "in": "query",
+      "name": "assignee",
+      "description": "Filter by a specific assigned user, using the email address associated with that user account, or use 'NONE' to explicitly match against unassigned alerts.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "StatusInPortalQueryParameter": {
+      "in": "query",
+      "name": "statusInPortal",
+      "description": "Filter by review status.\n",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "New",
+        "Resolved",
+        "Pending",
+        "Dismissed",
+        "Flag for Tuning"
+       ]
+      },
+      "required": false
+     },
+     "AlertRuleQueryParameter": {
+      "in": "query",
+      "name": "alertRule",
+      "description": "Filter by alert rule id.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "FreetextQueryParameter": {
+      "in": "query",
+      "name": "freetext",
+      "description": "Filter by any text.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "LimitQueryParameter": {
+      "in": "query",
+      "name": "limit",
+      "description": "Maximum number of items to include\n",
+      "schema": {
+       "type": "integer",
+       "format": "int32",
+       "minimum": 1,
+       "maximum": 1000,
+       "default": 10
+      },
+      "required": false
+     },
+     "OffsetQueryParameter": {
+      "in": "query",
+      "name": "from",
+      "description": "Offset search from previous result. The API may only return the first 1000 results, meaning that limit + from cannot exceed 1000.\n",
+      "schema": {
+       "type": "integer",
+       "format": "int32",
+       "minimum": 1,
+       "maximum": 1000
+      },
+      "required": false
+     },
+     "OrderByQueryParameter": {
+      "in": "query",
+      "name": "orderby",
+      "description": "Sort order",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "triggered"
+       ]
+      },
+      "required": false
+     },
+     "DirectionQueryParameter": {
+      "in": "query",
+      "name": "direction",
+      "description": "Sort direction based on the triggered timestamp",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "asc",
+        "desc"
+       ],
+       "default": "desc"
+      },
+      "required": false
+     },
+     "FieldsQueryParameter": {
+      "in": "query",
+      "name": "fields",
+      "description": "Fields to include in the response. If no specific fields are requested, all available fields are included in the response.\n\nValues should be separated by comma.\n\nAvailable fields are:\n* ai_insights\n* enriched_entities \n* hits \n* id \n* log \n* owner_organisation_details \n* review\n* rule\n* title\n* triggered_by \n* type\n* url\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     }
+    },
+    "schemas": {
+     "AlertSearchResponseV3": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/AlertV3"
+        }
+       },
+       "counts": {
+        "$ref": "#/components/schemas/Counts"
+       }
+      },
+      "required": [
+       "data",
+       "counts"
+      ]
+     },
+     "Counts": {
+      "type": "object",
+      "properties": {
+       "returned": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1,
+        "description": "Number of alerts returned"
+       },
+       "total": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1000,
+        "description": "Total number of alerts matching the query"
+       }
+      },
+      "required": [
+       "returned",
+       "total"
+      ]
+     },
+     "Entity": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "A Recorded Future entity reference. Returned as `null` if the requesting user does not have access to the entity.\n",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "idn:services.onlinebox.com"
+       },
+       "name": {
+        "type": "string",
+        "description": "Entity display name",
+        "example": "services.onlinebox.com"
+       },
+       "type": {
+        "type": "string",
+        "description": "Entity type\n\nSome examples are Malware, InternetDomainName, IpAddress, Hash and Company\n",
+        "example": "InternetDomainName"
+       },
+       "description": {
+        "type": "string",
+        "description": "Entity description. Only present when the entity has a description attribute."
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "type"
+      ]
+     },
+     "AiInsights": {
+      "type": "object",
+      "description": "Recorded Future AI summary of the alert. `text` and `comment` are mutually exclusive: when a summary is available `text` holds it and `comment` is `null`; otherwise `text` is `null` and `comment` explains why no summary is available.\n",
+      "properties": {
+       "text": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "The generated AI summary text. `null` when no summary is available.",
+        "example": null
+       },
+       "comment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Human-readable explanation shown when no summary text is available (for example \"Summary is disabled for this alert.\" or \"Summary timed out.\"). `null` when `text` is populated.\n",
+        "example": "A summary has not yet been generated for this alert."
+       }
+      },
+      "required": [
+       "text",
+       "comment"
+      ]
+     },
+     "OwnerOrganisationDetails": {
+      "type": "object",
+      "description": "Details about the owner of the alert's rule and their organisation(s)",
+      "properties": {
+       "owner_id": {
+        "type": "string",
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owning user. Only present when the owner is an individual user."
+       },
+       "owner_name": {
+        "type": "string",
+        "example": "Recorded Future",
+        "description": "Name of the owning user. Only present when the owner is an individual user."
+       },
+       "organisations": {
+        "type": "array",
+        "description": "Organisations the alert is shared with. May be empty.",
+        "minItems": 0,
+        "items": {
+         "type": "object",
+         "properties": {
+          "organisation_id": {
+           "type": "string",
+           "example": "uhash:b2ai0ilv2p",
+           "description": "Id of the organisation"
+          },
+          "organisation_name": {
+           "type": "string",
+           "example": "Recorded Future",
+           "description": "Name of the organisation"
+          }
+         },
+         "required": [
+          "organisation_id",
+          "organisation_name"
+         ]
+        }
+       },
+       "enterprise_id": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "uhash:b2ai0ilv2p",
+        "description": "Id of the owner's enterprise"
+       },
+       "enterprise_name": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "Recorded Future",
+        "description": "Name of the owner's enterprise"
+       }
+      },
+      "required": [
+       "organisations",
+       "enterprise_id",
+       "enterprise_name"
+      ]
+     },
+     "UseCaseDeprecation": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Deprecation notice for the rule's use case. `null` unless the rule's use case is deprecated and the notice is currently active.\n",
+      "properties": {
+       "from": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Date from which the use case is deprecated"
+       },
+       "description": {
+        "type": "string",
+        "description": "Human-readable deprecation description"
+       },
+       "links": {
+        "type": "object",
+        "description": "Related links keyed by label",
+        "additionalProperties": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "EntityPathNode": {
+      "type": "object",
+      "description": "A node in a trigger entity path",
+      "properties": {
+       "entity": {
+        "$ref": "#/components/schemas/Entity"
+       },
+       "attribute": {
+        "type": "object",
+        "properties": {
+         "id": {
+          "type": "string",
+          "description": "Id of the attribute connecting this node to the next",
+          "example": "CyberAttack.method"
+         }
+        },
+        "required": [
+         "id"
+        ]
+       },
+       "composite_path": {
+        "type": "array",
+        "description": "Only present for composite attribute paths",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "entity",
+       "attribute"
+      ]
+     },
+     "TriggeredBy": {
+      "type": "object",
+      "description": "One triggering reference and the entity path(s) that matched the alert rule",
+      "properties": {
+       "reference_id": {
+        "type": "string",
+        "description": "Id of the reference that triggered the alert",
+        "example": "Gb8Xd8BQBsq"
+       },
+       "entity_path": {
+        "deprecated": true,
+        "type": "array",
+        "description": "Deprecated. The single, shortest matching entity path. Use `entity_paths` instead.\n",
+        "items": {
+         "$ref": "#/components/schemas/EntityPathNode"
+        }
+       },
+       "entity_paths": {
+        "type": "array",
+        "description": "All relevant matching entity paths. Each path is an ordered array of nodes.",
+        "items": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/EntityPathNode"
+         }
+        }
+       }
+      },
+      "required": [
+       "reference_id",
+       "entity_path",
+       "entity_paths"
+      ]
+     },
+     "RuleV3": {
+      "type": "object",
+      "description": "The alert rule that produced the alert",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "WhkPbn",
+        "description": "Rule id"
+       },
+       "name": {
+        "type": "string",
+        "description": "Rule title, or \"No access to alert rule\" if the rule cannot be accessed",
+        "example": "Identify Typosquats"
+       },
+       "url": {
+        "type": "object",
+        "description": "URL to view the rule",
+        "properties": {
+         "portal": {
+          "type": "string",
+          "example": "https://app.recordedfuture.com/live/sc/ViewIdkobra_view_report_item_alert_editor?view_opts=%7B%22reportId%22%3A%22WhkPbn%22%2C%22bTitle%22%3Atrue%2C%22title%22%3A%22Identify+Typosquats%22%7D",
+          "description": "Portal URL to view the rule"
+         }
+        },
+        "required": [
+         "portal"
+        ]
+       },
+       "use_case_deprecation": {
+        "$ref": "#/components/schemas/UseCaseDeprecation"
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "url",
+       "use_case_deprecation"
+      ]
+     },
+     "ReviewV3": {
+      "type": "object",
+      "description": "Triage/review status for the alert. Lifecycle timestamps are in the `log` object.",
+      "properties": {
+       "status": {
+        "deprecated": true,
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Deprecated legacy review status, use `status_in_portal` instead. `null` when the alert has no review status.",
+        "enum": [
+         "unassigned",
+         "assigned",
+         "pending",
+         "dismiss",
+         "no-action",
+         "actionable",
+         "tuning",
+         null
+        ],
+        "example": "no-action"
+       },
+       "status_in_portal": {
+        "type": "string",
+        "description": "Alert review status as shown in the portal. Defaults to \"Unknown\".",
+        "enum": [
+         "New",
+         "Resolved",
+         "Pending",
+         "Dismissed",
+         "Flag for Tuning",
+         "Unknown"
+        ],
+        "example": "New"
+       },
+       "assignee": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "testuser@recordedfuture.com",
+        "description": "Email of the assigned user"
+       },
+       "note": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Review note text"
+       }
+      },
+      "required": [
+       "status",
+       "status_in_portal",
+       "assignee",
+       "note"
+      ]
+     },
+     "LogV3": {
+      "type": "object",
+      "description": "Timestamps and actors for the alert's lifecycle",
+      "properties": {
+       "triggered": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Date when the alert was triggered",
+        "example": "2019-01-06T05:05:25.009Z"
+       },
+       "status_date": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Date when the alert status was last changed"
+       },
+       "status_change_by": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Email of the user who last changed the status"
+       },
+       "note_author": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Email of the user who last changed the note text"
+       },
+       "note_date": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Date when the alert note text was last changed"
+       }
+      },
+      "required": [
+       "triggered",
+       "status_date",
+       "status_change_by",
+       "note_author",
+       "note_date"
+      ]
+     },
+     "UrlV3": {
+      "type": "object",
+      "description": "URLs to access this Alert",
+      "properties": {
+       "portal": {
+        "type": "string",
+        "description": "Portal URL for the alert",
+        "example": "https://app.recordedfuture.com/live/sc/notification/?id=Kr2etl"
+       },
+       "api": {
+        "type": "string",
+        "description": "API URL for the alert",
+        "example": "https://api.recordedfuture.com/v3/alerts/Kr2etl"
+       }
+      },
+      "required": [
+       "portal",
+       "api"
+      ]
+     },
+     "CriticalityV3": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Aggregated criticality for the entity. `null` when no criticality is available.",
+      "properties": {
+       "name": {
+        "type": "string",
+        "example": "Suspicious",
+        "description": "Criticality label of the entity"
+       },
+       "level": {
+        "type": [
+         "integer",
+         "null"
+        ],
+        "example": 2,
+        "minimum": 0,
+        "maximum": 5,
+        "description": "Criticality level of the entity"
+       },
+       "score": {
+        "type": [
+         "integer",
+         "null"
+        ],
+        "minimum": 0,
+        "maximum": 99,
+        "description": "Risk score of the entity"
+       },
+       "triggered": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the alert that captured this criticality snapshot was triggered"
+       },
+       "last_triggered": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "format": "date-time",
+        "description": "Index time of the most recent Intelligence Cloud event contributing to this entity's risk score. null if not available."
+       }
+      },
+      "required": [
+       "name",
+       "level",
+       "score",
+       "triggered",
+       "last_triggered"
+      ]
+     },
+     "EvidenceV3": {
+      "type": "object",
+      "description": "A single piece of risk evidence",
+      "properties": {
+       "rule": {
+        "type": "string",
+        "example": "Recent Typosquat Similarity - DNS Sandwich",
+        "description": "Risk rule name"
+       },
+       "criticality": {
+        "type": "integer",
+        "format": "int32",
+        "example": 2,
+        "minimum": 0,
+        "maximum": 5,
+        "description": "Risk rule criticality score"
+       },
+       "criticality_label": {
+        "type": "string",
+        "example": "Suspicious",
+        "description": "Risk rule criticality label"
+       },
+       "evidence_string": {
+        "type": "string",
+        "description": "Text evidence for the risk rule"
+       },
+       "mitigation_string": {
+        "type": "string",
+        "description": "Mitigation text. Empty string when no mitigation is available."
+       },
+       "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of evidence document creation"
+       }
+      },
+      "required": [
+       "rule",
+       "criticality",
+       "criticality_label",
+       "evidence_string",
+       "mitigation_string",
+       "timestamp"
+      ]
+     },
+     "DocumentV3": {
+      "type": "object",
+      "description": "A source document",
+      "properties": {
+       "title": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Title of the document"
+       },
+       "url": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "URL of the document"
+       },
+       "source": {
+        "$ref": "#/components/schemas/Entity",
+        "description": "Source of the document as an entity"
+       },
+       "authors": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        },
+        "description": "Document authors as a list of entities"
+       }
+      },
+      "required": [
+       "title",
+       "url",
+       "source",
+       "authors"
+      ]
+     },
+     "ReferenceV3": {
+      "type": "object",
+      "description": "A reference (document fragment) supporting an enriched entity",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "Gb8Xd8BQBsq",
+        "description": "Reference id"
+       },
+       "fragment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Text fragment summarizing the intelligence match"
+       },
+       "language": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "eng",
+        "description": "Language of the text fragment"
+       },
+       "primary_entity": {
+        "description": "Primary entity tied to the reference",
+        "$ref": "#/components/schemas/Entity"
+       },
+       "entities": {
+        "type": "array",
+        "description": "A list of entities tied to the reference",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        }
+       },
+       "document": {
+        "description": "Document tied to the reference",
+        "$ref": "#/components/schemas/DocumentV3"
+       }
+      },
+      "required": [
+       "id",
+       "fragment",
+       "language",
+       "primary_entity",
+       "entities",
+       "document"
+      ]
+     },
+     "EnrichedEntityV3": {
+      "description": "An entity involved in a signal alert, enriched with criticality, evidence and references. Empty for other types of alerts.\n",
+      "oneOf": [
+       {
+        "type": "object",
+        "maxProperties": 0
+       },
+       {
+        "type": "object",
+        "properties": {
+         "entity": {
+          "$ref": "#/components/schemas/Entity"
+         },
+         "criticality": {
+          "$ref": "#/components/schemas/CriticalityV3"
+         },
+         "evidence": {
+          "type": "array",
+          "description": "A list of evidence tied to the entity",
+          "items": {
+           "$ref": "#/components/schemas/EvidenceV3"
+          }
+         },
+         "references": {
+          "type": "array",
+          "description": "A list of references tied to the entity",
+          "items": {
+           "$ref": "#/components/schemas/ReferenceV3"
+          }
+         }
+        },
+        "required": [
+         "entity",
+         "criticality",
+         "evidence",
+         "references"
+        ]
+       }
+      ]
+     },
+     "AnalystNote": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "description": "Analyst note referenced by the hit. `null` unless the hit's source is an analyst note.",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "ZVUGoO",
+        "description": "Analyst note id"
+       },
+       "url": {
+        "type": "object",
+        "description": "URLs to access the Analyst note",
+        "properties": {
+         "portal": {
+          "type": "string",
+          "example": "https://app.recordedfuture.com/portal/analyst-note/shared/true/doc:ZVUGoO",
+          "description": "Portal URL for the Analyst note"
+         },
+         "api": {
+          "type": "string",
+          "example": "https://api.recordedfuture.com/v2/analystnote/ZVUGoO",
+          "description": "API URL for the Analyst note"
+         }
+        }
+       }
+      }
+     },
+     "HitV3": {
+      "type": "object",
+      "description": "A hit — a piece of Intelligence Cloud data that caused the alert to trigger",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Reference id",
+        "example": "Gb7LZpBRHpP"
+       },
+       "fragment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Text fragment summarizing the intelligence match"
+       },
+       "language": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "example": "eng",
+        "description": "Language of the text fragment"
+       },
+       "document": {
+        "$ref": "#/components/schemas/DocumentV3"
+       },
+       "entities": {
+        "type": "array",
+        "description": "A list of entities related to the hit",
+        "items": {
+         "$ref": "#/components/schemas/Entity"
+        }
+       },
+       "primary_entity": {
+        "description": "The entity that triggered the signal. `null` for non-signal alerts.",
+        "$ref": "#/components/schemas/Entity"
+       },
+       "analyst_note": {
+        "$ref": "#/components/schemas/AnalystNote"
+       }
+      },
+      "required": [
+       "id",
+       "fragment",
+       "language",
+       "document",
+       "entities",
+       "primary_entity",
+       "analyst_note"
+      ]
+     },
+     "AlertV3": {
+      "type": "object",
+      "description": "An alert. The set of fields returned depends on the `fields` query parameter; when it is not set, all available fields are returned.\n",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "Kr2etl",
+        "description": "Alert id"
+       },
+       "title": {
+        "type": "string",
+        "description": "Alert title"
+       },
+       "type": {
+        "type": "string",
+        "description": "Alert type",
+        "enum": [
+         "ENTITY",
+         "EVENT",
+         "REFERENCE",
+         "OTHER"
+        ],
+        "example": "ENTITY"
+       },
+       "url": {
+        "$ref": "#/components/schemas/UrlV3"
+       },
+       "rule": {
+        "$ref": "#/components/schemas/RuleV3"
+       },
+       "ai_insights": {
+        "$ref": "#/components/schemas/AiInsights"
+       },
+       "review": {
+        "$ref": "#/components/schemas/ReviewV3"
+       },
+       "log": {
+        "$ref": "#/components/schemas/LogV3"
+       },
+       "owner_organisation_details": {
+        "$ref": "#/components/schemas/OwnerOrganisationDetails"
+       },
+       "enriched_entities": {
+        "type": "array",
+        "description": "A list of enriched entities for signal alerts. Empty for other types of alerts.",
+        "minItems": 0,
+        "items": {
+         "$ref": "#/components/schemas/EnrichedEntityV3"
+        }
+       },
+       "hits": {
+        "type": "array",
+        "description": "A list of hits that caused the alert to trigger",
+        "items": {
+         "$ref": "#/components/schemas/HitV3"
+        }
+       },
+       "triggered_by": {
+        "type": "array",
+        "description": "A list of entity path chains showing which entities matched which rules/lists",
+        "items": {
+         "$ref": "#/components/schemas/TriggeredBy"
+        }
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/get_rule.md",
+  "definition": {
+   "openapi": "3.1.1",
+   "info": {
+    "title": "Alert API",
+    "version": "3.0.0",
+    "description": "The Alert API allows for interacting with Recorded Future Alerts and Alert rules.\n\nPlease read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id) before using this API.\n",
+    "x-rf-service-id": "service:alert-api"
+   },
+   "paths": {
+    "/rule": {
+     "servers": [
+      {
+       "url": "api.recordedfuture.com/alert/v2",
+       "description": "V2 endpoints",
+       "x-internal": false
+      },
+      {
+       "url": "api.recordedfuture.com/v2/alert",
+       "description": "V2 Proxy Redirect (Legacy)",
+       "x-internal": false
+      }
+     ],
+     "get": {
+      "summary": "Search for alert rules.",
+      "tags": [
+       "Alert"
+      ],
+      "description": "Search for alert rules based on a set of filters.\n",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/FreetextQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/LimitQueryParameter"
+       },
+       {
+        "$ref": "#/components/parameters/TaggedTextQueryParameter"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "List of alert rule definitions matching the search criteria",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/AlertRuleSearchResponseV2"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "TaggedTextQueryParameter": {
+      "in": "query",
+      "name": "taggedText",
+      "description": "Include text tags",
+      "schema": {
+       "type": "boolean",
+       "default": false
+      },
+      "required": false
+     },
+     "FreetextQueryParameter": {
+      "in": "query",
+      "name": "freetext",
+      "description": "Filter by any text.\n",
+      "schema": {
+       "type": "string"
+      },
+      "required": false
+     },
+     "LimitQueryParameter": {
+      "in": "query",
+      "name": "limit",
+      "description": "Maximum number of items to include\n",
+      "schema": {
+       "type": "integer",
+       "format": "int32",
+       "minimum": 1,
+       "maximum": 1000,
+       "default": 10
+      },
+      "required": false
+     }
+    },
+    "schemas": {
+     "AlertRuleSearchResponseV2": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "object",
+        "properties": {
+         "results": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/AlertRule"
+          }
+         }
+        },
+        "required": [
+         "results"
+        ]
+       },
+       "counts": {
+        "$ref": "#/components/schemas/Counts"
+       }
+      },
+      "required": [
+       "data",
+       "counts"
+      ]
+     },
+     "Counts": {
+      "type": "object",
+      "properties": {
+       "returned": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1,
+        "description": "Number of alerts returned"
+       },
+       "total": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1000,
+        "description": "Total number of alerts matching the query"
+       }
+      },
+      "required": [
+       "returned",
+       "total"
+      ]
+     },
+     "IdName": {
+      "type": "object",
+      "description": "A generic id/name reference (user, organisation, subscriber or intelligence goal)",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Entity id, format varies by entity type",
+        "example": "uhash:1ygPdSX9v7"
+       },
+       "name": {
+        "type": "string",
+        "example": "Peter Barry",
+        "description": "Entity display name"
+       }
+      },
+      "required": [
+       "id",
+       "name"
+      ]
+     },
+     "AlertRule": {
+      "type": "object",
+      "description": "An alert rule",
+      "properties": {
+       "id": {
+        "type": "string",
+        "example": "8vMyZa",
+        "description": "Id of the alert rule"
+       },
+       "title": {
+        "type": "string",
+        "example": "Cyber attacks against Asia 1",
+        "description": "Title of the alert rule"
+       },
+       "created": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2025-08-07T05:57:05.571Z",
+        "description": "Creation date of the alert rule"
+       },
+       "enabled": {
+        "type": "boolean",
+        "example": false,
+        "description": "Whether the alert rule is enabled"
+       },
+       "priority": {
+        "type": "boolean",
+        "description": "Whether the rule is a priority rule",
+        "example": false
+       },
+       "tags": {
+        "deprecated": true,
+        "type": "array",
+        "description": "Deprecated. Always empty.",
+        "items": {
+         "type": "string"
+        }
+       },
+       "use_case_id": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "Id of the rule's use case. `null` for custom rules.",
+        "example": "report:_intelligence_goal_uc-100"
+       },
+       "owner": {
+        "description": "The rule owner (a user or an organisation). Only present when the owner entity can be resolved; typically an organisation for standard use cases and an individual user for custom rules.\n",
+        "$ref": "#/components/schemas/IdName"
+       },
+       "intelligence_goals": {
+        "type": "array",
+        "description": "Intelligence goals that the alert rule is associated with",
+        "items": {
+         "$ref": "#/components/schemas/IdName"
+        }
+       },
+       "notification_settings": {
+        "type": "object",
+        "description": "Notification settings for the rule",
+        "properties": {
+         "email_subscribers": {
+          "type": "array",
+          "description": "A list of email subscribers for the rule",
+          "items": {
+           "$ref": "#/components/schemas/IdName"
+          }
+         },
+         "mobile_subscribers": {
+          "type": "array",
+          "description": "A list of mobile subscribers for the rule",
+          "items": {
+           "$ref": "#/components/schemas/IdName"
+          }
+         }
+        },
+        "required": [
+         "email_subscribers",
+         "mobile_subscribers"
+        ]
+       }
+      },
+      "required": [
+       "id",
+       "title",
+       "created",
+       "enabled",
+       "priority",
+       "tags",
+       "use_case_id",
+       "intelligence_goals",
+       "notification_settings"
+      ]
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/post_update.md",
+  "definition": {
+   "openapi": "3.1.1",
+   "info": {
+    "title": "Alert API",
+    "version": "3.0.0",
+    "description": "The Alert API allows for interacting with Recorded Future Alerts and Alert rules.\n\nPlease read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id) before using this API.\n",
+    "x-rf-service-id": "service:alert-api"
+   },
+   "paths": {
+    "/update": {
+     "servers": [
+      {
+       "url": "api.recordedfuture.com/alert/v2",
+       "description": "V2 endpoints",
+       "x-internal": false
+      },
+      {
+       "url": "api.recordedfuture.com/v2/alert",
+       "description": "V2 Proxy Redirect (Legacy)",
+       "x-internal": false
+      }
+     ],
+     "post": {
+      "summary": "Update one or several alerts",
+      "tags": [
+       "Alert"
+      ],
+      "description": "Updates one or several alerts. It's possible to update assignee, status and a note tied to the triggered alert.\n\nThere are two types of statuses, the recommended \"statusInPortal\" and the legacy \"status\". They are mapped, so changing one will change the other and it is not possible to update both independently.\n",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       }
+      ],
+      "requestBody": {
+       "description": "Alert properties to be updated",
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/AlertUpdateData"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "A partial view of the updated alert(s). If any alert update fails, errors will be included as well.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/AlertUpdateResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "AlertUpdateData": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "string",
+         "description": "Id of the alert to update",
+         "example": "FNESDXvojsW"
+        },
+        "assignee": {
+         "type": "string",
+         "description": "New assignee. Can be an id, uhash, username or email."
+        },
+        "note": {
+         "type": "string",
+         "description": "New note text"
+        },
+        "status": {
+         "type": "string",
+         "deprecated": true,
+         "description": "New alert status (legacy)",
+         "enum": [
+          "unassigned",
+          "assigned",
+          "pending",
+          "dismiss",
+          "no-action",
+          "actionable",
+          "tuning"
+         ]
+        },
+        "statusInPortal": {
+         "type": "string",
+         "description": "New alert status",
+         "enum": [
+          "New",
+          "Resolved",
+          "Pending",
+          "Dismissed",
+          "Flag for Tuning"
+         ]
+        }
+       },
+       "required": [
+        "id"
+       ]
+      }
+     },
+     "AlertUpdateResponse": {
+      "type": "object",
+      "properties": {
+       "success": {
+        "type": "array",
+        "description": "A list of updated alerts",
+        "items": {
+         "type": "object",
+         "properties": {
+          "id": {
+           "type": "string",
+           "description": "Id of the updated alert",
+           "example": "Yo0T32"
+          },
+          "status": {
+           "type": "string",
+           "deprecated": true,
+           "enum": [
+            "unassigned",
+            "assigned",
+            "pending",
+            "dismiss",
+            "no-action",
+            "actionable",
+            "tuning"
+           ],
+           "description": "Updated status (legacy)"
+          },
+          "statusInPortal": {
+           "type": "string",
+           "enum": [
+            "New",
+            "Resolved",
+            "Pending",
+            "Dismissed",
+            "Flag for Tuning"
+           ],
+           "description": "Updated status"
+          },
+          "assignee": {
+           "type": "string",
+           "example": "1ygPdSX9v7",
+           "description": "Updated assignee id"
+          },
+          "note": {
+           "type": "object",
+           "description": "Updated note",
+           "properties": {
+            "text": {
+             "type": "string",
+             "description": "Note text"
+            },
+            "author": {
+             "type": "string",
+             "example": "1ygPdSX9v7",
+             "description": "Note author id"
+            },
+            "date": {
+             "type": "string",
+             "format": "date-time",
+             "example": "2025-04-16T13:00:00.000Z",
+             "description": "Note publish date"
+            }
+           },
+           "required": [
+            "text",
+            "author",
+            "date"
+           ]
+          },
+          "reviewDate": {
+           "type": "string",
+           "format": "date-time",
+           "description": "Date of when the alert was last reviewed",
+           "example": "2025-04-16T13:00:00.000Z"
+          },
+          "statusDate": {
+           "type": "string",
+           "format": "date-time",
+           "description": "Date of when the alert last had a status update",
+           "example": "2025-04-16T13:00:00.000Z"
+          },
+          "statusChangeBy": {
+           "type": "string",
+           "description": "Id of the user that performed the status update",
+           "example": "1ygPdSX9v7"
+          }
+         },
+         "required": [
+          "id",
+          "status",
+          "statusInPortal"
+         ]
+        }
+       },
+       "error": {
+        "type": "array",
+        "description": "A list of alerts that failed to update",
+        "items": {
+         "type": "object",
+         "properties": {
+          "id": {
+           "type": "string",
+           "description": "Id of the alert that failed to update",
+           "example": "Lp5H17"
+          },
+          "reason": {
+           "type": "string",
+           "description": "Error message why the alert failed to update",
+           "example": "Invalid status 'test'"
+          },
+          "statusCode": {
+           "type": "integer",
+           "format": "int32",
+           "description": "Error status code",
+           "example": 400
+          }
+         },
+         "required": [
+          "id",
+          "reason",
+          "statusCode"
+         ]
+        }
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     }
+    }
+   }
+  }
+ }
+]

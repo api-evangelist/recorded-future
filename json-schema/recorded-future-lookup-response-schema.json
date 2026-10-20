@@ -1,0 +1,1229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-lookup-response-schema.json",
+  "title": "LookupResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/LookupResponse",
+  "type": "object",
+  "properties": {
+    "attributes": {
+      "$ref": "#/$defs/NoteLookupResponseAttributes"
+    },
+    "id": {
+      "type": "string",
+      "description": "Note id"
+    },
+    "source": {
+      "$ref": "#/$defs/NoteEntity"
+    }
+  },
+  "required": [
+    "attributes",
+    "id",
+    "source"
+  ],
+  "$defs": {
+    "ArmedConflictEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ArmedConflict"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/ArmedConflictEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "ArmedConflictEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "attacker": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "target": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ]
+    },
+    "ArmsPurchaseSaleEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ArmsPurchaseSale"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/ArmsPurchaseSaleEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "ArmsPurchaseSaleEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "arms_seller": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "arms_purchaser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ]
+    },
+    "CoupEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Coup"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/CoupEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "CoupEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ]
+    },
+    "CyberAttackEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "CyberAttack"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/CyberAttackEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "CyberAttackEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "adversary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "target": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "malicious_infrastructure": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "operation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ]
+    },
+    "DiamondModel": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "malicious_infrastructure": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "adversary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "target": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        }
+      }
+    },
+    "DiseaseOutbreakEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "DiseaseOutbreak"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/DiseaseOutbreakEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "DiseaseOutbreakEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "disease": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "facility": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ]
+    },
+    "ElectionEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Election"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/ElectionEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "ElectionEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "location"
+      ]
+    },
+    "EnvironmentalIssueEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "EnvironmentalIssue"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/EnvironmentalIssueEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "EnvironmentalIssueEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "environmental_issue": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "environmental_issue"
+      ]
+    },
+    "MalwareAnalysisEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "MalwareAnalysis"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/MalwareAnalysisEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "MalwareAnalysisEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "malware": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "attacker": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "malicious_infrastructure": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "ttp": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "target": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "exploit": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "hash": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "malware"
+      ]
+    },
+    "ManMadeDisasterEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ManMadeDisaster"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/ManMadeDisasterEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "ManMadeDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "facility": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "manmade_disaster": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "manmade_disaster",
+        "location"
+      ]
+    },
+    "MilitaryManeuverEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "MilitaryManeuver"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/MilitaryManeuverEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "MilitaryManeuverEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ]
+    },
+    "NaturalDisasterEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "NaturalDisaster"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/NaturalDisasterEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "NaturalDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "natural_disaster": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "natural_disaster",
+        "location"
+      ]
+    },
+    "NoteEntity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "NoteEvents": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/CyberAttackEvent"
+          },
+          {
+            "$ref": "#/$defs/ArmedConflictEvent"
+          },
+          {
+            "$ref": "#/$defs/ArmsPurchaseSaleEvent"
+          },
+          {
+            "$ref": "#/$defs/CoupEvent"
+          },
+          {
+            "$ref": "#/$defs/DiseaseOutbreakEvent"
+          },
+          {
+            "$ref": "#/$defs/ElectionEvent"
+          },
+          {
+            "$ref": "#/$defs/EnvironmentalIssueEvent"
+          },
+          {
+            "$ref": "#/$defs/ManMadeDisasterEvent"
+          },
+          {
+            "$ref": "#/$defs/MilitaryManeuverEvent"
+          },
+          {
+            "$ref": "#/$defs/NaturalDisasterEvent"
+          },
+          {
+            "$ref": "#/$defs/NuclearMaterialTransactionEvent"
+          },
+          {
+            "$ref": "#/$defs/PersonThreatEvent"
+          },
+          {
+            "$ref": "#/$defs/PoliticalEvent"
+          },
+          {
+            "$ref": "#/$defs/RFEVEProtestEvent"
+          },
+          {
+            "$ref": "#/$defs/PublicSafetyWarningEvent"
+          },
+          {
+            "$ref": "#/$defs/TerrorIncidentEvent"
+          },
+          {
+            "$ref": "#/$defs/RFEVEArmedAssaultEvent"
+          },
+          {
+            "$ref": "#/$defs/MalwareAnalysisEvent"
+          }
+        ]
+      }
+    },
+    "NoteLookupResponseAttributes": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "published": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "events": {
+          "$ref": "#/$defs/NoteEvents"
+        },
+        "note_entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "context_entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "topic": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "validation_urls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "validated_on": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date when analyst note was validated"
+        },
+        "diamond_model": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DiamondModel"
+          }
+        },
+        "header_image": {
+          "$ref": "#/$defs/NoteEntity"
+        },
+        "recommended_queries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Query"
+          }
+        },
+        "attachment": {
+          "type": "string",
+          "description": "attachment file name"
+        },
+        "detection_rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        }
+      },
+      "required": [
+        "title",
+        "text",
+        "published"
+      ]
+    },
+    "NuclearMaterialTransactionEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "NuclearMaterialTransaction"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/NuclearMaterialTransactionEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "NuclearMaterialTransactionEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "material": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location_origin": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location_destination": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "material"
+      ]
+    },
+    "PersonThreatEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "PersonThreat"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/PersonThreatEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "PersonThreatEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "threatened": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "actor": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "threatened"
+      ]
+    },
+    "PoliticalEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "PoliticalEvent"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/PoliticalEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "PoliticalEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "location"
+      ]
+    },
+    "Position": {
+      "type": "object",
+      "properties": {
+        "longitude": {
+          "type": "number"
+        },
+        "latitude": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "longitude",
+        "latitude"
+      ]
+    },
+    "PublicSafetyWarningEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "PublicSafetyWarning"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/PublicSafetyWarningEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "PublicSafetyWarningEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "location"
+      ]
+    },
+    "Query": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "$ref": "#/$defs/NoteEntity"
+        }
+      }
+    },
+    "RFEVEArmedAssaultEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "RFEVEArmedAssault"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/RFEVEArmedAssaultEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "RFEVEArmedAssaultEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "location"
+      ]
+    },
+    "RFEVEProtestEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "RFEVEProtest"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/RFEVEProtestEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "RFEVEProtestEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "protest_target": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ]
+    },
+    "TerrorIncidentEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "TerrorIncident"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/TerrorIncidentEventAttributes"
+        }
+      },
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "TerrorIncidentEventAttributes": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NoteEntity"
+          }
+        },
+        "event_positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Position"
+          }
+        }
+      },
+      "required": [
+        "start",
+        "stop",
+        "location"
+      ]
+    }
+  }
+}

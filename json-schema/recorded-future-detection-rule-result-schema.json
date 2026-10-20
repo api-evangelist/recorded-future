@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-detection-rule-result-schema.json",
+  "title": "DetectionRuleResult",
+  "description": "Search results for Insikt Group detection rules containing deployable YARA, Sigma, and Snort rule source code.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-detection-rule-api-openapi.yml#/components/schemas/DetectionRuleResult",
+  "type": "object",
+  "properties": {
+    "count": {
+      "type": "integer",
+      "format": "int32",
+      "description": "Number of results in this page"
+    },
+    "total_count": {
+      "type": "integer",
+      "format": "int32",
+      "description": "Total matching results across all pages"
+    },
+    "result": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DetectionRuleSet"
+      },
+      "description": "Array of detection rule note objects."
+    },
+    "next_offset": {
+      "type": "string",
+      "description": "Cursor-based pagination token for next page"
+    }
+  },
+  "required": [
+    "count",
+    "total_count",
+    "result"
+  ],
+  "$defs": {
+    "DateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "DetectionRuleContent": {
+      "type": "string",
+      "description": "Full rule source code (YARA rule, Sigma YAML, or Snort signature)"
+    },
+    "DetectionRuleEntity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "$ref": "#/$defs/EntityTypeName"
+        },
+        "name": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string",
+          "description": "Human-readable name with context"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name"
+      ],
+      "description": "An entity that is associated with a Detection rule, e.g. a MITRE ATT&CK tag or a Malware."
+    },
+    "DetectionRuleSet": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Document ID (doc:XXXXX)"
+        },
+        "type": {
+          "$ref": "#/$defs/DetectionRuleType"
+        },
+        "title": {
+          "type": "string",
+          "description": "Insikt Group note title describing the threat"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed threat analysis narrative"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "file_name": {
+                "type": "string",
+                "description": "Suggested filename for the rule"
+              },
+              "entities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/DetectionRuleEntity"
+                },
+                "description": "Associated entities (MITRE ATT&CK techniques, malware families, hashes)."
+              },
+              "content": {
+                "$ref": "#/$defs/DetectionRuleContent",
+                "description": "Full rule source code (YARA rule, Sigma YAML, or Snort signature)"
+              }
+            },
+            "required": [
+              "content"
+            ]
+          },
+          "description": "Detection rules with deployable source code."
+        },
+        "created": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "updated": {
+          "$ref": "#/$defs/DateTime"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "title",
+        "description",
+        "rules",
+        "created",
+        "updated"
+      ],
+      "description": "A detection rule set containing deployable source code and associated metadata."
+    },
+    "DetectionRuleType": {
+      "type": "string",
+      "enum": [
+        "sigma",
+        "yara",
+        "snort"
+      ],
+      "description": "The type of a Detection Rule Available types:\n  * sigma: Sigma rule\n  * yara: YARA rule\n  * snort: Snort rule\n"
+    },
+    "EntityId": {
+      "type": "string"
+    },
+    "EntityTypeName": {
+      "type": "string",
+      "description": "Additional information about entity types is provided by the /entity/types endpoint. It can be used to find the display name of the entity type."
+    }
+  }
+}

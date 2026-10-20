@@ -1,0 +1,764 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-alert-search-response-v3-schema.json",
+  "title": "AlertSearchResponseV3",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertSearchResponseV3",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AlertV3"
+      }
+    },
+    "counts": {
+      "$ref": "#/$defs/Counts"
+    }
+  },
+  "required": [
+    "data",
+    "counts"
+  ],
+  "$defs": {
+    "AiInsights": {
+      "type": "object",
+      "description": "Recorded Future AI summary of the alert. `text` and `comment` are mutually exclusive: when a summary is available `text` holds it and `comment` is `null`; otherwise `text` is `null` and `comment` explains why no summary is available.\n",
+      "properties": {
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The generated AI summary text. `null` when no summary is available."
+        },
+        "comment": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Human-readable explanation shown when no summary text is available (for example \"Summary is disabled for this alert.\" or \"Summary timed out.\"). `null` when `text` is populated.\n"
+        }
+      },
+      "required": [
+        "text",
+        "comment"
+      ]
+    },
+    "AlertV3": {
+      "type": "object",
+      "description": "An alert. The set of fields returned depends on the `fields` query parameter; when it is not set, all available fields are returned.\n",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Alert id"
+        },
+        "title": {
+          "type": "string",
+          "description": "Alert title"
+        },
+        "type": {
+          "type": "string",
+          "description": "Alert type",
+          "enum": [
+            "ENTITY",
+            "EVENT",
+            "REFERENCE",
+            "OTHER"
+          ]
+        },
+        "url": {
+          "$ref": "#/$defs/UrlV3"
+        },
+        "rule": {
+          "$ref": "#/$defs/RuleV3"
+        },
+        "ai_insights": {
+          "$ref": "#/$defs/AiInsights"
+        },
+        "review": {
+          "$ref": "#/$defs/ReviewV3"
+        },
+        "log": {
+          "$ref": "#/$defs/LogV3"
+        },
+        "owner_organisation_details": {
+          "$ref": "#/$defs/OwnerOrganisationDetails"
+        },
+        "enriched_entities": {
+          "type": "array",
+          "description": "A list of enriched entities for signal alerts. Empty for other types of alerts.",
+          "minItems": 0,
+          "items": {
+            "$ref": "#/$defs/EnrichedEntityV3"
+          }
+        },
+        "hits": {
+          "type": "array",
+          "description": "A list of hits that caused the alert to trigger",
+          "items": {
+            "$ref": "#/$defs/HitV3"
+          }
+        },
+        "triggered_by": {
+          "type": "array",
+          "description": "A list of entity path chains showing which entities matched which rules/lists",
+          "items": {
+            "$ref": "#/$defs/TriggeredBy"
+          }
+        }
+      }
+    },
+    "AnalystNote": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Analyst note referenced by the hit. `null` unless the hit's source is an analyst note.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Analyst note id"
+        },
+        "url": {
+          "type": "object",
+          "description": "URLs to access the Analyst note",
+          "properties": {
+            "portal": {
+              "type": "string",
+              "description": "Portal URL for the Analyst note"
+            },
+            "api": {
+              "type": "string",
+              "description": "API URL for the Analyst note"
+            }
+          }
+        }
+      }
+    },
+    "Counts": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of alerts returned"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total number of alerts matching the query"
+        }
+      },
+      "required": [
+        "returned",
+        "total"
+      ]
+    },
+    "CriticalityV3": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Aggregated criticality for the entity. `null` when no criticality is available.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Criticality label of the entity"
+        },
+        "level": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Criticality level of the entity"
+        },
+        "score": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 99,
+          "description": "Risk score of the entity"
+        },
+        "triggered": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the alert that captured this criticality snapshot was triggered"
+        },
+        "last_triggered": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Index time of the most recent Intelligence Cloud event contributing to this entity's risk score. null if not available."
+        }
+      },
+      "required": [
+        "name",
+        "level",
+        "score",
+        "triggered",
+        "last_triggered"
+      ]
+    },
+    "DocumentV3": {
+      "type": "object",
+      "description": "A source document",
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Title of the document"
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "URL of the document"
+        },
+        "source": {
+          "$ref": "#/$defs/Entity",
+          "description": "Source of the document as an entity"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Entity"
+          },
+          "description": "Document authors as a list of entities"
+        }
+      },
+      "required": [
+        "title",
+        "url",
+        "source",
+        "authors"
+      ]
+    },
+    "EnrichedEntityV3": {
+      "description": "An entity involved in a signal alert, enriched with criticality, evidence and references. Empty for other types of alerts.\n",
+      "oneOf": [
+        {
+          "type": "object",
+          "maxProperties": 0
+        },
+        {
+          "type": "object",
+          "properties": {
+            "entity": {
+              "$ref": "#/$defs/Entity"
+            },
+            "criticality": {
+              "$ref": "#/$defs/CriticalityV3"
+            },
+            "evidence": {
+              "type": "array",
+              "description": "A list of evidence tied to the entity",
+              "items": {
+                "$ref": "#/$defs/EvidenceV3"
+              }
+            },
+            "references": {
+              "type": "array",
+              "description": "A list of references tied to the entity",
+              "items": {
+                "$ref": "#/$defs/ReferenceV3"
+              }
+            }
+          },
+          "required": [
+            "entity",
+            "criticality",
+            "evidence",
+            "references"
+          ]
+        }
+      ]
+    },
+    "Entity": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "A Recorded Future entity reference. Returned as `null` if the requesting user does not have access to the entity.\n",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Entity id"
+        },
+        "name": {
+          "type": "string",
+          "description": "Entity display name"
+        },
+        "type": {
+          "type": "string",
+          "description": "Entity type\n\nSome examples are Malware, InternetDomainName, IpAddress, Hash and Company\n"
+        },
+        "description": {
+          "type": "string",
+          "description": "Entity description. Only present when the entity has a description attribute."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "type"
+      ]
+    },
+    "EntityPathNode": {
+      "type": "object",
+      "description": "A node in a trigger entity path",
+      "properties": {
+        "entity": {
+          "$ref": "#/$defs/Entity"
+        },
+        "attribute": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Id of the attribute connecting this node to the next"
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "composite_path": {
+          "type": "array",
+          "description": "Only present for composite attribute paths",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "entity",
+        "attribute"
+      ]
+    },
+    "EvidenceV3": {
+      "type": "object",
+      "description": "A single piece of risk evidence",
+      "properties": {
+        "rule": {
+          "type": "string",
+          "description": "Risk rule name"
+        },
+        "criticality": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Risk rule criticality score"
+        },
+        "criticality_label": {
+          "type": "string",
+          "description": "Risk rule criticality label"
+        },
+        "evidence_string": {
+          "type": "string",
+          "description": "Text evidence for the risk rule"
+        },
+        "mitigation_string": {
+          "type": "string",
+          "description": "Mitigation text. Empty string when no mitigation is available."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of evidence document creation"
+        }
+      },
+      "required": [
+        "rule",
+        "criticality",
+        "criticality_label",
+        "evidence_string",
+        "mitigation_string",
+        "timestamp"
+      ]
+    },
+    "HitV3": {
+      "type": "object",
+      "description": "A hit — a piece of Intelligence Cloud data that caused the alert to trigger",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Reference id"
+        },
+        "fragment": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Text fragment summarizing the intelligence match"
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Language of the text fragment"
+        },
+        "document": {
+          "$ref": "#/$defs/DocumentV3"
+        },
+        "entities": {
+          "type": "array",
+          "description": "A list of entities related to the hit",
+          "items": {
+            "$ref": "#/$defs/Entity"
+          }
+        },
+        "primary_entity": {
+          "description": "The entity that triggered the signal. `null` for non-signal alerts.",
+          "$ref": "#/$defs/Entity"
+        },
+        "analyst_note": {
+          "$ref": "#/$defs/AnalystNote"
+        }
+      },
+      "required": [
+        "id",
+        "fragment",
+        "language",
+        "document",
+        "entities",
+        "primary_entity",
+        "analyst_note"
+      ]
+    },
+    "LogV3": {
+      "type": "object",
+      "description": "Timestamps and actors for the alert's lifecycle",
+      "properties": {
+        "triggered": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date when the alert was triggered"
+        },
+        "status_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Date when the alert status was last changed"
+        },
+        "status_change_by": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Email of the user who last changed the status"
+        },
+        "note_author": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Email of the user who last changed the note text"
+        },
+        "note_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Date when the alert note text was last changed"
+        }
+      },
+      "required": [
+        "triggered",
+        "status_date",
+        "status_change_by",
+        "note_author",
+        "note_date"
+      ]
+    },
+    "OwnerOrganisationDetails": {
+      "type": "object",
+      "description": "Details about the owner of the alert's rule and their organisation(s)",
+      "properties": {
+        "owner_id": {
+          "type": "string",
+          "description": "Id of the owning user. Only present when the owner is an individual user."
+        },
+        "owner_name": {
+          "type": "string",
+          "description": "Name of the owning user. Only present when the owner is an individual user."
+        },
+        "organisations": {
+          "type": "array",
+          "description": "Organisations the alert is shared with. May be empty.",
+          "minItems": 0,
+          "items": {
+            "type": "object",
+            "properties": {
+              "organisation_id": {
+                "type": "string",
+                "description": "Id of the organisation"
+              },
+              "organisation_name": {
+                "type": "string",
+                "description": "Name of the organisation"
+              }
+            },
+            "required": [
+              "organisation_id",
+              "organisation_name"
+            ]
+          }
+        },
+        "enterprise_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Id of the owner's enterprise"
+        },
+        "enterprise_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Name of the owner's enterprise"
+        }
+      },
+      "required": [
+        "organisations",
+        "enterprise_id",
+        "enterprise_name"
+      ]
+    },
+    "ReferenceV3": {
+      "type": "object",
+      "description": "A reference (document fragment) supporting an enriched entity",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Reference id"
+        },
+        "fragment": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Text fragment summarizing the intelligence match"
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Language of the text fragment"
+        },
+        "primary_entity": {
+          "description": "Primary entity tied to the reference",
+          "$ref": "#/$defs/Entity"
+        },
+        "entities": {
+          "type": "array",
+          "description": "A list of entities tied to the reference",
+          "items": {
+            "$ref": "#/$defs/Entity"
+          }
+        },
+        "document": {
+          "description": "Document tied to the reference",
+          "$ref": "#/$defs/DocumentV3"
+        }
+      },
+      "required": [
+        "id",
+        "fragment",
+        "language",
+        "primary_entity",
+        "entities",
+        "document"
+      ]
+    },
+    "ReviewV3": {
+      "type": "object",
+      "description": "Triage/review status for the alert. Lifecycle timestamps are in the `log` object.",
+      "properties": {
+        "status": {
+          "deprecated": true,
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Deprecated legacy review status, use `status_in_portal` instead. `null` when the alert has no review status.",
+          "enum": [
+            "unassigned",
+            "assigned",
+            "pending",
+            "dismiss",
+            "no-action",
+            "actionable",
+            "tuning",
+            null
+          ]
+        },
+        "status_in_portal": {
+          "type": "string",
+          "description": "Alert review status as shown in the portal. Defaults to \"Unknown\".",
+          "enum": [
+            "New",
+            "Resolved",
+            "Pending",
+            "Dismissed",
+            "Flag for Tuning",
+            "Unknown"
+          ]
+        },
+        "assignee": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Email of the assigned user"
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Review note text"
+        }
+      },
+      "required": [
+        "status",
+        "status_in_portal",
+        "assignee",
+        "note"
+      ]
+    },
+    "RuleV3": {
+      "type": "object",
+      "description": "The alert rule that produced the alert",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Rule id"
+        },
+        "name": {
+          "type": "string",
+          "description": "Rule title, or \"No access to alert rule\" if the rule cannot be accessed"
+        },
+        "url": {
+          "type": "object",
+          "description": "URL to view the rule",
+          "properties": {
+            "portal": {
+              "type": "string",
+              "description": "Portal URL to view the rule"
+            }
+          },
+          "required": [
+            "portal"
+          ]
+        },
+        "use_case_deprecation": {
+          "$ref": "#/$defs/UseCaseDeprecation"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "url",
+        "use_case_deprecation"
+      ]
+    },
+    "TriggeredBy": {
+      "type": "object",
+      "description": "One triggering reference and the entity path(s) that matched the alert rule",
+      "properties": {
+        "reference_id": {
+          "type": "string",
+          "description": "Id of the reference that triggered the alert"
+        },
+        "entity_path": {
+          "deprecated": true,
+          "type": "array",
+          "description": "Deprecated. The single, shortest matching entity path. Use `entity_paths` instead.\n",
+          "items": {
+            "$ref": "#/$defs/EntityPathNode"
+          }
+        },
+        "entity_paths": {
+          "type": "array",
+          "description": "All relevant matching entity paths. Each path is an ordered array of nodes.",
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/EntityPathNode"
+            }
+          }
+        }
+      },
+      "required": [
+        "reference_id",
+        "entity_path",
+        "entity_paths"
+      ]
+    },
+    "UrlV3": {
+      "type": "object",
+      "description": "URLs to access this Alert",
+      "properties": {
+        "portal": {
+          "type": "string",
+          "description": "Portal URL for the alert"
+        },
+        "api": {
+          "type": "string",
+          "description": "API URL for the alert"
+        }
+      },
+      "required": [
+        "portal",
+        "api"
+      ]
+    },
+    "UseCaseDeprecation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Deprecation notice for the rule's use case. `null` unless the rule's use case is deprecated and the notice is currently active.\n",
+      "properties": {
+        "from": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Date from which the use case is deprecated"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable deprecation description"
+        },
+        "links": {
+          "type": "object",
+          "description": "Related links keyed by label",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

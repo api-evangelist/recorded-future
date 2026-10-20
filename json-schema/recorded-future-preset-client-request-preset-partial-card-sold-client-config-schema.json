@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-preset-client-request-preset-partial-card-sold-client-config-schema.json",
+  "title": "preset.ClientRequest-preset_PartialCardSoldClientConfig",
+  "description": "Preset creation request for partial card sold data.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-payment-fraud-intelligence-api-openapi.yml#/components/schemas/preset.ClientRequest-preset_PartialCardSoldClientConfig",
+  "properties": {
+    "dryRun": {
+      "type": "boolean"
+    },
+    "input": {
+      "$ref": "#/$defs/preset.PartialCardSoldClientConfig"
+    },
+    "output": {
+      "$ref": "#/$defs/preset.Output"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "preset.ElasticsearchRange": {
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+    },
+    "preset.Output": {
+      "properties": {
+        "columns": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "filename": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+    },
+    "preset.PartialCardSoldClientConfig": {
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "queryRange": {
+          "$ref": "#/$defs/preset.ElasticsearchRange"
+        }
+      },
+      "type": "object",
+      "description": "Client configuration for partial card sold data preset."
+    }
+  }
+}

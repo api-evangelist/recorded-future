@@ -1,0 +1,1448 @@
+info:
+  contact:
+    name: Recorded Future Support
+    url: https://support.recordedfuture.com/
+  description: "Submit events captured by your security tools to your organization's Recorded Future enterprise.\nCollective Insights enriches submissions with threat context from Recorded Future Intelligence Graph to provide your organization's enterprise with enhanced and actionable intelligence.\n\n- **Usage Details**:\n  * This API throttles the amount of detections you can send, the default is a max burst of 100k IOCs, or ~1 IOCs per second. Please contact your customer success manager if you feel this limit is not meeting your needs.\n  * Organizations using Collective Insights benefit by having their Recorded Future intelligence enhanced by shared data. In addition, non-attributable data from their submissions can be used to benefit other Recorded Future clients.\n- **Prerequisites**:\n  * Recorded Future module license\n  * Recorded Future API [token](https://docs.recordedfuture.com/reference/get-started) for Collective Insights API"
+  title: Collective Insights API
+  version: 1.1.0
+  x-rf-service-id: service:collective-insights
+openapi: 3.1.0
+servers:
+- url: https://api.recordedfuture.com/collective-insights/
+paths:
+  /detections:
+    post:
+      description: 'This operation sends a list of indicators of compromise (IOC) detections to Collective Insights.
+
+        Submissions are associated with the API key''s enterprise and are used to provide enhanced intelligence
+
+        and analytics specific to your enterprise.
+
+
+        For each submitted detection the `ioc` data and a `detection.type` must be set. All other values are optional.
+
+
+        Note that __all submissions of test data__ (for example during development) __must__ use the `options.debug` property set to `true`.
+
+        '
+      operationId: submit-detections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitDetectionsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitDetectionsResponse'
+          description: OK
+          headers:
+            trace-id:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/ClientError'
+        '403':
+          $ref: '#/components/responses/ClientError'
+        '429':
+          description: This may happen on too many concurrent requests, too many requests within a timespan or requests resulting in high resource consumption. Other undisclosed limits may result in this status code as well.
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '502':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/ServerError'
+        '504':
+          $ref: '#/components/responses/ServerError'
+      security:
+      - ApiKeyAuth: []
+      - idp: []
+      summary: Submit detected IOCs to the Collective Insights
+      tags:
+      - Detections
+  /exclusions/{organization}:
+    post:
+      description: Creates a new exclusion list item for the specified organization.
+      operationId: create-exclusion
+      parameters:
+      - description: Organization ID (uhash)
+        in: path
+        name: organization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExclusionItemRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExclusionActionResponse'
+          description: Created exclusion item
+          headers:
+            trace-id:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/ClientError'
+        '403':
+          $ref: '#/components/responses/ClientError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/ServerError'
+      security:
+      - idp: []
+      summary: Create an exclusion list item
+      tags:
+      - Exclusions
+  /exclusions/{organization}/all:
+    get:
+      description: Returns a page of exclusion list items for the specified organization, newest change first.
+      operationId: list-exclusions
+      parameters:
+      - description: Organization ID (uhash)
+        in: path
+        name: organization
+        required: true
+        schema:
+          type: string
+      - description: Maximum number of items to return
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          format: int32
+          maximum: 1000
+          minimum: 1
+          type: integer
+      - description: Opaque pagination cursor from a previous response's `next_offset`
+        in: query
+        name: offset
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListExclusionsResponse'
+          description: Exclusion list items
+          headers:
+            trace-id:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/ClientError'
+        '403':
+          $ref: '#/components/responses/ClientError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/ServerError'
+      security:
+      - idp: []
+      summary: List exclusion list items for an organization
+      tags:
+      - Exclusions
+  /exclusions/{organization}/audit/all:
+    get:
+      description: 'Returns a page of the audit log for the specified organization''s exclusion list. A record is
+
+        created for every create, update, and delete operation on an exclusion list item. Records are
+
+        returned with the most recent operation first.'
+      operationId: list-exclusion-audit-log
+      parameters:
+      - description: Organization ID (uhash)
+        in: path
+        name: organization
+        required: true
+        schema:
+          type: string
+      - description: Maximum number of records to return
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          format: int32
+          maximum: 1000
+          minimum: 1
+          type: integer
+      - description: Opaque pagination cursor from a previous response's `next_offset`
+        in: query
+        name: offset
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogResponse'
+          description: Exclusion list audit log records
+          headers:
+            trace-id:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/ClientError'
+        '403':
+          $ref: '#/components/responses/ClientError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/ServerError'
+      security:
+      - idp: []
+      summary: List audit log records for an organization's exclusion list
+      tags:
+      - Exclusions
+  /exclusions/{organization}/{id}:
+    delete:
+      description: Deletes an exclusion list item for the specified organization.
+      operationId: delete-exclusion
+      parameters:
+      - description: Organization ID (uhash)
+        in: path
+        name: organization
+        required: true
+        schema:
+          type: string
+      - description: Exclusion item ID (UUIDv4)
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExclusionActionResponse'
+          description: Deleted exclusion item confirmation
+          headers:
+            trace-id:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/ClientError'
+        '403':
+          $ref: '#/components/responses/ClientError'
+        '404':
+          $ref: '#/components/responses/ClientError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/ServerError'
+      security:
+      - idp: []
+      summary: Delete an exclusion list item
+      tags:
+      - Exclusions
+    put:
+      description: Updates the comment on an existing exclusion list item.
+      operationId: update-exclusion
+      parameters:
+      - description: Organization ID (uhash)
+        in: path
+        name: organization
+        required: true
+        schema:
+          type: string
+      - description: Exclusion item ID (UUIDv4)
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCommentRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExclusionActionResponse'
+          description: Updated exclusion item
+          headers:
+            trace-id:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/ClientError'
+        '403':
+          $ref: '#/components/responses/ClientError'
+        '404':
+          $ref: '#/components/responses/ClientError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/ServerError'
+      security:
+      - idp: []
+      summary: Update the comment on an exclusion list item
+      tags:
+      - Exclusions
+  /search:
+    post:
+      description: 'Search previously submitted events processed in Collective Insights analysis and enriched with associated threat entities (threat actors, malware, TTPs).
+
+
+        This operation allows querying enriched events received from all Collective Insights sources:
+
+        * Collective Insights API (`POST /detections` endpoint)
+
+        * Recorded Future integrations and connectors, including [Autonomous Threat Operations](https://support.recordedfuture.com/hc/en-us/articles/45435282198035-Autonomous-Threat-Operations-Overview) results
+
+        * [Autonomous Threat Operations](https://support.recordedfuture.com/hc/en-us/articles/45435282198035-Autonomous-Threat-Operations-Overview) API
+
+        * Enterprise Sandbox submissions (if enabled in enterprise settings)
+
+
+        For Recorded Future entity IDs included in responses [Entity Match API](https://docs.recordedfuture.com/reference/entity-match) can be used to retrieve additional entity details.
+
+        '
+      operationId: search
+      requestBody:
+        content:
+          application/json:
+            example:
+              filters:
+                associated_threats:
+                  malware:
+                    id: present
+                autonomous_threat_operations:
+                  use_case: present
+                detection_time:
+                  from: '2025-10-24T12:00:01Z'
+                indicator_type:
+                - ip
+                submission_method:
+                - api
+                - integration
+              limit: 5
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+          description: Enriched events matching the search query
+          headers:
+            trace-id:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/ClientError'
+        '403':
+          $ref: '#/components/responses/ClientError'
+        '429':
+          description: Too many requests
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '502':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/ServerError'
+        '504':
+          $ref: '#/components/responses/ServerError'
+      security:
+      - ApiKeyAuth: []
+      summary: Search Collective Insights events
+      tags:
+      - Search
+components:
+  responses:
+    ClientError:
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                type: string
+              traceId:
+                examples:
+                - ktl5oa1p7aur
+                type: string
+            type: object
+      description: Client error
+      headers:
+        trace-id:
+          schema:
+            type: string
+    ServerError:
+      description: Server error
+  schemas:
+    DroppedSummary:
+      properties:
+        index:
+          examples:
+          - 3
+          type: integer
+        ioc_value:
+          description: IOC value received as input, but was dropped. Reason for dropping is in "message".
+          examples:
+          - aaaaa
+          type: string
+        message:
+          examples:
+          - 'Invalid hash: aaaaa'
+          type: string
+        reason:
+          description: Enums may be extended to include more reasons
+          enum:
+          - INVALID_IOC
+          - STORAGE_AT_CAPACITY
+          examples:
+          - INVALID_IOC
+          type: string
+        transient_id:
+          description: If provided in the input, it will be used in the response to identify which entry was dropped
+          examples:
+          - 79104EXAMPLEA723
+          type: string
+      required:
+      - index
+      - reason
+      - message
+      type: object
+    SubmitDetectionsRequest:
+      properties:
+        data:
+          description: A list of detections that has been made and that should be added to Collective Insights.
+          items:
+            properties:
+              detection:
+                description: Required information about the detection method.
+                properties:
+                  id:
+                    description: 'In the type=correlation case, this will be the id of the Correlation Use Case. Ex: p_default_ip_risklist. The p_ prefix indicates that it is a public use case available to all, a h_ prefix indicates that it is client specific use case.
+
+
+                      In the case of type=detection_rule, it will be the id of the Analyst note where the Detection rule was attached, for example doc:XYZ.
+
+
+                      In the case of a type=playbook, this field is the id of a playbook.
+
+
+                      This id is required in the case of type=detection_rule but optional in all other cases.
+
+                      '
+                    type: string
+                  name:
+                    description: The detection name.
+                    type: string
+                  sub_type:
+                    description: The detection method sub type. Must be a value in the enumerated list if detection type is set to `detection_rule`. In all other cases it must be null.
+                    enum:
+                    - sigma
+                    - yara
+                    - snort
+                    type: string
+                  type:
+                    description: The detection method used by the security tool. More detection types may be added in the future.
+                    enum:
+                    - detection_rule
+                    - correlation
+                    - playbook
+                    - sandbox
+                    examples:
+                    - detection_rule
+                    type: string
+                required:
+                - type
+                type: object
+              incident:
+                description: 'Optional free-form incident data related to the detection.
+
+                  Can be used to group several detected IoCs into a shared context.
+
+                  '
+                properties:
+                  id:
+                    examples:
+                    - 28548e09-63e8-4f8b-abd4-be86207b1583
+                    type: string
+                  name:
+                    examples:
+                    - Triggered Detection Rule
+                    type: string
+                  type:
+                    examples:
+                    - splunk-detection-rule
+                    type: string
+                type: object
+              ioc:
+                description: The IoC (indicator of compromise) associated with the event.
+                properties:
+                  action_category:
+                    description: 'Classification of the action taken by the security tool in response to the event activity.
+
+                      Allowed values are `detect` and `prevent`. If omitted, this field will be set to `detect` in the backend.
+
+                      '
+                    enum:
+                    - detect
+                    - prevent
+                    type: string
+                  field:
+                    description: The field in a log where the detection was made.
+                    examples:
+                    - dstip
+                    type: string
+                  source_type:
+                    description: The type of log source from which the detection was made.
+                    examples:
+                    - netscreen:firewall
+                    type: string
+                  type:
+                    enum:
+                    - ip
+                    - domain
+                    - hash
+                    - url
+                    - vulnerability
+                    examples:
+                    - ip
+                    type: string
+                  value:
+                    examples:
+                    - 1.2.3.4
+                    type: string
+                required:
+                - type
+                - value
+                type: object
+              malwares:
+                description: Optional list of malware names related to the detection.
+                items:
+                  examples:
+                  - Stuxnet
+                  type: string
+                type: array
+              mitre_codes:
+                description: Optional list of MITRE ATT&CK codes related to the detection.
+                items:
+                  examples:
+                  - T1055
+                  type: string
+                type: array
+              timestamp:
+                description: Timestamp of the detection in ISO 8601 format. If omitted, the time of the API request will be recorded instead.
+                examples:
+                - '2023-01-01T10:00:00Z'
+                format: date-time
+                type: string
+              transient_id:
+                description: ID that will not be saved, but used to identify any dropped data in the response
+                type: string
+            required:
+            - ioc
+            - detection
+            type: object
+          type: array
+        options:
+          properties:
+            debug:
+              default: false
+              description: If true, indicates that the request is for testing purposes and the data will not be used for analytical purposes. Input validation is always active.
+              examples:
+              - false
+              type: boolean
+            summary:
+              default: true
+              description: If true, the response will include a summary of the submitted IOCs.
+              examples:
+              - true
+              type: boolean
+          type: object
+        organization_ids:
+          description: A list of organizations to associate the submission with. The user making the request must be a member of every organization provided
+          items:
+            examples:
+            - uhash:T2j9Lac3k1
+            type: string
+          type: array
+      required:
+      - data
+      type: object
+    SubmitDetectionsResponse:
+      properties:
+        result:
+          properties:
+            debug:
+              examples:
+              - false
+              type: boolean
+            object_ids:
+              description: IDs of the created detections.
+              examples:
+              - - 16046941d44a85e4748a9e9a
+                - 16046941d44a85e4748a9e9b
+                - 16046941d44a85e4748a9e9c
+              items:
+                type: string
+              type: array
+            status:
+              examples:
+              - OK
+              type: string
+            summary:
+              properties:
+                dropped:
+                  items:
+                    $ref: '#/components/schemas/DroppedSummary'
+                  type: array
+                processed:
+                  properties:
+                    domain:
+                      examples:
+                      - 0
+                      type: number
+                    hash:
+                      examples:
+                      - 0
+                      type: number
+                    ip:
+                      examples:
+                      - 1
+                      type: number
+                    url:
+                      examples:
+                      - 0
+                      type: number
+                    vulnerability:
+                      examples:
+                      - 0
+                      type: number
+                  required:
+                  - ip
+                  - domain
+                  - hash
+                  - vulnerability
+                  - url
+                  type: object
+              required:
+              - processed
+              type: object
+          required:
+          - status
+          - debug
+          type: object
+      required:
+      - result
+      type: object
+    Entity:
+      description: Recorded Future entity
+      properties:
+        displayName:
+          description: Entity display name
+          type: string
+        id:
+          description: Entity ID
+          type: string
+        name:
+          description: Entity name
+          type: string
+        type:
+          description: Entity type
+          type: string
+      required:
+      - id
+      - type
+      type: object
+    Malware:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - properties:
+          type:
+            const: Malware
+        type: object
+      description: Recorded Future malware entity
+      examples:
+      - id: lStsKc
+        name: WhisperGate
+        type: Malware
+      type: object
+    MitreAttackIdentifier:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - properties:
+          type:
+            const: MitreAttackIdentifier
+        type: object
+      description: Recorded Future MITRE ATT&CK entity
+      examples:
+      - displayName: T1548 (Abuse Elevation Control Mechanism)
+        id: mitre:T1548
+        name: T1548
+        type: MitreAttackIdentifier
+      type: object
+    SearchEntry:
+      description: Enriched Collective Insights event
+      properties:
+        action:
+          description: Action taken by the security tool in response to the event activity
+          examples:
+          - blocked
+          type: string
+        action_category:
+          description: Classification of the action taken by the security tool in response to the event activity
+          enum:
+          - detect
+          - prevent
+          examples:
+          - prevent
+          type: string
+        associated_threats:
+          properties:
+            malware:
+              description: Recorded Future malware entities associated with the event
+              items:
+                $ref: '#/components/schemas/Malware'
+              type: array
+            mitre_codes:
+              description: Recorded Future MITRE ATT&CK entities associated with the event
+              items:
+                $ref: '#/components/schemas/MitreAttackIdentifier'
+              type: array
+            threat_actors:
+              description: Recorded Future threat actor entities associated with the event
+              items:
+                $ref: '#/components/schemas/ThreatActor'
+              type: array
+          type: object
+        autonomous_threat_operations:
+          description: Autonomous Threat Operations parameters if the event was submitted as part of an Autonomous Threat Operations workflow
+          properties:
+            job:
+              properties:
+                id:
+                  description: Threat Hunting job ID used to submit the event
+                  examples:
+                  - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                  type: string
+              type: object
+            profile:
+              properties:
+                id:
+                  description: Threat Hunting, Threat Detection, or Threat Prevention automation profile ID used to submit the event
+                  examples:
+                  - d290f1ee-6c54-4b01-90e6-d701748f0851
+                  type: string
+              type: object
+            use_case:
+              description: "Autonomous Threat Operations use case associated with the event:\n * `hunting` - Threat Hunting\n * `detection` - Threat Detection\n * `prevention` - Threat Prevention\n"
+              enum:
+              - hunting
+              - detection
+              - prevention
+              type: string
+          type: object
+        context:
+          description: Additional source-specific context information submitted in the event
+          examples:
+          - recorded_future_api:
+              destinationIp: 4.5.6.7
+              deviceName: my_device
+              sourceIp: 1.2.3.4
+            type: recorded_future_api
+          properties:
+            type:
+              description: The type of context object. The context object should contain a property with the same name as the value of this property
+              type: string
+          required:
+          - type
+          type: object
+        detection_rules:
+          description: Recorded Future detection rules used by the security tool to find the event
+          items:
+            properties:
+              id:
+                description: Recorded Future detection rule ID
+                examples:
+                - -zSe1-
+                type: string
+            required:
+            - id
+            type: object
+          type: array
+        detection_time:
+          description: Time when the event was detected by the security tool
+          examples:
+          - '2025-12-15T13:05:23Z'
+          format: date-time
+          type: string
+        detection_type:
+          description: The detection method used by the security tool to find the event
+          enum:
+          - correlation
+          - playbook
+          - detection_rule
+          - sandbox
+          - threat_hunt
+          - vulnerability_scan
+          examples:
+          - threat_hunt
+          type: string
+        id:
+          description: Event ID
+          examples:
+          - 16046941d44a85e4748a9e9a
+          type: string
+        incident:
+          description: The incident associated with the event in the security tool
+          properties:
+            id:
+              description: The incident ID
+              examples:
+              - 28548e09-63e8-4f8b-abd4-be86207b1583
+              type: string
+            name:
+              description: The incident name
+              type: string
+            type:
+              description: The incident type
+              type: string
+          type: object
+        indicator:
+          description: Indicator of compromise (IOC) associated with the event
+          properties:
+            field:
+              description: Data field in the event source from which the IOC was extracted
+              examples:
+              - dest_dns
+              type: string
+            risk:
+              properties:
+                score:
+                  properties:
+                    at_detection:
+                      type: integer
+                  type: object
+              type: object
+            type:
+              description: IOC type
+              enum:
+              - ip
+              - domain
+              - hash
+              - url
+              - vulnerability
+              examples:
+              - domain
+              type: string
+            value:
+              description: IOC value as Recorded Future entity ID
+              examples:
+              - www.moroccancam.com
+              type: string
+          type: object
+        integration_type:
+          description: Integration type used to submit the event.
+          examples:
+          - id: ho3spe
+            name: Recorded Future for Splunk v2.0 or later
+          properties:
+            displayName:
+              description: Integration display name
+              type: string
+            id:
+              description: Integration ID
+              type: string
+            name:
+              description: Integration name
+              type: string
+          required:
+          - id
+          type: object
+        organizations:
+          description: Organization IDs (uhashes) to which the event is attributed
+          examples:
+          - - uhash:4uwFvB7QsB
+          items:
+            pattern: ^uhash:[A-Za-z0-9]{10}$
+            type: string
+          type: array
+        submission_method:
+          description: "The method used to submit events to Collective Insights:\n  * `api` - public APIs such as [Collective Insights API](https://api.recordedfuture.com/collective-insights) or [Autonomous Threat Operations API](https://api.recordedfuture.com/autonomous-threat-operations)\n  * `integration` - [integrations and connectors with Collective Insights capabilities](https://app.recordedfuture.com/portal/integration-center?filter_use_cases=Collective+Insights) provided by Recorded Future and its partners\n  * `sandbox` - submissions to Recorded Future Sandbox\n"
+          enum:
+          - api
+          - integration
+          - sandbox
+          examples:
+          - integration
+          type: string
+      type: object
+    SearchRequest:
+      description: Search parameters
+      properties:
+        filters:
+          description: Filtering criteria for selecting enriched events
+          properties:
+            associated_threats:
+              description: Filter by threat entities associated with the event
+              properties:
+                malware:
+                  description: Filter by associated malware
+                  examples:
+                  - id:
+                    - lStsKc
+                  - id: absent
+                  - id: present
+                  properties:
+                    id:
+                      description: 'Recorded Future malware entity.
+
+                        Entity IDs can be obtained using the [Entity Match API](https://docs.recordedfuture.com/reference/entity-match).'
+                      oneOf:
+                      - enum:
+                        - present
+                        - absent
+                        type: string
+                      - description: Recorded Future malware entity IDs
+                        items:
+                          type: string
+                        minItems: 1
+                        type: array
+                  type: object
+                mitre_code:
+                  description: Filter by associated MITRE ATT&CK codes
+                  examples:
+                  - id:
+                    - mitre:T1059.013
+                  - id: absent
+                  - id: present
+                  properties:
+                    id:
+                      description: MITRE ATT&CK tactic or technique ID, prefixed with "mitre:"
+                      oneOf:
+                      - enum:
+                        - present
+                        - absent
+                        type: string
+                      - description: Recorded Future MITRE code IDs
+                        items:
+                          type: string
+                        minItems: 1
+                        type: array
+                  type: object
+                threat_actor:
+                  description: Filter by associated threat actors
+                  examples:
+                  - id:
+                    - lStsKd
+                  - id: absent
+                  - id: present
+                  properties:
+                    id:
+                      description: 'Recorded Future threat actor entity.
+
+                        Entity IDs can be obtained using the [Entity Match API](https://docs.recordedfuture.com/reference/entity-match).'
+                      oneOf:
+                      - enum:
+                        - present
+                        - absent
+                        type: string
+                      - description: Recorded Future threat actor entity IDs
+                        items:
+                          type: string
+                        minItems: 1
+                        type: array
+                  type: object
+              type: object
+            autonomous_threat_operations:
+              description: Search Autonomous Threat Operations results by related parameters
+              properties:
+                job:
+                  description: 'Filter by Threat Hunting job ID. Jobs can be searched using
+
+                    [Autonomous Threat Operations API](https://api.recordedfuture.com/autonomous-threat-operations).'
+                  examples:
+                  - id:
+                    - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                  properties:
+                    id:
+                      oneOf:
+                      - enum:
+                        - present
+                        - absent
+                        type: string
+                      - items:
+                          type: string
+                        minItems: 1
+                        type: array
+                  type: object
+                profile:
+                  description: 'Filter by Threat Hunting, Threat Detection, or Threat Prevention automation profile ID.
+
+                    Profile can be searched using [Autonomous Threat Operations API](https://api.recordedfuture.com/autonomous-threat-operations).'
+                  examples:
+                  - id:
+                    - d290f1ee-6c54-4b01-90e6-d701748f0851
+                  properties:
+                    id:
+                      oneOf:
+                      - enum:
+                        - present
+                        - absent
+                        type: string
+                      - items:
+                          type: string
+                        minItems: 1
+                        type: array
+                  type: object
+                use_case:
+                  description: "Filter by Autonomous Threat Operations use case:\n * `hunting` - Threat Hunting\n * `detection` - Threat Detection\n * `prevention` - Threat Prevention\n"
+                  oneOf:
+                  - enum:
+                    - present
+                    - absent
+                    type: string
+                  - items:
+                      enum:
+                      - hunting
+                      - detection
+                      - prevention
+                      type: string
+                    minItems: 1
+                    type: array
+              type: object
+            detection_rule:
+              description: Filter by associated detection rules
+              examples:
+              - id:
+                - 15zvq
+                - w89Y0
+              - id: absent
+              - id: present
+              properties:
+                id:
+                  oneOf:
+                  - enum:
+                    - present
+                    - absent
+                    type: string
+                  - items:
+                      description: Detection rule ID
+                      type: string
+                    minItems: 1
+                    type: array
+                  - items:
+                      description: Detection Rule ID
+                      type: string
+                    minItems: 1
+                    type: array
+              type: object
+            detection_time:
+              description: Filter by event detection time as submitted to Collective Insights
+              properties:
+                from:
+                  description: Start time (inclusive)
+                  examples:
+                  - '2025-12-15T00:00:00Z'
+                  format: date-time
+                  type: string
+                to:
+                  description: End time (inclusive)
+                  examples:
+                  - '2025-12-16T00:00:00Z'
+                  format: date-time
+                  type: string
+              type: object
+            detection_type:
+              description: The detection method used by the security tool to find the event
+              examples:
+              - - correlation
+                - sandbox
+              - absent
+              - present
+              oneOf:
+              - enum:
+                - present
+                - absent
+                type: string
+              - items:
+                  enum:
+                  - correlation
+                  - playbook
+                  - detection_rule
+                  - sandbox
+                  - threat_hunt
+                  - vulnerability_scan
+                  type: string
+                minItems: 1
+                type: array
+            indicator:
+              properties:
+                risk:
+                  examples:
+                  - score:
+                      at_detection:
+                        gte: 50
+                  properties:
+                    score:
+                      properties:
+                        at_detection:
+                          oneOf:
+                          - enum:
+                            - present
+                            - absent
+                            type: string
+                          - description: Range filter for risk score of the indicator at time of detection
+                            properties:
+                              gt:
+                                type: integer
+                              gte:
+                                type: integer
+                              lt:
+                                type: integer
+                              lte:
+                                type: integer
+                            type: object
+                      type: object
+                  type: object
+              type: object
+            indicator_type:
+              description: Filter by indicator of compromise (IOC) type associated with the event
+              examples:
+              - - ip
+                - domain
+              - absent
+              - present
+              oneOf:
+              - enum:
+                - present
+                - absent
+                type: string
+              - items:
+                  enum:
+                  - ip
+                  - domain
+                  - hash
+                  - url
+                  - vulnerability
+                  type: string
+                minItems: 1
+                type: array
+            integration_type:
+              description: Filter by integration types used to submit events
+              examples:
+              - id:
+                - ho3spe
+                - hptm1-
+              properties:
+                id:
+                  oneOf:
+                  - enum:
+                    - present
+                    - absent
+                    type: string
+                  - items:
+                      description: 'Integration entity ID.
+
+                        Entity IDs can be obtained using the [Entity Match API](https://docs.recordedfuture.com/reference/entity-match).'
+                      type: string
+                    minItems: 1
+                    type: array
+              type: object
+            organizations:
+              description: 'Filter by organizations in your Recorded Future enterprise.
+
+                If not supplied then the search will include events from all organizations that the caller has access to.'
+              items:
+                description: Organization ID (uhash), which can be seen in the portal.
+                examples:
+                - uhash:4uwFvB7QsB
+                pattern: ^uhash:[A-Za-z0-9]{10}$
+                type: string
+              type: array
+            submission_method:
+              description: "The method used to submit events to Collective Insights:\n  * `api` - public APIs such as [Collective Insights API](https://api.recordedfuture.com/collective-insights) or [Autonomous Threat Operations API](https://api.recordedfuture.com/autonomous-threat-operations)\n  * `integration` - [integrations and connectors with Collective Insights capabilities](https://app.recordedfuture.com/portal/integration-center?filter_use_cases=Collective+Insights) provided by Recorded Future and its partners\n  * `sandbox` - submissions to Recorded Future Sandbox\n"
+              examples:
+              - - integration
+              - absent
+              - present
+              oneOf:
+              - enum:
+                - present
+                - absent
+                type: string
+              - items:
+                  enum:
+                  - api
+                  - integration
+                  - sandbox
+                  type: string
+                minItems: 1
+                type: array
+          type: object
+        limit:
+          default: 100
+          description: Maximum number of events to return
+          format: int32
+          maximum: 1000
+          minimum: 1
+          type: integer
+        offset:
+          description: Pagination offset for retrieving the next batch of events
+          examples:
+          - eyJjcmVhdGVkIjoxNzY5ODY1NjM1Mzg4LCJpZCI6IjY5N2UwMTE0MzhkZmNlNjU0ZjI1YWMxOSJ9.TGYVF_jkzd__pJ02XuM1mckuE3zpEBivQGzlPACgcgE
+          type: string
+      type: object
+    SearchResponse:
+      properties:
+        counts:
+          description: Counts of enriched events matching the query
+          properties:
+            returned:
+              description: Number of events in the current response
+              type: integer
+            total:
+              description: Total number of events matching the query
+              type: integer
+          type: object
+        data:
+          description: List of enriched events matching the search query
+          items:
+            $ref: '#/components/schemas/SearchEntry'
+          type: array
+        next_offset:
+          description: Pagination offset for retrieving the next batch of events
+          type: string
+      type: object
+    ThreatActor:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - properties:
+          type:
+            enum:
+            - Organization
+            - Company
+            - Person
+            - Username
+            type: string
+        type: object
+      description: Recorded Future threat actor entity
+      examples:
+      - id: lStsKd
+        name: DEV-0586
+        type: Organization
+      type: object
+    CreateExclusionItemRequest:
+      properties:
+        comment:
+          type: string
+        type:
+          enum:
+          - observable
+          - ip_range
+          - device_name
+          type: string
+        value:
+          type: string
+      required:
+      - type
+      - value
+      - comment
+      type: object
+    ExclusionActionResponse:
+      properties:
+        action:
+          enum:
+          - created
+          - updated
+          - deleted
+          type: string
+        id:
+          description: Present for delete responses
+          format: uuid
+          type: string
+        item:
+          $ref: '#/components/schemas/ExclusionItem'
+          description: Present for create and update responses
+      type: object
+    ExclusionItem:
+      properties:
+        comment:
+          description: Optional comment
+          type: string
+        created:
+          description: Creation timestamp
+          format: date-time
+          type: string
+        id:
+          description: Exclusion item ID
+          format: uuid
+          type: string
+        last_changed:
+          description: Last modification timestamp
+          format: date-time
+          type: string
+        owner:
+          description: User identity that created the item
+          type: string
+        type:
+          description: Exclusion type
+          enum:
+          - observable
+          - ip_range
+          - device_name
+          type: string
+        value:
+          description: Value to exclude (observable ID, CIDR, or device name)
+          type: string
+      type: object
+    AuditLogResponse:
+      properties:
+        counts:
+          $ref: '#/components/schemas/PageCounts'
+        data:
+          description: Audit log records in the current page
+          items:
+            $ref: '#/components/schemas/AuditRecord'
+          type: array
+        next_offset:
+          description: Pagination offset for retrieving the next page. Absent on the last page.
+          type: string
+      type: object
+    AuditRecord:
+      properties:
+        action:
+          description: Operation that was performed on the exclusion list item
+          enum:
+          - created
+          - updated
+          - deleted
+          type: string
+        details:
+          description: Human-readable description of the change
+          type: string
+        item_id:
+          description: ID of the exclusion list item the record refers to
+          format: uuid
+          type: string
+        item_type:
+          description: Exclusion type of the item at the time of the operation
+          enum:
+          - observable
+          - ip_range
+          - device_name
+          type: string
+        item_value:
+          description: Value of the item at the time of the operation
+          type: string
+        timestamp:
+          description: Time the operation was performed
+          format: date-time
+          type: string
+        user:
+          description: User identity that performed the operation
+          type: string
+      type: object
+    PageCounts:
+      properties:
+        returned:
+          description: Number of items in the current response
+          type: integer
+        total:
+          description: Total number of items across all pages
+          type: integer
+      type: object
+    ListExclusionsResponse:
+      properties:
+        counts:
+          $ref: '#/components/schemas/PageCounts'
+        data:
+          description: Exclusion list items in the current page
+          items:
+            $ref: '#/components/schemas/ExclusionItem'
+          type: array
+        next_offset:
+          description: Pagination offset for retrieving the next page. Absent on the last page.
+          type: string
+      type: object
+    UpdateCommentRequest:
+      properties:
+        comment:
+          type: string
+      required:
+      - comment
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      description: API Credential
+      in: header
+      name: X-RFToken
+      type: apiKey
+    idp:
+      description: Click on "Authorize" to be redirected to the login page.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://id.recordedfuture.com/authorize
+          refreshUrl: https://id.recordedfuture.com/token
+          scopes: {}
+          tokenUrl: https://id.recordedfuture.com/token
+      type: oauth2
+tags:
+- description: Operations related to raw unprocessed events (detections).
+  name: Detections
+- description: Operations related to previously submitted events that have been processed in Collective Insights analysis.
+  name: Search
+- description: Operations for managing per-organization exclusion lists. Excluded indicators are filtered out during enrichment.
+  name: Exclusions
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/collective-insights-create-exclusion.md
+  - https://docs.recordedfuture.com/reference/collective-insights-delete-exclusion.md
+  - https://docs.recordedfuture.com/reference/collective-insights-list-exclusion-audit-log.md
+  - https://docs.recordedfuture.com/reference/collective-insights-list-exclusions.md
+  - https://docs.recordedfuture.com/reference/collective-insights-search.md
+  - https://docs.recordedfuture.com/reference/collective-insights-submit-detections.md
+  - https://docs.recordedfuture.com/reference/collective-insights-update-exclusion.md
+  merge:
+    pages: 7
+    deduped: 24
+    conflicts_kept_first: 0

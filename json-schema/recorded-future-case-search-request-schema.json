@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-case-search-request-schema.json",
+  "title": "CaseSearchRequest",
+  "description": "Search criteria for filtering cases. Omitting a filter matches all values for that property.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-case-api-openapi.yml#/components/schemas/CaseSearchRequest",
+  "type": "object",
+  "properties": {
+    "owners": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/UserIdentity"
+      }
+    },
+    "creators": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/UserIdentity"
+      },
+      "maxItems": 100
+    },
+    "statuses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/CaseStatus"
+      },
+      "maxItems": 4
+    },
+    "priorities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/CasePriority"
+      },
+      "maxItems": 3
+    },
+    "assignees": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100
+    },
+    "modified": {
+      "type": "object",
+      "$ref": "#/$defs/DateRange"
+    },
+    "created": {
+      "type": "object",
+      "$ref": "#/$defs/DateRange"
+    },
+    "direction": {
+      "$ref": "#/$defs/Direction"
+    },
+    "order_by": {
+      "$ref": "#/$defs/OrderBy"
+    },
+    "limit": {
+      "type": "integer",
+      "maxValue": 100,
+      "minValue": 1
+    },
+    "offset": {
+      "type": "string",
+      "description": "Pagination offset"
+    }
+  },
+  "$defs": {
+    "CasePriority": {
+      "type": "string",
+      "enum": [
+        "Informational",
+        "Moderate",
+        "High"
+      ],
+      "description": "The Priority of the Case"
+    },
+    "CaseStatus": {
+      "type": "string",
+      "enum": [
+        "New",
+        "InProgress",
+        "Dismissed",
+        "Resolved"
+      ],
+      "description": "The Status of the Case"
+    },
+    "DateRange": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 30
+        },
+        "to": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 30
+        }
+      },
+      "description": "Date range filter with from/to bounds."
+    },
+    "Direction": {
+      "description": "Order results ascending or descending.",
+      "type": "string",
+      "enum": [
+        "asc",
+        "desc"
+      ]
+    },
+    "OrderBy": {
+      "description": "Order results by created or modified data.",
+      "type": "string",
+      "enum": [
+        "created",
+        "modified"
+      ]
+    },
+    "UserIdentity": {
+      "type": "string",
+      "format": "identity",
+      "maxLength": 24,
+      "description": "Organization identity string in uhash:<hash> format (e.g., uhash:2vefBNqkbi). This is the organization ID, not a user identity."
+    }
+  }
+}

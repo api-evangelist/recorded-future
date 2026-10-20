@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-entity-types-schema.json",
+  "title": "EntityTypes",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-detection-rule-relation-api-openapi.yml#/components/schemas/EntityTypes",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "$ref": "#/$defs/EntityId"
+      },
+      "name": {
+        "$ref": "#/$defs/EntityTypeName"
+      },
+      "display_name": {
+        "type": "string",
+        "description": "Label of the entity type"
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "display_name"
+    ]
+  },
+  "$defs": {
+    "EntityId": {
+      "type": "string"
+    },
+    "EntityTypeName": {
+      "type": "string",
+      "description": "Additional information about entity types is provided by the /entity/types endpoint. It can be used to find the display name of the entity type."
+    }
+  }
+}

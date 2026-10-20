@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-bulk-tag-assets-request-schema.json",
+  "title": "BulkTagAssetsRequest",
+  "description": "Request body for bulk adding/removing tags across multiple assets. Keyed by asset identifier.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-asi-project-api-openapi.yml#/components/schemas/BulkTagAssetsRequest",
+  "properties": {
+    "asset_tags": {
+      "additionalProperties": {
+        "$ref": "#/$defs/TagAssetRequest"
+      },
+      "type": "object",
+      "title": "Asset Tags",
+      "description": "Add/Remove options keyed on the asset you would like to be updated"
+    }
+  },
+  "type": "object",
+  "required": [
+    "asset_tags"
+  ],
+  "$defs": {
+    "TagAssetRequest": {
+      "properties": {
+        "add_tags": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Add Tags",
+          "description": "List of tag names to apply to the assets"
+        },
+        "remove_tags": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Remove Tags",
+          "description": "List of tag names to remove from the assets"
+        }
+      },
+      "type": "object",
+      "title": "TagAssetRequest",
+      "description": "Add and/or remove tag operations for a single asset."
+    }
+  }
+}

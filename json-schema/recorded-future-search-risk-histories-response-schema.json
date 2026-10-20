@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-search-risk-histories-response-schema.json",
+  "title": "SearchRiskHistoriesResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-risk-api-openapi.yml#/components/schemas/SearchRiskHistoriesResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "$ref": "#/$defs/EntityRiskHistories"
+          }
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "returned",
+        "total"
+      ]
+    }
+  },
+  "required": [
+    "data",
+    "counts"
+  ],
+  "$defs": {
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Entity id"
+        },
+        "provided_id": {
+          "type": "string",
+          "description": "Entity id provided in request"
+        },
+        "type": {
+          "type": "string",
+          "description": "Entity type"
+        },
+        "name": {
+          "type": "string",
+          "description": "Entity name"
+        }
+      },
+      "required": [
+        "id",
+        "provided_id",
+        "type",
+        "name"
+      ]
+    },
+    "EntityRiskHistories": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/$defs/Entity"
+        },
+        "scores": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RiskScoreHistory"
+          }
+        },
+        "levels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RiskLevelHistory"
+          }
+        },
+        "risk_rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RiskRuleHistory"
+          }
+        }
+      }
+    },
+    "RiskLevelHistory": {
+      "type": "object",
+      "properties": {
+        "criticality": {
+          "type": "integer",
+          "description": "Entity risk criticality"
+        },
+        "added": {
+          "type": "string",
+          "description": "Date when risk was added to the entity",
+          "format": "date-time"
+        },
+        "removed": {
+          "type": "string",
+          "description": "Date when risk was removed from the entity",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "criticality"
+      ]
+    },
+    "RiskRuleHistory": {
+      "type": "object",
+      "properties": {
+        "risk_id": {
+          "type": "string",
+          "description": "Risk rule id"
+        },
+        "risk_name": {
+          "type": "string",
+          "description": "Risk rule name"
+        },
+        "criticality": {
+          "type": "integer",
+          "description": "Risk criticality"
+        },
+        "evidence": {
+          "type": "string",
+          "description": "Risk evidence"
+        },
+        "sightings_count": {
+          "type": "integer",
+          "description": "Number of sightings for this risk rule"
+        },
+        "added": {
+          "type": "string",
+          "description": "Date when risk was added to the entity",
+          "format": "date-time"
+        },
+        "removed": {
+          "type": "string",
+          "description": "Date when risk was removed from the entity",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "risk_id",
+        "risk_name",
+        "criticality",
+        "evidence"
+      ]
+    },
+    "RiskScoreHistory": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "integer",
+          "description": "Entity risk score"
+        },
+        "added": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "removed": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "score"
+      ]
+    }
+  }
+}

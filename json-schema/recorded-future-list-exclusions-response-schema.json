@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-list-exclusions-response-schema.json",
+  "title": "ListExclusionsResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-collective-insights-api-openapi.yml#/components/schemas/ListExclusionsResponse",
+  "properties": {
+    "counts": {
+      "$ref": "#/$defs/PageCounts"
+    },
+    "data": {
+      "description": "Exclusion list items in the current page",
+      "items": {
+        "$ref": "#/$defs/ExclusionItem"
+      },
+      "type": "array"
+    },
+    "next_offset": {
+      "description": "Pagination offset for retrieving the next page. Absent on the last page.",
+      "type": "string"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "ExclusionItem": {
+      "properties": {
+        "comment": {
+          "description": "Optional comment",
+          "type": "string"
+        },
+        "created": {
+          "description": "Creation timestamp",
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "description": "Exclusion item ID",
+          "format": "uuid",
+          "type": "string"
+        },
+        "last_changed": {
+          "description": "Last modification timestamp",
+          "format": "date-time",
+          "type": "string"
+        },
+        "owner": {
+          "description": "User identity that created the item",
+          "type": "string"
+        },
+        "type": {
+          "description": "Exclusion type",
+          "enum": [
+            "observable",
+            "ip_range",
+            "device_name"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "description": "Value to exclude (observable ID, CIDR, or device name)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "PageCounts": {
+      "properties": {
+        "returned": {
+          "description": "Number of items in the current response",
+          "type": "integer"
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

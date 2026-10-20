@@ -1,0 +1,584 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-get-active-risk-rule-response-schema.json",
+  "title": "GetActiveRiskRuleResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-risk-api-openapi.yml#/components/schemas/GetActiveRiskRuleResponse",
+  "type": "object",
+  "properties": {
+    "entity": {
+      "$ref": "#/$defs/Entity"
+    },
+    "risk_rule": {
+      "nullable": true,
+      "$ref": "#/$defs/ActiveRiskRule"
+    }
+  },
+  "required": [
+    "entity"
+  ],
+  "$defs": {
+    "ActiveRiskRule": {
+      "type": "object",
+      "properties": {
+        "risk_id": {
+          "type": "string"
+        },
+        "risk_name": {
+          "type": "string"
+        },
+        "rule_alias": {
+          "type": "string"
+        },
+        "criticality": {
+          "type": "integer"
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "added": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "removed": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "enriched_evidence": {
+          "nullable": true,
+          "oneOf": [
+            {
+              "$ref": "#/$defs/OpenPortEvidence"
+            },
+            {
+              "$ref": "#/$defs/LeakedCredentialsEvidence"
+            },
+            {
+              "$ref": "#/$defs/ReferenceListEvidence"
+            },
+            {
+              "$ref": "#/$defs/AttributeEvidence"
+            },
+            {
+              "$ref": "#/$defs/CompanyIpEvidence"
+            },
+            {
+              "$ref": "#/$defs/CompanySusceptibleToEvidence"
+            },
+            {
+              "$ref": "#/$defs/ProductRiskEvidence"
+            },
+            {
+              "$ref": "#/$defs/PatternEvidence"
+            },
+            {
+              "$ref": "#/$defs/CyberTrendsEvidence"
+            }
+          ]
+        }
+      },
+      "required": [
+        "risk_id",
+        "risk_name",
+        "rule_alias",
+        "criticality",
+        "evidence"
+      ]
+    },
+    "AttributeEvidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "attribute"
+          ],
+          "description": "Discriminator identifying this evidence type"
+        },
+        "value_type": {
+          "type": "string",
+          "enum": [
+            "domain"
+          ],
+          "description": "Type of attribute value"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string",
+                "description": "Domain entity identifier"
+              },
+              "added": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Date when the attribute was added"
+              },
+              "domain_owner": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Domain owner entity identifier"
+              }
+            },
+            "required": [
+              "value",
+              "added"
+            ]
+          }
+        }
+      },
+      "required": [
+        "evidence_type",
+        "value_type",
+        "results"
+      ]
+    },
+    "CompanyIpEvidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "companyIp"
+          ],
+          "description": "Discriminator identifying this evidence type"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ip": {
+                "type": "string"
+              },
+              "ip_risk_rule": {
+                "type": "string"
+              },
+              "added": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "ip",
+              "ip_risk_rule",
+              "added"
+            ]
+          }
+        },
+        "next_offset": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "evidence_type",
+        "total",
+        "results"
+      ]
+    },
+    "CompanySusceptibleToEvidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "companySusceptibleTo"
+          ],
+          "description": "Discriminator identifying this evidence type"
+        },
+        "total": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cve_id": {
+                "type": "string"
+              },
+              "ip": {
+                "type": "string"
+              },
+              "owner": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "cve_id",
+              "ip",
+              "owner",
+              "timestamp"
+            ]
+          }
+        },
+        "next_offset": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "evidence_type",
+        "results"
+      ]
+    },
+    "CyberTrendsEvidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "cyberTrends"
+          ],
+          "description": "Discriminator identifying this evidence type"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total count of event evidence items"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventRiskEvidenceItem"
+          }
+        }
+      },
+      "required": [
+        "evidence_type",
+        "total",
+        "results"
+      ]
+    },
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Entity id"
+        },
+        "provided_id": {
+          "type": "string",
+          "description": "Entity id provided in request"
+        },
+        "type": {
+          "type": "string",
+          "description": "Entity type"
+        },
+        "name": {
+          "type": "string",
+          "description": "Entity name"
+        }
+      },
+      "required": [
+        "id",
+        "provided_id",
+        "type",
+        "name"
+      ]
+    },
+    "EventRiskEvidenceItem": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Event title"
+        },
+        "fragment": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Event fragment/excerpt"
+        },
+        "published": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Event publication date"
+        },
+        "document_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "URL to the source document"
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Source identifier"
+        }
+      },
+      "required": [
+        "published"
+      ]
+    },
+    "LeakedCredentialsEvidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "credentialDetails"
+          ],
+          "description": "Discriminator identifying this evidence type"
+        },
+        "entity_id": {
+          "type": "string"
+        },
+        "rule_alias": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "document_title": {
+                "type": "string"
+              },
+              "document_publish_date": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "email",
+              "password",
+              "document_title",
+              "document_publish_date"
+            ]
+          }
+        }
+      },
+      "required": [
+        "evidence_type",
+        "entity_id",
+        "rule_alias",
+        "total",
+        "results"
+      ]
+    },
+    "OpenPortEvidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "openPort"
+          ],
+          "description": "Discriminator identifying this evidence type"
+        },
+        "total": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ip": {
+                "type": "string"
+              },
+              "port": {
+                "type": "integer"
+              },
+              "first_seen": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_seen": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "ip",
+              "port",
+              "first_seen",
+              "last_seen"
+            ]
+          }
+        },
+        "next_offset": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "evidence_type",
+        "results"
+      ]
+    },
+    "PatternEvidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "pattern"
+          ],
+          "description": "Discriminator identifying this evidence type"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total count of event evidence items"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventRiskEvidenceItem"
+          }
+        }
+      },
+      "required": [
+        "evidence_type",
+        "total",
+        "results"
+      ]
+    },
+    "ProductRiskEvidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "productRisk"
+          ],
+          "description": "Discriminator identifying this evidence type"
+        },
+        "total": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "results_in_page": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "domain": {
+                "type": "string"
+              },
+              "product_identifier": {
+                "type": "string"
+              },
+              "cve_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Optional CVE identifier (may be null)"
+              },
+              "first_seen": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_seen": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "product_risk_rule_name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "domain",
+              "product_identifier",
+              "first_seen",
+              "last_seen",
+              "product_risk_rule_name"
+            ]
+          }
+        },
+        "next_offset": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "evidence_type",
+        "results_in_page",
+        "results"
+      ]
+    },
+    "ReferenceListEvidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "referenceList"
+          ],
+          "description": "Discriminator identifying this evidence type"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total count of event evidence items"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventRiskEvidenceItem"
+          }
+        }
+      },
+      "required": [
+        "evidence_type",
+        "total",
+        "results"
+      ]
+    }
+  }
+}

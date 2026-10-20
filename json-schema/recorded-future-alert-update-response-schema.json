@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-alert-update-response-schema.json",
+  "title": "AlertUpdateResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertUpdateResponse",
+  "type": "object",
+  "properties": {
+    "success": {
+      "type": "array",
+      "description": "A list of updated alerts",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the updated alert"
+          },
+          "status": {
+            "type": "string",
+            "deprecated": true,
+            "enum": [
+              "unassigned",
+              "assigned",
+              "pending",
+              "dismiss",
+              "no-action",
+              "actionable",
+              "tuning"
+            ],
+            "description": "Updated status (legacy)"
+          },
+          "statusInPortal": {
+            "type": "string",
+            "enum": [
+              "New",
+              "Resolved",
+              "Pending",
+              "Dismissed",
+              "Flag for Tuning"
+            ],
+            "description": "Updated status"
+          },
+          "assignee": {
+            "type": "string",
+            "description": "Updated assignee id"
+          },
+          "note": {
+            "type": "object",
+            "description": "Updated note",
+            "properties": {
+              "text": {
+                "type": "string",
+                "description": "Note text"
+              },
+              "author": {
+                "type": "string",
+                "description": "Note author id"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Note publish date"
+              }
+            },
+            "required": [
+              "text",
+              "author",
+              "date"
+            ]
+          },
+          "reviewDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date of when the alert was last reviewed"
+          },
+          "statusDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date of when the alert last had a status update"
+          },
+          "statusChangeBy": {
+            "type": "string",
+            "description": "Id of the user that performed the status update"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "statusInPortal"
+        ]
+      }
+    },
+    "error": {
+      "type": "array",
+      "description": "A list of alerts that failed to update",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the alert that failed to update"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Error message why the alert failed to update"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Error status code"
+          }
+        },
+        "required": [
+          "id",
+          "reason",
+          "statusCode"
+        ]
+      }
+    }
+  }
+}

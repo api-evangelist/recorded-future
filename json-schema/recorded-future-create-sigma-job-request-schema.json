@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-create-sigma-job-request-schema.json",
+  "title": "CreateSigmaJobRequest",
+  "description": "Request to create an Auto Sigma rule generation job from malware sample hashes.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-malware-intelligence-api-openapi.yml#/components/schemas/CreateSigmaJobRequest",
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string",
+      "description": "The name of the Auto Sigma job."
+    },
+    "query": {
+      "title": "Query",
+      "type": "string",
+      "description": "The query used to select files to build rules for"
+    },
+    "start_date": {
+      "$ref": "#/$defs/StartDate"
+    },
+    "end_date": {
+      "$ref": "#/$defs/EndDate"
+    }
+  },
+  "required": [
+    "name",
+    "query",
+    "start_date"
+  ],
+  "type": "object",
+  "$defs": {
+    "EndDate": {
+      "description": "Latest date to include in the query, defaults to today in UTC",
+      "type": "string",
+      "format": "date"
+    },
+    "StartDate": {
+      "description": "Earliest date to include in the query (cannot be before 2023-11-01)",
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

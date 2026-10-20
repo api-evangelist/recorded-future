@@ -1,0 +1,89 @@
+generated: '2026-10-20'
+method: derived
+source: openapi/recorded-future-alert-api-openapi.yml, openapi/recorded-future-analyst-note-api-openapi.yml,
+  openapi/recorded-future-asi-project-api-openapi.yml, openapi/recorded-future-autonomous-threat-operations-api-openapi.yml,
+  openapi/recorded-future-case-api-openapi.yml, openapi/recorded-future-collective-insights-api-openapi.yml,
+  openapi/recorded-future-common-platform-enumeration-apis-v0-api-openapi.yml, openapi/recorded-future-connect-api-openapi.yml,
+  openapi/recorded-future-customer-apis-v0-api-openapi.yml, openapi/recorded-future-customer-apis-v2-api-openapi.yml,
+  openapi/recorded-future-detection-rule-api-openapi.yml, openapi/recorded-future-detection-rule-relation-api-openapi.yml
+  ...
+summary:
+  types:
+  - apiKey
+  - http
+  - oauth2
+  api_key_in:
+  - header
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: X-RFToken
+  description: API Credential
+  sources:
+  - openapi/recorded-future-alert-api-openapi.yml
+  - openapi/recorded-future-analyst-note-api-openapi.yml
+  - openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+  - openapi/recorded-future-case-api-openapi.yml
+  - openapi/recorded-future-collective-insights-api-openapi.yml
+  - openapi/recorded-future-connect-api-openapi.yml
+  - openapi/recorded-future-detection-rule-api-openapi.yml
+  - openapi/recorded-future-detection-rule-relation-api-openapi.yml
+  - openapi/recorded-future-entity-match-api-openapi.yml
+  - openapi/recorded-future-fusion-api-openapi.yml
+  - openapi/recorded-future-identity-api-openapi.yml
+  - openapi/recorded-future-links-api-openapi.yml
+  - openapi/recorded-future-list-api-openapi.yml
+  - openapi/recorded-future-malware-intelligence-api-openapi.yml
+  - openapi/recorded-future-payment-fraud-intelligence-api-openapi.yml
+  - openapi/recorded-future-playbook-alerts-api-openapi.yml
+  - openapi/recorded-future-risk-api-openapi.yml
+  - openapi/recorded-future-soar-api-openapi.yml
+  - openapi/recorded-future-threat-api-openapi.yml
+- name: idp
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+    scopes: 0
+  description: Click on "Authorize" to be redirected to the login page.
+  sources:
+  - openapi/recorded-future-analyst-note-api-openapi.yml
+  - openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+  - openapi/recorded-future-case-api-openapi.yml
+  - openapi/recorded-future-collective-insights-api-openapi.yml
+  - openapi/recorded-future-detection-rule-api-openapi.yml
+  - openapi/recorded-future-detection-rule-relation-api-openapi.yml
+  - openapi/recorded-future-entity-match-api-openapi.yml
+  - openapi/recorded-future-fusion-api-openapi.yml
+  - openapi/recorded-future-identity-api-openapi.yml
+  - openapi/recorded-future-links-api-openapi.yml
+  - openapi/recorded-future-list-api-openapi.yml
+  - openapi/recorded-future-malware-intelligence-api-openapi.yml
+  - openapi/recorded-future-playbook-alerts-api-openapi.yml
+  - openapi/recorded-future-risk-api-openapi.yml
+  - openapi/recorded-future-threat-api-openapi.yml
+- name: APIKeyHeader
+  type: apiKey
+  in: header
+  parameter: apikey
+  sources:
+  - openapi/recorded-future-asi-project-api-openapi.yml
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/recorded-future-common-platform-enumeration-apis-v0-api-openapi.yml
+  - openapi/recorded-future-customer-apis-v0-api-openapi.yml
+  - openapi/recorded-future-customer-apis-v2-api-openapi.yml
+  - openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+- name: sec0
+  type: apiKey
+  in: header
+  parameter: Authorization
+  sources:
+  - openapi/recorded-future-sandbox-api-secopsti-api-openapi.yml

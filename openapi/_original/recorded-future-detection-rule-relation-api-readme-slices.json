@@ -1,0 +1,514 @@
+[
+ {
+  "page": "https://docs.recordedfuture.com/reference/detection-rules-associated-entities.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Detection Rule Relation API",
+    "description": "API to fetch entities and types associated with detection rules",
+    "version": "0.0.2",
+    "x-rf-service-id": "service:detection-rule-relation",
+    "contact": {
+     "name": "Auth and Service Enablement Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/detection-rule-relation",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Detection Rule"
+    }
+   ],
+   "paths": {
+    "/entity/list": {
+     "get": {
+      "operationId": "detection-rules-associated-entities",
+      "description": "List all entities linked to at least one detection rule, usable as search filters.",
+      "security": [
+       {
+        "key": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "tags": [
+       "Detection Rule"
+      ],
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/EntityResult"
+          },
+          "example": [
+           {
+            "id": "email:boywhp@126.com",
+            "type": "EmailAddress",
+            "name": "boywhp@126.com"
+           },
+           {
+            "id": "hash:6ca0b4efe077fe05b2ae871bf50133c706c7090a54d2c3536a6c86ff454caa9a",
+            "type": "Hash",
+            "name": "6ca0b4efe077fe05b2ae871bf50133c706c7090a54d2c3536a6c86ff454caa9a"
+           },
+           {
+            "id": "hash:7f608f9783809d0165125a685e9b5537b9343f44b6d117b26be76b48b5c8f6d3",
+            "type": "Hash",
+            "name": "7f608f9783809d0165125a685e9b5537b9343f44b6d117b26be76b48b5c8f6d3"
+           },
+           {
+            "id": "url:http://82.115.223.210:9942/bot_auth",
+            "type": "URL",
+            "name": "http://82.115.223.210:9942/bot_auth"
+           },
+           {
+            "id": "hash:b144229fb62799aa23537eaf0ce267b1445a182c28f4679e8f8234eeb5e603f3",
+            "type": "Hash",
+            "name": "b144229fb62799aa23537eaf0ce267b1445a182c28f4679e8f8234eeb5e603f3"
+           }
+          ]
+         }
+        }
+       },
+       "400": {
+        "description": "Bad Request",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      },
+      "summary": "Associated Entities"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "EntityTypeName": {
+      "type": "string",
+      "description": "Additional information about entity types is provided by the /entity/types endpoint. It can be used to find the display name of the entity type.",
+      "example": "IpAddress"
+     },
+     "DetectionRuleEntity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "Entity ID for use in detection-rule/search filter",
+        "example": "XYZW"
+       },
+       "type": {
+        "$ref": "#/components/schemas/EntityTypeName"
+       },
+       "name": {
+        "type": "string"
+       },
+       "display_name": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "id",
+       "type",
+       "name"
+      ],
+      "description": "An entity that is associated with a Detection rule, e.g. a MITRE ATT&CK tag or a Malware.",
+      "example": {
+       "id": "kvXvR5",
+       "type": "CyberVulnerability",
+       "name": "CVE-2021-44228",
+       "display_name": "CVE-2021-44228 (Log4Shell)"
+      }
+     },
+     "EntityResult": {
+      "type": "array",
+      "items": {
+       "$ref": "#/components/schemas/DetectionRuleEntity"
+      },
+      "description": "Array of entities that can be used as filter values in Detection Rule Search."
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable description of the error."
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code of the response."
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Unique request identifier to reference when contacting support."
+       }
+      },
+      "required": [
+       "message",
+       "status_code"
+      ]
+     }
+    },
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/detection-rules-associated-entity-types.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Detection Rule Relation API",
+    "description": "API to fetch entities and types associated with detection rules",
+    "version": "0.0.2",
+    "x-rf-service-id": "service:detection-rule-relation",
+    "contact": {
+     "name": "Auth and Service Enablement Team"
+    }
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/detection-rule-relation",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Detection Rule"
+    }
+   ],
+   "paths": {
+    "/entity/types": {
+     "get": {
+      "operationId": "detection-rules-associated-entity-types",
+      "description": "List entity type categories that appear across Insikt Group detection rules.",
+      "security": [
+       {
+        "key": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "tags": [
+       "Detection Rule"
+      ],
+      "responses": {
+       "200": {
+        "description": "Success",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/EntityTypes"
+          },
+          "example": [
+           {
+            "id": "type:FileNameExtension",
+            "name": "FileNameExtension",
+            "display_name": "Filename Extension"
+           },
+           {
+            "id": "type:Company",
+            "name": "Company",
+            "display_name": "Company"
+           },
+           {
+            "id": "type:ASNumber",
+            "name": "ASNumber",
+            "display_name": "AS Number"
+           },
+           {
+            "id": "type:Hash",
+            "name": "Hash",
+            "display_name": "Hash"
+           },
+           {
+            "id": "type:Industry",
+            "name": "Industry",
+            "display_name": "Industry"
+           },
+           {
+            "id": "type:Topic",
+            "name": "Topic",
+            "display_name": "Topic"
+           },
+           {
+            "id": "type:EmailAddress",
+            "name": "EmailAddress",
+            "display_name": "Email Address"
+           },
+           {
+            "id": "type:City",
+            "name": "City",
+            "display_name": "City"
+           },
+           {
+            "id": "type:FileType",
+            "name": "FileType",
+            "display_name": "File Type"
+           },
+           {
+            "id": "type:Username",
+            "name": "Username",
+            "display_name": "Username"
+           },
+           {
+            "id": "type:FileName",
+            "name": "FileName",
+            "display_name": "Filename"
+           },
+           {
+            "id": "type:Country",
+            "name": "Country",
+            "display_name": "Country"
+           },
+           {
+            "id": "type:Product",
+            "name": "Product",
+            "display_name": "Product"
+           },
+           {
+            "id": "type:Malware",
+            "name": "Malware",
+            "display_name": "Malware"
+           },
+           {
+            "id": "type:Person",
+            "name": "Person",
+            "display_name": "Person"
+           },
+           {
+            "id": "type:CyberThreatActorCategory",
+            "name": "CyberThreatActorCategory",
+            "display_name": "Threat Actor Category"
+           },
+           {
+            "id": "type:Source",
+            "name": "Source",
+            "display_name": "Source"
+           },
+           {
+            "id": "type:ProductIdentifier",
+            "name": "ProductIdentifier",
+            "display_name": "Product Identifier"
+           },
+           {
+            "id": "type:Region",
+            "name": "Region",
+            "display_name": "Region"
+           },
+           {
+            "id": "type:Category",
+            "name": "Category",
+            "display_name": "Category"
+           },
+           {
+            "id": "type:Continent",
+            "name": "Continent",
+            "display_name": "Continent"
+           },
+           {
+            "id": "type:MalwareCategory",
+            "name": "MalwareCategory",
+            "display_name": "Malware Category"
+           },
+           {
+            "id": "type:Organization",
+            "name": "Organization",
+            "display_name": "Organization"
+           },
+           {
+            "id": "type:CyberVulnerability",
+            "name": "CyberVulnerability",
+            "display_name": "Vulnerability"
+           },
+           {
+            "id": "type:URL",
+            "name": "URL",
+            "display_name": "URL"
+           },
+           {
+            "id": "type:AttackVector",
+            "name": "AttackVector",
+            "display_name": "Attack Vector"
+           },
+           {
+            "id": "type:MitreAttackIdentifier",
+            "name": "MitreAttackIdentifier",
+            "display_name": "MITRE ATT&CK Enterprise Identifier"
+           },
+           {
+            "id": "type:ProvinceOrState",
+            "name": "ProvinceOrState",
+            "display_name": "Province or State"
+           },
+           {
+            "id": "type:IndustryTerm",
+            "name": "IndustryTerm",
+            "display_name": "Industry Term"
+           },
+           {
+            "id": "type:Operation",
+            "name": "Operation",
+            "display_name": "Operation or Campaign"
+           },
+           {
+            "id": "type:Technology",
+            "name": "Technology",
+            "display_name": "Technology"
+           },
+           {
+            "id": "type:BitcoinAddress",
+            "name": "BitcoinAddress",
+            "display_name": "Bitcoin Address"
+           },
+           {
+            "id": "type:ProgrammingLanguage",
+            "name": "ProgrammingLanguage",
+            "display_name": "Programming Language"
+           },
+           {
+            "id": "type:MedicalCondition",
+            "name": "MedicalCondition",
+            "display_name": "Medical Condition"
+           },
+           {
+            "id": "type:IpAddress",
+            "name": "IpAddress",
+            "display_name": "IP Address"
+           },
+           {
+            "id": "type:InternetDomainName",
+            "name": "InternetDomainName",
+            "display_name": "Domain"
+           },
+           {
+            "id": "type:WinRegKey",
+            "name": "WinRegKey",
+            "display_name": "Registry Key"
+           }
+          ]
+         }
+        }
+       },
+       "400": {
+        "description": "Bad Request",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      },
+      "summary": "Associated Entity Types"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "EntityId": {
+      "type": "string",
+      "example": "XYZW"
+     },
+     "EntityTypeName": {
+      "type": "string",
+      "description": "Additional information about entity types is provided by the /entity/types endpoint. It can be used to find the display name of the entity type.",
+      "example": "IpAddress"
+     },
+     "EntityTypes": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "id": {
+         "$ref": "#/components/schemas/EntityId"
+        },
+        "name": {
+         "$ref": "#/components/schemas/EntityTypeName"
+        },
+        "display_name": {
+         "type": "string",
+         "description": "Label of the entity type",
+         "example": "IP Address"
+        }
+       },
+       "required": [
+        "id",
+        "name",
+        "display_name"
+       ]
+      }
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable description of the error."
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code of the response."
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Unique request identifier to reference when contacting support."
+       }
+      },
+      "required": [
+       "message",
+       "status_code"
+      ]
+     }
+    },
+    "securitySchemes": {
+     "key": {
+      "type": "apiKey",
+      "name": "X-RFToken",
+      "in": "header"
+     },
+     "idp": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+]

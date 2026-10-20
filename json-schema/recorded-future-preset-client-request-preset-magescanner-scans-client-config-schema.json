@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-preset-client-request-preset-magescanner-scans-client-config-schema.json",
+  "title": "preset.ClientRequest-preset_MagescannerScansClientConfig",
+  "description": "Preset creation request for Magescanner scan data.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-payment-fraud-intelligence-api-openapi.yml#/components/schemas/preset.ClientRequest-preset_MagescannerScansClientConfig",
+  "properties": {
+    "dryRun": {
+      "type": "boolean"
+    },
+    "input": {
+      "$ref": "#/$defs/preset.MagescannerScansClientConfig"
+    },
+    "output": {
+      "$ref": "#/$defs/preset.Output"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "preset.ElasticsearchRange": {
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "to"
+      ],
+      "type": "object",
+      "description": "Elasticsearch date range filter for preset queries."
+    },
+    "preset.MagescannerScansClientConfig": {
+      "properties": {
+        "queryRange": {
+          "$ref": "#/$defs/preset.ElasticsearchRange"
+        }
+      },
+      "required": [
+        "queryRange"
+      ],
+      "type": "object",
+      "description": "Client configuration for Magescanner scan results preset."
+    },
+    "preset.Output": {
+      "properties": {
+        "columns": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "filename": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "columns"
+      ],
+      "type": "object",
+      "description": "Output configuration for preset data delivery."
+    }
+  }
+}

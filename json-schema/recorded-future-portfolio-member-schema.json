@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-portfolio-member-schema.json",
+  "title": "PortfolioMember",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-customer-apis-v0-api-openapi.yml#/components/schemas/PortfolioMember",
+  "type": "object",
+  "properties": {
+    "toes": {
+      "$ref": "#/$defs/PortfolioMemberToes"
+    },
+    "customer_name": {
+      "type": "string"
+    },
+    "customer_id": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "PortfolioMemberToe": {
+      "type": "object",
+      "properties": {
+        "toe_short_name": {
+          "type": "string"
+        },
+        "toe_id": {
+          "type": "string"
+        },
+        "security_domain_ratings": {
+          "$ref": "#/$defs/SecurityDomainRatings"
+        },
+        "overall_rating_numeric": {
+          "type": "number"
+        },
+        "overall_rating": {
+          "type": "string"
+        },
+        "last_analysis_ts": {
+          "type": "string"
+        },
+        "frequency": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "analysis_id": {
+          "type": "string"
+        }
+      }
+    },
+    "PortfolioMemberToes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PortfolioMemberToe"
+      }
+    },
+    "SecurityDomainRating": {
+      "type": "object",
+      "properties": {
+        "security_domain_rating_numeric": {
+          "type": "number"
+        },
+        "security_domain_rating": {
+          "type": "string"
+        }
+      }
+    },
+    "SecurityDomainRatings": {
+      "type": "object",
+      "properties": {
+        "web_encryption": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        },
+        "web_app_security": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        },
+        "threat_intell": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        },
+        "system_hosting": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        },
+        "software_patching": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        },
+        "governance": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        },
+        "email_security": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        },
+        "dns_security": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        },
+        "defensibility": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        },
+        "data_loss": {
+          "$ref": "#/$defs/SecurityDomainRating"
+        }
+      }
+    }
+  }
+}

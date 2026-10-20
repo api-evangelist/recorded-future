@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-submit-detections-response-schema.json",
+  "title": "SubmitDetectionsResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-collective-insights-api-openapi.yml#/components/schemas/SubmitDetectionsResponse",
+  "properties": {
+    "result": {
+      "properties": {
+        "debug": {
+          "type": "boolean"
+        },
+        "object_ids": {
+          "description": "IDs of the created detections.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "status": {
+          "type": "string"
+        },
+        "summary": {
+          "properties": {
+            "dropped": {
+              "items": {
+                "$ref": "#/$defs/DroppedSummary"
+              },
+              "type": "array"
+            },
+            "processed": {
+              "properties": {
+                "domain": {
+                  "type": "number"
+                },
+                "hash": {
+                  "type": "number"
+                },
+                "ip": {
+                  "type": "number"
+                },
+                "url": {
+                  "type": "number"
+                },
+                "vulnerability": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "ip",
+                "domain",
+                "hash",
+                "vulnerability",
+                "url"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "processed"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "status",
+        "debug"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "result"
+  ],
+  "type": "object",
+  "$defs": {
+    "DroppedSummary": {
+      "properties": {
+        "index": {
+          "type": "integer"
+        },
+        "ioc_value": {
+          "description": "IOC value received as input, but was dropped. Reason for dropping is in \"message\".",
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "description": "Enums may be extended to include more reasons",
+          "enum": [
+            "INVALID_IOC",
+            "STORAGE_AT_CAPACITY"
+          ],
+          "type": "string"
+        },
+        "transient_id": {
+          "description": "If provided in the input, it will be used in the response to identify which entry was dropped",
+          "type": "string"
+        }
+      },
+      "required": [
+        "index",
+        "reason",
+        "message"
+      ],
+      "type": "object"
+    }
+  }
+}

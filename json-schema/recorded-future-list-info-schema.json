@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-list-info-schema.json",
+  "title": "ListInfo",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-list-api-openapi.yml#/components/schemas/ListInfo",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "$ref": "#/$defs/ListType"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "owner_id": {
+      "$ref": "#/$defs/OwnerId"
+    },
+    "owner_name": {
+      "$ref": "#/$defs/OwnerName"
+    },
+    "organisation_id": {
+      "$ref": "#/$defs/OrganisationId"
+    },
+    "organisation_name": {
+      "$ref": "#/$defs/OrganisationName"
+    },
+    "owner_organisation_details": {
+      "$ref": "#/$defs/OwnerOrganisationDetails"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "type",
+    "created",
+    "updated"
+  ],
+  "$defs": {
+    "EnterpriseId": {
+      "description": "Id of the Enterprise",
+      "type": "string"
+    },
+    "EnterpriseName": {
+      "description": "Name of the Enterprise",
+      "type": "string"
+    },
+    "ListType": {
+      "type": "string",
+      "enum": [
+        "entity",
+        "source",
+        "text",
+        "custom",
+        "ip",
+        "domain",
+        "tech_stack",
+        "industry",
+        "brand",
+        "partner",
+        "industry_peer",
+        "location",
+        "supplier",
+        "vulnerability",
+        "company",
+        "hash",
+        "operation",
+        "attacker",
+        "target",
+        "method",
+        "executive"
+      ]
+    },
+    "Organisation": {
+      "type": "object",
+      "properties": {
+        "organisation_id": {
+          "$ref": "#/$defs/OrganisationId"
+        },
+        "organisation_name": {
+          "$ref": "#/$defs/OrganisationName"
+        }
+      }
+    },
+    "OrganisationId": {
+      "description": "Id of the Organisation",
+      "type": "string"
+    },
+    "OrganisationName": {
+      "description": "Name of the Organisation",
+      "type": "string"
+    },
+    "OwnerId": {
+      "description": "Id of the Owner",
+      "type": "string"
+    },
+    "OwnerName": {
+      "description": "Name of the Owner",
+      "type": "string"
+    },
+    "OwnerOrganisationDetails": {
+      "type": "object",
+      "properties": {
+        "owner_id": {
+          "$ref": "#/$defs/OwnerId"
+        },
+        "owner_name": {
+          "$ref": "#/$defs/OwnerName"
+        },
+        "organisations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Organisation"
+          }
+        },
+        "enterprise_id": {
+          "$ref": "#/$defs/EnterpriseId"
+        },
+        "enterprise_name": {
+          "$ref": "#/$defs/EnterpriseName"
+        }
+      },
+      "required": [
+        "organisations",
+        "enterprise_id",
+        "enterprise_name"
+      ]
+    }
+  }
+}

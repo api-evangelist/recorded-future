@@ -1,0 +1,432 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-filters-response-schema.json",
+  "title": "FiltersResponse",
+  "description": "Available filter facets with asset counts for building search queries. Each property contains the available filter options for that category.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-asi-project-api-openapi.yml#/components/schemas/FiltersResponse",
+  "properties": {
+    "asset_properties": {
+      "$ref": "#/$defs/AssetPropertiesFilterOptions"
+    },
+    "exposure_properties": {
+      "$ref": "#/$defs/ExposurePropertiesFilterOptions"
+    },
+    "technology_properties": {
+      "$ref": "#/$defs/TechnologyPropertiesFilterOptions"
+    },
+    "certificate_properties": {
+      "$ref": "#/$defs/CertificatePropertiesFilterOptions"
+    }
+  },
+  "type": "object",
+  "required": [
+    "asset_properties",
+    "exposure_properties",
+    "technology_properties",
+    "certificate_properties"
+  ],
+  "$defs": {
+    "AssetCountDateRangeFilter": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "asset_count": {
+          "type": "integer",
+          "title": "Asset Count"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "asset_count",
+        "start",
+        "end"
+      ],
+      "title": "AssetCountDateRangeFilter",
+      "description": "Date range filter with asset count context."
+    },
+    "AssetCountEqFilter": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "asset_count": {
+          "type": "integer",
+          "title": "Asset Count"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "asset_count",
+        "value"
+      ],
+      "title": "AssetCountEqFilter",
+      "description": "Equality filter with asset count context."
+    },
+    "AssetCountValueRangeFilter": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "asset_count": {
+          "type": "integer",
+          "title": "Asset Count"
+        },
+        "start": {
+          "type": "integer",
+          "title": "Start"
+        },
+        "end": {
+          "type": "integer",
+          "title": "End"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "asset_count",
+        "start",
+        "end"
+      ],
+      "title": "AssetCountValueRangeFilter",
+      "description": "Value range filter with asset count context."
+    },
+    "AssetPropertiesFilterOptions": {
+      "properties": {
+        "asset_type": {
+          "$ref": "#/$defs/FilterOptionsEq",
+          "description": "The type of asset, one of: `ip`, `domain` and `host`(where `domain` and `host` represent the same asset type)."
+        },
+        "asn": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets which either are, or point to, an IP address announced by the provided ASN (e.g. `16509`)."
+        },
+        "custom_tags": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project."
+        },
+        "added_to_project": {
+          "$ref": "#/$defs/FilterOptionsDateRange",
+          "description": "Filter on the date (Y-m-d) the asset was added to the project. This may be different than when the asset was discovered."
+        },
+        "discovered": {
+          "$ref": "#/$defs/FilterOptionsDateRange",
+          "description": "Filter on the date (Y-m-d) the asset was discovered by Recorded Future ASI. This may be different than when the asset was added to the project. IPv4 addresses will have a fixed point in the past for their discovery date."
+        },
+        "apex": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter on the apex domain of the assets. Only makes sense for `domain` asset types. Example: `example.com`"
+        },
+        "static_asset": {
+          "$ref": "#/$defs/FilterOptionsEq",
+          "description": "Filter static and non static assets."
+        },
+        "ip_geo_country_iso": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets which either are, or point to, an IP address located in the provided ISO country code (e.g. `US`)."
+        },
+        "ip_owner": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets which either are, or point to, an IP address owned by the provided organization. This will often be an ISP or hosting provider or simply the name of the AS owning the IP."
+        },
+        "registry": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets by their IP registry source (e.g., 'arin', 'ripe', 'apnic')."
+        },
+        "referenced_ip": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter on an A or CNAME record pointing to the IP address. Use `eq` or `in` for exact IP matching. Use `contains` with a trailing `.` for CIDR range matching, or without for prefix matching."
+        }
+      },
+      "type": "object",
+      "title": "AssetPropertiesFilterOptions",
+      "description": "Available asset property filter facets with value counts."
+    },
+    "CertificatePropertiesFilterOptions": {
+      "properties": {
+        "certificate_issuer": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter where the certificate (or in the chain) issuer's common name or organization matches the provided value"
+        },
+        "certificate_expires_at": {
+          "$ref": "#/$defs/FilterOptionsDateRange",
+          "description": "Filter where the certificate expiration matches the provided value"
+        },
+        "certificate_issued_at": {
+          "$ref": "#/$defs/FilterOptionsDateRange",
+          "description": "Filter where the certificate issuance date matches the provided value"
+        }
+      },
+      "type": "object",
+      "title": "CertificatePropertiesFilterOptions",
+      "description": "Available certificate property filter facets with value counts."
+    },
+    "ExposurePropertiesFilterOptions": {
+      "properties": {
+        "signature_id": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets which have an exposure with the provided ASI Signature ID. Note that some signatures line up with CVEs, but this should not be relied upon. Examples: `cve-2024-6387`, `cve-OpenSSH`."
+        },
+        "severity": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical."
+        },
+        "asset_exposure_score": {
+          "$ref": "#/$defs/FilterOptionsValueRange",
+          "description": "Filter for assets which have an exposure score within the provided range. This is a score from 0-100 that indicates the potential risk of the asset based on various factors. You may specify only one 'end' based on your needs."
+        },
+        "last_scanned_at": {
+          "$ref": "#/$defs/FilterOptionsDateRange",
+          "description": "Filter on the date (Y-m-d) when the asset was last scanned for exposures."
+        }
+      },
+      "type": "object",
+      "title": "ExposurePropertiesFilterOptions",
+      "description": "Available exposure property filter facets with value counts."
+    },
+    "FilterOptionsDateRange": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "filter_query": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Filter Query"
+        },
+        "filter_path": {
+          "type": "string",
+          "title": "Filter Path"
+        },
+        "filter_type": {
+          "type": "string",
+          "title": "Filter Type",
+          "default": "date_range"
+        },
+        "filters": {
+          "items": {
+            "$ref": "#/$defs/AssetCountDateRangeFilter"
+          },
+          "type": "array",
+          "title": "Filters"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "filter_query",
+        "filter_path",
+        "filters"
+      ],
+      "title": "FilterOptionsDateRange",
+      "description": "Date range filter option with available values and counts."
+    },
+    "FilterOptionsEq": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "filter_query": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Filter Query"
+        },
+        "filter_path": {
+          "type": "string",
+          "title": "Filter Path"
+        },
+        "filter_type": {
+          "type": "string",
+          "title": "Filter Type",
+          "default": "eq"
+        },
+        "filters": {
+          "items": {
+            "$ref": "#/$defs/AssetCountEqFilter"
+          },
+          "type": "array",
+          "title": "Filters"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "filter_query",
+        "filter_path",
+        "filters"
+      ],
+      "title": "FilterOptionsEq",
+      "description": "Equality filter option with available values and counts."
+    },
+    "FilterOptionsIn": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "filter_query": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Filter Query"
+        },
+        "filter_path": {
+          "type": "string",
+          "title": "Filter Path"
+        },
+        "filter_type": {
+          "type": "string",
+          "title": "Filter Type",
+          "default": "in"
+        },
+        "filters": {
+          "items": {
+            "$ref": "#/$defs/AssetCountEqFilter"
+          },
+          "type": "array",
+          "title": "Filters"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "filter_query",
+        "filter_path",
+        "filters"
+      ],
+      "title": "FilterOptionsIn",
+      "description": "Inclusion filter option with available values and counts."
+    },
+    "FilterOptionsValueRange": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "filter_query": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Filter Query"
+        },
+        "filter_path": {
+          "type": "string",
+          "title": "Filter Path"
+        },
+        "filter_type": {
+          "type": "string",
+          "title": "Filter Type",
+          "default": "value_range"
+        },
+        "filters": {
+          "items": {
+            "$ref": "#/$defs/AssetCountValueRangeFilter"
+          },
+          "type": "array",
+          "title": "Filters"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "filter_query",
+        "filter_path",
+        "filters"
+      ],
+      "title": "FilterOptionsValueRange",
+      "description": "Value range filter option with available values and counts."
+    },
+    "TechnologyPropertiesFilterOptions": {
+      "properties": {
+        "open_port_number": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets which have an open port with the provided number (e.g. `80`)."
+        },
+        "open_port_service": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets which have an open port that appears to support the provided protocol (e.g. `http`, `rdp`, `ftp`)."
+        },
+        "open_port_protocol": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets which have an open port on the provided protocol (e.g. `tcp`, `udp`)."
+        },
+        "waf_detected": {
+          "$ref": "#/$defs/FilterOptionsEq",
+          "description": "Filter for assets where a WAF (Web Application Firewall) is detected."
+        },
+        "waf_name": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for assets where a specific WAF is detected. Will attempt to match both vendor and product, e.g. `Cloudflare`."
+        },
+        "technology_name": {
+          "$ref": "#/$defs/FilterOptionsIn",
+          "description": "Filter for the name of a technology found on the asset. Could be directly attached to the port (`nginx`, etc) or a web technology (e.g. 'jQuery', 'Wordpress')"
+        },
+        "is_responsive": {
+          "$ref": "#/$defs/FilterOptionsEq",
+          "description": "Filter for assets that are unresponsive over ICMP and no ports are open. This is a boolean filter, so it will return assets that are either responsive or not responsive."
+        }
+      },
+      "type": "object",
+      "title": "TechnologyPropertiesFilterOptions",
+      "description": "Available technology property filter facets with value counts."
+    }
+  }
+}

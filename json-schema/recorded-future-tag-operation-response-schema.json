@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-tag-operation-response-schema.json",
+  "title": "TagOperationResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-list-api-openapi.yml#/components/schemas/TagOperationResponse",
+  "type": "object",
+  "properties": {
+    "entity_id": {
+      "type": "string",
+      "description": "The entity ID"
+    },
+    "operation": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/TagsUpdated"
+        },
+        {
+          "$ref": "#/$defs/TagsUnchanged"
+        }
+      ]
+    }
+  },
+  "required": [
+    "entity_id",
+    "operation"
+  ],
+  "$defs": {
+    "TagsUnchanged": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "tags_unchanged"
+          ]
+        },
+        "current_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Current tags on the entity"
+        },
+        "message": {
+          "type": "string",
+          "description": "Explanation of why tags were unchanged",
+          "default": "Tags are already set to the requested values"
+        }
+      },
+      "required": [
+        "status",
+        "current_tags",
+        "message"
+      ]
+    },
+    "TagsUpdated": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "tags_updated"
+          ]
+        },
+        "tags_before": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags that were on the entity before the update"
+        },
+        "tags_after": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags that are on the entity after the update"
+        },
+        "tags_added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags that were added in this update"
+        },
+        "tags_removed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags that were removed in this update"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the update occurred"
+        }
+      },
+      "required": [
+        "status",
+        "tags_before",
+        "tags_after",
+        "tags_added",
+        "tags_removed",
+        "updated"
+      ]
+    }
+  }
+}

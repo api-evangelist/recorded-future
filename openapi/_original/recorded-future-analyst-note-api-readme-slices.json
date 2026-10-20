@@ -1,0 +1,6712 @@
+[
+ {
+  "page": "https://docs.recordedfuture.com/reference/analyst-note-delete.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Analyst Note API",
+    "version": "1.0.1",
+    "description": "A Recorded Future API for creating, fetching, editing and deleting Analyst Notes.\n\nPlease read the [Recorded Future Docs](https://docs.recordedfuture.com/reference/analyst-note) before using this API.\n",
+    "x-rf-service-id": "service:analyst-note"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/analyst-note"
+    }
+   ],
+   "paths": {
+    "/delete/{note_id}": {
+     "delete": {
+      "summary": "Delete a specific Analyst Note",
+      "tags": [
+       "Analyst Note"
+      ],
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/NoteId"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Status of the delete operation.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/DeleteResponse"
+          },
+          "example": {
+           "status": "Ok",
+           "report_id": "doc:wB0Rhk"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "Resource not found",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      },
+      "description": "Permanently delete an analyst note owned by your organization."
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "NoteId": {
+      "in": "path",
+      "name": "note_id",
+      "required": true,
+      "schema": {
+       "type": "string"
+      },
+      "description": "Note id",
+      "example": "doc:wB0Rhk"
+     }
+    },
+    "schemas": {
+     "DeleteResponse": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "string",
+        "example": "Ok"
+       },
+       "report_id": {
+        "type": "string",
+        "description": "ID of the deleted note",
+        "example": "doc:wB0Rhk"
+       }
+      }
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code"
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Trace ID for debugging"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ],
+      "example": {
+       "message": "Not Found",
+       "status_code": 404,
+       "trace_id": "29c09655-6aab-4e17-98a0-d132aa84acdc"
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/analyst-note-draft.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Analyst Note API",
+    "version": "1.0.1",
+    "description": "A Recorded Future API for creating, fetching, editing and deleting Analyst Notes.\n\nPlease read the [Recorded Future Docs](https://docs.recordedfuture.com/reference/analyst-note) before using this API.\n",
+    "x-rf-service-id": "service:analyst-note"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/analyst-note"
+    }
+   ],
+   "paths": {
+    "/draft": {
+     "post": {
+      "summary": "Draft an Analyst Note",
+      "tags": [
+       "Analyst Note"
+      ],
+      "description": "Create a draft analyst note in the database without publishing it.",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/DraftRequest"
+         },
+         "example": {
+          "attributes": {
+           "title": "Note title",
+           "text": "Note text",
+           "note_entities": [
+            "source:roLoLW"
+           ]
+          },
+          "source": "source:VKz42X",
+          "resolve_entities": true
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Report id of the draft note.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/DraftResponse"
+          },
+          "example": {
+           "report_id": "report:V0BVfY"
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Invalid request",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "DraftRequest": {
+      "type": "object",
+      "properties": {
+       "attributes": {
+        "$ref": "#/components/schemas/NoteRequestAttributes"
+       },
+       "events": {
+        "$ref": "#/components/schemas/NoteEvents"
+       },
+       "source": {
+        "$ref": "#/components/schemas/SourceId"
+       },
+       "report_id": {
+        "$ref": "#/components/schemas/ReportId"
+       },
+       "resolve_entities": {
+        "$ref": "#/components/schemas/ResolveEntitiesParam"
+       }
+      },
+      "required": [
+       "attributes",
+       "source"
+      ]
+     },
+     "DraftResponse": {
+      "type": "object",
+      "properties": {
+       "report_id": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "report_id"
+      ]
+     },
+     "NoteEntity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "name": {
+        "type": "string"
+       },
+       "type": {
+        "type": "string"
+       },
+       "description": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "id"
+      ]
+     },
+     "CyberAttackEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "adversary": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "capabilities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "operation": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "CyberAttackEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "CyberAttack"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/CyberAttackEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "Position": {
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number"
+       },
+       "latitude": {
+        "type": "number"
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ]
+     },
+     "ArmedConflictEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "attacker": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "ArmedConflictEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ArmedConflict"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ArmedConflictEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ArmsPurchaseSaleEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "arms_seller": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "arms_purchaser": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "ArmsPurchaseSaleEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ArmsPurchaseSale"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ArmsPurchaseSaleEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "CoupEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "CoupEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "Coup"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/CoupEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "DiseaseOutbreakEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "disease": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "facility": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "DiseaseOutbreakEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "DiseaseOutbreak"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/DiseaseOutbreakEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ElectionEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "ElectionEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "Election"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ElectionEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "EnvironmentalIssueEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "environmental_issue": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "environmental_issue"
+      ]
+     },
+     "EnvironmentalIssueEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "EnvironmentalIssue"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/EnvironmentalIssueEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ManMadeDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "facility": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "manmade_disaster": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "manmade_disaster",
+       "location"
+      ]
+     },
+     "ManMadeDisasterEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ManMadeDisaster"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ManMadeDisasterEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "MilitaryManeuverEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "actors": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "locations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "MilitaryManeuverEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "MilitaryManeuver"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/MilitaryManeuverEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NaturalDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "natural_disaster": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "natural_disaster",
+       "location"
+      ]
+     },
+     "NaturalDisasterEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "NaturalDisaster"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/NaturalDisasterEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NuclearMaterialTransactionEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "material": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location_origin": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location_destination": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "material"
+      ]
+     },
+     "NuclearMaterialTransactionEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "NuclearMaterialTransaction"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/NuclearMaterialTransactionEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PersonThreatEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "threatened": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "actor": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "threatened"
+      ]
+     },
+     "PersonThreatEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PersonThreat"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PersonThreatEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PoliticalEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "PoliticalEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PoliticalEvent"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PoliticalEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "RFEVEProtestEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "protest_target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "RFEVEProtestEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "RFEVEProtest"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/RFEVEProtestEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PublicSafetyWarningEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "PublicSafetyWarningEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PublicSafetyWarning"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PublicSafetyWarningEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "TerrorIncidentEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "locations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "TerrorIncidentEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "TerrorIncident"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/TerrorIncidentEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "RFEVEArmedAssaultEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "RFEVEArmedAssaultEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "RFEVEArmedAssault"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/RFEVEArmedAssaultEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "MalwareAnalysisEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "malware": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "attacker": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "ttp": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "exploit": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "hash": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "malware"
+      ]
+     },
+     "MalwareAnalysisEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "MalwareAnalysis"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/MalwareAnalysisEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NoteEvents": {
+      "type": "array",
+      "items": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/CyberAttackEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ArmedConflictEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ArmsPurchaseSaleEvent"
+        },
+        {
+         "$ref": "#/components/schemas/CoupEvent"
+        },
+        {
+         "$ref": "#/components/schemas/DiseaseOutbreakEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ElectionEvent"
+        },
+        {
+         "$ref": "#/components/schemas/EnvironmentalIssueEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ManMadeDisasterEvent"
+        },
+        {
+         "$ref": "#/components/schemas/MilitaryManeuverEvent"
+        },
+        {
+         "$ref": "#/components/schemas/NaturalDisasterEvent"
+        },
+        {
+         "$ref": "#/components/schemas/NuclearMaterialTransactionEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PersonThreatEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PoliticalEvent"
+        },
+        {
+         "$ref": "#/components/schemas/RFEVEProtestEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PublicSafetyWarningEvent"
+        },
+        {
+         "$ref": "#/components/schemas/TerrorIncidentEvent"
+        },
+        {
+         "$ref": "#/components/schemas/RFEVEArmedAssaultEvent"
+        },
+        {
+         "$ref": "#/components/schemas/MalwareAnalysisEvent"
+        }
+       ]
+      },
+      "examples": [
+       {
+        "type": "CyberAttack",
+        "attributes": {
+         "start": "2024-01-01T13:00:00Z",
+         "stop": "2024-01-02T13:00:00Z",
+         "adversary": [
+          {
+           "id": "Lwv8pC",
+           "type": "Organization",
+           "name": "Sandworm Team"
+          }
+         ],
+         "target": [
+          {
+           "id": "DmPaB",
+           "type": "Industry",
+           "name": "Energy and Natural Resources"
+          }
+         ],
+         "malicious_infrastructure": [
+          {
+           "id": "ip:185.220.101.58",
+           "type": "IpAddress",
+           "name": "185.220.101.58"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "RecommendedQueryReq": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "url": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "url:https://example.com/query"
+       }
+      },
+      "required": [
+       "title",
+       "url"
+      ]
+     },
+     "NoteRequestAttributes": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "text": {
+        "type": "string"
+       },
+       "note_entities": {
+        "type": "array",
+        "description": "Entity ids. Either Note entities or context entities must be specified. Each entity must exist as a note entity.",
+        "items": {
+         "type": "string"
+        }
+       },
+       "context_entities": {
+        "type": "array",
+        "description": "Entity ids. Context entities or note entities must be specified. Each entity must exist as a note entity.",
+        "items": {
+         "type": "string"
+        }
+       },
+       "topic": {
+        "type": "array",
+        "description": "Array of entity ids for the topics, see [list](https://docs.recordedfuture.com/reference/analyst-note-available-topics) of available ones for details.",
+        "items": {
+         "type": "string",
+         "example": "h4G-3N"
+        }
+       },
+       "labels": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "validation_urls": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "description": "Entity id"
+        }
+       },
+       "validated_on": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Date when analyst note was validated",
+        "example": "2025-03-21T12:00:00.000Z"
+       },
+       "detection_rules": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "description": "Entity id"
+        }
+       },
+       "recommended_queries_obj": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/RecommendedQueryReq"
+        }
+       }
+      },
+      "allOf": [
+       {
+        "required": [
+         "title",
+         "text"
+        ]
+       },
+       {
+        "oneOf": [
+         {
+          "required": [
+           "note_entities"
+          ]
+         },
+         {
+          "required": [
+           "context_entities"
+          ]
+         },
+         {
+          "allOf": [
+           {
+            "required": [
+             "note_entities"
+            ]
+           },
+           {
+            "required": [
+             "context_entities"
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "ResolveEntitiesParam": {
+      "type": "boolean",
+      "default": true,
+      "description": "Determines if the entity resolver should be used on the note title and text for automated tagging of entities."
+     },
+     "SourceId": {
+      "type": "string",
+      "description": "Entity id for note source.",
+      "example": "source:VKz42X"
+     },
+     "ReportId": {
+      "type": "string",
+      "description": "Report identity of analyst note, that is not published yet.",
+      "example": "report:V0BVfY"
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code"
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Trace ID for debugging"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ],
+      "example": {
+       "message": "Not Found",
+       "status_code": 404,
+       "trace_id": "29c09655-6aab-4e17-98a0-d132aa84acdc"
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/analyst-note-preview.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Analyst Note API",
+    "version": "1.0.1",
+    "description": "A Recorded Future API for creating, fetching, editing and deleting Analyst Notes.\n\nPlease read the [Recorded Future Docs](https://docs.recordedfuture.com/reference/analyst-note) before using this API.\n",
+    "x-rf-service-id": "service:analyst-note"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/analyst-note"
+    }
+   ],
+   "paths": {
+    "/preview": {
+     "post": {
+      "summary": "Preview an Analyst Note",
+      "tags": [
+       "Analyst Note"
+      ],
+      "description": "Preview a rendered analyst note with entity resolution without saving it.",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/PreviewRequest"
+         },
+         "example": {
+          "attributes": {
+           "title": "Note title",
+           "text": "Note text",
+           "note_entities": [
+            "source:roLoLW"
+           ]
+          },
+          "source": "source:VKz42X",
+          "tagged_text": false,
+          "escape_html": false,
+          "serialization": "full"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Note object as shown if published",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/PreviewResponse"
+          },
+          "example": {
+           "attributes": {
+            "title": "Note title",
+            "text": "Note text",
+            "note_entities": [
+             {
+              "id": "source:roLoLW",
+              "name": "BreachForums 2",
+              "type": "Source"
+             }
+            ]
+           },
+           "source": {
+            "id": "source:VKz42X",
+            "name": "Insikt Group",
+            "type": "Source"
+           }
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Invalid request",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "PreviewRequest": {
+      "type": "object",
+      "properties": {
+       "attributes": {
+        "$ref": "#/components/schemas/NoteRequestAttributes"
+       },
+       "source": {
+        "$ref": "#/components/schemas/SourceId"
+       },
+       "tagged_text": {
+        "$ref": "#/components/schemas/RequestTaggedTextParam"
+       },
+       "escape_html": {
+        "$ref": "#/components/schemas/EscapeHtmlParam"
+       },
+       "serialization": {
+        "$ref": "#/components/schemas/RequestSerializationParam"
+       },
+       "events": {
+        "$ref": "#/components/schemas/NoteEvents"
+       }
+      },
+      "required": [
+       "attributes"
+      ]
+     },
+     "PreviewResponse": {
+      "type": "object",
+      "properties": {
+       "attributes": {
+        "$ref": "#/components/schemas/NoteResponseAttributesMin"
+       },
+       "source": {
+        "$ref": "#/components/schemas/NoteEntity"
+       }
+      },
+      "required": [
+       "attributes",
+       "source"
+      ]
+     },
+     "NoteEntity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "name": {
+        "type": "string"
+       },
+       "type": {
+        "type": "string"
+       },
+       "description": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "id"
+      ]
+     },
+     "CyberAttackEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "adversary": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "capabilities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "operation": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "CyberAttackEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "CyberAttack"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/CyberAttackEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "Position": {
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number"
+       },
+       "latitude": {
+        "type": "number"
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ]
+     },
+     "ArmedConflictEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "attacker": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "ArmedConflictEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ArmedConflict"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ArmedConflictEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ArmsPurchaseSaleEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "arms_seller": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "arms_purchaser": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "ArmsPurchaseSaleEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ArmsPurchaseSale"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ArmsPurchaseSaleEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "CoupEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "CoupEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "Coup"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/CoupEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "DiseaseOutbreakEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "disease": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "facility": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "DiseaseOutbreakEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "DiseaseOutbreak"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/DiseaseOutbreakEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ElectionEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "ElectionEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "Election"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ElectionEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "EnvironmentalIssueEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "environmental_issue": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "environmental_issue"
+      ]
+     },
+     "EnvironmentalIssueEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "EnvironmentalIssue"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/EnvironmentalIssueEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ManMadeDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "facility": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "manmade_disaster": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "manmade_disaster",
+       "location"
+      ]
+     },
+     "ManMadeDisasterEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ManMadeDisaster"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ManMadeDisasterEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "MilitaryManeuverEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "actors": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "locations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "MilitaryManeuverEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "MilitaryManeuver"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/MilitaryManeuverEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NaturalDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "natural_disaster": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "natural_disaster",
+       "location"
+      ]
+     },
+     "NaturalDisasterEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "NaturalDisaster"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/NaturalDisasterEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NuclearMaterialTransactionEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "material": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location_origin": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location_destination": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "material"
+      ]
+     },
+     "NuclearMaterialTransactionEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "NuclearMaterialTransaction"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/NuclearMaterialTransactionEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PersonThreatEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "threatened": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "actor": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "threatened"
+      ]
+     },
+     "PersonThreatEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PersonThreat"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PersonThreatEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PoliticalEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "PoliticalEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PoliticalEvent"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PoliticalEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "RFEVEProtestEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "protest_target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "RFEVEProtestEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "RFEVEProtest"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/RFEVEProtestEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PublicSafetyWarningEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "PublicSafetyWarningEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PublicSafetyWarning"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PublicSafetyWarningEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "TerrorIncidentEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "locations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "TerrorIncidentEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "TerrorIncident"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/TerrorIncidentEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "RFEVEArmedAssaultEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "RFEVEArmedAssaultEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "RFEVEArmedAssault"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/RFEVEArmedAssaultEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "MalwareAnalysisEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "malware": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "attacker": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "ttp": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "exploit": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "hash": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "malware"
+      ]
+     },
+     "MalwareAnalysisEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "MalwareAnalysis"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/MalwareAnalysisEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NoteEvents": {
+      "type": "array",
+      "items": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/CyberAttackEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ArmedConflictEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ArmsPurchaseSaleEvent"
+        },
+        {
+         "$ref": "#/components/schemas/CoupEvent"
+        },
+        {
+         "$ref": "#/components/schemas/DiseaseOutbreakEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ElectionEvent"
+        },
+        {
+         "$ref": "#/components/schemas/EnvironmentalIssueEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ManMadeDisasterEvent"
+        },
+        {
+         "$ref": "#/components/schemas/MilitaryManeuverEvent"
+        },
+        {
+         "$ref": "#/components/schemas/NaturalDisasterEvent"
+        },
+        {
+         "$ref": "#/components/schemas/NuclearMaterialTransactionEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PersonThreatEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PoliticalEvent"
+        },
+        {
+         "$ref": "#/components/schemas/RFEVEProtestEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PublicSafetyWarningEvent"
+        },
+        {
+         "$ref": "#/components/schemas/TerrorIncidentEvent"
+        },
+        {
+         "$ref": "#/components/schemas/RFEVEArmedAssaultEvent"
+        },
+        {
+         "$ref": "#/components/schemas/MalwareAnalysisEvent"
+        }
+       ]
+      },
+      "examples": [
+       {
+        "type": "CyberAttack",
+        "attributes": {
+         "start": "2024-01-01T13:00:00Z",
+         "stop": "2024-01-02T13:00:00Z",
+         "adversary": [
+          {
+           "id": "Lwv8pC",
+           "type": "Organization",
+           "name": "Sandworm Team"
+          }
+         ],
+         "target": [
+          {
+           "id": "DmPaB",
+           "type": "Industry",
+           "name": "Energy and Natural Resources"
+          }
+         ],
+         "malicious_infrastructure": [
+          {
+           "id": "ip:185.220.101.58",
+           "type": "IpAddress",
+           "name": "185.220.101.58"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "RecommendedQueryReq": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "url": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "url:https://example.com/query"
+       }
+      },
+      "required": [
+       "title",
+       "url"
+      ]
+     },
+     "NoteRequestAttributes": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "text": {
+        "type": "string"
+       },
+       "note_entities": {
+        "type": "array",
+        "description": "Entity ids. Either Note entities or context entities must be specified. Each entity must exist as a note entity.",
+        "items": {
+         "type": "string"
+        }
+       },
+       "context_entities": {
+        "type": "array",
+        "description": "Entity ids. Context entities or note entities must be specified. Each entity must exist as a note entity.",
+        "items": {
+         "type": "string"
+        }
+       },
+       "topic": {
+        "type": "array",
+        "description": "Array of entity ids for the topics, see [list](https://docs.recordedfuture.com/reference/analyst-note-available-topics) of available ones for details.",
+        "items": {
+         "type": "string",
+         "example": "h4G-3N"
+        }
+       },
+       "labels": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "validation_urls": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "description": "Entity id"
+        }
+       },
+       "validated_on": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Date when analyst note was validated",
+        "example": "2025-03-21T12:00:00.000Z"
+       },
+       "detection_rules": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "description": "Entity id"
+        }
+       },
+       "recommended_queries_obj": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/RecommendedQueryReq"
+        }
+       }
+      },
+      "allOf": [
+       {
+        "required": [
+         "title",
+         "text"
+        ]
+       },
+       {
+        "oneOf": [
+         {
+          "required": [
+           "note_entities"
+          ]
+         },
+         {
+          "required": [
+           "context_entities"
+          ]
+         },
+         {
+          "allOf": [
+           {
+            "required": [
+             "note_entities"
+            ]
+           },
+           {
+            "required": [
+             "context_entities"
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "NoteResponseAttributesMin": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "text": {
+        "type": "string"
+       },
+       "note_entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "context_entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "topic": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "labels": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "validation_urls": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "detection_rules": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "validated_on": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Date when analyst note was validated",
+        "example": "2025-03-21T12:00:00.000Z"
+       }
+      }
+     },
+     "RequestTaggedTextParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if the `<entity></entity>` tags should be inline with entities in the note title and text."
+     },
+     "EscapeHtmlParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if HTML tags are escaped, applied only when `tagged_text = true`."
+     },
+     "RequestSerializationParam": {
+      "type": "string",
+      "enum": [
+       "id",
+       "min",
+       "full"
+      ],
+      "description": "Entity serialization level. When set to `id`, only the entity id will be included. Setting it to `min` leads to the id and name being included and setting it to `full` means that each entity will have the id, name, type and possibly a description included in the response.",
+      "default": "full"
+     },
+     "SourceId": {
+      "type": "string",
+      "description": "Entity id for note source.",
+      "example": "source:VKz42X"
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code"
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Trace ID for debugging"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ],
+      "example": {
+       "message": "Not Found",
+       "status_code": 404,
+       "trace_id": "29c09655-6aab-4e17-98a0-d132aa84acdc"
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/analyst-note-publish.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Analyst Note API",
+    "version": "1.0.1",
+    "description": "A Recorded Future API for creating, fetching, editing and deleting Analyst Notes.\n\nPlease read the [Recorded Future Docs](https://docs.recordedfuture.com/reference/analyst-note) before using this API.\n",
+    "x-rf-service-id": "service:analyst-note"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/analyst-note"
+    }
+   ],
+   "paths": {
+    "/publish": {
+     "post": {
+      "summary": "Publish an Analyst Note",
+      "tags": [
+       "Analyst Note"
+      ],
+      "description": "Publish an analyst note, making it visible to your organization.",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/PublishRequest"
+         },
+         "example": {
+          "attributes": {
+           "title": "Note title",
+           "text": "Note text",
+           "note_entities": [
+            "source:roLoLW"
+           ]
+          },
+          "source": "source:VKz42X",
+          "tagged_text": false,
+          "escape_html": false,
+          "serialization": "full",
+          "resolve_entities": true
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Note id of the published note.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/PublishResponse"
+          },
+          "example": {
+           "note_id": "doc:vqqO35"
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Invalid request",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "PublishRequest": {
+      "type": "object",
+      "properties": {
+       "attributes": {
+        "$ref": "#/components/schemas/NoteRequestAttributes"
+       },
+       "source": {
+        "$ref": "#/components/schemas/SourceId"
+       },
+       "tagged_text": {
+        "$ref": "#/components/schemas/RequestTaggedTextParam"
+       },
+       "escape_html": {
+        "$ref": "#/components/schemas/EscapeHtmlParam"
+       },
+       "serialization": {
+        "$ref": "#/components/schemas/RequestSerializationParam"
+       },
+       "note_id": {
+        "$ref": "#/components/schemas/NoteId"
+       },
+       "resolve_entities": {
+        "$ref": "#/components/schemas/ResolveEntitiesParam"
+       },
+       "attachment_content_details": {
+        "$ref": "#/components/schemas/RequestAttachment"
+       },
+       "events": {
+        "$ref": "#/components/schemas/NoteEvents"
+       }
+      },
+      "required": [
+       "attributes",
+       "source"
+      ]
+     },
+     "PublishResponse": {
+      "type": "object",
+      "properties": {
+       "note_id": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "note_id"
+      ]
+     },
+     "NoteEntity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "name": {
+        "type": "string"
+       },
+       "type": {
+        "type": "string"
+       },
+       "description": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "id"
+      ]
+     },
+     "CyberAttackEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "adversary": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "capabilities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "operation": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "CyberAttackEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "CyberAttack"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/CyberAttackEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "Position": {
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number"
+       },
+       "latitude": {
+        "type": "number"
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ]
+     },
+     "ArmedConflictEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "attacker": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "ArmedConflictEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ArmedConflict"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ArmedConflictEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ArmsPurchaseSaleEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "arms_seller": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "arms_purchaser": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "ArmsPurchaseSaleEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ArmsPurchaseSale"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ArmsPurchaseSaleEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "CoupEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "CoupEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "Coup"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/CoupEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "DiseaseOutbreakEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "disease": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "facility": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "DiseaseOutbreakEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "DiseaseOutbreak"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/DiseaseOutbreakEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ElectionEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "ElectionEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "Election"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ElectionEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "EnvironmentalIssueEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "environmental_issue": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "environmental_issue"
+      ]
+     },
+     "EnvironmentalIssueEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "EnvironmentalIssue"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/EnvironmentalIssueEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ManMadeDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "facility": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "manmade_disaster": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "manmade_disaster",
+       "location"
+      ]
+     },
+     "ManMadeDisasterEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ManMadeDisaster"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ManMadeDisasterEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "MilitaryManeuverEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "actors": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "locations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "MilitaryManeuverEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "MilitaryManeuver"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/MilitaryManeuverEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NaturalDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "natural_disaster": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "natural_disaster",
+       "location"
+      ]
+     },
+     "NaturalDisasterEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "NaturalDisaster"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/NaturalDisasterEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NuclearMaterialTransactionEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "material": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location_origin": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location_destination": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "material"
+      ]
+     },
+     "NuclearMaterialTransactionEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "NuclearMaterialTransaction"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/NuclearMaterialTransactionEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PersonThreatEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "threatened": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "actor": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "threatened"
+      ]
+     },
+     "PersonThreatEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PersonThreat"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PersonThreatEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PoliticalEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "PoliticalEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PoliticalEvent"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PoliticalEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "RFEVEProtestEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "protest_target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "RFEVEProtestEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "RFEVEProtest"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/RFEVEProtestEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PublicSafetyWarningEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "PublicSafetyWarningEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PublicSafetyWarning"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PublicSafetyWarningEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "TerrorIncidentEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "locations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "TerrorIncidentEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "TerrorIncident"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/TerrorIncidentEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "RFEVEArmedAssaultEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "RFEVEArmedAssaultEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "RFEVEArmedAssault"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/RFEVEArmedAssaultEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "MalwareAnalysisEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "malware": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "attacker": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "ttp": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "exploit": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "hash": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "malware"
+      ]
+     },
+     "MalwareAnalysisEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "MalwareAnalysis"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/MalwareAnalysisEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NoteEvents": {
+      "type": "array",
+      "items": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/CyberAttackEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ArmedConflictEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ArmsPurchaseSaleEvent"
+        },
+        {
+         "$ref": "#/components/schemas/CoupEvent"
+        },
+        {
+         "$ref": "#/components/schemas/DiseaseOutbreakEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ElectionEvent"
+        },
+        {
+         "$ref": "#/components/schemas/EnvironmentalIssueEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ManMadeDisasterEvent"
+        },
+        {
+         "$ref": "#/components/schemas/MilitaryManeuverEvent"
+        },
+        {
+         "$ref": "#/components/schemas/NaturalDisasterEvent"
+        },
+        {
+         "$ref": "#/components/schemas/NuclearMaterialTransactionEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PersonThreatEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PoliticalEvent"
+        },
+        {
+         "$ref": "#/components/schemas/RFEVEProtestEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PublicSafetyWarningEvent"
+        },
+        {
+         "$ref": "#/components/schemas/TerrorIncidentEvent"
+        },
+        {
+         "$ref": "#/components/schemas/RFEVEArmedAssaultEvent"
+        },
+        {
+         "$ref": "#/components/schemas/MalwareAnalysisEvent"
+        }
+       ]
+      },
+      "examples": [
+       {
+        "type": "CyberAttack",
+        "attributes": {
+         "start": "2024-01-01T13:00:00Z",
+         "stop": "2024-01-02T13:00:00Z",
+         "adversary": [
+          {
+           "id": "Lwv8pC",
+           "type": "Organization",
+           "name": "Sandworm Team"
+          }
+         ],
+         "target": [
+          {
+           "id": "DmPaB",
+           "type": "Industry",
+           "name": "Energy and Natural Resources"
+          }
+         ],
+         "malicious_infrastructure": [
+          {
+           "id": "ip:185.220.101.58",
+           "type": "IpAddress",
+           "name": "185.220.101.58"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "RecommendedQueryReq": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "url": {
+        "type": "string",
+        "description": "Entity id",
+        "example": "url:https://example.com/query"
+       }
+      },
+      "required": [
+       "title",
+       "url"
+      ]
+     },
+     "NoteRequestAttributes": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "text": {
+        "type": "string"
+       },
+       "note_entities": {
+        "type": "array",
+        "description": "Entity ids. Either Note entities or context entities must be specified. Each entity must exist as a note entity.",
+        "items": {
+         "type": "string"
+        }
+       },
+       "context_entities": {
+        "type": "array",
+        "description": "Entity ids. Context entities or note entities must be specified. Each entity must exist as a note entity.",
+        "items": {
+         "type": "string"
+        }
+       },
+       "topic": {
+        "type": "array",
+        "description": "Array of entity ids for the topics, see [list](https://docs.recordedfuture.com/reference/analyst-note-available-topics) of available ones for details.",
+        "items": {
+         "type": "string",
+         "example": "h4G-3N"
+        }
+       },
+       "labels": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "validation_urls": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "description": "Entity id"
+        }
+       },
+       "validated_on": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Date when analyst note was validated",
+        "example": "2025-03-21T12:00:00.000Z"
+       },
+       "detection_rules": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "description": "Entity id"
+        }
+       },
+       "recommended_queries_obj": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/RecommendedQueryReq"
+        }
+       }
+      },
+      "allOf": [
+       {
+        "required": [
+         "title",
+         "text"
+        ]
+       },
+       {
+        "oneOf": [
+         {
+          "required": [
+           "note_entities"
+          ]
+         },
+         {
+          "required": [
+           "context_entities"
+          ]
+         },
+         {
+          "allOf": [
+           {
+            "required": [
+             "note_entities"
+            ]
+           },
+           {
+            "required": [
+             "context_entities"
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "RequestAttachment": {
+      "type": "object",
+      "description": "Attachments are only allowed for Recorded Future notes sources",
+      "properties": {
+       "content_type": {
+        "type": "string",
+        "example": "text/plain"
+       },
+       "encoding": {
+        "type": "string",
+        "example": "utf-8"
+       },
+       "content": {
+        "type": "string",
+        "description": "Base64 encoded file content"
+       },
+       "filename": {
+        "type": "string",
+        "description": "content file name"
+       }
+      },
+      "required": [
+       "content_type",
+       "encoding",
+       "content",
+       "filename"
+      ]
+     },
+     "ResolveEntitiesParam": {
+      "type": "boolean",
+      "default": true,
+      "description": "Determines if the entity resolver should be used on the note title and text for automated tagging of entities."
+     },
+     "RequestTaggedTextParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if the `<entity></entity>` tags should be inline with entities in the note title and text."
+     },
+     "EscapeHtmlParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if HTML tags are escaped, applied only when `tagged_text = true`."
+     },
+     "RequestSerializationParam": {
+      "type": "string",
+      "enum": [
+       "id",
+       "min",
+       "full"
+      ],
+      "description": "Entity serialization level. When set to `id`, only the entity id will be included. Setting it to `min` leads to the id and name being included and setting it to `full` means that each entity will have the id, name, type and possibly a description included in the response.",
+      "default": "full"
+     },
+     "SourceId": {
+      "type": "string",
+      "description": "Entity id for note source.",
+      "example": "source:VKz42X"
+     },
+     "NoteId": {
+      "type": "string",
+      "description": "The id of an existing note to edit.",
+      "example": "doc:vvpzg4"
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code"
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Trace ID for debugging"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ],
+      "example": {
+       "message": "Not Found",
+       "status_code": 404,
+       "trace_id": "29c09655-6aab-4e17-98a0-d132aa84acdc"
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/analyst-note-attachment.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Analyst Note API",
+    "version": "1.0.1",
+    "description": "A Recorded Future API for creating, fetching, editing and deleting Analyst Notes.\n\nPlease read the [Recorded Future Docs](https://docs.recordedfuture.com/reference/analyst-note) before using this API.\n",
+    "x-rf-service-id": "service:analyst-note"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/analyst-note"
+    }
+   ],
+   "paths": {
+    "/attachment/{note_id}": {
+     "get": {
+      "summary": "Lookup an attachment of a specific Analyst Note",
+      "tags": [
+       "Analyst Note"
+      ],
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/NoteId"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Binary data of the note attachment",
+        "content": {
+         "application/octet-stream": {
+          "schema": {
+           "$ref": "#/components/schemas/BinaryResponse"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "Resource not found",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      },
+      "description": "Download the binary attachment file associated with an analyst note."
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "NoteId": {
+      "in": "path",
+      "name": "note_id",
+      "required": true,
+      "schema": {
+       "type": "string"
+      },
+      "description": "Note id",
+      "example": "doc:wB0Rhk"
+     }
+    },
+    "schemas": {
+     "BinaryResponse": {
+      "type": "string",
+      "format": "binary"
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code"
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Trace ID for debugging"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ],
+      "example": {
+       "message": "Not Found",
+       "status_code": 404,
+       "trace_id": "29c09655-6aab-4e17-98a0-d132aa84acdc"
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/analyst-note-export.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Analyst Note API",
+    "version": "1.0.1",
+    "description": "A Recorded Future API for creating, fetching, editing and deleting Analyst Notes.\n\nPlease read the [Recorded Future Docs](https://docs.recordedfuture.com/reference/analyst-note) before using this API.\n",
+    "x-rf-service-id": "service:analyst-note"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/analyst-note"
+    }
+   ],
+   "paths": {
+    "/export/{format}/{note_id}": {
+     "get": {
+      "summary": "Return Analyst Note as pdf or html file",
+      "tags": [
+       "Analyst Note"
+      ],
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/Format"
+       },
+       {
+        "$ref": "#/components/parameters/NoteId"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Binary file data",
+        "content": {
+         "application/octet-stream": {
+          "schema": {
+           "$ref": "#/components/schemas/BinaryResponse"
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "Resource not found",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      },
+      "description": "Export an analyst note as a rendered PDF or HTML file."
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "NoteId": {
+      "in": "path",
+      "name": "note_id",
+      "required": true,
+      "schema": {
+       "type": "string"
+      },
+      "description": "Note id",
+      "example": "doc:wB0Rhk"
+     },
+     "Format": {
+      "in": "path",
+      "name": "format",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "enum": [
+        "html",
+        "pdf"
+       ]
+      },
+      "description": "export format",
+      "example": "pdf"
+     }
+    },
+    "schemas": {
+     "BinaryResponse": {
+      "type": "string",
+      "format": "binary"
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code"
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Trace ID for debugging"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ],
+      "example": {
+       "message": "Not Found",
+       "status_code": 404,
+       "trace_id": "29c09655-6aab-4e17-98a0-d132aa84acdc"
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/analyst-note-lookup.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Analyst Note API",
+    "version": "1.0.1",
+    "description": "A Recorded Future API for creating, fetching, editing and deleting Analyst Notes.\n\nPlease read the [Recorded Future Docs](https://docs.recordedfuture.com/reference/analyst-note) before using this API.\n",
+    "x-rf-service-id": "service:analyst-note"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/analyst-note"
+    }
+   ],
+   "paths": {
+    "/lookup/{note_id}": {
+     "post": {
+      "summary": "Lookup a specific Analyst Note",
+      "tags": [
+       "Analyst Note"
+      ],
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/NoteId"
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/LookupRequest"
+         },
+         "example": {
+          "tagged_text": false,
+          "escape_html": false,
+          "serialization": "full"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "Detailed object of the note.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/LookupResponse"
+          },
+          "example": {
+           "attributes": {
+            "title": "Note title",
+            "text": "Note text",
+            "published": "2024-01-01T13:00:00.000Z",
+            "note_entities": [
+             {
+              "id": "B_FDB",
+              "name": "Egypt",
+              "type": "Country"
+             }
+            ],
+            "topic": [
+             {
+              "id": "h4G-3N",
+              "name": "Geopolitical Validated Event",
+              "type": "Topic"
+             }
+            ],
+            "validation_urls": [
+             {
+              "id": "url:https://www.egypttoday.com/Article/3/130398/Egypt-s-unemployment-rate-reaches-record-low-of-6-9",
+              "name": "https://www.egypttoday.com/Article/3/130398/Egypt-s-unemployment-rate-reaches-record-low-of-6-9",
+              "type": "URL"
+             }
+            ]
+           },
+           "id": "doc:vvpzg4",
+           "source": {
+            "id": "source:VKz42X",
+            "name": "Insikt Group",
+            "type": "Source"
+           }
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "Resource not found",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ErrorResponse"
+          }
+         }
+        }
+       }
+      },
+      "description": "Retrieve a specific analyst note by its ID with configurable serialization level."
+     }
+    }
+   },
+   "components": {
+    "parameters": {
+     "NoteId": {
+      "in": "path",
+      "name": "note_id",
+      "required": true,
+      "schema": {
+       "type": "string"
+      },
+      "description": "Note id",
+      "example": "doc:wB0Rhk"
+     }
+    },
+    "schemas": {
+     "LookupRequest": {
+      "type": "object",
+      "properties": {
+       "tagged_text": {
+        "$ref": "#/components/schemas/RequestTaggedTextParam"
+       },
+       "escape_html": {
+        "$ref": "#/components/schemas/EscapeHtmlParam"
+       },
+       "serialization": {
+        "$ref": "#/components/schemas/RequestSerializationParam"
+       }
+      }
+     },
+     "LookupResponse": {
+      "type": "object",
+      "properties": {
+       "attributes": {
+        "$ref": "#/components/schemas/NoteLookupResponseAttributes"
+       },
+       "id": {
+        "type": "string",
+        "description": "Note id"
+       },
+       "source": {
+        "$ref": "#/components/schemas/NoteEntity"
+       }
+      },
+      "required": [
+       "attributes",
+       "id",
+       "source"
+      ]
+     },
+     "DiamondModel": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "capabilities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "adversary": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "example": {
+       "start": "2024-01-01T13:00:00Z",
+       "stop": "2024-01-02T13:00:00Z",
+       "adversary": [
+        {
+         "id": "Lwv8pC",
+         "type": "Organization",
+         "name": "Sandworm Team"
+        }
+       ],
+       "target": [
+        {
+         "id": "DmPaB",
+         "type": "Industry",
+         "name": "Energy and Natural Resources"
+        }
+       ],
+       "malicious_infrastructure": [
+        {
+         "id": "ip:185.220.101.58",
+         "type": "IpAddress",
+         "name": "185.220.101.58"
+        }
+       ]
+      }
+     },
+     "NoteEntity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "name": {
+        "type": "string"
+       },
+       "type": {
+        "type": "string"
+       },
+       "description": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "id"
+      ]
+     },
+     "CyberAttackEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "adversary": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "capabilities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "operation": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "CyberAttackEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "CyberAttack"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/CyberAttackEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "Position": {
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number"
+       },
+       "latitude": {
+        "type": "number"
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ]
+     },
+     "ArmedConflictEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "attacker": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "ArmedConflictEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ArmedConflict"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ArmedConflictEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ArmsPurchaseSaleEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "arms_seller": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "arms_purchaser": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "ArmsPurchaseSaleEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ArmsPurchaseSale"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ArmsPurchaseSaleEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "CoupEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "CoupEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "Coup"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/CoupEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "DiseaseOutbreakEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "disease": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "facility": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "DiseaseOutbreakEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "DiseaseOutbreak"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/DiseaseOutbreakEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ElectionEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "ElectionEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "Election"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ElectionEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "EnvironmentalIssueEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "environmental_issue": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "environmental_issue"
+      ]
+     },
+     "EnvironmentalIssueEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "EnvironmentalIssue"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/EnvironmentalIssueEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "ManMadeDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "facility": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "manmade_disaster": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "manmade_disaster",
+       "location"
+      ]
+     },
+     "ManMadeDisasterEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "ManMadeDisaster"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ManMadeDisasterEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "MilitaryManeuverEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "actors": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "locations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "MilitaryManeuverEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "MilitaryManeuver"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/MilitaryManeuverEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NaturalDisasterEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "natural_disaster": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "natural_disaster",
+       "location"
+      ]
+     },
+     "NaturalDisasterEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "NaturalDisaster"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/NaturalDisasterEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NuclearMaterialTransactionEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "material": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location_origin": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "location_destination": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "material"
+      ]
+     },
+     "NuclearMaterialTransactionEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "NuclearMaterialTransaction"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/NuclearMaterialTransactionEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PersonThreatEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "threatened": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "actor": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "threatened"
+      ]
+     },
+     "PersonThreatEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PersonThreat"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PersonThreatEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PoliticalEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "PoliticalEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PoliticalEvent"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PoliticalEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "RFEVEProtestEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "protest_target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop"
+      ]
+     },
+     "RFEVEProtestEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "RFEVEProtest"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/RFEVEProtestEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "PublicSafetyWarningEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "PublicSafetyWarningEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "PublicSafetyWarning"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/PublicSafetyWarningEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "TerrorIncidentEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "locations": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "TerrorIncidentEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "TerrorIncident"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/TerrorIncidentEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "RFEVEArmedAssaultEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "location": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "event_positions": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Position"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "location"
+      ]
+     },
+     "RFEVEArmedAssaultEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "RFEVEArmedAssault"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/RFEVEArmedAssaultEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "MalwareAnalysisEventAttributes": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "malware": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "attacker": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "ttp": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "exploit": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "hash": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "start",
+       "stop",
+       "malware"
+      ]
+     },
+     "MalwareAnalysisEvent": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "MalwareAnalysis"
+        ]
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/MalwareAnalysisEventAttributes"
+       }
+      },
+      "required": [
+       "type",
+       "attributes"
+      ]
+     },
+     "NoteEvents": {
+      "type": "array",
+      "items": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/CyberAttackEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ArmedConflictEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ArmsPurchaseSaleEvent"
+        },
+        {
+         "$ref": "#/components/schemas/CoupEvent"
+        },
+        {
+         "$ref": "#/components/schemas/DiseaseOutbreakEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ElectionEvent"
+        },
+        {
+         "$ref": "#/components/schemas/EnvironmentalIssueEvent"
+        },
+        {
+         "$ref": "#/components/schemas/ManMadeDisasterEvent"
+        },
+        {
+         "$ref": "#/components/schemas/MilitaryManeuverEvent"
+        },
+        {
+         "$ref": "#/components/schemas/NaturalDisasterEvent"
+        },
+        {
+         "$ref": "#/components/schemas/NuclearMaterialTransactionEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PersonThreatEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PoliticalEvent"
+        },
+        {
+         "$ref": "#/components/schemas/RFEVEProtestEvent"
+        },
+        {
+         "$ref": "#/components/schemas/PublicSafetyWarningEvent"
+        },
+        {
+         "$ref": "#/components/schemas/TerrorIncidentEvent"
+        },
+        {
+         "$ref": "#/components/schemas/RFEVEArmedAssaultEvent"
+        },
+        {
+         "$ref": "#/components/schemas/MalwareAnalysisEvent"
+        }
+       ]
+      },
+      "examples": [
+       {
+        "type": "CyberAttack",
+        "attributes": {
+         "start": "2024-01-01T13:00:00Z",
+         "stop": "2024-01-02T13:00:00Z",
+         "adversary": [
+          {
+           "id": "Lwv8pC",
+           "type": "Organization",
+           "name": "Sandworm Team"
+          }
+         ],
+         "target": [
+          {
+           "id": "DmPaB",
+           "type": "Industry",
+           "name": "Energy and Natural Resources"
+          }
+         ],
+         "malicious_infrastructure": [
+          {
+           "id": "ip:185.220.101.58",
+           "type": "IpAddress",
+           "name": "185.220.101.58"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "Query": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "url": {
+        "$ref": "#/components/schemas/NoteEntity"
+       }
+      }
+     },
+     "NoteLookupResponseAttributes": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "text": {
+        "type": "string"
+       },
+       "published": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "events": {
+        "$ref": "#/components/schemas/NoteEvents"
+       },
+       "note_entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "context_entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "topic": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "labels": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "validation_urls": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "validated_on": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Date when analyst note was validated",
+        "example": "2025-03-21T12:00:00.000Z"
+       },
+       "diamond_model": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/DiamondModel"
+        }
+       },
+       "header_image": {
+        "$ref": "#/components/schemas/NoteEntity"
+       },
+       "recommended_queries": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Query"
+        }
+       },
+       "attachment": {
+        "type": "string",
+        "description": "attachment file name"
+       },
+       "detection_rules": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "title",
+       "text",
+       "published"
+      ]
+     },
+     "RequestTaggedTextParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if the `<entity></entity>` tags should be inline with entities in the note title and text."
+     },
+     "EscapeHtmlParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if HTML tags are escaped, applied only when `tagged_text = true`."
+     },
+     "RequestSerializationParam": {
+      "type": "string",
+      "enum": [
+       "id",
+       "min",
+       "full"
+      ],
+      "description": "Entity serialization level. When set to `id`, only the entity id will be included. Setting it to `min` leads to the id and name being included and setting it to `full` means that each entity will have the id, name, type and possibly a description included in the response.",
+      "default": "full"
+     },
+     "ErrorResponse": {
+      "type": "object",
+      "properties": {
+       "message": {
+        "type": "string",
+        "description": "Human-readable error message"
+       },
+       "status_code": {
+        "type": "integer",
+        "description": "HTTP status code"
+       },
+       "trace_id": {
+        "type": "string",
+        "description": "Trace ID for debugging"
+       }
+      },
+      "required": [
+       "message",
+       "status_code",
+       "trace_id"
+      ],
+      "example": {
+       "message": "Not Found",
+       "status_code": 404,
+       "trace_id": "29c09655-6aab-4e17-98a0-d132aa84acdc"
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/analyst-note-search.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "Analyst Note API",
+    "version": "1.0.1",
+    "description": "A Recorded Future API for creating, fetching, editing and deleting Analyst Notes.\n\nPlease read the [Recorded Future Docs](https://docs.recordedfuture.com/reference/analyst-note) before using this API.\n",
+    "x-rf-service-id": "service:analyst-note"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/analyst-note"
+    }
+   ],
+   "paths": {
+    "/search": {
+     "post": {
+      "summary": "Search for Analyst Notes",
+      "tags": [
+       "Analyst Note"
+      ],
+      "description": "Search published analyst notes from your enterprise and Insikt Group.",
+      "security": [
+       {
+        "ApiKeyAuth": []
+       },
+       {
+        "idp": []
+       }
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/SearchRequest"
+         },
+         "example": {
+          "published": "-2d",
+          "topic": "h4G-3N",
+          "limit": 1,
+          "tagged_text": false,
+          "escape_html": false,
+          "serialization": "full"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "A list of notes matching the search criteria.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/SearchResponse"
+          },
+          "example": {
+           "data": [
+            {
+             "attributes": {
+              "title": "Note title",
+              "text": "Note text",
+              "published": "2024-01-01T13:00:00.000Z",
+              "note_entities": [
+               {
+                "id": "B_FDB",
+                "name": "Egypt",
+                "type": "Country"
+               }
+              ],
+              "topic": [
+               {
+                "id": "h4G-3N",
+                "name": "Geopolitical Validated Event",
+                "type": "Topic"
+               }
+              ],
+              "validation_urls": [
+               {
+                "id": "url:https://www.egypttoday.com/Article/3/130398/Egypt-s-unemployment-rate-reaches-record-low-of-6-9",
+                "name": "https://www.egypttoday.com/Article/3/130398/Egypt-s-unemployment-rate-reaches-record-low-of-6-9",
+                "type": "URL"
+               }
+              ]
+             },
+             "id": "doc:vvpzg4",
+             "source": {
+              "id": "source:VKz42X",
+              "name": "Insikt Group",
+              "type": "Source"
+             }
+            }
+           ],
+           "next_offset": "eyJvZmZzZXQiOlsxNzI3MDYzODQ0MjY0LCJIRkFvQUFBQUFRQyJdfQ==",
+           "counts": {
+            "returned": 1,
+            "total": 10
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "SearchRequest": {
+      "type": "object",
+      "properties": {
+       "published": {
+        "type": "string",
+        "description": "Notes published after this date, absolute like 2024-01-01 or relative like -3d."
+       },
+       "entity": {
+        "type": "string",
+        "description": "Entity id"
+       },
+       "topic": {
+        "type": "string",
+        "description": "Topic entity id, see [list](https://docs.recordedfuture.com/reference/analyst-note-available-topics) of available ones for details.",
+        "example": "h4G-3N"
+       },
+       "title": {
+        "type": "string"
+       },
+       "label": {
+        "type": "string"
+       },
+       "source": {
+        "$ref": "#/components/schemas/SourceId"
+       },
+       "tagged_text": {
+        "$ref": "#/components/schemas/RequestTaggedTextParam"
+       },
+       "escape_html": {
+        "$ref": "#/components/schemas/EscapeHtmlParam"
+       },
+       "serialization": {
+        "$ref": "#/components/schemas/RequestSerializationParam"
+       },
+       "limit": {
+        "type": "integer",
+        "default": 10,
+        "description": "Maximum number of references from which notes are fetched, at most 1000."
+       },
+       "from": {
+        "type": "string",
+        "description": "Offset the result based on next_offset from a previous search response"
+       },
+       "enterprise_only": {
+        "type": "boolean",
+        "description": "When true, restricts results to notes authored by your organization (excludes Insikt Group notes).",
+        "default": false
+       }
+      }
+     },
+     "SearchResponse": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "attributes": {
+           "$ref": "#/components/schemas/NoteSearchResponseAttributes"
+          },
+          "id": {
+           "type": "string",
+           "description": "Note id"
+          },
+          "source": {
+           "$ref": "#/components/schemas/NoteEntity"
+          }
+         },
+         "required": [
+          "id",
+          "source"
+         ]
+        }
+       },
+       "next_offset": {
+        "type": "string"
+       },
+       "counts": {
+        "type": "object",
+        "properties": {
+         "returned": {
+          "type": "integer"
+         },
+         "total": {
+          "type": "integer"
+         }
+        },
+        "required": [
+         "returned",
+         "total"
+        ]
+       }
+      },
+      "required": [
+       "data",
+       "counts"
+      ]
+     },
+     "DiamondModel": {
+      "type": "object",
+      "properties": {
+       "start": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "stop": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "malicious_infrastructure": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "capabilities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "adversary": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "target": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "example": {
+       "start": "2024-01-01T13:00:00Z",
+       "stop": "2024-01-02T13:00:00Z",
+       "adversary": [
+        {
+         "id": "Lwv8pC",
+         "type": "Organization",
+         "name": "Sandworm Team"
+        }
+       ],
+       "target": [
+        {
+         "id": "DmPaB",
+         "type": "Industry",
+         "name": "Energy and Natural Resources"
+        }
+       ],
+       "malicious_infrastructure": [
+        {
+         "id": "ip:185.220.101.58",
+         "type": "IpAddress",
+         "name": "185.220.101.58"
+        }
+       ]
+      }
+     },
+     "NoteEntity": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "name": {
+        "type": "string"
+       },
+       "type": {
+        "type": "string"
+       },
+       "description": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "id"
+      ]
+     },
+     "Query": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "url": {
+        "$ref": "#/components/schemas/NoteEntity"
+       }
+      }
+     },
+     "NoteSearchResponseAttributes": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string"
+       },
+       "text": {
+        "type": "string"
+       },
+       "published": {
+        "type": "string",
+        "format": "date-time"
+       },
+       "note_entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "context_entities": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "topic": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "labels": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "validation_urls": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       },
+       "validated_on": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Date when analyst note was validated",
+        "example": "2025-03-21T12:00:00.000Z"
+       },
+       "diamond_model": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/DiamondModel"
+        }
+       },
+       "header_image": {
+        "$ref": "#/components/schemas/NoteEntity"
+       },
+       "recommended_queries": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Query"
+        }
+       },
+       "attachment": {
+        "type": "string",
+        "description": "attachment file name"
+       },
+       "detection_rules": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/NoteEntity"
+        }
+       }
+      },
+      "required": [
+       "title",
+       "text",
+       "published"
+      ]
+     },
+     "RequestTaggedTextParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if the `<entity></entity>` tags should be inline with entities in the note title and text."
+     },
+     "EscapeHtmlParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if HTML tags are escaped, applied only when `tagged_text = true`."
+     },
+     "RequestSerializationParam": {
+      "type": "string",
+      "enum": [
+       "id",
+       "min",
+       "full"
+      ],
+      "description": "Entity serialization level. When set to `id`, only the entity id will be included. Setting it to `min` leads to the id and name being included and setting it to `full` means that each entity will have the id, name, type and possibly a description included in the response.",
+      "default": "full"
+     },
+     "SourceId": {
+      "type": "string",
+      "description": "Entity id for note source.",
+      "example": "source:VKz42X"
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "proxy-enabled": false
+   }
+  }
+ }
+]

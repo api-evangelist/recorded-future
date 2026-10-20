@@ -1,0 +1,549 @@
+openapi: 3.0.3
+info:
+  title: Detection Rule API
+  description: 'The Detection Rule API allows clients to programmatically search for and download YARA, Sigma, and Snort rules
+
+    authored by Recorded Future''s Insikt Group.
+
+
+    Please read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/5265933996819-Detection-Rule-API) before using this API.
+
+    '
+  version: 0.0.8
+  x-rf-service-id: service:detection-rule
+servers:
+- url: https://api.recordedfuture.com/detection-rule
+paths:
+  /search:
+    post:
+      summary: Search Detection Rules
+      description: Search Insikt Group detection rules with deployable YARA, Sigma, and Snort source code.
+      security:
+      - key: []
+      - idp: []
+      tags:
+      - Detection Rules
+      servers:
+      - url: /detection-rule
+        x-internal: false
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filter:
+                  $ref: '#/components/schemas/DetectionRuleFilter'
+                tagged_entities:
+                  type: boolean
+                  default: false
+                  description: If set to true, the entity ID of tagged entities in the title and body of the Insikt Note associated with the detection rule will be included.
+                limit:
+                  type: integer
+                  format: int32
+                  minimum: 1
+                  default: 10
+                  description: Sets the limit of total number of rules that will be returned in the result set. If the search has more results than the specified limit, the `next_offset` value in the response can be used in the `offset` value of the next request to get the next set of results.
+                offset:
+                  type: string
+                  description: This value, if specified with the `next_offset` value of a prior result, will indicate where to start showing results from. To see the first set of results of the search, this parameter should be omitted.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetectionRuleResult'
+              example:
+                count: 3
+                total_count: 1880
+                result:
+                - id: doc:oJeqDP
+                  type: yara
+                  title: Hunting NewWave Ransomware
+                  description: 'Insikt Group analyzed NewWave ransomware to create the attached YARA rule for the dropper and the extracted ransomware file. When the dropper file is unzipped, it extracts 4 binaries, 3 of which are legitimate files: one is 7zip, one is a legitimate copy of Everything.exe, and one is Everything32.dll. The final extracted file, Everything64.dll, is a password-protected zip file that contains 5 malicious files. Two legitimate files, sdel.exe and sdel64.exe are included; the other 3 include 2 configuration-related files (Everything.ini and Everything2.ini) and one executable file, encrypt.exe which is responsible for the ransomware-related behavior. Sdel.exe and sdel64.exe are associated with the Windows utility Sdelete which permits a user to delete files and directories.
+
+
+                    At a high level, the ransomware has the following functionalities, which include fairly extensive measures to ensure programs, services and Windows configurations that would possibly enable recovery are shut down or disabled:
+
+                    - Collects system information, including Windows version, hardware information such as available memory, number of cores, user information and places it in a file C:\\temp\session.tmp and another file C:\\temp\hashlist containing all MD5 hashes of files the malware encrypts
+
+                    - Modifies IEFO debugger key for several programs, including Everything.exe, Task Manager, and Task Kill in order to prevent them from running. Several of these programs may allow the victim to stop the ransomware from executing.
+
+                    - Modifies power settings using Powercfg.exe, and registry setting modifications, including disabling hibernation, to prevent the victim from shutting down the machine or logging off
+
+                    - Whitelists specific processes such as cmd.exe, LogonUI.exe, smss.exe, winlogon.exe
+
+                    - Kills system services including WerSvc, BITS, DiagTrack and dmwappushservice
+
+                    - Kills processes such as SearchIndexer.exe, SearchApp.exe, wsqmcons.exe
+
+                    - Disables telemetry via the registry key SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection and “AllowTelemetry” subkey
+
+                    - Modifies boot policy using bcdedit.exe /set {default} bootstatuspolicy ignoreallfailures and bcdedit.exe /set {default} recoveryenabled no and deletes system backup files using wbadmin.exe DELETE SYSTEMBACKUP and wbadmin.exe delete catalog -quiet to make recovery more challenging and prevent recovery mode from being used
+
+                    - Loads hidden partitions by attempting to mount drives lettered A:\\ to Z:\\
+
+                    - Automatically elevates permissions via UAC bypass, then does process injection into explorer.exe
+
+                    - The ransomware drops a note in the C:\ directory named “How-to-decrypt.txt” with instructions for the victim. The malware opens notepad.exe, displaying the ransom note.
+
+                    - Accepts parameters for verbose logging, process injection, and network functionality'
+                  created: '2022-09-27T15:27:18.379Z'
+                  updated: '2022-09-27T15:29:36.873Z'
+                  rules:
+                  - entities:
+                    - id: J0Nl-p
+                      type: MalwareCategory
+                      name: Ransomware
+                    - id: oJZAhV
+                      type: Malware
+                      name: NewWave Ransomware
+                    content: "import \"pe\"\n\n\nrule MAL_NewWave_ransomware_dropper\n{\n    meta:\n        author = \"LKAYE, Insikt Group, Recorded Future\"\n        date = \"2022-09-20\"\n        description = \"Rule for New Wave Ransomware dropper\"\n        version = \"1.0\"\n\n    strings:\n        $s1 = \"RunProgram=\\\"hidcon:7za.exe i \\\"\"\n        $s2 = \"Everything64.dll\"\n        $s3 = \"RunProgram=\\\"hidcon:encrypt.exe -e all -sd -crc %SfxVarCmdLine0%\\\"\"\n\n    condition:\n        filesize > 1500KB and uint16(0) == 0x5A4D\n        and all of them\n}\n\nrule MAL_NewWave_ransomware\n{\n    meta:\n        author = \"LKAYE, Insikt Group, Recorded Future\"\n        date = \"2022-09-20\"\n        description = \"Rule for New Wave Ransomware\"\n        version = \"1.0\"\n\n    strings:\n        $s1 = \"[*] CLONE INFO: I'm original process!\" wide ascii\n        $s2 = \"[-] Auto-elevation failed!\" wide ascii \n        $s3 = \"[*] Everything Setup\" wide ascii\n        $s4 = \"\
+                      [*] Kill System Services (telemetry, booster, etc)\" wide ascii\n        $s5 = \"\\\\sdel.exe\\\" -accepteula -p 3 -c\" wide ascii\n        $s6 = \"\\\\temp\\\\lock.txt\" wide ascii\n\n    condition:\n        filesize > 900KB and uint16(0) == 0x5A4D\n        and all of them\n\n}\n"
+                    file_name: MAL_newwave_ransomware.yar
+                - id: doc:jNHLEU
+                  type: yara
+                  title: Tracking APT29 Malware Families
+                  description: 'Track the FatDuke, PowerDuke, and MiniDuke components used by APT29
+
+
+                    FatDuke:
+
+                    5b8467a9a89d83d721d28fb45fbe0ce53a9ee284b7aad93bff178ed6ea26247a
+
+                    0be57d1244fefc679feb7aa9996e539481be7b8f4c9246817f81caa8c2f61a57
+
+                    a95449f7c7c1ea5359bd76f25f57b89802d94f649ba059b910d8e46d9a914fcf
+
+
+
+                    PowerDuke:
+
+                    6119c92f5b5cb2cd953925e17ceb4a02a9007029dd27a35d44b116ff9718f814
+
+                    3bd7a49b769c9c3559af68de94b03ef537fc520e2e8c5513d3ee883db2d86ddf
+
+                    a870660d33b9801210f956e27d2e4ae329ca84acb132f4cdfccd3caee84b1b9a
+
+                    2d2fa32f928f8abf31b9e79153422d65fe72cd5ad0d1f815a9d2ffa42fc8d224
+
+                    4538af0a76fecc6e45e6d45c22618c52ba89bf596a0b68dd2d4d2358fb5c86ef
+
+
+                    MiniDuke:
+
+                    6057b19975818ff4487ee62d5341834c53ab80a507949a52422ab37c7c46b7a1
+
+                    7815e5275ea849a9ed1f193abd8781ff7ae6b88ef6282f6a0900175a4bb59131
+
+                    55129d34050b2c028de564e3166611e1d148c26de0972cbe047caf530f118468
+
+                    415f88765b88dd90e5b0502e4fa1408e06ac9552c7c8974a510e6e23a9756a45
+
+                    c13794601c5bdec3d5d76de9571e6c0e0b022b9fc62907018566895e3b949982
+
+                    2ae4cc6834e3679e99fc93d2f5fba02167a31cf5b68a5a9ca7aa1a4b9f7cb4ae'
+                  created: '2020-01-06T00:00:00.000Z'
+                  updated: '2021-07-20T19:38:52.120Z'
+                  rules:
+                  - entities:
+                    - id: hash:3bd7a49b769c9c3559af68de94b03ef537fc520e2e8c5513d3ee883db2d86ddf
+                      type: Hash
+                      name: 3bd7a49b769c9c3559af68de94b03ef537fc520e2e8c5513d3ee883db2d86ddf
+                    - id: hash:2d2fa32f928f8abf31b9e79153422d65fe72cd5ad0d1f815a9d2ffa42fc8d224
+                      type: Hash
+                      name: 2d2fa32f928f8abf31b9e79153422d65fe72cd5ad0d1f815a9d2ffa42fc8d224
+                    - id: hash:6119c92f5b5cb2cd953925e17ceb4a02a9007029dd27a35d44b116ff9718f814
+                      type: Hash
+                      name: 6119c92f5b5cb2cd953925e17ceb4a02a9007029dd27a35d44b116ff9718f814
+                    - id: hash:55129d34050b2c028de564e3166611e1d148c26de0972cbe047caf530f118468
+                      type: Hash
+                      name: 55129d34050b2c028de564e3166611e1d148c26de0972cbe047caf530f118468
+                    - id: hash:7815e5275ea849a9ed1f193abd8781ff7ae6b88ef6282f6a0900175a4bb59131
+                      type: Hash
+                      name: 7815e5275ea849a9ed1f193abd8781ff7ae6b88ef6282f6a0900175a4bb59131
+                    - id: bnZI5p
+                      type: Malware
+                      name: FatDuke
+                    - id: hash:2ae4cc6834e3679e99fc93d2f5fba02167a31cf5b68a5a9ca7aa1a4b9f7cb4ae
+                      type: Hash
+                      name: 2ae4cc6834e3679e99fc93d2f5fba02167a31cf5b68a5a9ca7aa1a4b9f7cb4ae
+                    - id: KeKua6
+                      type: Malware
+                      name: Miniduke
+                      display_name: Miniduke (Tinybaron)
+                    - id: hash:a870660d33b9801210f956e27d2e4ae329ca84acb132f4cdfccd3caee84b1b9a
+                      type: Hash
+                      name: a870660d33b9801210f956e27d2e4ae329ca84acb132f4cdfccd3caee84b1b9a
+                    - id: hash:6057b19975818ff4487ee62d5341834c53ab80a507949a52422ab37c7c46b7a1
+                      type: Hash
+                      name: 6057b19975818ff4487ee62d5341834c53ab80a507949a52422ab37c7c46b7a1
+                    - id: SD8ZVN
+                      type: Malware
+                      name: PowerDuke
+                    - id: hash:415f88765b88dd90e5b0502e4fa1408e06ac9552c7c8974a510e6e23a9756a45
+                      type: Hash
+                      name: 415f88765b88dd90e5b0502e4fa1408e06ac9552c7c8974a510e6e23a9756a45
+                    - id: hash:a95449f7c7c1ea5359bd76f25f57b89802d94f649ba059b910d8e46d9a914fcf
+                      type: Hash
+                      name: a95449f7c7c1ea5359bd76f25f57b89802d94f649ba059b910d8e46d9a914fcf
+                    - id: hash:4538af0a76fecc6e45e6d45c22618c52ba89bf596a0b68dd2d4d2358fb5c86ef
+                      type: Hash
+                      name: 4538af0a76fecc6e45e6d45c22618c52ba89bf596a0b68dd2d4d2358fb5c86ef
+                    - id: hash:c13794601c5bdec3d5d76de9571e6c0e0b022b9fc62907018566895e3b949982
+                      type: Hash
+                      name: c13794601c5bdec3d5d76de9571e6c0e0b022b9fc62907018566895e3b949982
+                    - id: hash:5b8467a9a89d83d721d28fb45fbe0ce53a9ee284b7aad93bff178ed6ea26247a
+                      type: Hash
+                      name: 5b8467a9a89d83d721d28fb45fbe0ce53a9ee284b7aad93bff178ed6ea26247a
+                    - id: hash:0be57d1244fefc679feb7aa9996e539481be7b8f4c9246817f81caa8c2f61a57
+                      type: Hash
+                      name: 0be57d1244fefc679feb7aa9996e539481be7b8f4c9246817f81caa8c2f61a57
+                    content: "import \"pe\"\nimport \"hash\"\n\n\nrule APT_RU_APT29_FatDuke_loader\n{\n    meta:\n        author = \"LKAYE, Insikt Group, Recorded Future\"\n        date = \"2021-01-25\"\n        description = \"rule to detect fatduke loader\"\n        version = \"1.0\"\n        hash = \"5b8467a9a89d83d721d28fb45fbe0ce53a9ee284b7aad93bff178ed6ea26247a\"\n        platform = \"windows\"\n        RF_MALWARE = \"FatDuke\"\n        RF_THREATACTOR = \"APT29\"\n        RF_MALWARE_ID = \"bnZI5p\"\n        RF_THREATACTOR_ID = \"O7NRMb\"\n\n    strings:\n        $s1 = \"0ffbea9d84d353e5e3179aae\" //rundll32.exe encoded\n        $s2 = \"0be7dfa577dc931827\"  //nacl_user encoded\n        $s3 = \"e0c0d8898ad68725161f428fc81bda249e34949d57543c0e06206a079b91b222e8b10c9f9330618eb42e4f517973724ea483ca\" //dll path encoded\n    condition:\n        all of them and filesize > 50KB and uint16(0) == 0x5a4d\n}\nrule APT_RU_APT29_FatDuke_backdoor\n{\n    meta:\n        author = \"LKAYE, Insikt Group,\
+                      \ Recorded Future\"\n        date = \"2021-01-25\"\n        description = \"rule to detect fatduke payload type 2\"\n        version = \"1.0\"\n        hash = \"0be57d1244fefc679feb7aa9996e539481be7b8f4c9246817f81caa8c2f61a57\"\n        hash = \"a95449f7c7c1ea5359bd76f25f57b89802d94f649ba059b910d8e46d9a914fcf\"\n        platform = \"windows\"\n        RF_MALWARE = \"FatDuke\"\n        RF_THREATACTOR = \"APT29\"\n        RF_MALWARE_ID = \"bnZI5p\"\n        RF_THREATACTOR_ID = \"O7NRMb\"\n\n    strings:\n        $p1 = {c7 85 b8 ec ff ff 43 61 6e 6e c7 85 bc ec ff ff 6f 74 20 69 c7 85 c0 ec ff ff 6e 69 74 69 c7 85 c4 ec ff ff 61 6c 69 7a} //string obf type 2 from 0be57 sample \"Cannot initializ...\"\n        $s1 = {b1 49 f6 e9 8b 0d 78 76 40 10 88 85 30 ff ff ff a1 7c 76 40 10 8a c1 b1 6e f6 e9 8b 0d 78 76 40 10 88 85 31 ff ff ff a1 7c 76 40 10 8a c1 b1 74 f6 e9 8b 0d 78 76 40 10 88 85 32 ff ff ff a1 7c 76 40 10 8a c1 b1 65 f6 e9} //string obfuscation type 1 from sample\
+                      \ a9544\n        $r1 = \"eyJjb25maWdfaW\" wide ascii //beginning of base64-ed config from resource 7\n        $r2 = {69 48 14 fd 43 03 00 81 c1 c3 9e 26 00 89 48 14 c1 e9 10 81 e1 ff 7f 00 00 8b c1 c3} //parts of randinit function used by APT29 for opaque predicates\n    condition:\n        (($p1 and pe.exports(\"GetProxyDllInfo\")) or ($s1 and pe.exports(\"nacl_user\"))) and all of ($r*) and filesize > 2900KB and uint16(0) == 0x5a4d\n}\nrule APT_RU_APT29_powerduke_backdoor\n{\n    meta:\n        author = \"LKAYE, Insikt Group, Recorded Future\"\n        date = \"2021-01-25\"\n        description = \"rule to detect powerduke backdoor file\"\n        version = \"1.0\"\n        hash = \"6119c92f5b5cb2cd953925e17ceb4a02a9007029dd27a35d44b116ff9718f814\"\n        hash = \"3bd7a49b769c9c3559af68de94b03ef537fc520e2e8c5513d3ee883db2d86ddf\"\n        hash = \"a870660d33b9801210f956e27d2e4ae329ca84acb132f4cdfccd3caee84b1b9a\"\n        RF_MALWARE = \"PowerDuke\"\n        RF_THREATACTOR\
+                      \ = \"APT29\"\n        RF_MALWARE_ID = \"SD8ZVN\"\n        RF_THREATACTOR_ID = \"O7NRMb\"\n\n    strings:\n        $s1 = {8b 4d 0c 2b 4d 08 8a 06 32 47 ff 32 47 fe 88 06 4e 4f} //decryption of ordinal sections\n        $s2 = {c7 45 d4 61 64 76 61 c7 45 d8 70 69 33 32 c7 45 dc 2e 64 6c 6c c6 45 e0 00} //advapi stackstring\n        $s3 = {c7 45 e1 77 69 6e 68 c7 45 e5 74 74 70 2e 66 c7 45 e9 64 6c c6 45 eb 6c c6 45 ec 00} //winhttp stackstring\n        $s4 = {c7 45 ed 73 68 65 6c c7 45 f1 6c 33 32 2e 66 c7 45 f5 64 6c c6 45 f7 6c c6 45 f8 00 c7 45 f9 00 00 00 00} //shell32 stackstring\n        $s5 = \"hi_bdf\"\n    condition:\n        all of them and uint16(0) == 0x5a4d and filesize > 10KB\n}\nrule APT_RU_APT29_powerduke_lnkfile\n{\n    meta:\n        author = \"LKAYE, Insikt Group, Recorded Future\"\n        date = \"2021-01-25\"\n        description = \"rule to detect powerduke lnk file\"\n        version = \"1.0\"\n        hash = \"2d2fa32f928f8abf31b9e79153422d65fe72cd5ad0d1f815a9d2ffa42fc8d224\"\
+                      \n        RF_MALWARE = \"PowerDuke\"\n        RF_THREATACTOR = \"APT29\"\n        RF_MALWARE_ID = \"SD8ZVN\"\n        RF_THREATACTOR_ID = \"O7NRMb\"\n\n    strings:\n        $s1 = \"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" wide ascii\n        $s2 = \"%SystemRoot%\\\\System32\\\\shell32.dll\" ascii\n        $s3 = \"user-pc\" ascii\n        $s4 = {4241 4141 4541 4141 bebe 4141 f941 4141} //some of the base64-ed data\n        $s5 = \"ASCII.GetString([Convert]::FromBase64String('JG9zPTB4MDAw\" wide ascii //do decode for base64ed powershell beginning\n        $s6 = \"<<CgpmdW5jdGlvbiBwbF9kcm\" ascii //beginning of more encoded data\n    condition:\n        (uint32be(0x0) == 0x4c000000 and uint32be(0x4) == 0x1140200) and all of them and filesize < 700KB\n}\nrule APT_RU_APT29_powerduke_dropper\n{\n    meta:\n        author = \"LKAYE, Insikt Group, Recorded Future\"\n        date = \"2021-01-25\"\n        description = \"rule to detect powerduke\
+                      \ dropper\"\n        version = \"1.0\"\n        hash = \"4538af0a76fecc6e45e6d45c22618c52ba89bf596a0b68dd2d4d2358fb5c86ef\"\n        RF_MALWARE = \"PowerDuke\"\n        RF_THREATACTOR = \"APT29\"\n        RF_MALWARE_ID = \"SD8ZVN\"\n        RF_THREATACTOR_ID = \"O7NRMb\"\n\n    strings:\n        $s1 = \"7kQr7Ji8Q8OE\" ascii\n        $s2 = \"e8uQhuFJ4uyQLLJPAE\" wide ascii\n        $s3 = \".ItqTb7fZ05YnxcMPuOgWSAoQyLE2FeD1r8KU3Rkdp4sNXj9HzBmGvV6JialhwC\" wide ascii\n    condition:\n        all of them and uint16(0) == 0x5a4d and filesize > 1000KB\n}\nrule APT_RU_APT29_Miniduke_2019 {\n    meta:\n        author = \"GLES, Insikt Group, Recorded Future\"\n        date = \"2021-01-25\"\n        description = \"Track variants of Miniduke based on the API hashing function it uses to obfsucate functionality\"\n        version = \"1.0\"\n        reference = \"https://www.welivesecurity.com/wp-content/uploads/2019/10/ESET_Operation_Ghost_Dukes.pdf\"\n        hash = \"6057b19975818ff4487ee62d5341834c53ab80a507949a52422ab37c7c46b7a1\"\
+                      \n        RF_MALWARE = \"Miniduke\"\n        RF_MALWARE_ID = \"KeKua6\"\n        RF_THREATACTOR = \"APT29\"\n        RF_THREATACTOR_ID = \"O7NRMb\"\n\n   strings:\n      $s1 = \"http://10.1.1.1:8080\" fullword ascii\n      $s2 = \"file.bin\" fullword ascii\n      $s3 = \"DefPipe\" fullword ascii\n      $s4 = \"pipe: \\\\\\\\%s\\\\pipe\\\\%s\" fullword ascii\n      $s5 = \"proc:  %d %s\" fullword ascii\n      $s6 = \"meth:  %s %d\" fullword ascii\n      $s7 = \"0x%08x %s\\\\n\" fullword ascii\n      $s8 = \"%5d 0x%08x %s\\\\n\" fullword ascii\n      $s9 = \"%5d Error:     %s\" fullword ascii\n      $socket1 = \"%s:%d - %s:%d\\\\n\" fullword ascii\n      $socket2 = \"idle\\\\n\" fullword ascii\n      $socket3 = \"stop\\\\n\" fullword ascii\n      $socket4 = \"accept \" fullword ascii\n      $socket5 = \"connect \" fullword ascii\n      $socket6 = \"listen \" fullword ascii\n      $socket7 = \"%d %s\\\\n\" fullword ascii\n      $http_struct1 = \"Content-Transfer-Encoding:\
+                      \ %s\" fullword ascii\n      $http_struct2 = \"Content-Disposition: form-data; name=\\\"%s\\\"; filename=\\\"%s\\\"\" fullword ascii\n      $http_struct3 = \"salesappliances.com:80\" fullword ascii\n      $http_struct4 = \"host:  %s:%d\" fullword ascii\n      $http_struct5 = \"%s:%d - %s:%d\" fullword ascii\n      $http_struct6 = \"--------------JiM9t8g7j8KoJkLJlKqka8dbo7q5z4v5u3o4z\" fullword ascii\n      $http_struct7 = \"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36\" fullword ascii\n      $http_struct8 = \"login: %s\\\\%s\" fullword ascii\n      $http_struct9 = \"xfiles\" fullword ascii\n   condition:\n      uint16(0) == 0x5a4d and filesize < 800KB and\n      (\n        (7 of ($s*) or 6 of ($http_struct*) or all of ($socket*))\n        )\n}\n\nrule MAL_wellmail_elf\n{\n    meta:\n        author = \"LKAYE, Insikt Group, Recorded Future\"\n        date = \"2021-01-25\"\n        description = \"rule for\
+                      \ ELF golang files\"\n        version = \"1.0\"\n        basedon = \"85e72976b9448295034a8d4c26462b8f1ebe1ca0a4e4b897c7f2404d0de948c2\"\n        basedon = \"0c5ad1e8fe43583e279201cdb1046aea742bae59685e6da24e963a41df987494\"\n        basedon = \"83014ab5b3f63b0253cdab6d715f5988ac9014570fa4ab2b267c7cf9ba237d18\"\n        RF_MALWARE = \"WellMail\"\n        RF_THREATACTOR = \"APT29\"\n        RF_MALWARE_ID = \"ekZDcJ\"\n        RF_THREATACTOR_ID = \"O7NRMb\"\n\n    strings:\n    $s1 = \"main.hello\"\n    $s2 = \"C:/Server/Mail/App_Data\"\n    $s3 = \"main.zipit\"\n    $s4 = \"main.receieve\"\n    $s5 = \"@[^\\\\s]+?\\\\s(?P<tar>.*?)\\\\s\"\n    $s6 = \"main.getIP\"\n    $s7 = \"main.buildFileName\"\n    $s8 = \"main.uiu\"\n    $s9 = \"main.runscript\"\n    $b1 = \"042a51567eea19d5aca71050b4535d33d2ed43ba\" //buildstring\n    condition:\n        1 of ($b*) and all of ($s*) and uint32(0) == 0x464c457f\n}\nrule APT_RU_APT29_Miniduke_APIHash\n{\n    meta:\n        author =\
+                      \ \"GLES, Insikt Group, Recorded Future\"\n        date = \"2021-01-25\"\n        description = \"Track variants of Miniduke based on the API hashing function it uses to obfsucate functionality\"\n        version = \"1.0\"\n        reference = \"https://www.welivesecurity.com/wp-content/uploads/2019/10/ESET_Operation_Ghost_Dukes.pdf\"\n        hash = \"6057b19975818ff4487ee62d5341834c53ab80a507949a52422ab37c7c46b7a1\"\n        RF_MALWARE = \"Miniduke\"\n        RF_MALWARE_ID = \"KeKua6\"\n        RF_THREATACTOR = \"APT29\"\n        RF_THREATACTOR_ID = \"O7NRMb\"\n\n    strings:\n    $api_hashing_func = {c7 4? ?? 00 00 00 00 e9 ?? ?? ?? ?? 8b 4? ?? 83 e8 03 83 f8 1c 0f 87 ?? ?? ?? ?? 8b 04 ?? ?? ?? ?? ?? ff e0 8b 4? ?? b9 0e 00 00 00 89 c2 c1 fa 1f f7 f9 89 d0 8b 84 85 f4 fb ff ff 2d f9 bf b8 00 89 8? ?? ?? ?? ?? e9 ?? ?? ?? ?? 8b 8? ?? ?? ?? ?? 05 78 75 64 00 89 8? ?? ?? ?? ?? e9 ?? ?? ?? ?? 8b 4? ?? b9 0e 00 00 00 89 c2 c1 fa 1f f7 f9 89 d0 8b 84 85 f4 fb ff ff 2d\
+                      \ 27 c8 2d 00 89 8? ?? ?? ?? ?? e9 ?? ?? ?? ?? }\n    $local_stack = { c7 4? ?? 3c 6c 6f 63 c7 4? ?? 61 6c 3e 00  } //stack string <local>\n    condition:\n      uint16 ( 0 ) == 0x5a4d and filesize < 300KB  and all of them\n    }\nrule APT_RU_APT29_Miniduke_Unpacker {\n    meta:\n        author = \"GLES, Insikt Group, Recorded Future\"\n        date = \"2021-01-25\"\n        description = \"Track Miniduke based on the exported function it uses to begin unpacking\"\n        version = \"1.0\"\n        reference = \"Miniduke\"\n        hash = \"7815e5275ea849a9ed1f193abd8781ff7ae6b88ef6282f6a0900175a4bb59131\"\n        hash = \"55129d34050b2c028de564e3166611e1d148c26de0972cbe047caf530f118468\"\n        hash = \"415f88765b88dd90e5b0502e4fa1408e06ac9552c7c8974a510e6e23a9756a45\"\n        hash = \"c13794601c5bdec3d5d76de9571e6c0e0b022b9fc62907018566895e3b949982\"\n        hash = \"2ae4cc6834e3679e99fc93d2f5fba02167a31cf5b68a5a9ca7aa1a4b9f7cb4ae\"\n        RF_MALWARE = \"\
+                      Miniduke\"\n        RF_MALWARE_ID = \"KeKua6\"\n        RF_THREATACTOR = \"APT29\"\n        RF_THREATACTOR_ID = \"O7NRMb\"\n\n    strings:\n    $unpacking1 = {83 c4 04 8b ?c ?4 fc 09 f6 83 d? ?? ?? ?? ?? ?9 ?? 83 ?? ?? f7 d?} // math functions after accepting arguments\n    $unpacking2 = {83 2c ?4 04 8d 64 ?4 04 8b ?c ?4 fc 83 c?}\n    $unpacking3 = {d2 00 8b 3c ?4 8d 64 ?4 04 83 c2 01 83 ef 04 83 c2 }\ncondition:\n  uint16 ( 0 ) == 0x5a4d and filesize < 75KB and 1 of them\n}\n"
+                    file_name: APT_RU_APT29_Multi.yar
+                - id: doc:hq7CrJ
+                  type: yara
+                  title: 'Insikt Validated TTP: New Hog Ransomware Tells Victims to Join a Discord Server, Source Code and Payload Published on Github'
+                  description: 'Insikt Group observed Github user InstinctEx publish the source code and a sample of Hog Ransomware — though InstinctEx claims that they are not the author of the ransomware. This new ransomware variant — which Insikt Group has previously reported on — requires victims to join a specified Discord server in order to decrypt their files for free. Insikt Group obtained the Github package for analysis and confirmed the identification as Hog Ransomware. The repository also contained source code for the Hog Ransomware Decryptor. Once executed, the ransomware checks if the attacker’s Discord server exists. If the server doesn’t exist, the ransomware terminates its process and deletes itself using the choice.exe process via the command line. If the server exists, it encrypts the victim machine’s files using an AES-256 algorithm and appends a ".hog” extension to the encrypted files. The ransom note is dropped in the Windows Startup folder and is executed once the file
+                    encryption is complete. It contains instructions to join a certain Discord server and asks the victim to provide their Discord token to verify they have joined the server. The ransomware then authenticates via Discord’s API if the user has joined the server. If verified that the victim has joined the server, the ransomware will decrypt the victim’s files using a static key embedded in the ransomware.
+
+
+                    Insikt Group created YARA rules to detect Hog Ransomware’s payload and ransom note, which can be found attached to this note. A link to the GitHub repository containing the Hog Ransomware source code and sample can be found in the Validation URL section of this note. IOCs for the original Hog Ransomware sample analyzed, as well as other samples surfaced using our YARA rules, have also been added to this note as related entities.'
+                  created: '2021-03-19T00:00:00.000Z'
+                  updated: '2021-03-19T21:54:30.309Z'
+                  rules:
+                  - entities:
+                    - id: hash:5978e5acf3953edd4f88ba6b5a65cc6c21b69362
+                      type: Hash
+                      name: 5978e5acf3953edd4f88ba6b5a65cc6c21b69362
+                    - id: hash:bb90e0f1b311001afbda19c105c35557
+                      type: Hash
+                      name: bb90e0f1b311001afbda19c105c35557
+                    - id: hash:51b256a88ec3eb5bb6d06f68cc1d6aadc769cc94
+                      type: Hash
+                      name: 51b256a88ec3eb5bb6d06f68cc1d6aadc769cc94
+                    - id: hash:286549f7db17fcc3408b001bef8ecb30b23e4fba96cd3cbdf710d61a9a9f9b4b
+                      type: Hash
+                      name: 286549f7db17fcc3408b001bef8ecb30b23e4fba96cd3cbdf710d61a9a9f9b4b
+                    - id: hash:209eeb95b61cb7114baa21b7599641e34e825a4887ad0466c2cf2ac3cb4c4695
+                      type: Hash
+                      name: 209eeb95b61cb7114baa21b7599641e34e825a4887ad0466c2cf2ac3cb4c4695
+                    - id: hash:ca1577e43bf24c9e163181560248ddddf6ee69c3adc6a96425c97eacf1c1a427
+                      type: Hash
+                      name: ca1577e43bf24c9e163181560248ddddf6ee69c3adc6a96425c97eacf1c1a427
+                    - id: hash:e80268d4e0ed48d63b44ca2ca162e35a
+                      type: Hash
+                      name: e80268d4e0ed48d63b44ca2ca162e35a
+                    - id: hge_xY
+                      type: Malware
+                      name: Hog Ransomware
+                    - id: hash:b306389f226e2f1b85295115a52786a024e2de8694b9ba8c63d568d5a9222ece
+                      type: Hash
+                      name: b306389f226e2f1b85295115a52786a024e2de8694b9ba8c63d568d5a9222ece
+                    - id: hash:44286541ddcb0af9ec93ac8b49360172
+                      type: Hash
+                      name: 44286541ddcb0af9ec93ac8b49360172
+                    - id: hash:aee6dd04040c018b62318664df25502994b9faea
+                      type: Hash
+                      name: aee6dd04040c018b62318664df25502994b9faea
+                    - id: hash:b1437f8c57b3876ff1aa0c76d14e18ba
+                      type: Hash
+                      name: b1437f8c57b3876ff1aa0c76d14e18ba
+                    - id: hash:272d104477c1e1b55dd9d80bd65040f6ede151d8065a74ad00e50b734e8c2494
+                      type: Hash
+                      name: 272d104477c1e1b55dd9d80bd65040f6ede151d8065a74ad00e50b734e8c2494
+                    - id: hash:b1d8492e2281bfba339d24791b0b7c0fc66d55a9
+                      type: Hash
+                      name: b1d8492e2281bfba339d24791b0b7c0fc66d55a9
+                    - id: hash:634238e78ba5d485a9ee4b23396e6d5399e4902b
+                      type: Hash
+                      name: 634238e78ba5d485a9ee4b23396e6d5399e4902b
+                    - id: hash:07ca57595b4745ed29c1e93ac5bb74dd
+                      type: Hash
+                      name: 07ca57595b4745ed29c1e93ac5bb74dd
+                    - id: KLjPFP
+                      type: FileName
+                      name: choice.exe
+                    - id: ip:162.159.138.232
+                      type: IpAddress
+                      name: 162.159.138.232
+                    - id: mitre:T1037
+                      type: MitreAttackIdentifier
+                      name: T1037
+                      display_name: T1037 (Boot or Logon Initialization Scripts)
+                    - id: mitre:T1070.004
+                      type: MitreAttackIdentifier
+                      name: T1070.004
+                      display_name: 'T1070.004 (Indicator Removal: File Deletion)'
+                    - id: mitre:T1486
+                      type: MitreAttackIdentifier
+                      name: T1486
+                      display_name: T1486 (Data Encrypted for Impact)
+                    - id: SmCnYD
+                      type: Product
+                      name: Discord
+                    - id: mitre:T1130
+                      type: MitreAttackIdentifier
+                      name: T1130
+                      display_name: T1130 (Install Root Certificate)
+                    - id: mitre:T1059.003
+                      type: MitreAttackIdentifier
+                      name: T1059.003
+                      display_name: 'T1059.003 (Command and Scripting Interpreter: Windows Command Shell)'
+                    - id: hEtFJJ
+                      type: Username
+                      name: InstinctEx
+                    - id: ip:162.159.128.233
+                      type: IpAddress
+                      name: 162.159.128.233
+                    - id: K_Rbz_
+                      type: Technology
+                      name: Advanced Encryption Standard
+                    - id: JTl-GN
+                      type: Product
+                      name: Windows Startup
+                    - id: J0Nl-p
+                      type: MalwareCategory
+                      name: Ransomware
+                    - id: source:MIKjae
+                      type: Source
+                      name: GitHub
+                    content: "rule MAL_Hog_Ransomware_Payload {\n    meta:\n        author = \"DGRANGE, Insikt Group, Recorded Future\"\n        date = \"2021-03-19\"\n        description = \"Detects Hog Ransomware payload\"\n        version = \"1.0\"\n        reference = \"https://app.recordedfuture.com/live/sc/A6jQHqktcYhy\"\n        hash = \"209eeb95b61cb7114baa21b7599641e34e825a4887ad0466c2cf2ac3cb4c4695\"\n\n   strings:\n      $h1 = \"HogRansomware\" fullword wide ascii // Ransomware name\n      $h2 = \"HogRansomwareDecryptor\" fullword wide ascii // Ransowmare decryptor name\n\n      $del = \"/C choice /C Y /N /D Y /T 1 & Del\" fullword ascii // Ransomware launches choice.exe via command line to delete itself\n      \n      $dis = \"https://discord.com/api/v8/invites\" fullword wide // Call to Discord API\n\n      $c1 = \"EncryptFiles\" fullword ascii\n      $c2 = \"DecryptFile\" fullword ascii\n      $c3 = \"DECRYPT-MY-FILES.exe\" fullword ascii // Launch decryptor\n   condition:\n\
+                      \      uint16(0) == 0x5a4d and filesize < 1000KB and\n      ( ( ($del) and ($dis) and 2 of ($c*) ) or\n      ( 1 of ($h*) and 2 of them ) )\n}\n\nrule MAL_Hog_Ransomware_Ransom_Note {\n    meta:\n        author = \"DGRANGE, Insikt Group, Recorded Future\"\n        date = \"2021-03-19\"\n        description = \"Detect Hog Ransomware ransom note\"\n        version = \"1.0\"\n        reference = \"https://app.recordedfuture.com/live/sc/A6jQHqktcYhy\"\n        hash = \"209eeb95b61cb7114baa21b7599641e34e825a4887ad0466c2cf2ac3cb4c4695\"\n\n   strings:\n      $s1 = \"Your personal files have been encrypted by the Hog Ransomware.\" fullword ascii\n      $s2 = \"They have been encrypted using unbreakable AES-256 encryption.\" fullword ascii\n      $s3 = \"A \\\".hog\\\" file extension has been appended to the encrypted files.\" fullword ascii\n      $s4 = \"Please do not remove it, as it is needed to locate and decrypt them.\" fullword ascii\n      $s5 = \"Attempting to modify\
+                      \ the encrypted files can result in irreversible data loss.\" fullword ascii\n      $s6 = \"In order to decrypt your files, you will need to join our Discord server.\" fullword ascii\n      $s7 = \"Once you have joined, enter your Discord account token in the box below.\" fullword ascii\n      $s8 = \"Press \\\"Decrypt My Files!\\\" and if you have joined, your files will be decrypted.\" fullword ascii\n      $s9 = \"Have a nice day!e day!\" fullword ascii\n   condition:\n      filesize < 1000KB and 5 of them\n}\n"
+                    file_name: MAL_Hog_Ransomware.yar
+                next_offset: eyJvZmZzZXQiOlsxMjI3OCwiR2dGaW9BRFlxUHgiXX0=
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: detection-rules-search
+components:
+  schemas:
+    DetectionRuleSet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: doc:XYZW
+          description: Document ID (doc:XXXXX)
+        type:
+          $ref: '#/components/schemas/DetectionRuleType'
+        title:
+          type: string
+          example: Snort Rules for CVE-2021-44228 Exploitation Attempts
+          description: Insikt Group note title describing the threat
+        description:
+          type: string
+          example: 'There are a number of publicly-available Snort rules to detect common methods of  CVE-2021-44228 (Log4Shell remote code execution) exploit attempts. Insikt Group  has created several new, supplementary rules to detect potential exploitation attempts  using less common methods, including those using encoding or obfuscation.
+
+            '
+          description: Detailed threat analysis narrative
+        rules:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: APT_RU_APT29_FatDuke_loader
+              description:
+                type: string
+                example: rule to detect fatduke loader
+              file_name:
+                type: string
+                example: MAL_Kwampirs.yar
+                description: Suggested filename for the rule
+              entities:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DetectionRuleEntity'
+                description: Associated entities (MITRE ATT&CK techniques, malware families, hashes).
+              content:
+                $ref: '#/components/schemas/DetectionRuleContent'
+                description: Full rule source code (YARA rule, Sigma YAML, or Snort signature)
+            required:
+            - content
+          description: Detection rules with deployable source code.
+        created:
+          $ref: '#/components/schemas/DateTime'
+        updated:
+          $ref: '#/components/schemas/DateTime'
+      required:
+      - id
+      - type
+      - title
+      - description
+      - rules
+      - created
+      - updated
+      description: A detection rule set containing deployable source code and associated metadata.
+    DateTimeRange:
+      type: object
+      properties:
+        before:
+          $ref: '#/components/schemas/DateTime'
+        after:
+          $ref: '#/components/schemas/DateTime'
+    DetectionRuleContent:
+      type: string
+      description: Full rule source code (YARA rule, Sigma YAML, or Snort signature)
+    EntityId:
+      type: string
+      example: XYZW
+    EntityTypeName:
+      type: string
+      description: Additional information about entity types is provided by the /entity/types endpoint. It can be used to find the display name of the entity type.
+      example: IpAddress
+    DetectionRuleResult:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int32
+          example: 1
+          description: Number of results in this page
+        total_count:
+          type: integer
+          format: int32
+          example: 10
+          description: Total matching results across all pages
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetectionRuleSet'
+          description: Array of detection rule note objects.
+        next_offset:
+          type: string
+          description: Cursor-based pagination token for next page
+      required:
+      - count
+      - total_count
+      - result
+      description: Search results for Insikt Group detection rules containing deployable YARA, Sigma, and Snort rule source code.
+    DetectionRuleType:
+      type: string
+      enum:
+      - sigma
+      - yara
+      - snort
+      description: "The type of a Detection Rule Available types:\n  * sigma: Sigma rule\n  * yara: YARA rule\n  * snort: Snort rule\n"
+      example: sigma
+    DetectionRuleEntity:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        type:
+          $ref: '#/components/schemas/EntityTypeName'
+        name:
+          type: string
+        display_name:
+          type: string
+          description: Human-readable name with context
+      required:
+      - id
+      - type
+      - name
+      description: An entity that is associated with a Detection rule, e.g. a MITRE ATT&CK tag or a Malware.
+      example:
+        id: kvXvR5
+        type: CyberVulnerability
+        name: CVE-2021-44228
+        display_name: CVE-2021-44228 (Log4Shell)
+    DateTime:
+      type: string
+      format: date-time
+      example: '2017-07-21T17:32:28Z'
+    DetectionRuleFilter:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetectionRuleType'
+          description: 'Filters on type of detection rules, applied as a logical "OR". The following values are allowed: `yara`, `sigma`, and `snort`.'
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityId'
+          description: An array of entities that may be associated with a given detection rule. All values in the array must be valid Recorded Future entity IDs. Use **Entity Match** to lookup entity IDs. Values in this filter are applied as a logical "AND".
+        created:
+          $ref: '#/components/schemas/DateTimeRange'
+          description: Filters the date range a rule should have been created. The DateTime string should be in a string format, e.g., "2017-07-21T17:32:28Z"
+        updated:
+          $ref: '#/components/schemas/DateTimeRange'
+          description: Similar to the `created` filter but specifies the date range in which a rule should have been updated. When first created, the update date of a rule is the same as its create date.
+        doc_id:
+          type: string
+          description: Will look for a specific Insikt Note document ID associated with detection rules
+        title:
+          type: string
+          description: Filters as a free text search for Insikt Notes associated with detection rules
+      example:
+        types:
+        - yara
+        entities:
+        - mitre:T1486
+        - kK5UbE
+        created:
+          after: '2022-02-10T12:00:00.000Z'
+          before: '2022-03-10T00:00:00.000Z'
+        doc_id: doc:lmRPGB
+        title: Ransomware
+      description: Filters Insikt Notes and the associated detection rules.
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the error.
+        status_code:
+          type: integer
+          description: HTTP status code of the response.
+        trace_id:
+          type: string
+          description: Unique request identifier to reference when contacting support.
+      required:
+      - message
+      - status_code
+  securitySchemes:
+    key:
+      type: apiKey
+      name: X-RFToken
+      in: header
+    idp:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://id.recordedfuture.com/authorize
+          tokenUrl: https://id.recordedfuture.com/token
+          refreshUrl: https://id.recordedfuture.com/token
+          scopes: {}
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/detection-rules-search.md
+  merge:
+    pages: 1
+    deduped: 0
+    conflicts_kept_first: 0

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-detection-rule-filter-schema.json",
+  "title": "DetectionRuleFilter",
+  "description": "Filters Insikt Notes and the associated detection rules.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-detection-rule-api-openapi.yml#/components/schemas/DetectionRuleFilter",
+  "type": "object",
+  "properties": {
+    "types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DetectionRuleType"
+      },
+      "description": "Filters on type of detection rules, applied as a logical \"OR\". The following values are allowed: `yara`, `sigma`, and `snort`."
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/EntityId"
+      },
+      "description": "An array of entities that may be associated with a given detection rule. All values in the array must be valid Recorded Future entity IDs. Use **Entity Match** to lookup entity IDs. Values in this filter are applied as a logical \"AND\"."
+    },
+    "created": {
+      "$ref": "#/$defs/DateTimeRange",
+      "description": "Filters the date range a rule should have been created. The DateTime string should be in a string format, e.g., \"2017-07-21T17:32:28Z\""
+    },
+    "updated": {
+      "$ref": "#/$defs/DateTimeRange",
+      "description": "Similar to the `created` filter but specifies the date range in which a rule should have been updated. When first created, the update date of a rule is the same as its create date."
+    },
+    "doc_id": {
+      "type": "string",
+      "description": "Will look for a specific Insikt Note document ID associated with detection rules"
+    },
+    "title": {
+      "type": "string",
+      "description": "Filters as a free text search for Insikt Notes associated with detection rules"
+    }
+  },
+  "$defs": {
+    "DateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "DateTimeRange": {
+      "type": "object",
+      "properties": {
+        "before": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "after": {
+          "$ref": "#/$defs/DateTime"
+        }
+      }
+    },
+    "DetectionRuleType": {
+      "type": "string",
+      "enum": [
+        "sigma",
+        "yara",
+        "snort"
+      ],
+      "description": "The type of a Detection Rule Available types:\n  * sigma: Sigma rule\n  * yara: YARA rule\n  * snort: Snort rule\n"
+    },
+    "EntityId": {
+      "type": "string"
+    }
+  }
+}

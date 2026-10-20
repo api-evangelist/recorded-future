@@ -1,0 +1,1 @@
+{"$schema":"https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json","name":"com.readme/recorded-future","version":"1.0","title":"Recorded Future","description":"MCP server for Recorded Future. Lets AI agents explore this project's API reference and documentation.","remotes":[{"type":"streamable-http","url":"https://docs.recordedfuture.com/mcp"}]}

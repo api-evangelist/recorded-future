@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-sample-detail-schema.json",
+  "title": "SampleDetail",
+  "description": "Detailed sample status including individual analysis tasks.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-sandbox-api-secopsti-api-openapi.yml#/components/schemas/SampleDetail",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Sample ID"
+    },
+    "status": {
+      "type": "string",
+      "description": "Overall sample processing status",
+      "enum": [
+        "pending",
+        "running",
+        "static_analysis",
+        "reported",
+        "failed"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "description": "Submission type",
+      "enum": [
+        "file",
+        "url"
+      ]
+    },
+    "filename": {
+      "type": "string",
+      "description": "Original filename (file submissions only)"
+    },
+    "url": {
+      "type": "string",
+      "description": "Submitted URL (URL submissions only)"
+    },
+    "private": {
+      "type": "boolean",
+      "description": "Whether this sample is private to the submitting organization"
+    },
+    "submitted": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 submission timestamp"
+    },
+    "completed": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 completion timestamp (only present when done)"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 hash (file submissions only)"
+    },
+    "tasks": {
+      "type": "array",
+      "description": "Individual analysis tasks and their statuses.",
+      "items": {
+        "type": "object",
+        "description": "An analysis task within a sample.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Task ID (e.g., static1, behavioral1, urlscan1)"
+          },
+          "status": {
+            "type": "string",
+            "description": "Task processing status",
+            "enum": [
+              "pending",
+              "running",
+              "static_analysis",
+              "reported",
+              "failed"
+            ]
+          },
+          "target": {
+            "type": "string",
+            "description": "Target file or URL being analyzed by this task"
+          },
+          "pick": {
+            "type": "string",
+            "description": "Archive path of the selected file for this task"
+          }
+        }
+      }
+    }
+  }
+}

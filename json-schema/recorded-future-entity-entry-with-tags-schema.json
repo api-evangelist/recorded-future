@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-entity-entry-with-tags-schema.json",
+  "title": "EntityEntryWithTags",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-list-api-openapi.yml#/components/schemas/EntityEntryWithTags",
+  "type": "object",
+  "properties": {
+    "entity": {
+      "$ref": "#/$defs/ResolvedEntity"
+    },
+    "context": {
+      "type": "object",
+      "description": "Optional metadata attached to this entity when it was added to the list. Contains arbitrary key-value pairs set by the caller via the Add Entity endpoint. Only present if context was provided when the entity was added.",
+      "additionalProperties": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Tag entity ID in the format `enum:EntityListTag:<tagname>`"
+          },
+          "name": {
+            "type": "string",
+            "description": "Tag name as used in API requests (e.g., `tier1`, `critical`)"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "description": "Tags associated with this entity in the list. Empty array if no tags are assigned."
+    },
+    "status": {
+      "$ref": "#/$defs/ProcessingStatus"
+    },
+    "added": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the entity was added to the list"
+    }
+  },
+  "required": [
+    "entity",
+    "tags",
+    "status",
+    "added"
+  ],
+  "$defs": {
+    "ProcessingStatus": {
+      "type": "string",
+      "description": "`pending` — awaiting initial processing after being added; `processing` — currently being indexed; `ready` — fully processed and available for use in alerts and queries.",
+      "enum": [
+        "pending",
+        "processing",
+        "ready"
+      ]
+    },
+    "ResolvedEntity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name"
+      ]
+    }
+  }
+}

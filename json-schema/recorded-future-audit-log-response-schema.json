@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-audit-log-response-schema.json",
+  "title": "AuditLogResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-collective-insights-api-openapi.yml#/components/schemas/AuditLogResponse",
+  "properties": {
+    "counts": {
+      "$ref": "#/$defs/PageCounts"
+    },
+    "data": {
+      "description": "Audit log records in the current page",
+      "items": {
+        "$ref": "#/$defs/AuditRecord"
+      },
+      "type": "array"
+    },
+    "next_offset": {
+      "description": "Pagination offset for retrieving the next page. Absent on the last page.",
+      "type": "string"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "AuditRecord": {
+      "properties": {
+        "action": {
+          "description": "Operation that was performed on the exclusion list item",
+          "enum": [
+            "created",
+            "updated",
+            "deleted"
+          ],
+          "type": "string"
+        },
+        "details": {
+          "description": "Human-readable description of the change",
+          "type": "string"
+        },
+        "item_id": {
+          "description": "ID of the exclusion list item the record refers to",
+          "format": "uuid",
+          "type": "string"
+        },
+        "item_type": {
+          "description": "Exclusion type of the item at the time of the operation",
+          "enum": [
+            "observable",
+            "ip_range",
+            "device_name"
+          ],
+          "type": "string"
+        },
+        "item_value": {
+          "description": "Value of the item at the time of the operation",
+          "type": "string"
+        },
+        "timestamp": {
+          "description": "Time the operation was performed",
+          "format": "date-time",
+          "type": "string"
+        },
+        "user": {
+          "description": "User identity that performed the operation",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "PageCounts": {
+      "properties": {
+        "returned": {
+          "description": "Number of items in the current response",
+          "type": "integer"
+        },
+        "total": {
+          "description": "Total number of items across all pages",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

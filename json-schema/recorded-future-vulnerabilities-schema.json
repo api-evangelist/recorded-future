@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-vulnerabilities-schema.json",
+  "title": "Vulnerabilities",
+  "description": "Array of Vulnerabilities associated with given platform and version",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-common-platform-enumeration-apis-v0-api-openapi.yml#/components/schemas/Vulnerabilities",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/Vulnerability"
+  },
+  "$defs": {
+    "Vulnerability": {
+      "title": "Vulnerability",
+      "type": "object",
+      "properties": {
+        "urls": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "score": {
+          "type": "string"
+        },
+        "published_datetime": {
+          "type": "string"
+        },
+        "last_modified_datetime": {
+          "type": "string"
+        },
+        "integrity_impact": {
+          "type": "string"
+        },
+        "cve_id": {
+          "type": "string"
+        },
+        "confidentiality_impact": {
+          "type": "string"
+        },
+        "availability_impact": {
+          "type": "string"
+        },
+        "authentication": {
+          "type": "string"
+        },
+        "access_vector": {
+          "type": "string"
+        },
+        "access_complexity": {
+          "type": "string"
+        }
+      },
+      "description": "Vulnerability associated with given platform and version"
+    }
+  }
+}

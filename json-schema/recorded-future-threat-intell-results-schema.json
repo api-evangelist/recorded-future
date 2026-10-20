@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-threat-intell-results-schema.json",
+  "title": "Threat Intell Results",
+  "description": "Array of Threat intell results",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-common-platform-enumeration-apis-v0-api-openapi.yml#/components/schemas/ThreatIntellResults",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/ThreatIntellResult"
+  },
+  "$defs": {
+    "ThreatIntellResult": {
+      "title": "Threat Intell Result",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "intell_date": {
+          "type": "string"
+        },
+        "host_name": {
+          "type": "string"
+        },
+        "family": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "asn": {
+          "type": "string"
+        }
+      },
+      "description": "Threat Intell Result"
+    }
+  }
+}

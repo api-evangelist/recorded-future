@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-update-request-schema.json",
+  "title": "UpdateRequest",
+  "description": "Request to update case properties (status, priority, title, description, assignee).",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-case-api-openapi.yml#/components/schemas/UpdateRequest",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/TaskIdentity"
+    },
+    "status": {
+      "$ref": "#/$defs/CaseStatus"
+    },
+    "priority": {
+      "$ref": "#/$defs/CasePriority"
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "assignee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 20
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "$defs": {
+    "CasePriority": {
+      "type": "string",
+      "enum": [
+        "Informational",
+        "Moderate",
+        "High"
+      ],
+      "description": "The Priority of the Case"
+    },
+    "CaseStatus": {
+      "type": "string",
+      "enum": [
+        "New",
+        "InProgress",
+        "Dismissed",
+        "Resolved"
+      ],
+      "description": "The Status of the Case"
+    },
+    "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "maxLength": 41
+    }
+  }
+}

@@ -1,0 +1,252 @@
+openapi: 3.0.3
+info:
+  title: Entity Match API
+  description: 'External API for integrations and clients to lookup entity IDs by name and/or type,
+
+    and also to find entities given their ID.
+
+
+    See [Entity Types and ID Prefixes](https://docs.recordedfuture.com/reference/available-entity-types) for building entity IDs directly and for valid `type` values.
+
+    '
+  version: '1.0'
+  x-rf-service-id: service:entity-match
+servers:
+- url: https://api.recordedfuture.com
+security:
+- key: []
+- idp: []
+paths:
+  /entity-match/entity/{id}:
+    get:
+      tags:
+      - Lookup
+      summary: Lookup
+      parameters:
+      - name: id
+        in: path
+        description: The Entity ID to lookup.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityLookupResponse'
+              example:
+                data:
+                  id: JLHNoH
+                  type: Malware
+                  attributes:
+                    name: Cobalt Strike
+                    common_names: []
+                    alias: []
+                    is_threat_actor: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      description: Resolve an RF entity ID to its name, type, and aliases.
+      operationId: entity-lookup
+  /entity-match/match:
+    post:
+      tags:
+      - Match
+      summary: Match
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  description: This mandatory free text search field is used to match against entity names.
+                  type: string
+                  example: WannaCry
+                type:
+                  description: An array of types is optional. If in use, the **Match** operation will only try to match on entities that meet **any** of the "type" criteria. See the list of [Available Entity Types](https://recorded-future.readme.io/reference/available-entity-types).
+                  type: array
+                  items:
+                    type: string
+                    example: Malware
+                limit:
+                  description: This optional field is used to limit the max number of responses returned (maximum 100).
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+                  default: 10
+      responses:
+        '200':
+          description: Successful request - Returns a list of items or an empty list if no items were found.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityMatchResponse'
+              example:
+              - id: JLHNoH
+                name: Cobalt Strike
+                type: Malware
+              - id: LnK3Q6
+                name: Cobalt Strike Beacon
+                type: Malware
+              - id: jgzJnQ
+                name: CobaltStrikeReflectiveLoader
+                type: Malware
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                description: Error details
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Missing parameter: name'
+                  status_code:
+                    type: integer
+                    default: 400
+                  trace_id:
+                    type: string
+                    example: f5c15bfa-168d-4740-a1ed-86cf2d6294c7
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      description: Resolve human-readable entity names to Recorded Future entity IDs using fuzzy matching, with an optional type filter to narrow results to specific entity categories.
+      operationId: entity-match
+components:
+  securitySchemes:
+    key:
+      type: apiKey
+      in: header
+      name: X-RFToken
+    idp:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://id.recordedfuture.com/authorize
+          tokenUrl: https://id.recordedfuture.com/token
+          refreshUrl: https://id.recordedfuture.com/token
+          scopes: {}
+  schemas:
+    EntityLookupResponse:
+      description: Metadata for a single entity resolved by its Recorded Future ID.
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          description: Entity summary
+          type: object
+          required:
+          - id
+          - type
+          - attributes
+          properties:
+            id:
+              description: Entity ID
+              type: string
+              example: L37nw-
+            type:
+              description: Entity type
+              type: string
+              example: Organization
+            attributes:
+              description: Entity attributes
+              type: object
+              required:
+              - name
+              - common_names
+              - alias
+              - is_threat_actor
+              properties:
+                name:
+                  description: Primary display name
+                  type: string
+                  example: APT28
+                common_names:
+                  description: Well-known alternative names
+                  type: array
+                  items:
+                    type: string
+                    example: Fancy Bear
+                alias:
+                  description: All known aliases
+                  type: array
+                  items:
+                    type: string
+                    example: Fancy Bear Hackers
+                is_threat_actor:
+                  description: Whether this entity is classified as a threat actor
+                  type: boolean
+                  example: true
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the error.
+        status_code:
+          type: integer
+          description: HTTP status code of the response.
+        trace_id:
+          type: string
+          description: Unique request identifier to reference when contacting support.
+      required:
+      - message
+      - status_code
+    EntityMatchResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: TzghRB
+          description: Recorded Future entity ID (use with Lookup and other endpoints)
+        name:
+          type: string
+          example: WannaCry 1.0
+          description: Entity display name (may differ from search term)
+        type:
+          type: string
+          example: Malware
+          description: Entity type (e.g., CyberVulnerability, Malware, IpAddress, InternetDomainName)
+      required:
+      - id
+      - name
+      - type
+      description: Array of matched entities ranked by match quality (best match first). Uses fuzzy name matching across canonical names, common names, and aliases.
+tags:
+- name: Lookup
+- name: Match
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/entity-lookup.md
+  - https://docs.recordedfuture.com/reference/entity-match.md
+  merge:
+    pages: 2
+    deduped: 3
+    conflicts_kept_first: 0

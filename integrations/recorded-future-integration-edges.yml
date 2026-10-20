@@ -1,10 +1,29 @@
-generated: '2026-10-13'
+generated: '2026-10-20'
 method: searched
+source:
+- microsoft-sentinel/integrations/microsoft-sentinel-integration-edges.yml
+- palo-alto-networks/integrations/palo-alto-networks-integration-edges.yml
+- https://n8n.io/integrations/recorded-future/
 checked:
 - https://azuremarketplace.microsoft.com/
 - microsoft-sentinel/integrations/microsoft-sentinel-integration-edges.yml
 - palo-alto-networks/integrations/palo-alto-networks-integration-edges.yml
-marketplace_apps: []
+- https://composio.dev/toolkits/recorded-future
+- https://monid.ai/tools/recorded-future
+- https://n8n.io/integrations/recorded-future/
+- https://zapier.com/apps/recorded-future/integrations
+summary: null
+marketplace_apps:
+- marketplace: n8n
+  channel: open-source-node
+  app: recorded-future
+  url: https://n8n.io/integrations/recorded-future/
+  identity: title
+  pair_pages: 3
+  pairs:
+  - slack
+  - supabase
+  - telegram
 edges:
 - partner_name: Microsoft Sentinel (own)
   partner: microsoft-sentinel
@@ -66,6 +85,4 @@ edges:
   seller_name: Recorded Future
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
-source:
-- microsoft-sentinel/integrations/microsoft-sentinel-integration-edges.yml
-- palo-alto-networks/integrations/palo-alto-networks-integration-edges.yml
+templates: []

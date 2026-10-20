@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-query-schema.json",
+  "title": "Query",
+  "description": "Query",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-links-api-openapi.yml#/components/schemas/Query",
+  "type": "object",
+  "required": [
+    "entities"
+  ],
+  "properties": {
+    "entities": {
+      "description": "IDs of entities to return links for. If more than one ID is provided,  it is equivalent of calling this endpoint once for each, condensed into one call.\n",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "filters": {
+      "description": "Filters the result based on link characteristics and the source of the link.",
+      "type": "object",
+      "properties": {
+        "sections": {
+          "type": "array",
+          "description": "Filters links to only a specific section (available from Metadata: Sections), for example only \"Actors, Tools & TTPs\" or only \"Indicators & Detection Rules\".\n",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entity_types": {
+          "type": "array",
+          "description": "Filters links to only a specific entity type or types. The types of entities are returned by Metadata: Entities.\n",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sources": {
+          "type": "array",
+          "description": "Limits the search to only one source type: technical links, or links from Insikt notes.\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "technical",
+              "insikt"
+            ]
+          }
+        },
+        "technical": {
+          "type": "object",
+          "description": "Filtering options specific to links from technical sources.",
+          "properties": {
+            "timeframe": {
+              "type": "string",
+              "description": "Time range for links from technical sources. As an ISO Date (2022-01-01) or relative to today (-7d). Maximum of 1825 days from today.\n",
+              "default": "-30d"
+            },
+            "events": {
+              "type": "array",
+              "description": "Limits the search for links to references of a certain event type or types. The available event types are returned by Metadata: Events.\n",
+              "items": {
+                "type": "string"
+              }
+            },
+            "connected_entities": {
+              "type": "array",
+              "description": "Only returns technical links that themselves have links to entities specified in this list.\n",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "search_scope": {
+          "type": "string",
+          "default": "medium",
+          "enum": [
+            "small",
+            "medium",
+            "large"
+          ],
+          "description": "Predefined levels of search depth. A larger scope may yield more linked entities, at the cost of increased latency. The scope controls how many references are searched per technical event type, and how many Insikt notes are searched: small = 10 references of each event type, 10 Insikt notes; medium = 50 references of each event type, 50 Insikt notes; large = 100 references of each event type plus an extra 1000 references of any type, 500 Insikt notes.\n"
+        },
+        "per_entity_type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The maximum number of returned entities per type (IP, hash, etc), applied separately to entities found via technical links and via Insikt notes. Indicators are sorted by risk prior to filtering.\n"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+name: Recorded Future packages
+generated: '2026-10-20'
+method: searched
+source: https://pypi.org/pypi/psengine/json
+packages:
+- name: psengine
+  registry: pypi
+  url: https://pypi.org/project/psengine/
+  language: Python
+  official: true
+  version: 2.14.0
+  published: '2026-10-07'
+  note: Maintainers listed with @recordedfuture.com emails; docs at recordedfuture-professionalservices.github.io/psengine.
+- name: rfapi
+  registry: pypi
+  url: https://pypi.org/project/rfapi/
+  language: Python
+  official: true
+  version: 2.6.0
+  published: '2019-08-26'
+  note: Author Recorded Future, Inc.; last release 2019 — legacy client, predates the current API families.

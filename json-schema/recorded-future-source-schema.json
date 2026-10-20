@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-source-schema.json",
+  "title": "Source",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-autonomous-threat-operations-api-openapi.yml#/components/schemas/Source",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/SourceId"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the source"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the source"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date and time the source was created"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date and time the source was last updated"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "createdAt",
+    "updatedAt"
+  ],
+  "$defs": {
+    "SourceId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identity of the source"
+    }
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-industry-trends-schema.json",
+  "title": "IndustryTrends",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-customer-apis-v0-api-openapi.yml#/components/schemas/IndustryTrends",
+  "type": "object",
+  "properties": {
+    "toe_id": {
+      "type": "string"
+    },
+    "industry_trends": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "toe_id": {
+              "type": "string"
+            },
+            "industry_min": {
+              "$ref": "#/$defs/IndustryTrendsSecurityCriteria"
+            },
+            "industry_mean": {
+              "$ref": "#/$defs/IndustryTrendsSecurityCriteria"
+            },
+            "industry_max": {
+              "$ref": "#/$defs/IndustryTrendsSecurityCriteria"
+            },
+            "industry": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string"
+            },
+            "analysis_rating": {
+              "$ref": "#/$defs/IndustryTrendsSecurityCriteria"
+            },
+            "analysis_percentile": {
+              "$ref": "#/$defs/IndustryTrendsSecurityCriteria"
+            },
+            "analysis_id": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "IndustryTrendsSecurityCriteria": {
+      "type": "object",
+      "properties": {
+        "web_encryption": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "web_app_security": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "threat_intel": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "system_hosting": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "software_patching": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "overall": {
+          "type": "number"
+        },
+        "governance": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "email_security": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "dns_security": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "defensibility": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "data_loss": {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "overall": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

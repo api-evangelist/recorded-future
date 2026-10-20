@@ -1,0 +1,116 @@
+generated: '2026-10-20'
+method: none
+source: openapi/recorded-future-analyst-note-api-openapi.yml, openapi/recorded-future-autonomous-threat-operations-api-openapi.yml,
+  openapi/recorded-future-case-api-openapi.yml, openapi/recorded-future-collective-insights-api-openapi.yml,
+  openapi/recorded-future-detection-rule-api-openapi.yml, openapi/recorded-future-detection-rule-relation-api-openapi.yml,
+  openapi/recorded-future-entity-match-api-openapi.yml, openapi/recorded-future-fusion-api-openapi.yml,
+  openapi/recorded-future-identity-api-openapi.yml, openapi/recorded-future-links-api-openapi.yml,
+  openapi/recorded-future-list-api-openapi.yml, openapi/recorded-future-malware-intelligence-api-openapi.yml,
+  openapi/recorded-future-playbook-alerts-api-openapi.yml, openapi/recorded-future-risk-api-openapi.yml,
+  openapi/recorded-future-threat-api-openapi.yml
+schemes:
+- name: idp
+  source: openapi/recorded-future-analyst-note-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: Click on "Authorize" to be redirected to the login page.
+- name: idp
+  source: openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: OAuth 2.0 Authorization Code Flow. This API issues and accepts JWTs that are
+    compliant with RFC8725 (JSON Web Token Best Current Practices).
+- name: idp
+  source: openapi/recorded-future-case-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: Click on "Authorize" to be redirected to the login page.
+- name: idp
+  source: openapi/recorded-future-collective-insights-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: Click on "Authorize" to be redirected to the login page.
+- name: idp
+  source: openapi/recorded-future-detection-rule-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+- name: idp
+  source: openapi/recorded-future-detection-rule-relation-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+- name: idp
+  source: openapi/recorded-future-entity-match-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+- name: idp
+  source: openapi/recorded-future-fusion-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: Click on "Authorize" to be redirected to the login page.
+- name: RecordedFutureOAuth2
+  source: openapi/recorded-future-identity-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: JWT-based OAuth2 security scheme supporting RFC8725 for OAuth 2.0 Access Tokens.
+- name: idp
+  source: openapi/recorded-future-links-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: Click on "Authorize" to be redirected to the login page.
+- name: idp
+  source: openapi/recorded-future-list-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+- name: idp
+  source: openapi/recorded-future-malware-intelligence-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: Click on "Authorize" to be redirected to the login page.
+- name: idp
+  source: openapi/recorded-future-playbook-alerts-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: Click on "Authorize" to be redirected to the login page.
+- name: idp
+  source: openapi/recorded-future-risk-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: Click on "Authorize" to be redirected to the login page.
+- name: idp
+  source: openapi/recorded-future-threat-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://id.recordedfuture.com/authorize
+    tokenUrl: https://id.recordedfuture.com/token
+  description: Click on "Authorize" to be redirected to the login page.
+scopes: []
+note: The OAuth2 security scheme(s) in the OpenAPI declare no scopes, and no security requirement
+  references one.

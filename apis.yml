@@ -34,40 +34,71 @@ tags:
 - Identity Intelligence
 - Vulnerability Intelligence
 - AI Analyst
-description: Recorded Future is a threat intelligence platform whose Intelligence Cloud combines open-web, dark-web, technical,
-  and customer telemetry sources via the Intelligence Graph, indexed and analyzed by Insikt Group analysts and AI. The platform
-  spans Threat Intelligence, Brand Intelligence, Identity Intelligence, SecOps Intelligence, Vulnerability Intelligence,
-  Attack Surface Intelligence, Payment Fraud Intelligence, and Geopolitical Intelligence, plus Cyber Daily and the AI Analyst.
-  Recorded Future exposes a REST API at api.recordedfuture.com (commonly called ConnectAPI) that customers and integration
-  partners use to pull indicators, entities, alerts, and risk scores into SIEMs, SOARs, TIPs, and custom security workflows.
-  Named a Leader in the 2026 Gartner Magic Quadrant for Cyberthreat Intelligence Technologies.
+description: Recorded Future is a threat intelligence platform whose Intelligence Cloud combines open-web, dark-web, technical, and customer telemetry
+  sources via the Intelligence Graph, indexed and analyzed by Insikt Group analysts and AI. The platform spans Threat Intelligence, Brand Intelligence,
+  Identity Intelligence, SecOps Intelligence, Vulnerability Intelligence, Attack Surface Intelligence, Payment Fraud Intelligence, and Geopolitical
+  Intelligence, plus Cyber Daily and the AI Analyst. Recorded Future exposes a REST API at api.recordedfuture.com (commonly called ConnectAPI)
+  that customers and integration partners use to pull indicators, entities, alerts, and risk scores into SIEMs, SOARs, TIPs, and custom security
+  workflows. Named a Leader in the 2026 Gartner Magic Quadrant for Cyberthreat Intelligence Technologies.
 created: '2026-05-23'
-modified: '2026-05-23'
+modified: '2026-10-20'
 specificationVersion: '0.23'
-apis:
-- aid: recorded-future:recorded-future-connect-api
-  name: Recorded Future Intelligence Cloud API
-  tags:
-  - Threat Intelligence
-  - Indicators
-  - Risk Scores
-  - Alerts
-  - Entities
-  humanURL: https://support.recordedfuture.com/hc/en-us
-  baseURL: https://api.recordedfuture.com
-  properties:
-  - url: https://support.recordedfuture.com/hc/en-us
-    type: Documentation
-    title: Recorded Future Support and API Documentation (gated)
-  - url: https://www.recordedfuture.com/platform
-    type: Portal
-    title: Recorded Future Intelligence Cloud
-  description: The Recorded Future Intelligence Cloud REST API (api.recordedfuture.com) provides programmatic access to threat
-    intelligence sourced from over a million open-web, dark-web, technical, and customer feeds and structured by the Intelligence
-    Graph. The API supports lookups for indicators of compromise (IPs, domains, hashes, URLs, vulnerabilities), entity context,
-    risk scoring, alert and watchlist management, and intelligence search. Detailed reference documentation and credentials
-    are issued to Recorded Future customers through the support portal and customer community.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
 common:
+- type: AgenticAccess
+  url: agentic-access/recorded-future-agentic-access.yml
+- type: Spectral
+  url: rules/recorded-future-rules.yml
+- type: JSONLD
+  url: json-ld/recorded-future-context.jsonld
+- type: Vocabulary
+  url: vocabulary/recorded-future-vocabulary.yml
+- type: DataModel
+  url: data-model/recorded-future-data-model.yml
+- type: ChangeLog
+  url: changelog/recorded-future-changelog.yml
+- type: Conventions
+  url: conventions/recorded-future-conventions.yml
+- type: Lifecycle
+  url: lifecycle/recorded-future-lifecycle.yml
+- type: ErrorCatalog
+  url: errors/recorded-future-error-codes.yml
+- type: ErrorCatalog
+  url: errors/recorded-future-problem-types.yml
+- type: Conformance
+  url: conformance/recorded-future-conformance.yml
+- type: LLMsTxt
+  url: llms/recorded-future-llms.txt
+- type: MCPServer
+  url: mcp/recorded-future-mcp.yml
+- type: SecurityTxt
+  url: well-known/recorded-future-sandbox-security.txt
+- type: SecurityTxt
+  url: well-known/recorded-future-pfi-security.txt
+- type: SecurityTxt
+  url: well-known/recorded-future-mcp-security.txt
+- type: SecurityTxt
+  url: well-known/recorded-future-app-security.txt
+- type: WellKnown
+  url: well-known/recorded-future-well-known.yml
+- type: Hosts
+  url: hosts/recorded-future-hosts.yml
+- type: IntegrationEdges
+  url: integrations/recorded-future-integration-edges.yml
+- type: Vendors
+  url: vendors/recorded-future-vendors.yml
+- type: SDKs
+  url: packages/recorded-future-packages.yml
+- type: Packages
+  url: packages/recorded-future-packages.yml
+- type: Security
+  url: https://www.recordedfuture.com/security
+- type: Login
+  url: https://id.recordedfuture.com/login/sso?sso_id=google&request_id=6dM1avqWks4UrAG8_NwNU2K0qrNkMC73CiIHUdZ8hvWa_Vv7tJcHxkjarcRrp4X3loSDCYr3CiRiqH78rWy_P2ygnyZMTwvibTUUrZnvMIHGQzQvXBnUu9eJQnbGpgXmdfIlmTXNjFXAHEhpayR0JY-wwRzPI577teEC4Y365wA-eBNziKeEKdTv9A_DdbYFtlbzI0lCvgW-Fl-BnQnziNcnRG99ms5Ps38zKjBhqsy7kmWf4n_NvOUFxkP9RWDSz3TUoLJEnTSrbYCwGS8i-8Dgr44i3Ep_DkmtuRtGeYLloqQYXKusoNXcIlUDzGrDzW4T9JzdGkRaVPSiS9yCZd0iR4fB4eymOqEMH41Jn4cjEokE4_hi_ECKvOST2E_3ac4u8GL4iLy4AD5qdVLjYCI-OAjB_rhNmweswdxQEpYkDI7dVkI7d4H2iDysdiQWtobLEUqe2dxZkc5FQz2_xUd4j8p4t9l8Fv7z3fTK2OaF99xCzGWc9Y62eCoeK4Z3v9gidC_jxuiPoghsssONqPw8W9lbZgAl8hSLKuSICYuaLPzWqWTDmdqxmpDo-qDojzvCbS02ESR-zT3LFPl31HjJfo-u5C9G7_fE7KjNC-H9sVQHcT6XXoIhFeqletcioTEnFrEmPyev76IoaO_TXnDFaa10Tnh5FwPQgjrJ-ZNtrAyDBS1S-fKGHoFfgYERBDSlxty1dXccligl36LKw7IY993w3DNe7FFqnggmvFI0UlA3ZX6p5w
+- type: Authentication
+  url: authentication/recorded-future-authentication.yml
 - type: Plans
   url: plans/recorded-future-plans-pricing.yml
 - type: RateLimits
@@ -87,25 +118,17 @@ common:
   title: Recorded Future Customer Portal
 - type: Support
   url: https://support.recordedfuture.com/hc/en-us
-- type: Documentation
-  url: https://support.recordedfuture.com/hc/en-us
 - type: Blog
   url: https://www.recordedfuture.com/blog
 - type: News
   url: https://therecord.media/
   title: The Record by Recorded Future
-- type: CyberDaily
-  url: https://www.recordedfuture.com/products/cyber-daily
 - type: ContactSales
   url: https://www.recordedfuture.com/contact
 - type: Careers
   url: https://www.recordedfuture.com/careers
-- type: Partners
-  url: https://www.recordedfuture.com/partners
 - type: PrivacyPolicy
   url: https://www.recordedfuture.com/legal/privacy-policy
-- type: TermsOfService
-  url: https://www.recordedfuture.com/legal/terms-of-service
 - type: Features
   data:
   - name: Intelligence Cloud
@@ -162,6 +185,713 @@ common:
     description: Enrichment integrations with CrowdStrike, Microsoft Defender, SentinelOne, and others
   - name: Browser Extension
     description: Recorded Future browser extension surfaces intelligence in any web-based security tool
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+- type: TermsOfService
+  url: https://www.recordedfuture.com/legal/terms-of-use
+- type: Documentation
+  url: https://docs.recordedfuture.com/reference
+- type: APIReference
+  url: https://docs.recordedfuture.com/reference
+- type: ChangeLog
+  url: https://docs.recordedfuture.com/changelog
+- type: GettingStarted
+  url: https://docs.recordedfuture.com/reference/get-started
+- type: GitHubOrganization
+  url: https://github.com/recordedfuture
+- type: Pricing
+  url: https://www.recordedfuture.com/pricing
+- type: StatusPage
+  url: https://status.recordedfuture.com/
+- type: Integrations
+  url: https://www.recordedfuture.com/platform/integrations
+- type: Community
+  url: https://community.recordedfuture.com/
+apis:
+- aid: recorded-future:recorded-future-connect-api
+  name: Recorded Future Intelligence Cloud API
+  tags:
+  - Threat Intelligence
+  - Indicators
+  - Risk Scores
+  - Alerts
+  - Entities
+  humanURL: https://docs.recordedfuture.com/reference/get-started
+  baseURL: https://api.recordedfuture.com/v2
+  properties:
+  - url: openapi/recorded-future-connect-api-openapi.yml
+    type: OpenAPI
+    title: Connect API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - url: https://www.recordedfuture.com/platform
+    type: Portal
+    title: Recorded Future Intelligence Cloud
+  - url: https://docs.recordedfuture.com/reference
+    type: Documentation
+  - type: JSONSchema
+    url: json-schema/recorded-future-ip-lookup-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-vulnerability-lookup-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-url-lookup-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-hash-lookup-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-malware-lookup-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-domain-lookup-response-schema.json
+  description: The Recorded Future Intelligence Cloud REST API (api.recordedfuture.com) provides programmatic access to threat intelligence sourced
+    from over a million open-web, dark-web, technical, and customer feeds and structured by the Intelligence Graph. The API supports lookups for
+    indicators of compromise (IPs, domains, hashes, URLs, vulnerabilities), entity context, risk scoring, alert and watchlist management, and
+    intelligence search. Detailed reference documentation and credentials are issued to Recorded Future customers through the support portal and
+    customer community.
+- aid: recorded-future:alert
+  name: Recorded Future Alert API
+  description: The Alert API allows for interacting with Recorded Future Alerts and Alert rules.  Please read the [documentation](https://docs.recordedfuture.com/reference/alerts-get-by-id)
+    before using this API.
+  humanURL: https://docs.recordedfuture.com/reference/alert-api/llms.txt
+  baseURL: https://api.recordedfuture.com
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-alert-api-openapi.yml
+    type: OpenAPI
+    title: Alert API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-alert-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-alert-update-data-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-alert-search-details-response-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-alert-search-response-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-alert-rule-search-response-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-alert-search-response-v3-schema.json
+- aid: recorded-future:analyst-note
+  name: Recorded Future Analyst Note API
+  description: A Recorded Future API for creating, fetching, editing and deleting Analyst Notes.  Please read the [Recorded Future Docs](https://docs.recordedfuture.com/reference/analyst-note)
+    before using this API.
+  humanURL: https://docs.recordedfuture.com/reference/analyst-notes/llms.txt
+  baseURL: https://api.recordedfuture.com/analyst-note
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-analyst-note-api-openapi.yml
+    type: OpenAPI
+    title: Analyst Note API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-search-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-publish-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-search-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-preview-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-draft-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-lookup-response-schema.json
+- aid: recorded-future:asi-project
+  name: Recorded Future ASI Project API
+  description: The Attack Surface Intelligence (ASI) Project API is designed to allow you full-featured access to all of the `Assets` within all
+    of the `Project`s as well as , most importantly, the `Exposures` that our system has identified on those assets, including proposed remediations.  You
+    can create new user-defined `Tags` and apply them to `Assets` either individually or in bulk.  You can use either the GET-based listing endpoint
+    to find assets or the /_search endpoint which accepts a more structured request and, in the future, will allow for even more complex boolean
+    queries.  Using it only requires a standard Security Trails API access key.
+  humanURL: https://docs.recordedfuture.com/reference/attack-surface-intelligence/llms.txt
+  baseURL: https://api.securitytrails.com/v2
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-asi-project-api-openapi.yml
+    type: OpenAPI
+    title: ASI Project API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-assets-filter-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-asset-search-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-filters-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-bulk-tag-assets-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-tag-asset-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-update-static-assets-response-schema.json
+- aid: recorded-future:autonomous-threat-operations
+  name: Recorded Future Autonomous Threat Operations API
+  description: APIs for interacting with Recorded Future Autonomous Threat Operations
+  humanURL: https://docs.recordedfuture.com/reference/autonomous-threat-operations/llms.txt
+  baseURL: https://api.recordedfuture.com/autonomous-threat-operations
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+    type: OpenAPI
+    title: Autonomous Threat Operations API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-source-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-profile-id-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-threat-hunt-job-status-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-threat-hunt-job-id-schema.json
+- aid: recorded-future:case
+  name: Recorded Future Case
+  description: Case — part of the Recorded Future API documented at docs.recordedfuture.com. A very descriptive description will be available
+    Soon(TM)
+  humanURL: https://docs.recordedfuture.com/reference/alerts/llms.txt
+  baseURL: https://api.recordedfuture.com/case
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-case-api-openapi.yml
+    type: OpenAPI
+    title: Case OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-case-search-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-create-case-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-case-search-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-case-lookup-bulk-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-delete-case-response-schema.json
+- aid: recorded-future:collective-insights
+  name: Recorded Future Collective Insights API
+  description: 'Submit events captured by your security tools to your organization''s Recorded Future enterprise. Collective Insights enriches
+    submissions with threat context from Recorded Future Intelligence Graph to provide your organization''s enterprise with enhanced and actionable
+    intelligence.  - **Usage Details**:   * This API throttles the amount of detections you can send, the default is a max burst of 100k IOCs,
+    or ~1 IOCs per second. Please contact your customer success manager if you feel this limit is not meeting your needs.   * Organizations using
+    Collective Insights benefit by having their Recorded Future intelligence enhanced by shared data. In addition, non-attributable data from
+    their submissions can be used to benefit other Recorded Future clients. - **Prerequisites**:   * Recorded Future module license   * Recorded
+    Future API [token](https://docs.recordedfuture.com/reference/get-starte'
+  humanURL: https://docs.recordedfuture.com/reference/collective-insights/llms.txt
+  baseURL: https://api.recordedfuture.com/collective-insights/
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-collective-insights-api-openapi.yml
+    type: OpenAPI
+    title: Collective Insights API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-search-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-submit-detections-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-submit-detections-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-search-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-list-exclusions-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-audit-log-response-schema.json
+- aid: recorded-future:common-platform-enumeration-apis-v0
+  name: Recorded Future Common Platform Enumeration APIs V0
+  description: 'Common Platform Enumeration APIs V0 — part of the Recorded Future API documented at docs.recordedfuture.com. '
+  humanURL: https://docs.recordedfuture.com/reference/riskrecon-cpe-v0/llms.txt
+  baseURL: https://api.riskrecon.com
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-common-platform-enumeration-apis-v0-api-openapi.yml
+    type: OpenAPI
+    title: Common Platform Enumeration APIs V0 OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-findings-language-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-vulnerabilities-and-language-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-vulnerabilities-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-cve-product-lookups-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-threat-intell-results-schema.json
+- aid: recorded-future:customer-apis-v0
+  name: Recorded Future Customer APIs V0
+  description: 'Customer APIs V0 — part of the Recorded Future API documented at docs.recordedfuture.com. '
+  humanURL: https://docs.recordedfuture.com/reference/riskrecon-v0/llms.txt
+  baseURL: https://api.sandbox.riskrecon.com
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-customer-apis-v0-api-openapi.yml
+    type: OpenAPI
+    title: Customer APIs V0 OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-industry-trends-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-portfolio-member-schema.json
+- aid: recorded-future:customer-apis-v2
+  name: Recorded Future Customer APIs V2
+  description: 'Customer APIs V2 — part of the Recorded Future API documented at docs.recordedfuture.com. '
+  humanURL: https://docs.recordedfuture.com/reference/riskrecon-v2/llms.txt
+  baseURL: https://api.sandbox.riskrecon.com
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-customer-apis-v2-api-openapi.yml
+    type: OpenAPI
+    title: Customer APIs V2 OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-finding-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-findings-schema.json
+- aid: recorded-future:detection-rule
+  name: Recorded Future Detection Rule API
+  description: The Detection Rule API allows clients to programmatically search for and download YARA, Sigma, and Snort rules authored by Recorded
+    Future's Insikt Group.  Please read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/5265933996819-Detection-Rule-API)
+    before using this API.
+  humanURL: https://docs.recordedfuture.com/reference/detection-rules/llms.txt
+  baseURL: https://api.recordedfuture.com/detection-rule
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-detection-rule-api-openapi.yml
+    type: OpenAPI
+    title: Detection Rule API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-detection-rule-filter-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-detection-rule-result-schema.json
+- aid: recorded-future:detection-rule-relation
+  name: Recorded Future Detection Rule Relation API
+  description: API to fetch entities and types associated with detection rules
+  humanURL: https://docs.recordedfuture.com/reference/detection-rules/llms.txt
+  baseURL: https://api.recordedfuture.com/detection-rule-relation
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-detection-rule-relation-api-openapi.yml
+    type: OpenAPI
+    title: Detection Rule Relation API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-entity-types-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-entity-result-schema.json
+- aid: recorded-future:entity-match
+  name: Recorded Future Entity Match API
+  description: External API for integrations and clients to lookup entity IDs by name and/or type, and also to find entities given their ID.  See
+    [Entity Types and ID Prefixes](https://docs.recordedfuture.com/reference/available-entity-types) for building entity IDs directly and for
+    valid `type` values.
+  humanURL: https://docs.recordedfuture.com/reference/entity-match/llms.txt
+  baseURL: https://api.recordedfuture.com
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-entity-match-api-openapi.yml
+    type: OpenAPI
+    title: Entity Match API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-entity-lookup-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-entity-match-response-schema.json
+- aid: recorded-future:fusion
+  name: Recorded Future Fusion API
+  description: A Recorded Future API for managing Fusion flows, files and custom blocks  Please read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360000713994-Introduction-to-the-Fusion-API)
+    before using this API.
+  humanURL: https://docs.recordedfuture.com/reference/fusion/llms.txt
+  baseURL: https://api.recordedfuture.com/fusion/v3
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-fusion-api-openapi.yml
+    type: OpenAPI
+    title: Fusion API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-file-upload-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-file-directory-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-operation-result-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-file-response-schema.json
+- aid: recorded-future:identity
+  name: Recorded Future Identity API
+  description: API to lookup identity leaks data.<br><br> [Identity API](https://support.recordedfuture.com/hc/en-us/articles/4402477586707-Identity-API)<br>
+    [Identity Lookup API Response](https://support.recordedfuture.com/hc/en-us/articles/8914757600403-Identity-Lookup-API-Response)<br><br> [Integrations](https://support.recordedfuture.com/hc/en-us/articles/20552287586067-Identity-Intelligence-Integrations)
+  humanURL: https://docs.recordedfuture.com/reference/identity-intelligence/llms.txt
+  baseURL: https://api.recordedfuture.com
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-identity-api-openapi.yml
+    type: OpenAPI
+    title: Recorded Future Identity API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-credentials-lookup-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-credentials-search-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-incident-report-request-schema.json
+- aid: recorded-future:links
+  name: Recorded Future Links API
+  description: An API to retrieve verified links between entities.  Links may come from technical analysis of cyber threats or Insikt Group research.  Please
+    read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/11345110640403-Links-API) before using this API.
+  humanURL: https://docs.recordedfuture.com/reference/links/llms.txt
+  baseURL: https://api.recordedfuture.com/links
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-links-api-openapi.yml
+    type: OpenAPI
+    title: Links API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-query-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-search-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-enumeration-schema.json
+- aid: recorded-future:list
+  name: Recorded Future List API
+  description: External List API for reading and writing user lists  Please read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/360058691913-List-API)
+    before using this API.
+  humanURL: https://docs.recordedfuture.com/reference/lists/llms.txt
+  baseURL: https://api.recordedfuture.com
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-list-api-openapi.yml
+    type: OpenAPI
+    title: List API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-entity-entry-with-tags-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-list-info-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-entity-entry-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-tag-operation-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-add-operation-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-tag-operation-request-schema.json
+- aid: recorded-future:malware-intelligence
+  name: Recorded Future Malware Intelligence
+  description: A Recorded Future API for Malware Intelligence.  The Malware Intelligence API provides programmatic access to the functionality
+    of Recorded Future Malware Intelligence.
+  humanURL: https://docs.recordedfuture.com/reference/malware-intelligence/llms.txt
+  baseURL: https://api.recordedfuture.com/malware-intelligence
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-malware-intelligence-api-openapi.yml
+    type: OpenAPI
+    title: Recorded Future Malware Intelligence OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-create-yara-job-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-create-sigma-job-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-get-sigma-job-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-edit-yara-job-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-query-nlresponse-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-get-sigma-jobs-request-schema.json
+- aid: recorded-future:mastercard-riskrecon
+  name: Recorded Future Mastercard Riskrecon API
+  description: RiskRecon provides organizations with frequent, comprehensive, actionable visibility into the security quality of their business
+    partners.  RiskRecon does this by automatically measuring the security performance of any enterprise across security domains and criteria,
+    providing visibility into security programs.  All of the security discovery and analytics are based on public information with no inside access
+    required.  The RiskRecon service requires an account with RiskRecon.
+  humanURL: https://docs.recordedfuture.com/reference/riskrecon-v1/llms.txt
+  baseURL: https://api.sandbox.riskrecon.com
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+    type: OpenAPI
+    title: Mastercard Riskrecon API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+- aid: recorded-future:payment-fraud-intelligence
+  name: Recorded Future Payment Fraud Intelligence API
+  description: 'Payment Fraud Intelligence API — part of the Recorded Future API documented at docs.recordedfuture.com. '
+  humanURL: https://docs.recordedfuture.com/reference/payment-fraud-intelligence/llms.txt
+  baseURL: https://pfi.regemini.com/api/v1
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-payment-fraud-intelligence-api-openapi.yml
+    type: OpenAPI
+    title: Payment Fraud Intelligence API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-queue-response-status-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-file-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-mage-response-add-to-queue-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-preset-client-request-preset-magecart-merchant-client-config-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-preset-client-request-preset-magescanner-scans-client-config-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-preset-client-request-preset-partial-card-sold-client-config-schema.json
+- aid: recorded-future:playbook-alerts
+  name: Recorded Future Playbook Alerts
+  description: A Recorded Future API for Playbook Alerts.  The playbook alert API provides programmatic access to Recorded Future playbook alerts.
+    These alerts differ quite a bit from the standard "alerts" generated by Recorded Future,  in that they include additional lookups and information
+    that further empower the user to make accurate and timely decisions.  Information presented in a playbook alert will also be updated as needed,  based
+    on new information or changes in the Recorded Future risk scores based on elapsed time or similar.  The API has several generic endpoint,
+    categorized as common, intended as entry points into Playbook Alert data. Most notably there is /search for finding alerts, and resource item
+    endpoints for previewing basic alert data (`GET /common/{id}`), and updating an alert (`PUT /common/{id}`).  For more detailed information
+    and evidence there are a set of endpoint for each al
+  humanURL: https://docs.recordedfuture.com/reference/alerts/llms.txt
+  baseURL: https://api.recordedfuture.com/playbook-alert
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-playbook-alerts-api-openapi.yml
+    type: OpenAPI
+    title: Recorded Future Playbook Alerts OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-dark-web-brand-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-domain-abuse-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-malicious-sites-create-options-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-malicious-sites-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-metadata-common-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-geopolitics-facility-response-schema.json
+- aid: recorded-future:risk
+  name: Recorded Future Risk API
+  description: A Recorded Future API for fetching risk and risk risk history information.
+  humanURL: https://docs.recordedfuture.com/reference/risk/llms.txt
+  baseURL: https://api.recordedfuture.com/risk
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-risk-api-openapi.yml
+    type: OpenAPI
+    title: Risk API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-get-active-risk-rule-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-search-risk-histories-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-get-active-risk-rule-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-search-risk-histories-response-schema.json
+- aid: recorded-future:sandbox-api-secopsti
+  name: Recorded Future recorded-future-sandbox-api-secopsti
+  description: Recorded Future Sandbox API (formerly Hatching Tria.ge). Provides malware analysis capabilities including file/URL submission,
+    behavioral analysis, YARA rule management, and organizational settings.
+  humanURL: https://docs.recordedfuture.com/reference/sandbox/llms.txt
+  baseURL: https://sandbox.recordedfuture.com/api/v0
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-sandbox-api-secopsti-api-openapi.yml
+    type: OpenAPI
+    title: recorded-future-sandbox-api-secopsti OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-sample-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-profile-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-sample-summary-schema.json
+- aid: recorded-future:soar
+  name: Recorded Future Soar API
+  description: The SOAR API is designed for high throughput risk checks using Recorded Future's threat intelligence in bulk.  It supports five
+    IOC types, IP Address, Domain, Hash, URL and Vulnerability.  Please read the [documentation](https://docs.recordedfuture.com/docs/soar-api-introduction)
+    before using this API.
+  humanURL: https://docs.recordedfuture.com/reference/soar/llms.txt
+  baseURL: https://api.recordedfuture.com/soar/v3
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-soar-api-openapi.yml
+    type: OpenAPI
+    title: Soar API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-enrich-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-triage-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-enrich-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-context-response-schema.json
+- aid: recorded-future:threat
+  name: Recorded Future Threat API
+  description: External API to retrieve threat data such as threat maps, threat actors and their categories.  Please read the [detailed support
+    article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.
+  humanURL: https://docs.recordedfuture.com/reference/threat-maps/llms.txt
+  baseURL: https://api.recordedfuture.com/threat
+  tags:
+  - Threat Intelligence
+  - Cybersecurity
+  properties:
+  - url: openapi/recorded-future-threat-api-openapi.yml
+    type: OpenAPI
+    title: Threat API OpenAPI
+    x-ownership: docs.recordedfuture.com/reference/get-started lists this base URL as a Recorded Future API surface (ASI on api.securitytrails.com,
+      PFI on pfi.regemini.com, RiskRecon on api.sandbox.riskrecon.com); the contract was assembled verbatim from the OpenAPI slices embedded in
+      Recorded Future's own ReadMe reference pages.
+  - url: https://docs.recordedfuture.com/reference
+    type: APIReference
+  - type: JSONSchema
+    url: json-schema/recorded-future-threat-actors-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-threat-map-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-malware-threat-map-request-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-threat-actors-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-categories-response-schema.json
+  - type: JSONSchema
+    url: json-schema/recorded-future-malware-categories-response-schema.json
+x-enrichment:
+  date: '2026-10-20'
+  status: enriched
+  artifacts_added: 10
+  pass: local-v5

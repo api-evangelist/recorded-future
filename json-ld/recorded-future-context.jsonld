@@ -1,0 +1,992 @@
+{
+  "@context": {
+    "@vocab": "https://recordedfuture.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "recorded": "https://recordedfuture.com/schema#",
+    "AlertLookupResponseV2": "recorded:AlertLookupResponseV2",
+    "data": {
+      "@id": "recorded:data",
+      "@type": "@id"
+    },
+    "Entity": "recorded:Entity",
+    "id": {
+      "@id": "recorded:id",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "recorded:name",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "recorded:type",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "recorded:description",
+      "@type": "xsd:string"
+    },
+    "AiInsights": "recorded:AiInsights",
+    "text": {
+      "@id": "recorded:text",
+      "@type": "xsd:string"
+    },
+    "comment": {
+      "@id": "recorded:comment",
+      "@type": "xsd:string"
+    },
+    "OwnerOrganisationDetails": "recorded:OwnerOrganisationDetails",
+    "owner_id": {
+      "@id": "recorded:owner_id",
+      "@type": "xsd:string"
+    },
+    "owner_name": {
+      "@id": "recorded:owner_name",
+      "@type": "xsd:string"
+    },
+    "organisations": {
+      "@id": "recorded:organisations",
+      "@container": "@list"
+    },
+    "enterprise_id": {
+      "@id": "recorded:enterprise_id",
+      "@type": "xsd:string"
+    },
+    "enterprise_name": {
+      "@id": "recorded:enterprise_name",
+      "@type": "xsd:string"
+    },
+    "UseCaseDeprecation": "recorded:UseCaseDeprecation",
+    "from": {
+      "@id": "recorded:from",
+      "@type": "xsd:dateTime"
+    },
+    "links": {
+      "@id": "recorded:links"
+    },
+    "EntityPathNode": "recorded:EntityPathNode",
+    "entity": {
+      "@id": "recorded:entity",
+      "@type": "@id"
+    },
+    "attribute": {
+      "@id": "recorded:attribute"
+    },
+    "composite_path": {
+      "@id": "recorded:composite_path",
+      "@container": "@list"
+    },
+    "TriggeredBy": "recorded:TriggeredBy",
+    "reference_id": {
+      "@id": "recorded:reference_id",
+      "@type": "xsd:string"
+    },
+    "entity_path": {
+      "@id": "recorded:entity_path",
+      "@container": "@list"
+    },
+    "entity_paths": {
+      "@id": "recorded:entity_paths",
+      "@container": "@list"
+    },
+    "RuleV2": "recorded:RuleV2",
+    "url": {
+      "@id": "recorded:url",
+      "@type": "xsd:string"
+    },
+    "organisation_id": {
+      "@id": "recorded:organisation_id",
+      "@type": "xsd:string"
+    },
+    "organisation_name": {
+      "@id": "recorded:organisation_name",
+      "@type": "xsd:string"
+    },
+    "use_case_deprecation": {
+      "@id": "recorded:use_case_deprecation",
+      "@type": "@id"
+    },
+    "ReviewV2": "recorded:ReviewV2",
+    "status": {
+      "@id": "recorded:status",
+      "@type": "xsd:string"
+    },
+    "statusInPortal": {
+      "@id": "recorded:statusInPortal",
+      "@type": "xsd:string"
+    },
+    "statusDate": {
+      "@id": "recorded:statusDate",
+      "@type": "xsd:dateTime"
+    },
+    "statusChangeBy": {
+      "@id": "recorded:statusChangeBy",
+      "@type": "xsd:string"
+    },
+    "assignee": {
+      "@id": "recorded:assignee",
+      "@type": "xsd:string"
+    },
+    "note": {
+      "@id": "recorded:note",
+      "@type": "xsd:string"
+    },
+    "noteAuthor": {
+      "@id": "recorded:noteAuthor",
+      "@type": "xsd:string"
+    },
+    "noteDate": {
+      "@id": "recorded:noteDate",
+      "@type": "xsd:dateTime"
+    },
+    "EvidenceV2": "recorded:EvidenceV2",
+    "rule": {
+      "@id": "recorded:rule",
+      "@type": "xsd:string"
+    },
+    "criticality": {
+      "@id": "recorded:criticality",
+      "@type": "xsd:integer"
+    },
+    "criticalityLabel": {
+      "@id": "recorded:criticalityLabel",
+      "@type": "xsd:string"
+    },
+    "evidenceString": {
+      "@id": "recorded:evidenceString",
+      "@type": "xsd:string"
+    },
+    "mitigationString": {
+      "@id": "recorded:mitigationString",
+      "@type": "xsd:string"
+    },
+    "timestamp": {
+      "@id": "recorded:timestamp",
+      "@type": "xsd:dateTime"
+    },
+    "ReferenceV2": "recorded:ReferenceV2",
+    "fragment": {
+      "@id": "recorded:fragment",
+      "@type": "xsd:string"
+    },
+    "language": {
+      "@id": "recorded:language",
+      "@type": "xsd:string"
+    },
+    "entities": {
+      "@id": "recorded:entities",
+      "@container": "@list"
+    },
+    "noteId": {
+      "@id": "recorded:noteId",
+      "@type": "xsd:string"
+    },
+    "noteLink": {
+      "@id": "recorded:noteLink",
+      "@type": "xsd:string"
+    },
+    "DocumentV2": "recorded:DocumentV2",
+    "title": {
+      "@id": "recorded:title",
+      "@type": "xsd:string"
+    },
+    "source": {
+      "@id": "recorded:source",
+      "@type": "@id"
+    },
+    "authors": {
+      "@id": "recorded:authors",
+      "@container": "@list"
+    },
+    "references": {
+      "@id": "recorded:references",
+      "@container": "@list"
+    },
+    "AlertEntityV2": "recorded:AlertEntityV2",
+    "risk": {
+      "@id": "recorded:risk",
+      "@type": "@id"
+    },
+    "trend": {
+      "@id": "recorded:trend",
+      "@type": "@id"
+    },
+    "documents": {
+      "@id": "recorded:documents",
+      "@container": "@list"
+    },
+    "AlertCountsV2": "recorded:AlertCountsV2",
+    "AlertV2Summary": "recorded:AlertV2Summary",
+    "triggered": {
+      "@id": "recorded:triggered",
+      "@type": "xsd:dateTime"
+    },
+    "ai_insights": {
+      "@id": "recorded:ai_insights",
+      "@type": "@id"
+    },
+    "review": {
+      "@id": "recorded:review",
+      "@type": "@id"
+    },
+    "owner_organisation_details": {
+      "@id": "recorded:owner_organisation_details",
+      "@type": "@id"
+    },
+    "AlertSearchDetailsResponseV2": "recorded:AlertSearchDetailsResponseV2",
+    "counts": {
+      "@id": "recorded:counts",
+      "@type": "@id"
+    },
+    "Counts": "recorded:Counts",
+    "returned": {
+      "@id": "recorded:returned",
+      "@type": "xsd:integer"
+    },
+    "total": {
+      "@id": "recorded:total",
+      "@type": "xsd:integer"
+    },
+    "AlertSearchResponseV2": "recorded:AlertSearchResponseV2",
+    "AlertLookupResponseV3": "recorded:AlertLookupResponseV3",
+    "RuleV3": "recorded:RuleV3",
+    "ReviewV3": "recorded:ReviewV3",
+    "status_in_portal": {
+      "@id": "recorded:status_in_portal",
+      "@type": "xsd:string"
+    },
+    "LogV3": "recorded:LogV3",
+    "status_date": {
+      "@id": "recorded:status_date",
+      "@type": "xsd:dateTime"
+    },
+    "status_change_by": {
+      "@id": "recorded:status_change_by",
+      "@type": "xsd:string"
+    },
+    "note_author": {
+      "@id": "recorded:note_author",
+      "@type": "xsd:string"
+    },
+    "note_date": {
+      "@id": "recorded:note_date",
+      "@type": "xsd:dateTime"
+    },
+    "UrlV3": "recorded:UrlV3",
+    "portal": {
+      "@id": "recorded:portal",
+      "@type": "xsd:string"
+    },
+    "api": {
+      "@id": "recorded:api",
+      "@type": "xsd:string"
+    },
+    "CriticalityV3": "recorded:CriticalityV3",
+    "level": {
+      "@id": "recorded:level",
+      "@type": "xsd:integer"
+    },
+    "score": {
+      "@id": "recorded:score",
+      "@type": "xsd:integer"
+    },
+    "last_triggered": {
+      "@id": "recorded:last_triggered",
+      "@type": "xsd:dateTime"
+    },
+    "EvidenceV3": "recorded:EvidenceV3",
+    "criticality_label": {
+      "@id": "recorded:criticality_label",
+      "@type": "xsd:string"
+    },
+    "evidence_string": {
+      "@id": "recorded:evidence_string",
+      "@type": "xsd:string"
+    },
+    "mitigation_string": {
+      "@id": "recorded:mitigation_string",
+      "@type": "xsd:string"
+    },
+    "DocumentV3": "recorded:DocumentV3",
+    "ReferenceV3": "recorded:ReferenceV3",
+    "primary_entity": {
+      "@id": "recorded:primary_entity",
+      "@type": "@id"
+    },
+    "document": {
+      "@id": "recorded:document",
+      "@type": "@id"
+    },
+    "AnalystNote": "recorded:AnalystNote",
+    "HitV3": "recorded:HitV3",
+    "analyst_note": {
+      "@id": "recorded:analyst_note",
+      "@type": "@id"
+    },
+    "AlertV3": "recorded:AlertV3",
+    "log": {
+      "@id": "recorded:log",
+      "@type": "@id"
+    },
+    "enriched_entities": {
+      "@id": "recorded:enriched_entities",
+      "@container": "@list"
+    },
+    "hits": {
+      "@id": "recorded:hits",
+      "@container": "@list"
+    },
+    "triggered_by": {
+      "@id": "recorded:triggered_by",
+      "@container": "@list"
+    },
+    "AlertHitsResponseV3": "recorded:AlertHitsResponseV3",
+    "AlertSearchResponseV3": "recorded:AlertSearchResponseV3",
+    "AlertRuleSearchResponseV2": "recorded:AlertRuleSearchResponseV2",
+    "IdName": "recorded:IdName",
+    "AlertRule": "recorded:AlertRule",
+    "created": {
+      "@id": "recorded:created",
+      "@type": "xsd:dateTime"
+    },
+    "enabled": {
+      "@id": "recorded:enabled",
+      "@type": "xsd:boolean"
+    },
+    "priority": {
+      "@id": "recorded:priority",
+      "@type": "xsd:boolean"
+    },
+    "tags": {
+      "@id": "recorded:tags",
+      "@container": "@list"
+    },
+    "use_case_id": {
+      "@id": "recorded:use_case_id",
+      "@type": "xsd:string"
+    },
+    "owner": {
+      "@id": "recorded:owner",
+      "@type": "@id"
+    },
+    "intelligence_goals": {
+      "@id": "recorded:intelligence_goals",
+      "@container": "@list"
+    },
+    "notification_settings": {
+      "@id": "recorded:notification_settings"
+    },
+    "AlertUpdateResponse": "recorded:AlertUpdateResponse",
+    "success": {
+      "@id": "recorded:success",
+      "@container": "@list"
+    },
+    "error": {
+      "@id": "recorded:error",
+      "@container": "@list"
+    },
+    "DeleteResponse": "recorded:DeleteResponse",
+    "report_id": {
+      "@id": "recorded:report_id",
+      "@type": "xsd:string"
+    },
+    "ErrorResponse": "recorded:ErrorResponse",
+    "message": {
+      "@id": "recorded:message",
+      "@type": "xsd:string"
+    },
+    "status_code": {
+      "@id": "recorded:status_code",
+      "@type": "xsd:integer"
+    },
+    "trace_id": {
+      "@id": "recorded:trace_id",
+      "@type": "xsd:string"
+    },
+    "DraftRequest": "recorded:DraftRequest",
+    "attributes": {
+      "@id": "recorded:attributes",
+      "@type": "@id"
+    },
+    "events": {
+      "@id": "recorded:events",
+      "@type": "@id"
+    },
+    "resolve_entities": {
+      "@id": "recorded:resolve_entities",
+      "@type": "@id"
+    },
+    "DraftResponse": "recorded:DraftResponse",
+    "NoteEntity": "recorded:NoteEntity",
+    "CyberAttackEventAttributes": "recorded:CyberAttackEventAttributes",
+    "start": {
+      "@id": "recorded:start",
+      "@type": "xsd:dateTime"
+    },
+    "stop": {
+      "@id": "recorded:stop",
+      "@type": "xsd:dateTime"
+    },
+    "adversary": {
+      "@id": "recorded:adversary",
+      "@container": "@list"
+    },
+    "target": {
+      "@id": "recorded:target",
+      "@container": "@list"
+    },
+    "capabilities": {
+      "@id": "recorded:capabilities",
+      "@container": "@list"
+    },
+    "malicious_infrastructure": {
+      "@id": "recorded:malicious_infrastructure",
+      "@container": "@list"
+    },
+    "operation": {
+      "@id": "recorded:operation",
+      "@container": "@list"
+    },
+    "CyberAttackEvent": "recorded:CyberAttackEvent",
+    "Position": "recorded:Position",
+    "longitude": {
+      "@id": "recorded:longitude",
+      "@type": "xsd:decimal"
+    },
+    "latitude": {
+      "@id": "recorded:latitude",
+      "@type": "xsd:decimal"
+    },
+    "ArmedConflictEventAttributes": "recorded:ArmedConflictEventAttributes",
+    "attacker": {
+      "@id": "recorded:attacker",
+      "@container": "@list"
+    },
+    "location": {
+      "@id": "recorded:location",
+      "@container": "@list"
+    },
+    "event_positions": {
+      "@id": "recorded:event_positions",
+      "@container": "@list"
+    },
+    "ArmedConflictEvent": "recorded:ArmedConflictEvent",
+    "ArmsPurchaseSaleEventAttributes": "recorded:ArmsPurchaseSaleEventAttributes",
+    "arms_seller": {
+      "@id": "recorded:arms_seller",
+      "@container": "@list"
+    },
+    "arms_purchaser": {
+      "@id": "recorded:arms_purchaser",
+      "@container": "@list"
+    },
+    "ArmsPurchaseSaleEvent": "recorded:ArmsPurchaseSaleEvent",
+    "CoupEventAttributes": "recorded:CoupEventAttributes",
+    "CoupEvent": "recorded:CoupEvent",
+    "DiseaseOutbreakEventAttributes": "recorded:DiseaseOutbreakEventAttributes",
+    "disease": {
+      "@id": "recorded:disease",
+      "@container": "@list"
+    },
+    "facility": {
+      "@id": "recorded:facility",
+      "@container": "@list"
+    },
+    "DiseaseOutbreakEvent": "recorded:DiseaseOutbreakEvent",
+    "ElectionEventAttributes": "recorded:ElectionEventAttributes",
+    "ElectionEvent": "recorded:ElectionEvent",
+    "EnvironmentalIssueEventAttributes": "recorded:EnvironmentalIssueEventAttributes",
+    "environmental_issue": {
+      "@id": "recorded:environmental_issue",
+      "@container": "@list"
+    },
+    "EnvironmentalIssueEvent": "recorded:EnvironmentalIssueEvent",
+    "ManMadeDisasterEventAttributes": "recorded:ManMadeDisasterEventAttributes",
+    "manmade_disaster": {
+      "@id": "recorded:manmade_disaster",
+      "@container": "@list"
+    },
+    "ManMadeDisasterEvent": "recorded:ManMadeDisasterEvent",
+    "MilitaryManeuverEventAttributes": "recorded:MilitaryManeuverEventAttributes",
+    "actors": {
+      "@id": "recorded:actors",
+      "@container": "@list"
+    },
+    "locations": {
+      "@id": "recorded:locations",
+      "@container": "@list"
+    },
+    "MilitaryManeuverEvent": "recorded:MilitaryManeuverEvent",
+    "NaturalDisasterEventAttributes": "recorded:NaturalDisasterEventAttributes",
+    "natural_disaster": {
+      "@id": "recorded:natural_disaster",
+      "@container": "@list"
+    },
+    "NaturalDisasterEvent": "recorded:NaturalDisasterEvent",
+    "NuclearMaterialTransactionEventAttributes": "recorded:NuclearMaterialTransactionEventAttributes",
+    "material": {
+      "@id": "recorded:material",
+      "@container": "@list"
+    },
+    "location_origin": {
+      "@id": "recorded:location_origin",
+      "@container": "@list"
+    },
+    "location_destination": {
+      "@id": "recorded:location_destination",
+      "@container": "@list"
+    },
+    "NuclearMaterialTransactionEvent": "recorded:NuclearMaterialTransactionEvent",
+    "PersonThreatEventAttributes": "recorded:PersonThreatEventAttributes",
+    "threatened": {
+      "@id": "recorded:threatened",
+      "@container": "@list"
+    },
+    "actor": {
+      "@id": "recorded:actor",
+      "@container": "@list"
+    },
+    "PersonThreatEvent": "recorded:PersonThreatEvent",
+    "PoliticalEventAttributes": "recorded:PoliticalEventAttributes",
+    "PoliticalEvent": "recorded:PoliticalEvent",
+    "RFEVEProtestEventAttributes": "recorded:RFEVEProtestEventAttributes",
+    "protest_target": {
+      "@id": "recorded:protest_target",
+      "@container": "@list"
+    },
+    "RFEVEProtestEvent": "recorded:RFEVEProtestEvent",
+    "PublicSafetyWarningEventAttributes": "recorded:PublicSafetyWarningEventAttributes",
+    "PublicSafetyWarningEvent": "recorded:PublicSafetyWarningEvent",
+    "TerrorIncidentEventAttributes": "recorded:TerrorIncidentEventAttributes",
+    "TerrorIncidentEvent": "recorded:TerrorIncidentEvent",
+    "RFEVEArmedAssaultEventAttributes": "recorded:RFEVEArmedAssaultEventAttributes",
+    "RFEVEArmedAssaultEvent": "recorded:RFEVEArmedAssaultEvent",
+    "MalwareAnalysisEventAttributes": "recorded:MalwareAnalysisEventAttributes",
+    "malware": {
+      "@id": "recorded:malware",
+      "@container": "@list"
+    },
+    "ttp": {
+      "@id": "recorded:ttp",
+      "@container": "@list"
+    },
+    "exploit": {
+      "@id": "recorded:exploit",
+      "@container": "@list"
+    },
+    "hash": {
+      "@id": "recorded:hash",
+      "@container": "@list"
+    },
+    "MalwareAnalysisEvent": "recorded:MalwareAnalysisEvent",
+    "RecommendedQueryReq": "recorded:RecommendedQueryReq",
+    "NoteRequestAttributes": "recorded:NoteRequestAttributes",
+    "note_entities": {
+      "@id": "recorded:note_entities",
+      "@container": "@list"
+    },
+    "context_entities": {
+      "@id": "recorded:context_entities",
+      "@container": "@list"
+    },
+    "topic": {
+      "@id": "recorded:topic",
+      "@container": "@list"
+    },
+    "labels": {
+      "@id": "recorded:labels",
+      "@container": "@list"
+    },
+    "validation_urls": {
+      "@id": "recorded:validation_urls",
+      "@container": "@list"
+    },
+    "validated_on": {
+      "@id": "recorded:validated_on",
+      "@type": "xsd:dateTime"
+    },
+    "detection_rules": {
+      "@id": "recorded:detection_rules",
+      "@container": "@list"
+    },
+    "recommended_queries_obj": {
+      "@id": "recorded:recommended_queries_obj",
+      "@container": "@list"
+    },
+    "PreviewRequest": "recorded:PreviewRequest",
+    "tagged_text": {
+      "@id": "recorded:tagged_text",
+      "@type": "@id"
+    },
+    "escape_html": {
+      "@id": "recorded:escape_html",
+      "@type": "@id"
+    },
+    "serialization": {
+      "@id": "recorded:serialization",
+      "@type": "@id"
+    },
+    "PreviewResponse": "recorded:PreviewResponse",
+    "NoteResponseAttributesMin": "recorded:NoteResponseAttributesMin",
+    "RequestSerializationParam": "recorded:RequestSerializationParam",
+    "PublishRequest": "recorded:PublishRequest",
+    "note_id": {
+      "@id": "recorded:note_id",
+      "@type": "@id"
+    },
+    "attachment_content_details": {
+      "@id": "recorded:attachment_content_details",
+      "@type": "@id"
+    },
+    "PublishResponse": "recorded:PublishResponse",
+    "RequestAttachment": "recorded:RequestAttachment",
+    "content_type": {
+      "@id": "recorded:content_type",
+      "@type": "xsd:string"
+    },
+    "encoding": {
+      "@id": "recorded:encoding",
+      "@type": "xsd:string"
+    },
+    "content": {
+      "@id": "recorded:content",
+      "@type": "xsd:string"
+    },
+    "filename": {
+      "@id": "recorded:filename",
+      "@type": "xsd:string"
+    },
+    "LookupRequest": "recorded:LookupRequest",
+    "LookupResponse": "recorded:LookupResponse",
+    "DiamondModel": "recorded:DiamondModel",
+    "Query": "recorded:Query",
+    "NoteLookupResponseAttributes": "recorded:NoteLookupResponseAttributes",
+    "published": {
+      "@id": "recorded:published",
+      "@type": "xsd:dateTime"
+    },
+    "diamond_model": {
+      "@id": "recorded:diamond_model",
+      "@container": "@list"
+    },
+    "header_image": {
+      "@id": "recorded:header_image",
+      "@type": "@id"
+    },
+    "recommended_queries": {
+      "@id": "recorded:recommended_queries",
+      "@container": "@list"
+    },
+    "attachment": {
+      "@id": "recorded:attachment",
+      "@type": "xsd:string"
+    },
+    "SearchRequest": "recorded:SearchRequest",
+    "label": {
+      "@id": "recorded:label",
+      "@type": "xsd:string"
+    },
+    "limit": {
+      "@id": "recorded:limit",
+      "@type": "xsd:integer"
+    },
+    "enterprise_only": {
+      "@id": "recorded:enterprise_only",
+      "@type": "xsd:boolean"
+    },
+    "SearchResponse": "recorded:SearchResponse",
+    "next_offset": {
+      "@id": "recorded:next_offset",
+      "@type": "xsd:string"
+    },
+    "NoteSearchResponseAttributes": "recorded:NoteSearchResponseAttributes",
+    "AssetTagAPIResponse": "recorded:AssetTagAPIResponse",
+    "AssetTagResponse": "recorded:AssetTagResponse",
+    "add_tags": {
+      "@id": "recorded:add_tags"
+    },
+    "remove_tags": {
+      "@id": "recorded:remove_tags"
+    },
+    "assets": {
+      "@id": "recorded:assets"
+    },
+    "complete": {
+      "@id": "recorded:complete",
+      "@type": "xsd:boolean"
+    },
+    "task_ids": {
+      "@id": "recorded:task_ids"
+    },
+    "HTTPValidationError": "recorded:HTTPValidationError",
+    "detail": {
+      "@id": "recorded:detail",
+      "@container": "@list"
+    },
+    "ValidationError": "recorded:ValidationError",
+    "loc": {
+      "@id": "recorded:loc",
+      "@container": "@list"
+    },
+    "msg": {
+      "@id": "recorded:msg",
+      "@type": "xsd:string"
+    },
+    "TagAssetRequest": "recorded:TagAssetRequest",
+    "ApiCount": "recorded:ApiCount",
+    "ApiListResponse_Asset_": "recorded:ApiListResponse_Asset_",
+    "meta": {
+      "@id": "recorded:meta",
+      "@type": "@id"
+    },
+    "ApiMeta": "recorded:ApiMeta",
+    "params": {
+      "@id": "recorded:params"
+    },
+    "pagination": {
+      "@id": "recorded:pagination"
+    },
+    "request_id": {
+      "@id": "recorded:request_id"
+    },
+    "Asset": "recorded:Asset",
+    "project_id": {
+      "@id": "recorded:project_id",
+      "@type": "xsd:string"
+    },
+    "discovered_at": {
+      "@id": "recorded:discovered_at"
+    },
+    "added_to_project_at": {
+      "@id": "recorded:added_to_project_at",
+      "@type": "xsd:dateTime"
+    },
+    "last_scanned_at": {
+      "@id": "recorded:last_scanned_at"
+    },
+    "apex_domain": {
+      "@id": "recorded:apex_domain"
+    },
+    "exposure_score": {
+      "@id": "recorded:exposure_score"
+    },
+    "is_static_asset": {
+      "@id": "recorded:is_static_asset",
+      "@type": "xsd:boolean"
+    },
+    "custom_tags": {
+      "@id": "recorded:custom_tags"
+    },
+    "resolved_ips": {
+      "@id": "recorded:resolved_ips"
+    },
+    "dns_records": {
+      "@id": "recorded:dns_records"
+    },
+    "whois": {
+      "@id": "recorded:whois"
+    },
+    "certificates": {
+      "@id": "recorded:certificates"
+    },
+    "defenses": {
+      "@id": "recorded:defenses"
+    },
+    "exposures": {
+      "@id": "recorded:exposures"
+    },
+    "scanned_ips": {
+      "@id": "recorded:scanned_ips"
+    },
+    "AssetSortField": "recorded:AssetSortField",
+    "Certificate": "recorded:Certificate",
+    "expires_at": {
+      "@id": "recorded:expires_at",
+      "@type": "xsd:dateTime"
+    },
+    "issued_at": {
+      "@id": "recorded:issued_at",
+      "@type": "xsd:dateTime"
+    },
+    "sha256": {
+      "@id": "recorded:sha256",
+      "@type": "xsd:string"
+    },
+    "subject": {
+      "@id": "recorded:subject",
+      "@type": "@id"
+    },
+    "subject_alt_names": {
+      "@id": "recorded:subject_alt_names"
+    },
+    "issuer": {
+      "@id": "recorded:issuer"
+    },
+    "chain": {
+      "@id": "recorded:chain"
+    },
+    "signature_algorithm": {
+      "@id": "recorded:signature_algorithm"
+    },
+    "CertificateEntity": "recorded:CertificateEntity",
+    "common_name": {
+      "@id": "recorded:common_name"
+    },
+    "organization_name": {
+      "@id": "recorded:organization_name"
+    },
+    "organizational_unit_name": {
+      "@id": "recorded:organizational_unit_name"
+    },
+    "country_name": {
+      "@id": "recorded:country_name"
+    },
+    "CertificateInstance": "recorded:CertificateInstance",
+    "certificate": {
+      "@id": "recorded:certificate",
+      "@type": "@id"
+    },
+    "seen_ports": {
+      "@id": "recorded:seen_ports"
+    },
+    "DNSRecord": "recorded:DNSRecord",
+    "record_type": {
+      "@id": "recorded:record_type",
+      "@type": "xsd:string"
+    },
+    "value": {
+      "@id": "recorded:value"
+    },
+    "is_virtual": {
+      "@id": "recorded:is_virtual",
+      "@type": "xsd:boolean"
+    },
+    "DNSValue": "recorded:DNSValue",
+    "seen_from": {
+      "@id": "recorded:seen_from",
+      "@container": "@list"
+    },
+    "first_seen_at": {
+      "@id": "recorded:first_seen_at"
+    },
+    "last_resolved_at": {
+      "@id": "recorded:last_resolved_at"
+    },
+    "DefensiveControl": "recorded:DefensiveControl",
+    "vendor": {
+      "@id": "recorded:vendor"
+    },
+    "technology_type": {
+      "@id": "recorded:technology_type"
+    },
+    "version": {
+      "@id": "recorded:version"
+    },
+    "instances": {
+      "@id": "recorded:instances",
+      "@container": "@list"
+    },
+    "Exposure": "recorded:Exposure",
+    "detection_id": {
+      "@id": "recorded:detection_id"
+    },
+    "severity": {
+      "@id": "recorded:severity",
+      "@type": "@id"
+    },
+    "details": {
+      "@id": "recorded:details"
+    },
+    "supports_evidence": {
+      "@id": "recorded:supports_evidence"
+    },
+    "ExposureInstance": "recorded:ExposureInstance",
+    "port_number": {
+      "@id": "recorded:port_number",
+      "@type": "xsd:integer"
+    },
+    "ExposureSeverity": "recorded:ExposureSeverity",
+    "GeoLocation": "recorded:GeoLocation",
+    "continent": {
+      "@id": "recorded:continent"
+    },
+    "country": {
+      "@id": "recorded:country"
+    },
+    "city": {
+      "@id": "recorded:city"
+    },
+    "country_iso": {
+      "@id": "recorded:country_iso"
+    },
+    "IPMetadata": "recorded:IPMetadata",
+    "as_number": {
+      "@id": "recorded:as_number"
+    },
+    "registry": {
+      "@id": "recorded:registry"
+    },
+    "owner_geo": {
+      "@id": "recorded:owner_geo"
+    },
+    "PaginationResponse": "recorded:PaginationResponse",
+    "next_cursor": {
+      "@id": "recorded:next_cursor"
+    },
+    "sort": {
+      "@id": "recorded:sort"
+    },
+    "Port": "recorded:Port",
+    "port": {
+      "@id": "recorded:port",
+      "@type": "xsd:integer"
+    },
+    "protocol": {
+      "@id": "recorded:protocol",
+      "@type": "xsd:string"
+    },
+    "PortInstance": "recorded:PortInstance",
+    "seen_ip": {
+      "@id": "recorded:seen_ip"
+    },
+    "seen_at": {
+      "@id": "recorded:seen_at",
+      "@type": "xsd:dateTime"
+    },
+    "service": {
+      "@id": "recorded:service"
+    },
+    "technology": {
+      "@id": "recorded:technology"
+    },
+    "web_technologies": {
+      "@id": "recorded:web_technologies"
+    },
+    "ScannedIP": "recorded:ScannedIP",
+    "ip": {
+      "@id": "recorded:ip",
+      "@type": "xsd:string"
+    },
+    "open_ports": {
+      "@id": "recorded:open_ports"
+    },
+    "metadata": {
+      "@id": "recorded:metadata"
+    },
+    "is_responsive": {
+      "@id": "recorded:is_responsive"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Recorded Future API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Recorded Future's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-20) from openapi/recorded-future-alert-api-openapi.yml, openapi/recorded-future-analyst-note-api-openapi.yml, openapi/recorded-future-asi-project-api-openapi.yml.",
+  "dcterms:created": "2026-10-20",
+  "dcterms:source": [
+    "openapi/recorded-future-alert-api-openapi.yml",
+    "openapi/recorded-future-analyst-note-api-openapi.yml",
+    "openapi/recorded-future-asi-project-api-openapi.yml",
+    "openapi/recorded-future-autonomous-threat-operations-api-openapi.yml",
+    "openapi/recorded-future-case-api-openapi.yml"
+  ]
+}

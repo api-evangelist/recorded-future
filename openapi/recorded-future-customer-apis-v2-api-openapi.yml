@@ -1,0 +1,438 @@
+openapi: 3.0.1
+info:
+  title: Customer APIs V2
+  version: '2.0'
+servers:
+- url: https://api.sandbox.riskrecon.com
+  variables:
+    protocol:
+      enum:
+      - http
+      - https
+      default: https
+- url: /
+  variables:
+    protocol:
+      enum:
+      - http
+      - https
+      default: https
+security:
+- bearerAuth: []
+paths:
+  /v2/findings/{toe_id}:
+    get:
+      tags:
+      - Finding
+      summary: Streaming Newline delimited JSON response containing findings for latest analysis for a given TOE. Swagger didn't have a way of showing this so please don't let the schema of mislead you with the array of findings
+      description: Streaming Newline delimited JSON response containing findings for latest analysis for a given TOE. Use include_all param to include all findings. Swagger didn't have a way of showing this so please don't let the schema of mislead you with the array of findings.  Unfortunately, swagger UI can't format the streamed response but the given curl example will execute.
+      operationId: CustomerApisWeb.V2.FindingController.index
+      parameters:
+      - name: toe_id
+        in: path
+        description: Toe ID
+        required: true
+        schema:
+          type: string
+      - name: include_all
+        in: query
+        description: include all findings including those that passed
+        schema:
+          type: boolean
+      - name: risk_policy
+        in: query
+        description: filter findings based on customer risk policy
+        schema:
+          type: boolean
+      - name: asset_value[]
+        in: query
+        description: filter results by asset_value. The swagger UI doesn't show this well but an example of a query string with multiple asset_values would look like ?asset_value[]=high&asset_value[]=low
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: asset_value_numeric[]
+        in: query
+        description: filter results by asset_value_numeric. The swagger UI doesn't show this well but an example of a query string with multiple asset_value_numeric values would look like ?asset_value_numeric[]=1&asset_value_numeric[]=3
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: priority[]
+        in: query
+        description: filter results by priority. The swagger UI doesn't show this well but an example of a query string with multiple priority values would look like ?priority[]=1&priority[]=3
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: severity[]
+        in: query
+        description: filter results by severity. The swagger UI doesn't show this well but an example of a query string with multiple severities would look like ?severity[]=low&severity[]=medium&severity[]=high
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: severity_numeric[]
+        in: query
+        description: filter results by severity_numeric. The swagger UI doesn't show this well but an example of a query string with multiple severities would look like ?severity_numeric[]=1.0&severity_numeric[]=3.0
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/Findings'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+  /v2/findings/{toe_id}/finding/{finding_id}:
+    get:
+      tags:
+      - Finding
+      summary: Retrieve finding given toe id and finding id
+      description: Retrieve finding given toe id and finding id
+      operationId: CustomerApisWeb.V2.FindingController.show
+      parameters:
+      - name: toe_id
+        in: path
+        description: Toe ID
+        required: true
+        schema:
+          type: string
+      - name: finding_id
+        in: path
+        description: Finding ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Finding'
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+  /v2/findings/{toe_id}/security_domain/{security_domain}:
+    get:
+      tags:
+      - Finding
+      summary: Streaming Newline delimited JSON response containing findings for latest analysis for a given TOE and security domain. Swagger didn't have a way of showing this so please don't let the schema of mislead you with the array of findings
+      description: Streaming Newline delimited JSON response containing findings for latest analysis for a given TOE and security domain. Use include_all param to include all findings.  Unfortunately, swagger UI can't format the streamed response but the given curl example will execute.
+      operationId: CustomerApisWeb.V2.FindingController.by_security_domain
+      parameters:
+      - name: toe_id
+        in: path
+        description: Toe ID
+        required: true
+        schema:
+          type: string
+      - name: security_domain
+        in: path
+        description: Security Domain
+        required: true
+        schema:
+          type: string
+      - name: include_all
+        in: query
+        description: include all findings including those that passed
+        schema:
+          type: boolean
+      - name: risk_policy
+        in: query
+        description: filter findings based on customer risk policy
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/Findings'
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+  /v2/findings/{toe_id}/security_domain/{security_domain}/security_criteria/{security_criteria}:
+    get:
+      tags:
+      - Finding
+      summary: Streaming Newline delimited JSON response containing findings for latest analysis for a given TOE, security domain and security criteria. Swagger didn't have a way of showing this so please don't let the schema of mislead you with the array of findings
+      description: Streaming Newline delimited JSON response containing findings for latest analysis for a given TOE, security domain and security_criteria. Use include_all param to include all findings.  Unfortunately, swagger UI can't format the streamed response but the given curl example will execute.
+      operationId: CustomerApisWeb.V2.FindingController.by_security_criteria
+      parameters:
+      - name: toe_id
+        in: path
+        description: Toe ID
+        required: true
+        schema:
+          type: string
+      - name: security_domain
+        in: path
+        description: Security Domain
+        required: true
+        schema:
+          type: string
+      - name: security_criteria
+        in: path
+        description: Security Criteria
+        required: true
+        schema:
+          type: string
+      - name: include_all
+        in: query
+        description: include all findings including those that passed
+        schema:
+          type: boolean
+      - name: risk_policy
+        in: query
+        description: filter findings based on customer risk policy
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/Findings'
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+components:
+  schemas:
+    Findings:
+      title: Findings
+      type: array
+      description: A collection of Findings for a given analysis. For V2, this schema is a bit misleading since swagger doesn't currently provide a way to describe streaming Newline delimited JSON responses.  However, that is what all of these responses are.  We were having issues with timeouts and streaming made more sense for various reasons on larger analyses.
+      items:
+        $ref: '#/components/schemas/Finding'
+    Finding:
+      title: Finding
+      type: object
+      properties:
+        country_iso_code:
+          type: string
+        first_seen:
+          type: string
+        tech_country:
+          type: string
+        shared_ip:
+          type: string
+        registrant_street:
+          type: string
+        security_criteria:
+          type: string
+        continent_code:
+          type: string
+        registrar_expire_date:
+          type: string
+        registrar_abuse_phone:
+          type: string
+        tech_street:
+          type: string
+        state_name:
+          type: string
+        finding_extra_data_value:
+          type: string
+        toe_id:
+          type: string
+        finding_data_value:
+          type: string
+        service:
+          type: string
+        is_web:
+          type: string
+        admin_org:
+          type: string
+        industry:
+          type: string
+        longitude:
+          type: string
+        registrar:
+          type: string
+        severity:
+          type: string
+        hosting_type:
+          type: string
+        admin_phone_ext:
+          type: string
+        admin_country:
+          type: string
+        registrant_email:
+          type: string
+        record_load_timestamp:
+          type: string
+        admin_name:
+          type: string
+        asset_value:
+          type: string
+        admin_zip:
+          type: string
+        auto_status:
+          type: string
+        finding_context:
+          type: string
+        tech_zip:
+          type: string
+        form_field_types_detected:
+          type: string
+        admin_city:
+          type: string
+        finding_id:
+          type: string
+        registrant_country:
+          type: string
+        analysis_id:
+          type: string
+        host_name:
+          type: string
+        registrar_iana:
+          type: string
+        finding:
+          type: string
+        registrar_abuse_email:
+          type: string
+        expires_on:
+          type: string
+        registrar_id:
+          type: string
+        tech_org:
+          type: string
+        analyst_status:
+          type: string
+        ip_address:
+          type: string
+        tech_email:
+          type: string
+        finding_detail:
+          type: string
+        state_abbrev:
+          type: string
+        admin_phone:
+          type: string
+        domain_name:
+          type: string
+        postal_code:
+          type: string
+        vendor:
+          type: string
+        security_domain:
+          type: string
+        registrant_phone:
+          type: string
+        registrant_name:
+          type: string
+        finding_type:
+          type: string
+        latitude:
+          type: string
+        hosting_provider:
+          type: string
+        priority:
+          type: string
+        last_seen:
+          type: string
+        country_name:
+          type: string
+        false_positive:
+          type: string
+        registrant_org:
+          type: string
+        registrant_phone_ext:
+          type: string
+        finding_auto_comments:
+          type: string
+        scan:
+          type: string
+        tech_phone:
+          type: string
+        name_server:
+          type: string
+        tech_city:
+          type: string
+        tech_name:
+          type: string
+        admin_street:
+          type: string
+        auth_detected:
+          type: string
+        admin_email:
+          type: string
+        continent_name:
+          type: string
+        finding_subtype:
+          type: string
+        finding_data_description:
+          type: string
+        severity_numeric:
+          type: string
+        registry_tech_id:
+          type: string
+        metro_code:
+          type: string
+        asset_value_numeric:
+          type: string
+        registrant_zip:
+          type: string
+        city_name:
+          type: string
+        registrant_city:
+          type: string
+        who_should_fix_it:
+          type: string
+        support_site:
+          type: string
+        how_to_fix_it:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/customerapiswebv2findingcontrollerby_security_criteria.md
+  - https://docs.recordedfuture.com/reference/customerapiswebv2findingcontrollerby_security_domain.md
+  - https://docs.recordedfuture.com/reference/customerapiswebv2findingcontrollerindex.md
+  - https://docs.recordedfuture.com/reference/customerapiswebv2findingcontrollershow.md
+  merge:
+    pages: 4
+    deduped: 8
+    conflicts_kept_first: 0

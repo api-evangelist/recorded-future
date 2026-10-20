@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-operation-result-schema.json",
+  "title": "OperationResult",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-fusion-api-openapi.yml#/components/schemas/OperationResult",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "string",
+      "description": "Result of operation"
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-tag-operation-request-schema.json",
+  "title": "TagOperationRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-list-api-openapi.yml#/components/schemas/TagOperationRequest",
+  "type": "object",
+  "properties": {
+    "entity": {
+      "$ref": "#/$defs/Entity"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Complete set of tag names to apply; replaces all existing tags"
+    }
+  },
+  "required": [
+    "entity",
+    "tags"
+  ],
+  "$defs": {
+    "Entity": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/EntityById"
+        },
+        {
+          "$ref": "#/$defs/EntityByTypeAndName"
+        }
+      ]
+    },
+    "EntityById": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "EntityByTypeAndName": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "IpAddress",
+            "InternetDomainName",
+            "Hash",
+            "CyberVulnerability",
+            "ASNumber",
+            "Company",
+            "Organization",
+            "Product",
+            "Technology",
+            "CyberExploitTargetCategory",
+            "ProductIdentifier",
+            "Industry",
+            "City",
+            "Country",
+            "Continent",
+            "Region",
+            "ProvinceOrState",
+            "Operation",
+            "Person",
+            "CyberThreatActorCategory",
+            "Username",
+            "Malware",
+            "MalwareCategory",
+            "AttackVector",
+            "MitreAttackIdentifier",
+            "MitreAttackICSIdentifier",
+            "Facility",
+            "Airport",
+            "Embassy",
+            "MilitaryBase",
+            "Port",
+            "MICR"
+          ],
+          "description": "Different lists have different limitations in terms of entity types, some lists have no limitations in terms of entity types, consult the specific list you are trying to update."
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

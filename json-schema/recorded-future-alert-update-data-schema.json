@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-alert-update-data-schema.json",
+  "title": "AlertUpdateData",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertUpdateData",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Id of the alert to update"
+      },
+      "assignee": {
+        "type": "string",
+        "description": "New assignee. Can be an id, uhash, username or email."
+      },
+      "note": {
+        "type": "string",
+        "description": "New note text"
+      },
+      "status": {
+        "type": "string",
+        "deprecated": true,
+        "description": "New alert status (legacy)",
+        "enum": [
+          "unassigned",
+          "assigned",
+          "pending",
+          "dismiss",
+          "no-action",
+          "actionable",
+          "tuning"
+        ]
+      },
+      "statusInPortal": {
+        "type": "string",
+        "description": "New alert status",
+        "enum": [
+          "New",
+          "Resolved",
+          "Pending",
+          "Dismissed",
+          "Flag for Tuning"
+        ]
+      }
+    },
+    "required": [
+      "id"
+    ]
+  }
+}

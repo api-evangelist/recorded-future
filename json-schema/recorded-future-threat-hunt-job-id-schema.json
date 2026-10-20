@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-threat-hunt-job-id-schema.json",
+  "title": "ThreatHuntJobId",
+  "description": "Threat Hunt Job ID",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-autonomous-threat-operations-api-openapi.yml#/components/schemas/ThreatHuntJobId",
+  "type": "string",
+  "format": "uuid"
+}

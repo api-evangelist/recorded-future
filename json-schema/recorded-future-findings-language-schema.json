@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-findings-language-schema.json",
+  "title": "Findings language",
+  "description": "Findings language associated with a given platform and version",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-common-platform-enumeration-apis-v0-api-openapi.yml#/components/schemas/FindingsLanguage",
+  "type": "object",
+  "properties": {
+    "solution_short": {
+      "type": "string"
+    },
+    "solution_owner_short": {
+      "type": "string"
+    },
+    "solution_owner_long": {
+      "type": "string"
+    },
+    "issue_short_vuln": {
+      "type": "string"
+    },
+    "issue_short_eol": {
+      "type": "string"
+    },
+    "issue_long_vuln": {
+      "type": "string"
+    },
+    "issue_long_intro": {
+      "type": "string"
+    },
+    "issue_long_eol": {
+      "type": "string"
+    }
+  }
+}

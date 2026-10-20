@@ -1,76 +1,28 @@
-# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (dated 2026-05-22 by the file itself), not
-# harvested from the provider. `method: generated` so the economics campaign may replace it with a
-# dated, verbatim transcription; every figure below is unverified until it does.
-method: generated
-generated: '2026-05-22'
-specification: API Commons Plans
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: Recorded Future
-providerId: recorded-future
-created: '2026-05-22'
-modified: '2026-05-22'
-tags:
-- Cybersecurity
-- Threat Intelligence
-- Intelligence Cloud
-- Brand Intelligence
-- Identity Intelligence
-- Vulnerability Intelligence
-- AI Analyst
-description: Machine-readable plans scaffold for the Recorded Future API surface. Conforms to the API Commons Plans schema.
-  Tier limits and prices are scaffold defaults; replace with provider-published values.
+name: Recorded Future pricing
+generated: '2026-10-20'
+method: searched
+source: https://www.recordedfuture.com/pricing
+audience: business-product
+pricing_basis: negotiated
+published: false
+delivery:
+  delivery: managed
+plan_count: 3
+note: No numeric prices published; for most packages organization size (unique workforce credentials) is the primary pricing
+  metric. Solution Packages (e.g. Digital Risk Protection, Third-Party Risk) can be bought individually.
 plans:
-- id: recorded-future-free
-  name: Free
-  type: freemium
-  description: Free entry tier for the Recorded Future API surface. Intended for evaluation, prototyping, and low-volume integrations.
-    Real limits and pricing must be reconciled with the provider's published plan documentation.
-  entries:
-  - label: API Requests
-    description: Monthly API request quota across all included endpoints
-    name: api_requests
-    type: quota
-    metric: requests
-    limit: 1000
-    timeFrame: month
-    geo: global
-    domains:
-    - https://api.recordedfuture.com
-    unit: 1
-    price: '0.00'
-    userMultiplied: false
-  - label: Rate Limit
-    description: Maximum requests per minute on the free tier
-    name: rate_limit
-    type: rate
-    metric: requests_per_minute
-    limit: 10
-    timeFrame: minute
-    geo: global
-    domains:
-    - https://api.recordedfuture.com
-    unit: 1
-    price: '0.00'
-references:
-- name: Recorded Future API Documentation
-  url: https://raw.githubusercontent.com/api-evangelist/recorded-future/refs/heads/main/apis.yml
-x-canonical:
-  generated: '2026-10-08'
-  vocabulary: all/0-working/economics/plans-canonical.yml
-  models:
-  - free
-  units:
-  - rate
-  - request
-  plans:
-  - name: Free
-    access: freemium
-    model: free
-    model_how: derived
-    units:
-    - rate
-    - request
-    periods:
-    - minute
-    - month
+- name: Core
+  description: Core establishes cross-domain visibility for essential use cases
+  price_text: Pricing depends on the Package, organization-size tier, add-ons, services, and additional capacity selected.
+  features: []
+  limits: []
+- name: Professional
+  description: Professional supports mature teams seeking continuous discovery and autonomous action
+  price_text: Pricing depends on the Package, organization-size tier, add-ons, services, and additional capacity selected.
+  features: []
+  limits: []
+- name: Elite
+  description: Elite provides comprehensive coverage across the enterprise and its ecosystem
+  price_text: Pricing depends on the Package, organization-size tier, add-ons, services, and additional capacity selected.
+  features: []
+  limits: []

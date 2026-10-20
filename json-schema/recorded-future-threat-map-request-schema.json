@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-threat-map-request-schema.json",
+  "title": "ThreatMapRequest",
+  "description": "Threat map filters",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-threat-api-openapi.yml#/components/schemas/ThreatMapRequest",
+  "type": "object",
+  "properties": {
+    "actors": {
+      "description": "An array of threat actor entity IDs. If used, the API response will be limited to only those threat actors whose entity IDs match those found in the array. To lookup a threat actor entity ID, use the /actor/search endpoint.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "categories": {
+      "description": "An array of threat actor category entity IDs. If used, the API response will be filtered to only those threat actors whose category (e.g., Hacktivist, Financially motivated, Nation-state sponsored) matches those found in the array. Categories must be listed by their Recorded Future Entity ID, which can be found by using the /actor/categories endpoint.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "watchlists": {
+      "description": "An array of client specific watch list IDs. If used, the API response will be limited to only those threat actors whose link to the threat map is via the watch lists included. To lookup a watch list ID, use the List API.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

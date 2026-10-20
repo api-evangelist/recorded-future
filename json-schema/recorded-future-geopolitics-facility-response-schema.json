@@ -1,0 +1,2398 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-geopolitics-facility-response-schema.json",
+  "title": "GeopoliticsFacilityResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-playbook-alerts-api-openapi.yml#/components/schemas/GeopoliticsFacilityResponse",
+  "type": "object",
+  "required": [
+    "playbook_alert_id"
+  ],
+  "properties": {
+    "playbook_alert_id": {
+      "type": "string"
+    },
+    "panel_status": {
+      "$ref": "#/$defs/FacilityStatusPanel"
+    },
+    "panel_evidence_summary": {
+      "$ref": "#/$defs/FacilitySummaryPanel"
+    },
+    "panel_events_summary": {
+      "$ref": "#/$defs/FacilityEventsPanel"
+    },
+    "panel_overview": {
+      "$ref": "#/$defs/FacilityOverviewPanel"
+    },
+    "panel_log": {
+      "$ref": "#/$defs/PlaybookAlertLogPanel"
+    },
+    "panel_log_v2": {
+      "$ref": "#/$defs/GeopoliticsFacilityPlaybookAlertLogPanelV2"
+    }
+  },
+  "$defs": {
+    "ActionChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "removed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "action_change"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "removed",
+        "added"
+      ]
+    },
+    "AssessmentIdsChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "removed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "assessment_ids_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "AssessmentSource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "AssessmentWithSource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "level": {
+          "type": "number"
+        },
+        "source": {
+          "$ref": "#/$defs/AssessmentSource"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "source"
+      ]
+    },
+    "Assignee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "AssigneeChange": {
+      "type": "object",
+      "properties": {
+        "old": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "assignee_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "AssigneeChangeV2": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "old": {
+          "$ref": "#/$defs/Assignee"
+        },
+        "new": {
+          "$ref": "#/$defs/Assignee"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "assignee_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ClusterChangeAdded": {
+      "type": "object",
+      "description": "Geopolitics Facility cluster change describing a new cluster of related events that became associated with the alert.\n",
+      "properties": {
+        "cluster_id": {
+          "type": "string"
+        },
+        "main_event": {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "type": "string"
+            },
+            "assessments": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/FacilityAssessment"
+              }
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "event_change_added"
+              ]
+            }
+          },
+          "required": [
+            "event_id",
+            "type"
+          ]
+        },
+        "other_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "cluster_change_added"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "CodeRepoLeakageAssessment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "level": {
+          "type": "number"
+        },
+        "title": {
+          "type": "string"
+        },
+        "text_indicator": {
+          "type": "string"
+        },
+        "entity": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level"
+      ]
+    },
+    "CodeRepoLeakageChangeContext": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "code_repo_leakage"
+          ]
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/CodeRepoLeakageEvidenceChange"
+              },
+              {
+                "$ref": "#/$defs/AssessmentIdsChange"
+              },
+              {
+                "$ref": "#/$defs/AssigneeChange"
+              },
+              {
+                "$ref": "#/$defs/StatusChange"
+              },
+              {
+                "$ref": "#/$defs/PriorityChange"
+              },
+              {
+                "$ref": "#/$defs/ReopenStrategyChange"
+              },
+              {
+                "$ref": "#/$defs/TitleChange"
+              },
+              {
+                "$ref": "#/$defs/EntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/RelatedEntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/DescriptionChange"
+              },
+              {
+                "$ref": "#/$defs/ExternalIdChange"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "changes"
+      ]
+    },
+    "CodeRepoLeakageEvidence": {
+      "type": "object",
+      "properties": {
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CodeRepoLeakageAssessment"
+          }
+        },
+        "document_content": {
+          "$ref": "#/$defs/DocumentContent"
+        },
+        "ontology": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityPathMatch"
+          }
+        },
+        "target_entities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "watch_lists": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "assessments",
+        "document_content",
+        "ontology",
+        "target_entities",
+        "watch_lists"
+      ]
+    },
+    "CodeRepoLeakageEvidenceChange": {
+      "type": "object",
+      "properties": {
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CodeRepoLeakageEvidence"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "evidence_changes"
+          ]
+        }
+      },
+      "required": [
+        "added",
+        "type"
+      ]
+    },
+    "CommentChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "comment": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "comment_change"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "comment"
+      ]
+    },
+    "CustomOnwardActionsAddedChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "added_actions_taken": {
+          "$ref": "#/$defs/PlaybookAlertOnwardActionList"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "onward_actions_added_change"
+          ]
+        }
+      }
+    },
+    "CustomOnwardActionsRemovedChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "removed_actions_taken": {
+          "$ref": "#/$defs/PlaybookAlertOnwardActionList"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "onward_actions_removed_change"
+          ]
+        }
+      }
+    },
+    "CustomStatusChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "old": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "status_change"
+          ]
+        },
+        "actions_taken": {
+          "$ref": "#/$defs/PlaybookAlertOnwardActionList"
+        }
+      },
+      "required": [
+        "type",
+        "old",
+        "new",
+        "actions_taken"
+      ]
+    },
+    "DescriptionChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "old": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "description_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "DnsRecord": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "entity": {
+          "type": "string"
+        }
+      }
+    },
+    "DocumentContent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "tagged_content": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "published": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "tagged_content",
+        "content",
+        "url",
+        "owner",
+        "published"
+      ]
+    },
+    "DomainAbuseAttackerAddedChange": {
+      "type": "object",
+      "description": "This change only applies to Domain Abuse alerts.",
+      "properties": {
+        "attacker": {
+          "type": "string"
+        },
+        "cause": {
+          "$ref": "#/$defs/DomainAbuseCause"
+        },
+        "manual_addition_user_id": {
+          "type": "string"
+        },
+        "manual_addition_user_name": {
+          "type": "string"
+        },
+        "typosquat_targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "similar_domains_keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "attacker_added_change"
+          ]
+        }
+      },
+      "required": [
+        "attacker",
+        "type"
+      ]
+    },
+    "DomainAbuseCause": {
+      "type": "string",
+      "description": "Domain Abuse attacker detection cause.",
+      "enum": [
+        "manual",
+        "typosquat",
+        "similar_domains"
+      ]
+    },
+    "DomainAbuseChangeContext": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "domain_abuse"
+          ]
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DomainAbuseAttackerAddedChange"
+              },
+              {
+                "$ref": "#/$defs/DomainAbuseDnsChange"
+              },
+              {
+                "$ref": "#/$defs/DomainAbuseWhoisChange"
+              },
+              {
+                "$ref": "#/$defs/DomainAbuseLogotypeChange"
+              },
+              {
+                "$ref": "#/$defs/DomainAbuseMaliciousDnsChange"
+              },
+              {
+                "$ref": "#/$defs/DomainAbuseMaliciousUrlChange"
+              },
+              {
+                "$ref": "#/$defs/DomainAbuseScreenshotMentionsChange"
+              },
+              {
+                "$ref": "#/$defs/DomainAbusePhishingMaliciousBehaviorChange"
+              },
+              {
+                "$ref": "#/$defs/AssigneeChange"
+              },
+              {
+                "$ref": "#/$defs/StatusChange"
+              },
+              {
+                "$ref": "#/$defs/PriorityChange"
+              },
+              {
+                "$ref": "#/$defs/ReopenStrategyChange"
+              },
+              {
+                "$ref": "#/$defs/TitleChange"
+              },
+              {
+                "$ref": "#/$defs/EntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/RelatedEntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/DescriptionChange"
+              },
+              {
+                "$ref": "#/$defs/ExternalIdChange"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "changes"
+      ]
+    },
+    "DomainAbuseDnsChange": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "removed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DnsRecord"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DnsRecord"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "dns_change"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "domain",
+        "removed",
+        "added"
+      ]
+    },
+    "DomainAbuseLogotypeChange": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "removed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LogotypeInScreenshot"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LogotypeInScreenshot"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "logotype_in_screenshot_change"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "domain",
+        "removed",
+        "added"
+      ]
+    },
+    "DomainAbuseMaliciousDnsChange": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "removed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MaliciousDnsRecord"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MaliciousDnsRecord"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "malicious_dns_change"
+          ]
+        }
+      },
+      "required": [
+        "domain",
+        "type",
+        "removed",
+        "added"
+      ]
+    },
+    "DomainAbuseMaliciousUrlChange": {
+      "type": "object",
+      "description": "This change only applies to Domain Abuse alerts.",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "removed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MaliciousUrlRecord"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MaliciousUrlRecord"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "malicious_url_change"
+          ]
+        }
+      },
+      "required": [
+        "domain",
+        "removed",
+        "added",
+        "type"
+      ]
+    },
+    "DomainAbusePhishingMaliciousBehaviorChange": {
+      "type": "object",
+      "description": "This change only applies to Domain Abuse alerts.",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "added": {
+          "$ref": "#/$defs/DomainAbusePhishingMaliciousBehaviorThreats"
+        },
+        "removed": {
+          "$ref": "#/$defs/DomainAbusePhishingMaliciousBehaviorThreats"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "phishing_malicious_behavior_change"
+          ]
+        }
+      },
+      "required": [
+        "domain",
+        "added",
+        "type"
+      ]
+    },
+    "DomainAbusePhishingMaliciousBehaviorThreatType": {
+      "type": "string",
+      "description": "A kind of threat present in the domain.",
+      "enum": [
+        "malware",
+        "unwanted_software",
+        "social_engineering",
+        "social_engineering_extended_coverage"
+      ]
+    },
+    "DomainAbusePhishingMaliciousBehaviorThreats": {
+      "type": "object",
+      "properties": {
+        "threat_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DomainAbusePhishingMaliciousBehaviorThreatType"
+          }
+        }
+      }
+    },
+    "DomainAbuseScreenshotMentionsChange": {
+      "type": "object",
+      "description": "This change only applies to Domain Abuse alerts.",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "screenshot_id": {
+                "type": "string"
+              },
+              "document": {
+                "type": "string"
+              },
+              "analyzed": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "mentioned_entities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/MentionedEntity"
+                }
+              },
+              "mentioned_texts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/MentionedText"
+                }
+              }
+            },
+            "required": [
+              "url",
+              "screenshot_id",
+              "document",
+              "analyzed",
+              "mentioned_entities"
+            ]
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "screenshot_mentions_change"
+          ]
+        }
+      },
+      "required": [
+        "domain",
+        "added",
+        "type"
+      ]
+    },
+    "DomainAbuseWhoisChange": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "old": {
+          "$ref": "#/$defs/WhoisRecord"
+        },
+        "new": {
+          "$ref": "#/$defs/WhoisRecord"
+        },
+        "removed_contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WhoisContactRecord"
+          }
+        },
+        "added_contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WhoisContactRecord"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "whois_change"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "domain",
+        "removed_contacts",
+        "added_contacts"
+      ]
+    },
+    "EntitiesChange": {
+      "type": "object",
+      "properties": {
+        "removed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "entities_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "EntitiesChangeV2": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "removed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Entity"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Entity"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "entities_change"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "removed",
+        "added"
+      ]
+    },
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ]
+    },
+    "EntityPathMatch": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "attribute": {
+                "type": "string"
+              },
+              "entity": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "attribute",
+              "entity"
+            ]
+          }
+        }
+      }
+    },
+    "Event": {
+      "type": "object",
+      "description": "Event of PBA",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "document_id": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/GeopoliticsFacilityEventImage"
+          }
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FacilityAssessment"
+          }
+        }
+      }
+    },
+    "ExternalIdChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "old": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "external_id_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "FacilityAssessment": {
+      "type": "object",
+      "description": "Facility assessment data",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "criticality": {
+          "$ref": "#/$defs/PlaybookAlertPriority"
+        }
+      }
+    },
+    "FacilityEventsPanel": {
+      "type": "object",
+      "description": "Facility Evidence Summary with assessments",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FullEvent"
+          }
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FacilityAssessment"
+          }
+        }
+      }
+    },
+    "FacilityEvidence": {
+      "type": "object",
+      "properties": {
+        "cluster_id": {
+          "type": "string"
+        },
+        "main_event": {
+          "$ref": "#/$defs/FacilityMainEvent"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "cluster_change_added"
+          ]
+        },
+        "other_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "FacilityEvidenceChange": {
+      "type": "object",
+      "properties": {
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FacilityEvidence"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "evidence_changes"
+          ]
+        }
+      },
+      "required": [
+        "added",
+        "type"
+      ]
+    },
+    "FacilityMainEvent": {
+      "type": "object",
+      "properties": {
+        "event_id": {
+          "type": "string"
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FacilityAssessment"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "event_change_added"
+          ]
+        }
+      }
+    },
+    "FacilityOverviewPanel": {
+      "type": "object",
+      "description": "Facility alert overview",
+      "properties": {
+        "event_type": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "location_distance": {
+          "$ref": "#/$defs/LocationDistance"
+        },
+        "event_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source": {
+          "type": "string"
+        },
+        "ai_insights": {
+          "type": "string"
+        },
+        "most_recent_event": {
+          "$ref": "#/$defs/Event"
+        },
+        "facility_name": {
+          "type": "string"
+        },
+        "facility_id": {
+          "type": "string"
+        },
+        "location_data": {
+          "$ref": "#/$defs/LocationData"
+        },
+        "watchlist_comment": {
+          "type": "string"
+        },
+        "event_document_id": {
+          "type": "string"
+        },
+        "is_based_on_deleted_event": {
+          "type": "boolean",
+          "description": "If overview data is based on deleted event it returns datetime of deleted event"
+        },
+        "deleted_event_time": {
+          "type": "string",
+          "description": "If overview data is based on deleted event it returns datetime of deleted event"
+        }
+      }
+    },
+    "FacilityRiskChangeContext": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "geopolitics_facility"
+          ]
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/FacilityEvidenceChange"
+              },
+              {
+                "$ref": "#/$defs/ClusterChangeAdded"
+              },
+              {
+                "$ref": "#/$defs/AssessmentIdsChange"
+              },
+              {
+                "$ref": "#/$defs/AssigneeChange"
+              },
+              {
+                "$ref": "#/$defs/StatusChange"
+              },
+              {
+                "$ref": "#/$defs/PriorityChange"
+              },
+              {
+                "$ref": "#/$defs/ReopenStrategyChange"
+              },
+              {
+                "$ref": "#/$defs/TitleChange"
+              },
+              {
+                "$ref": "#/$defs/EntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/RelatedEntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/DescriptionChange"
+              },
+              {
+                "$ref": "#/$defs/ExternalIdChange"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "changes"
+      ]
+    },
+    "FacilityStatusPanel": {
+      "type": "object",
+      "description": "Data structure containing general information about the alert and it's associated entity.\n",
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/PlaybookAlertStatus"
+        },
+        "priority": {
+          "$ref": "#/$defs/PlaybookAlertPriority"
+        },
+        "assignee_name": {
+          "$ref": "#/$defs/PlaybookAlertAssigneeName"
+        },
+        "assignee_id": {
+          "$ref": "#/$defs/PlaybookAlertAssigneeId"
+        },
+        "created": {
+          "$ref": "#/$defs/PlaybookAlertCreated"
+        },
+        "updated": {
+          "$ref": "#/$defs/PlaybookAlertUpdated"
+        },
+        "case_rule_id": {
+          "$ref": "#/$defs/PlaybookAlertCaseRuleId"
+        },
+        "case_rule_label": {
+          "$ref": "#/$defs/PlaybookAlertCaseRuleLabel"
+        },
+        "alert_rule": {
+          "$ref": "#/$defs/PlaybookAlertAlertRule"
+        },
+        "creator_name": {
+          "$ref": "#/$defs/PlaybookAlertCreatorName"
+        },
+        "creator_id": {
+          "$ref": "#/$defs/PlaybookAlertCreatorId"
+        },
+        "owner_id": {
+          "$ref": "#/$defs/PlaybookAlertOwnerId"
+        },
+        "owner_name": {
+          "$ref": "#/$defs/PlaybookAlertOwnerName"
+        },
+        "organisation_id": {
+          "$ref": "#/$defs/PlaybookAlertOrganisationId"
+        },
+        "organisation_name": {
+          "$ref": "#/$defs/PlaybookAlertOrganisationName"
+        },
+        "owner_organisation_details": {
+          "$ref": "#/$defs/PlaybookAlertOwnerOrganisationDetails"
+        },
+        "entity_id": {
+          "type": "string"
+        },
+        "entity_name": {
+          "type": "string"
+        },
+        "entity_criticality": {
+          "$ref": "#/$defs/PlaybookAlertEntityCriticality"
+        },
+        "risk_score": {
+          "$ref": "#/$defs/PlaybookAlertEntityScore"
+        },
+        "reopen": {
+          "$ref": "#/$defs/PlaybookAlertReopenStrategy"
+        },
+        "targets": {
+          "description": "A list of facilities associated with the exposure.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FacilityTarget"
+          }
+        },
+        "actions_taken": {
+          "$ref": "#/$defs/PlaybookAlertOnwardActionList"
+        }
+      },
+      "required": [
+        "status",
+        "priority",
+        "created",
+        "updated",
+        "case_rule_id",
+        "alert_rule",
+        "targets",
+        "actions_taken"
+      ]
+    },
+    "FacilitySummaryPanel": {
+      "type": "object",
+      "description": "Facility Evidence Summary with assessments",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Event"
+          }
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FacilityAssessment"
+          }
+        }
+      }
+    },
+    "FacilityTarget": {
+      "type": "object",
+      "description": "Affected facility target",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "FullEvent": {
+      "type": "object",
+      "description": "Event of PBA",
+      "properties": {
+        "translated_text": {
+          "type": "string"
+        },
+        "translate_title": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "document_id": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/GeopoliticsFacilityEventImage"
+          }
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FacilityAssessment"
+          }
+        }
+      }
+    },
+    "GeopoliticsFacilityEventImage": {
+      "type": "string",
+      "description": "Image id of event of PBA"
+    },
+    "GeopoliticsFacilityPlaybookAlertLogPanelV2": {
+      "type": "array",
+      "description": "Detailed view of manual or automated changes to the alert and underlying data. Entries are returned sorted by `created` descending (most recent first), and the panel is capped at the 20 most recent entries.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "author_id": {
+            "$ref": "#/$defs/PlaybookAlertAuthorId"
+          },
+          "author_name": {
+            "$ref": "#/$defs/PlaybookAlertAuthorName"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/AssigneeChangeV2"
+                },
+                {
+                  "$ref": "#/$defs/CustomStatusChange"
+                },
+                {
+                  "$ref": "#/$defs/PriorityChange"
+                },
+                {
+                  "$ref": "#/$defs/ReopenStrategyChange"
+                },
+                {
+                  "$ref": "#/$defs/TitleChange"
+                },
+                {
+                  "$ref": "#/$defs/EntitiesChangeV2"
+                },
+                {
+                  "$ref": "#/$defs/RelatedEntitiesChangeV2"
+                },
+                {
+                  "$ref": "#/$defs/DescriptionChange"
+                },
+                {
+                  "$ref": "#/$defs/ExternalIdChange"
+                },
+                {
+                  "$ref": "#/$defs/CommentChange"
+                },
+                {
+                  "$ref": "#/$defs/ActionChange"
+                },
+                {
+                  "$ref": "#/$defs/AssessmentIdsChange"
+                },
+                {
+                  "$ref": "#/$defs/CustomOnwardActionsRemovedChange"
+                },
+                {
+                  "$ref": "#/$defs/CustomOnwardActionsAddedChange"
+                },
+                {
+                  "$ref": "#/$defs/FacilityEvidenceChange"
+                },
+                {
+                  "$ref": "#/$defs/ClusterChangeAdded"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "created",
+          "changes"
+        ]
+      }
+    },
+    "LocationData": {
+      "type": "object",
+      "description": "Facility location data",
+      "properties": {
+        "latitude": {
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
+        },
+        "radius": {
+          "type": "integer"
+        }
+      }
+    },
+    "LocationDistance": {
+      "type": "object",
+      "description": "Facility location data",
+      "properties": {
+        "number": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "facility_name": {
+          "type": "string"
+        }
+      }
+    },
+    "LogotypeInScreenshot": {
+      "type": "object",
+      "properties": {
+        "logotype": {
+          "type": "string"
+        },
+        "screenshot": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "region": {
+          "type": "object",
+          "properties": {
+            "min_x": {
+              "type": "number"
+            },
+            "min_y": {
+              "type": "number"
+            },
+            "max_x": {
+              "type": "number"
+            },
+            "max_y": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "min_x",
+            "min_y",
+            "max_x",
+            "max_y"
+          ]
+        }
+      },
+      "required": [
+        "logotype",
+        "screenshot",
+        "url",
+        "region"
+      ]
+    },
+    "MaliciousDnsRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "level": {
+                "type": "number"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "level"
+            ]
+          }
+        }
+      }
+    },
+    "MaliciousUrlRecord": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssessmentWithSource"
+          }
+        }
+      }
+    },
+    "MentionedEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/$defs/Entity"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "fragment": {
+          "type": "string"
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssessmentWithSource"
+          }
+        }
+      },
+      "required": [
+        "entity",
+        "reference",
+        "fragment"
+      ]
+    },
+    "MentionedText": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "fragment": {
+          "type": "string"
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssessmentWithSource"
+          }
+        }
+      },
+      "required": [
+        "text",
+        "reference",
+        "fragment"
+      ]
+    },
+    "OnwardActionId": {
+      "type": "string",
+      "description": "The id for the type of action taken. The possible values can be found in the response from metadata/common in actions_by_category field. The action ids possible can grow over time\n"
+    },
+    "PlaybookAlertAlertRule": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/PlaybookAlertRuleId"
+        },
+        "label": {
+          "$ref": "#/$defs/PlaybookAlertRuleLabel"
+        },
+        "name": {
+          "$ref": "#/$defs/PlaybookAlertRuleName"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ]
+    },
+    "PlaybookAlertAssigneeId": {
+      "description": "ID of the assignee",
+      "type": "string"
+    },
+    "PlaybookAlertAssigneeName": {
+      "description": "Full name of the assignee",
+      "type": "string"
+    },
+    "PlaybookAlertAuthorId": {
+      "description": "Id of the author",
+      "type": "string"
+    },
+    "PlaybookAlertAuthorName": {
+      "description": "Full name of the author",
+      "type": "string"
+    },
+    "PlaybookAlertCaseRuleId": {
+      "description": "The Rule that created the Playbook Alert (Deprecated, use 'alertRule.id' field)",
+      "deprecated": true,
+      "type": "string"
+    },
+    "PlaybookAlertCaseRuleLabel": {
+      "description": "The type of Rule that created the Playbook Alert. For all rule types the label is one for the enum below, except 'malware_report' rule type where the label is the name of the rule given by user.\n (Deprecated, use 'alertRule.label' field)\n",
+      "deprecated": true,
+      "type": "string",
+      "enum": [
+        "Domain Abuse",
+        "Malicious Sites",
+        "Cyber Vulnerability",
+        "Data Leakage on Code Repository",
+        "Compromised Bank Check",
+        "Geopolitics Facility",
+        "Novel Identity Exposure",
+        "Third Party Risk",
+        "Malware Report",
+        "Dark Web Brand",
+        "Social Media Impersonation"
+      ]
+    },
+    "PlaybookAlertCreated": {
+      "description": "The Creation time of the Playbook Alert",
+      "type": "string",
+      "format": "date-time"
+    },
+    "PlaybookAlertCreatorId": {
+      "description": "Id of the Creator of the Playbook Alert",
+      "type": "string"
+    },
+    "PlaybookAlertCreatorName": {
+      "description": "Full name of the Creator of the Playbook Alert",
+      "type": "string"
+    },
+    "PlaybookAlertEnterpriseId": {
+      "description": "Id of the Enterprise",
+      "type": "string"
+    },
+    "PlaybookAlertEnterpriseName": {
+      "description": "Name of the Enterprise",
+      "type": "string"
+    },
+    "PlaybookAlertEntityCriticality": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High",
+        "Critical",
+        "Very Critical"
+      ],
+      "description": "Label indicating risk criticality for the entity"
+    },
+    "PlaybookAlertEntityScore": {
+      "type": "integer",
+      "description": "Risk score assigned to the entity",
+      "maximum": 99,
+      "minimum": 0
+    },
+    "PlaybookAlertLogPanel": {
+      "type": "array",
+      "description": "Detailed view of manual or automated changes to the alert and underlying data. Entries are returned sorted by `created` descending (most recent first), and the panel is capped at the 20 most recent entries. This version is deprecated and will be removed completely in future updates.\n",
+      "deprecated": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "actor_name": {
+            "$ref": "#/$defs/PlaybookAlertAuthorName"
+          },
+          "actor_id": {
+            "$ref": "#/$defs/PlaybookAlertAuthorId"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "action_priority": {
+            "$ref": "#/$defs/PlaybookAlertPriority"
+          },
+          "message": {
+            "type": "string",
+            "description": "Log message"
+          },
+          "changes": {
+            "$ref": "#/$defs/PlaybookAlertLogPanelChanges"
+          },
+          "context": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/DomainAbuseChangeContext"
+              },
+              {
+                "$ref": "#/$defs/VulnerabilityChangeContext"
+              },
+              {
+                "$ref": "#/$defs/CodeRepoLeakageChangeContext"
+              },
+              {
+                "$ref": "#/$defs/ThirdPartyRiskChangeContext"
+              },
+              {
+                "$ref": "#/$defs/FacilityRiskChangeContext"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "PlaybookAlertLogPanelChanges": {
+      "type": "object",
+      "deprecated": true,
+      "properties": {
+        "assignee_change": {
+          "$ref": "#/$defs/AssigneeChange"
+        },
+        "status_change": {
+          "$ref": "#/$defs/StatusChange"
+        },
+        "priority_change": {
+          "$ref": "#/$defs/PriorityChange"
+        },
+        "reopen_strategy_change": {
+          "$ref": "#/$defs/ReopenStrategyChange"
+        },
+        "title_change": {
+          "$ref": "#/$defs/TitleChange"
+        },
+        "entities_change": {
+          "$ref": "#/$defs/EntitiesChange"
+        },
+        "related_entities_change": {
+          "$ref": "#/$defs/RelatedEntitiesChange"
+        },
+        "description_change": {
+          "$ref": "#/$defs/DescriptionChange"
+        },
+        "external_id_change": {
+          "$ref": "#/$defs/ExternalIdChange"
+        },
+        "actions_change": {
+          "$ref": "#/$defs/ActionChange"
+        },
+        "assessment_ids_change": {
+          "$ref": "#/$defs/AssessmentIdsChange"
+        }
+      }
+    },
+    "PlaybookAlertOnwardActionList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/OnwardActionId"
+      }
+    },
+    "PlaybookAlertOrganisation": {
+      "type": "object",
+      "properties": {
+        "organisation_id": {
+          "$ref": "#/$defs/PlaybookAlertOrganisationId2"
+        },
+        "organisation_name": {
+          "$ref": "#/$defs/PlaybookAlertOrganisationName2"
+        }
+      }
+    },
+    "PlaybookAlertOrganisationId": {
+      "description": "Id of the Organisation",
+      "type": "string",
+      "deprecated": true
+    },
+    "PlaybookAlertOrganisationId2": {
+      "description": "Id of the Organisation",
+      "type": "string"
+    },
+    "PlaybookAlertOrganisationName": {
+      "description": "Name of the Organisation",
+      "type": "string",
+      "deprecated": true
+    },
+    "PlaybookAlertOrganisationName2": {
+      "description": "Name of the Organisation",
+      "type": "string"
+    },
+    "PlaybookAlertOwnerId": {
+      "description": "Id of the owner",
+      "type": "string",
+      "deprecated": true
+    },
+    "PlaybookAlertOwnerName": {
+      "description": "Name of the owner",
+      "type": "string",
+      "deprecated": true
+    },
+    "PlaybookAlertOwnerOrganisationDetails": {
+      "type": "object",
+      "properties": {
+        "organisations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PlaybookAlertOrganisation"
+          }
+        },
+        "enterprise_id": {
+          "$ref": "#/$defs/PlaybookAlertEnterpriseId"
+        },
+        "enterprise_name": {
+          "$ref": "#/$defs/PlaybookAlertEnterpriseName"
+        }
+      }
+    },
+    "PlaybookAlertPriority": {
+      "type": "string",
+      "enum": [
+        "High",
+        "Moderate",
+        "Informational"
+      ],
+      "description": "The priority of the Playbook Alert."
+    },
+    "PlaybookAlertReopenStrategy": {
+      "type": "string",
+      "description": "Reopen strategies can only be applied to alerts with a status of Dismissed or Resolved.\n\nThe following combinations of status/reopen are allowed:\n\n* Dismissed -> Never\n* Resolved -> Never\n* Resolved -> SignificantUpdates\n",
+      "enum": [
+        "Never",
+        "SignificantUpdates"
+      ]
+    },
+    "PlaybookAlertRuleId": {
+      "description": "The Rule ID that created the Playbook Alert (without the 'report:' prefix)",
+      "type": "string"
+    },
+    "PlaybookAlertRuleLabel": {
+      "description": "The Rule label that created the Playbook Alert. `Undefined` option can be returned in case  the rule data is missing.\n",
+      "type": "string",
+      "enum": [
+        "DomainAbuse",
+        "MaliciousSites",
+        "CyberVulnerability",
+        "DataLeakageOnCodeRepository",
+        "CompromisedBankCheck",
+        "GeopoliticsFacility",
+        "NovelIdentityExposure",
+        "ThirdPartyRisk",
+        "MalwareReport",
+        "DarkWebBrand",
+        "SocmedImpersonation",
+        "Undefined"
+      ]
+    },
+    "PlaybookAlertRuleName": {
+      "description": "The Rule name (if defined) that created the Playbook Alert",
+      "type": "string"
+    },
+    "PlaybookAlertStatus": {
+      "type": "string",
+      "enum": [
+        "New",
+        "InProgress",
+        "Dismissed",
+        "Resolved"
+      ],
+      "description": "The status of the Playbook Alert."
+    },
+    "PlaybookAlertUpdated": {
+      "description": "The Update time of the Playbook Alert",
+      "type": "string",
+      "format": "date-time"
+    },
+    "PriorityChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "old": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "priority_change"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "old",
+        "new"
+      ]
+    },
+    "RelatedEntitiesChange": {
+      "type": "object",
+      "properties": {
+        "removed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "related_entities_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "RelatedEntitiesChangeV2": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "removed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Entity"
+          }
+        },
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Entity"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "related_entities_change"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "removed",
+        "added"
+      ]
+    },
+    "ReopenStrategyChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "old": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "reopen_strategy_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "StatusChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "old": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "status_change"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "old",
+        "new"
+      ]
+    },
+    "ThirdPartyAssessmentChange": {
+      "type": "object",
+      "properties": {
+        "risk_attribute": {
+          "type": "string"
+        },
+        "assessment_name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "tpr_assessment_change"
+          ]
+        },
+        "added": {
+          "$ref": "#/$defs/ThirdPartyRiskEvidenceChange"
+        },
+        "removed": {
+          "$ref": "#/$defs/ThirdPartyRiskEvidenceChange"
+        }
+      },
+      "required": [
+        "risk_attribute",
+        "type"
+      ]
+    },
+    "ThirdPartyRiskChangeContext": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "third_party_risk"
+          ]
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ThirdPartyAssessmentChange"
+              },
+              {
+                "$ref": "#/$defs/AssigneeChange"
+              },
+              {
+                "$ref": "#/$defs/StatusChange"
+              },
+              {
+                "$ref": "#/$defs/PriorityChange"
+              },
+              {
+                "$ref": "#/$defs/ReopenStrategyChange"
+              },
+              {
+                "$ref": "#/$defs/TitleChange"
+              },
+              {
+                "$ref": "#/$defs/EntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/RelatedEntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/DescriptionChange"
+              },
+              {
+                "$ref": "#/$defs/ExternalIdChange"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "changes"
+      ]
+    },
+    "ThirdPartyRiskEvidenceChange": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer"
+        },
+        "evidence_string": {
+          "type": "string"
+        },
+        "added": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when this evidence first appeared."
+        },
+        "removed": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when this evidence was removed."
+        }
+      },
+      "required": [
+        "level"
+      ]
+    },
+    "TitleChange": {
+      "type": "object",
+      "description": "This change applies to any alert type.",
+      "properties": {
+        "old": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "title_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "VulnerabilityAssessment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "level": {
+          "type": "number"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level"
+      ]
+    },
+    "VulnerabilityChangeContext": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "cyber_vulnerability"
+          ]
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/VulnerabilityLifecycleChange"
+              },
+              {
+                "$ref": "#/$defs/AssigneeChange"
+              },
+              {
+                "$ref": "#/$defs/StatusChange"
+              },
+              {
+                "$ref": "#/$defs/PriorityChange"
+              },
+              {
+                "$ref": "#/$defs/ReopenStrategyChange"
+              },
+              {
+                "$ref": "#/$defs/TitleChange"
+              },
+              {
+                "$ref": "#/$defs/EntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/RelatedEntitiesChange"
+              },
+              {
+                "$ref": "#/$defs/DescriptionChange"
+              },
+              {
+                "$ref": "#/$defs/ExternalIdChange"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "changes"
+      ]
+    },
+    "VulnerabilityLifecycleChange": {
+      "type": "object",
+      "properties": {
+        "added": {
+          "$ref": "#/$defs/VulnerabilityAssessment"
+        },
+        "removed": {
+          "$ref": "#/$defs/VulnerabilityAssessment"
+        },
+        "triggered_by_risk_rule": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "lifecycle_in_cve_change"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "WhoisContactRecord": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "telephone": {
+          "type": "string"
+        },
+        "street1": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "fax": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "country_code": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "WhoisRecord": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "registrar_name": {
+          "type": "string"
+        },
+        "private_registration": {
+          "type": "boolean"
+        },
+        "name_servers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contact_email": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "name_servers"
+      ]
+    }
+  }
+}

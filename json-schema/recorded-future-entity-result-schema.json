@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-entity-result-schema.json",
+  "title": "EntityResult",
+  "description": "Array of entities that can be used as filter values in Detection Rule Search.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-detection-rule-relation-api-openapi.yml#/components/schemas/EntityResult",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/DetectionRuleEntity"
+  },
+  "$defs": {
+    "DetectionRuleEntity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Entity ID for use in detection-rule/search filter"
+        },
+        "type": {
+          "$ref": "#/$defs/EntityTypeName"
+        },
+        "name": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name"
+      ],
+      "description": "An entity that is associated with a Detection rule, e.g. a MITRE ATT&CK tag or a Malware."
+    },
+    "EntityTypeName": {
+      "type": "string",
+      "description": "Additional information about entity types is provided by the /entity/types endpoint. It can be used to find the display name of the entity type."
+    }
+  }
+}

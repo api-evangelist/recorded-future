@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-add-operation-response-schema.json",
+  "title": "AddOperationResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-list-api-openapi.yml#/components/schemas/AddOperationResponse",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "string",
+      "enum": [
+        "added",
+        "updated",
+        "unchanged"
+      ],
+      "description": "`added` if the entity was newly added, `updated` if it already existed and its context was changed, or `unchanged` if it already existed with the same context."
+    }
+  },
+  "required": [
+    "result"
+  ]
+}

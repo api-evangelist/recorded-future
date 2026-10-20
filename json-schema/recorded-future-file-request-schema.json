@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-file-request-schema.json",
+  "title": "file.Request",
+  "description": "Request to download a specific data file. For JSON format, columns may be an empty array to return all fields; for CSV format, columns are required.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-payment-fraud-intelligence-api-openapi.yml#/components/schemas/file.Request",
+  "properties": {
+    "columns": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "format": {
+      "default": "json",
+      "enum": [
+        "json",
+        "csv"
+      ],
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

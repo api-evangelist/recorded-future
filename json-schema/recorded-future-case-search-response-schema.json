@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-case-search-response-schema.json",
+  "title": "CaseSearchResponse",
+  "description": "Paginated case search results.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-case-api-openapi.yml#/components/schemas/CaseSearchResponse",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "object",
+      "$ref": "#/$defs/Status"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TaskIdentity"
+      }
+    },
+    "counts": {
+      "type": "object",
+      "$ref": "#/$defs/SearchResponseCounts"
+    },
+    "next_offset": {
+      "type": "string",
+      "description": "Provide this value in the offset-field for the next page of results."
+    }
+  },
+  "$defs": {
+    "SearchResponseCounts": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        }
+      },
+      "description": "Pagination counts for search results."
+    },
+    "Status": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "string"
+        },
+        "status_message": {
+          "type": "string"
+        }
+      },
+      "description": "API response status with code and message."
+    },
+    "TaskIdentity": {
+      "type": "string",
+      "format": "identity",
+      "description": "The identity of a task",
+      "maxLength": 41
+    }
+  }
+}

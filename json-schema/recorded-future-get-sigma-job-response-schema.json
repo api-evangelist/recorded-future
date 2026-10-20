@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-get-sigma-job-response-schema.json",
+  "title": "GetSigmaJobResponse",
+  "description": "Detailed result of a Sigma rule generation job including status, generated rules, and patterns.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-malware-intelligence-api-openapi.yml#/components/schemas/GetSigmaJobResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SigmaJobBase"
+    },
+    {
+      "properties": {
+        "sigma_rules": {
+          "title": "Sigma Rules",
+          "description": "The Sigma Rules and associated stats.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SigmaRuleItem"
+          }
+        },
+        "patterns": {
+          "title": "Patterns",
+          "description": "The generated patterns and associated stats",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PatternItem"
+          }
+        }
+      }
+    }
+  ],
+  "required": [
+    "sigma_rules",
+    "patterns"
+  ],
+  "$defs": {
+    "EndDate": {
+      "description": "Latest date to include in the query, defaults to today in UTC",
+      "type": "string",
+      "format": "date"
+    },
+    "FamilyCounts": {
+      "title": "Family Counts",
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      },
+      "description": "Statistics over number of matched hashes per malware family"
+    },
+    "PatternItem": {
+      "title": "Pattern",
+      "description": "Generated pattern and stats",
+      "type": "object",
+      "properties": {
+        "image": {
+          "title": "Parent Image",
+          "description": "Parent image, optionally with wildcard replacement",
+          "type": "string"
+        },
+        "cmd_pattern": {
+          "title": "Command line pattern",
+          "description": "Command line, optionally with wildcard replacement",
+          "type": "string"
+        },
+        "matched_cmds": {
+          "title": "Matched Commands",
+          "description": "List of command lines matching this pattern",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stats": {
+          "$ref": "#/$defs/SigmaPatternStats"
+        }
+      }
+    },
+    "RuleStatus": {
+      "title": "Rule status",
+      "description": "Selected status of the rule",
+      "type": "string",
+      "enum": [
+        "True Positive",
+        "False Positive",
+        "Benign Behavior",
+        "No Root Cause",
+        "Needs Tuning",
+        "New"
+      ]
+    },
+    "SigmaJobBase": {
+      "properties": {
+        "jobId": {
+          "title": "Job ID",
+          "type": "string",
+          "description": "A unique identifier for the Sigma job."
+        },
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "description": "The name of the Sigma job."
+        },
+        "created": {
+          "format": "date-time",
+          "title": "Created",
+          "type": "string",
+          "description": "The timestamp when the Sigma job was created."
+        },
+        "modified": {
+          "format": "date-time",
+          "title": "Modified",
+          "type": "string",
+          "description": "The timestamp when the Sigma job was last updated."
+        },
+        "status": {
+          "default": "CREATED",
+          "title": "Status",
+          "type": "string",
+          "description": "The current status of the Sigma job (e.g., \"CREATED\", \"RUNNING\", \"FINISHED\", \"FAILED\")."
+        },
+        "query": {
+          "title": "Query",
+          "type": "string",
+          "description": "The query that was used to find the initial hashes."
+        },
+        "startDate": {
+          "$ref": "#/$defs/StartDate"
+        },
+        "endDate": {
+          "$ref": "#/$defs/EndDate"
+        },
+        "nMatchedHashes": {
+          "title": "Number of matched hashes",
+          "type": "number",
+          "description": "Number of hashes matching the query during specified time range"
+        },
+        "familyCounts": {
+          "$ref": "#/$defs/FamilyCounts"
+        }
+      },
+      "required": [
+        "jobId",
+        "name",
+        "created",
+        "modified",
+        "status",
+        "query",
+        "startDate",
+        "endDate",
+        "nMatchedHashes",
+        "familyCounts"
+      ],
+      "title": "SigmaJobBase",
+      "type": "object",
+      "description": "Base properties shared across Sigma job responses."
+    },
+    "SigmaPatternStats": {
+      "type": "object",
+      "properties": {
+        "n_hashes": {
+          "title": "Number of hashes",
+          "description": "Number of hashes matching the pattern",
+          "type": "number"
+        },
+        "overlap": {
+          "title": "Overlap",
+          "description": "Number of hashes matching both pattern and job query",
+          "type": "number"
+        },
+        "family_counts": {
+          "$ref": "#/$defs/FamilyCounts"
+        }
+      },
+      "required": [
+        "n_hashes",
+        "overlap",
+        "family_counts"
+      ],
+      "description": "Statistics about patterns identified during Sigma rule generation."
+    },
+    "SigmaRuleItem": {
+      "title": "Sigma Rule",
+      "description": "Sigma rule and stats",
+      "type": "object",
+      "properties": {
+        "rule": {
+          "$ref": "#/$defs/SigmaRuleYaml"
+        },
+        "rule_id": {
+          "title": "Rule Id",
+          "description": "Id of the generated rule",
+          "type": "string"
+        },
+        "stats": {
+          "$ref": "#/$defs/SigmaPatternStats"
+        },
+        "status": {
+          "$ref": "#/$defs/RuleStatus"
+        },
+        "modified": {
+          "format": "date-time",
+          "title": "Modified",
+          "type": "string",
+          "description": "The timestamp when the rule was last updated. Not present if rule was never updated."
+        }
+      },
+      "required": [
+        "rule",
+        "rule_id",
+        "status"
+      ]
+    },
+    "SigmaRuleYaml": {
+      "title": "Rule",
+      "description": "Sigma rule in YAML format",
+      "type": "string"
+    },
+    "StartDate": {
+      "description": "Earliest date to include in the query (cannot be before 2023-11-01)",
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

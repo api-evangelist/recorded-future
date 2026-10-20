@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-context-response-schema.json",
+  "title": "ContextResponse",
+  "description": "Response wrapper for triage context operations.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-soar-api-openapi.yml#/components/schemas/ContextResponse",
+  "type": "object",
+  "additionalProperties": {
+    "$ref": "#/$defs/Context"
+  },
+  "properties": {
+    "malware": {
+      "$ref": "#/$defs/Context"
+    },
+    "phishing": {
+      "$ref": "#/$defs/Context"
+    },
+    "c2": {
+      "$ref": "#/$defs/Context"
+    }
+  },
+  "$defs": {
+    "Context": {
+      "type": "object",
+      "properties": {
+        "default_threshold": {
+          "type": "integer",
+          "description": "Default threshold to determinate verdict",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "description": {
+          "type": "string"
+        },
+        "datagroup": {
+          "type": "object",
+          "description": "Includes information on all data groups available for this context",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "rule": {
+                "type": "object",
+                "properties": {
+                  "maxCount": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "default_threshold_type": {
+        "type": "string",
+        "enum": [
+          "min",
+          "max"
+        ],
+        "description": "Default algorithm to use the threshold in",
+        "default": "max"
+      },
+      "name": {
+        "type": "string"
+      },
+      "description": "A triage context configuration defining risk thresholds and data group settings for automated triage decisions."
+    }
+  }
+}

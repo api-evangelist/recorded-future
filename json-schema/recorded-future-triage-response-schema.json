@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-triage-response-schema.json",
+  "title": "TriageResponse",
+  "description": "Triage results with automated verdicts for submitted entities based on configured risk thresholds.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-soar-api-openapi.yml#/components/schemas/TriageResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/TriageResponseData"
+    },
+    "counts": {
+      "$ref": "#/$defs/Counts"
+    },
+    "metadata": {
+      "$ref": "#/$defs/Metadata"
+    }
+  },
+  "required": [
+    "data",
+    "counts"
+  ],
+  "$defs": {
+    "Counts": {
+      "type": "object",
+      "properties": {
+        "returned": {
+          "type": "number"
+        },
+        "total": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "returned",
+        "total"
+      ],
+      "description": "Pagination counts for list responses."
+    },
+    "Metadata": {
+      "type": "object",
+      "properties": {
+        "entries": {
+          "type": "array",
+          "description": "Metadata entries providing additional context about the response data elements.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "The metadata key or field name."
+              },
+              "value": {
+                "type": "string",
+                "description": "The metadata value or description."
+              }
+            }
+          }
+        }
+      },
+      "description": "Response metadata with additional context about the enrichment operation. Only included when the metadata query parameter is set to true."
+    },
+    "ResultData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "risk": {
+            "type": "object",
+            "properties": {
+              "score": {
+                "type": "number",
+                "description": "Overall risk score for this entity (0-99)."
+              },
+              "level": {
+                "type": "number",
+                "description": "Risk level category (0=None, 1=Unusual, 2=Suspicious, 3=Malicious, 4=Very Malicious)."
+              },
+              "context": {
+                "type": "object",
+                "description": "Risk context data keyed by context name (e.g., phishing, c2, malware, public). Each key represents a risk context use case.",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "score": {
+                      "type": "number",
+                      "description": "Risk score within this context (0-99)."
+                    },
+                    "summary": {
+                      "type": "array",
+                      "description": "Summary of risk rules triggered in this context, grouped by severity level.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "level": {
+                            "type": "number",
+                            "description": "Severity level of the rules."
+                          },
+                          "count": {
+                            "type": "number",
+                            "description": "Number of rules triggered at this level."
+                          }
+                        }
+                      }
+                    },
+                    "rule": {
+                      "type": "object",
+                      "description": "Aggregate rule statistics for this context.",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "Number of rules triggered in this context."
+                        },
+                        "maxCount": {
+                          "type": "integer",
+                          "description": "Maximum number of rules available for this context."
+                        }
+                      }
+                    },
+                    "mostCriticalRule": {
+                      "type": "string",
+                      "description": "Name of the most critical rule triggered in this context. Empty string if no rules triggered."
+                    }
+                  },
+                  "required": [
+                    "score",
+                    "rule"
+                  ]
+                }
+              },
+              "rule": {
+                "type": "object",
+                "description": "Aggregate risk rule data for this entity across all contexts.",
+                "properties": {
+                  "summary": {
+                    "type": "array",
+                    "description": "Summary of triggered rules grouped by severity level.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "level": {
+                          "type": "number",
+                          "description": "Severity level (1=Unusual, 2=Suspicious, 3=Malicious, 4=Very Malicious)."
+                        },
+                        "count": {
+                          "type": "number",
+                          "description": "Number of rules triggered at this severity level."
+                        }
+                      },
+                      "required": [
+                        "level",
+                        "count"
+                      ]
+                    }
+                  },
+                  "mostCritical": {
+                    "type": "string",
+                    "description": "Name of the most critical (highest severity) rule triggered."
+                  },
+                  "count": {
+                    "type": "integer",
+                    "description": "Total number of risk rules triggered for this entity."
+                  },
+                  "maxCount": {
+                    "type": "integer",
+                    "description": "Maximum number of risk rules available for this entity type."
+                  },
+                  "evidence": {
+                    "type": "object",
+                    "description": "Evidence data keyed by rule identifier (e.g., spamSiteDetected, historicalThreatListMembership, defanged). Each key is a camelCase rule slug.",
+                    "additionalProperties": {
+                      "type": "object",
+                      "description": "Evidence detail for a single triggered risk rule.",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "Number of times this rule was triggered."
+                        },
+                        "level": {
+                          "type": "integer",
+                          "description": "Severity level of this rule (1=Unusual, 2=Suspicious, 3=Malicious, 4=Very Malicious)."
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Most recent timestamp when this rule was triggered."
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable description of the evidence, including source references in XML-like entity tags."
+                        },
+                        "rule": {
+                          "type": "string",
+                          "description": "Human-readable name of the risk rule."
+                        },
+                        "sightings": {
+                          "type": "integer",
+                          "description": "Number of sightings that support this rule. -1 indicates sighting count is not applicable."
+                        },
+                        "mitigation": {
+                          "type": "string",
+                          "description": "Suggested mitigation action for this risk rule. Empty string if none."
+                        }
+                      },
+                      "required": [
+                        "count",
+                        "level",
+                        "timestamp",
+                        "rule"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "count",
+                  "maxCount"
+                ]
+              }
+            },
+            "required": [
+              "score",
+              "level",
+              "context",
+              "rule"
+            ]
+          },
+          "entity": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "type"
+            ]
+          }
+        },
+        "required": [
+          "risk",
+          "entity"
+        ]
+      },
+      "description": "Individual enrichment result for a single entity."
+    },
+    "TriageData": {
+      "type": "object",
+      "properties": {
+        "threshold_type": {
+          "type": "string",
+          "enum": [
+            "min",
+            "max"
+          ]
+        },
+        "context": {
+          "type": "string"
+        },
+        "verdict": {
+          "type": "boolean"
+        },
+        "threshold": {
+          "type": "integer",
+          "description": "Default value depends on the context",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "scores": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "integer"
+            },
+            "max": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "description": "Automated triage verdict for an entity based on risk threshold evaluation."
+    },
+    "TriageResponseData": {
+      "type": "object",
+      "properties": {
+        "triage": {
+          "$ref": "#/$defs/TriageData"
+        },
+        "results": {
+          "$ref": "#/$defs/ResultData"
+        }
+      },
+      "description": "Data wrapper containing triage verdicts and enrichment results."
+    }
+  }
+}

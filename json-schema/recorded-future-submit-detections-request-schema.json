@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-submit-detections-request-schema.json",
+  "title": "SubmitDetectionsRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-collective-insights-api-openapi.yml#/components/schemas/SubmitDetectionsRequest",
+  "properties": {
+    "data": {
+      "description": "A list of detections that has been made and that should be added to Collective Insights.",
+      "items": {
+        "properties": {
+          "detection": {
+            "description": "Required information about the detection method.",
+            "properties": {
+              "id": {
+                "description": "In the type=correlation case, this will be the id of the Correlation Use Case. Ex: p_default_ip_risklist. The p_ prefix indicates that it is a public use case available to all, a h_ prefix indicates that it is client specific use case.\n\nIn the case of type=detection_rule, it will be the id of the Analyst note where the Detection rule was attached, for example doc:XYZ.\n\nIn the case of a type=playbook, this field is the id of a playbook.\n\nThis id is required in the case of type=detection_rule but optional in all other cases.\n",
+                "type": "string"
+              },
+              "name": {
+                "description": "The detection name.",
+                "type": "string"
+              },
+              "sub_type": {
+                "description": "The detection method sub type. Must be a value in the enumerated list if detection type is set to `detection_rule`. In all other cases it must be null.",
+                "enum": [
+                  "sigma",
+                  "yara",
+                  "snort"
+                ],
+                "type": "string"
+              },
+              "type": {
+                "description": "The detection method used by the security tool. More detection types may be added in the future.",
+                "enum": [
+                  "detection_rule",
+                  "correlation",
+                  "playbook",
+                  "sandbox"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "type": "object"
+          },
+          "incident": {
+            "description": "Optional free-form incident data related to the detection.\nCan be used to group several detected IoCs into a shared context.\n",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "ioc": {
+            "description": "The IoC (indicator of compromise) associated with the event.",
+            "properties": {
+              "action_category": {
+                "description": "Classification of the action taken by the security tool in response to the event activity.\nAllowed values are `detect` and `prevent`. If omitted, this field will be set to `detect` in the backend.\n",
+                "enum": [
+                  "detect",
+                  "prevent"
+                ],
+                "type": "string"
+              },
+              "field": {
+                "description": "The field in a log where the detection was made.",
+                "type": "string"
+              },
+              "source_type": {
+                "description": "The type of log source from which the detection was made.",
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "ip",
+                  "domain",
+                  "hash",
+                  "url",
+                  "vulnerability"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "value"
+            ],
+            "type": "object"
+          },
+          "malwares": {
+            "description": "Optional list of malware names related to the detection.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "mitre_codes": {
+            "description": "Optional list of MITRE ATT&CK codes related to the detection.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "timestamp": {
+            "description": "Timestamp of the detection in ISO 8601 format. If omitted, the time of the API request will be recorded instead.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "transient_id": {
+            "description": "ID that will not be saved, but used to identify any dropped data in the response",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ioc",
+          "detection"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "options": {
+      "properties": {
+        "debug": {
+          "default": false,
+          "description": "If true, indicates that the request is for testing purposes and the data will not be used for analytical purposes. Input validation is always active.",
+          "type": "boolean"
+        },
+        "summary": {
+          "default": true,
+          "description": "If true, the response will include a summary of the submitted IOCs.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "organization_ids": {
+      "description": "A list of organizations to associate the submission with. The user making the request must be a member of every organization provided",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "type": "object"
+}

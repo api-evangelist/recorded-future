@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-sample-summary-schema.json",
+  "title": "SampleSummary",
+  "description": "A sandbox sample summary.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-sandbox-api-secopsti-api-openapi.yml#/components/schemas/SampleSummary",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Sample ID (e.g., 251219-tg9s9sfwst)"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current processing status",
+      "enum": [
+        "pending",
+        "running",
+        "static_analysis",
+        "reported",
+        "failed"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "description": "Submission type",
+      "enum": [
+        "file",
+        "url"
+      ]
+    },
+    "filename": {
+      "type": "string",
+      "description": "Original filename (file submissions only)"
+    },
+    "url": {
+      "type": "string",
+      "description": "Submitted URL (URL submissions only)"
+    },
+    "submitted": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 submission timestamp"
+    },
+    "completed": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 completion timestamp (only present when analysis is done)"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 hash of the submitted file (file submissions only)"
+    }
+  }
+}

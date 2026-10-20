@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-search-request-schema.json",
+  "title": "SearchRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/SearchRequest",
+  "type": "object",
+  "properties": {
+    "published": {
+      "type": "string",
+      "description": "Notes published after this date, absolute like 2024-01-01 or relative like -3d."
+    },
+    "entity": {
+      "type": "string",
+      "description": "Entity id"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Topic entity id, see [list](https://docs.recordedfuture.com/reference/analyst-note-available-topics) of available ones for details."
+    },
+    "title": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/SourceId"
+    },
+    "tagged_text": {
+      "$ref": "#/$defs/RequestTaggedTextParam"
+    },
+    "escape_html": {
+      "$ref": "#/$defs/EscapeHtmlParam"
+    },
+    "serialization": {
+      "$ref": "#/$defs/RequestSerializationParam"
+    },
+    "limit": {
+      "type": "integer",
+      "default": 10,
+      "description": "Maximum number of references from which notes are fetched, at most 1000."
+    },
+    "from": {
+      "type": "string",
+      "description": "Offset the result based on next_offset from a previous search response"
+    },
+    "enterprise_only": {
+      "type": "boolean",
+      "description": "When true, restricts results to notes authored by your organization (excludes Insikt Group notes).",
+      "default": false
+    }
+  },
+  "$defs": {
+    "EscapeHtmlParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if HTML tags are escaped, applied only when `tagged_text = true`."
+    },
+    "RequestSerializationParam": {
+      "type": "string",
+      "enum": [
+        "id",
+        "min",
+        "full"
+      ],
+      "description": "Entity serialization level. When set to `id`, only the entity id will be included. Setting it to `min` leads to the id and name being included and setting it to `full` means that each entity will have the id, name, type and possibly a description included in the response.",
+      "default": "full"
+    },
+    "RequestTaggedTextParam": {
+      "type": "boolean",
+      "default": false,
+      "description": "Determines if the `<entity></entity>` tags should be inline with entities in the note title and text."
+    },
+    "SourceId": {
+      "type": "string",
+      "description": "Entity id for note source."
+    }
+  }
+}

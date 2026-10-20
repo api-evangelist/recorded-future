@@ -1,0 +1,990 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-asset-search-request-schema.json",
+  "title": "AssetSearchRequest",
+  "description": "Search request body for querying assets with filters, sorting, and pagination.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-asi-project-api-openapi.yml#/components/schemas/AssetSearchRequest",
+  "properties": {
+    "filter": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AssetFilter"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pagination": {
+      "$ref": "#/$defs/Pagination"
+    },
+    "enrichments": {
+      "items": {
+        "$ref": "#/$defs/AssetEnrichment"
+      },
+      "type": "array",
+      "title": "Enrichments"
+    },
+    "sort": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/AssetSortField"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "prefixItems": [
+              {
+                "$ref": "#/$defs/AssetSortField"
+              },
+              {
+                "$ref": "#/$defs/SortDirection"
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2
+          },
+          "type": "array"
+        }
+      ],
+      "title": "Sort"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "AssetEnrichment": {
+      "type": "string",
+      "enum": [
+        "custom_tags",
+        "dns_records",
+        "whois",
+        "ip_metadata",
+        "open_tcp_ports",
+        "open_udp_ports",
+        "web_technologies",
+        "certificates",
+        "certificate_chain",
+        "defenses",
+        "exposures",
+        "exposure_instance_details"
+      ],
+      "title": "AssetEnrichment",
+      "description": "Optional enrichment data to include with asset results."
+    },
+    "AssetFilter": {
+      "properties": {
+        "asset_properties": {
+          "$ref": "#/$defs/AssetPropertiesFilter",
+          "description": "Properties directly tied to the asset or DNS you want to filter on"
+        },
+        "certificate_properties": {
+          "$ref": "#/$defs/CertificatePropertiesFilter",
+          "description": "Properties related to certificates on the asset you want to filter on"
+        },
+        "exposure_properties": {
+          "$ref": "#/$defs/ExposurePropertiesFilter",
+          "description": "Properties relating to exposures found on assets you wish to filter on"
+        },
+        "technology_properties": {
+          "$ref": "#/$defs/TechnologyPropertiesFilter",
+          "description": "Properties related to open ports and technologies identified on the asset"
+        },
+        "quick_search": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QuickSearchFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Quick search across asset name, IP addresses, and technology fields"
+        }
+      },
+      "type": "object",
+      "title": "AssetFilter",
+      "description": "Filter criteria for asset search queries."
+    },
+    "AssetPropertiesFilter": {
+      "properties": {
+        "asset_id": {
+          "$ref": "#/$defs/EqFilter",
+          "description": "Filter for the specific asset, which will be either a IP or domain value (examples: `192.88.99.2` or `www.example.com`)."
+        },
+        "name": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContainsFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Filter on the name of the asset(IP address or domain)."
+        },
+        "static_asset": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BooleanFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Filter static and non static assets."
+        },
+        "apex": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            }
+          ],
+          "title": "Apex",
+          "description": "Filter on the apex domain of the assets. Only makes sense for `domain` asset types. Example: `example.com`"
+        },
+        "added_to_project": {
+          "$ref": "#/$defs/DateRangeFilter",
+          "description": "Filter on the date (Y-m-d) the asset was added to the project. This may be different than when the asset was discovered."
+        },
+        "discovered": {
+          "$ref": "#/$defs/DateRangeFilter",
+          "description": "Filter on the date (Y-m-d) the asset was discovered by Recorded Future ASI. This may be different than when the asset was added to the project. IPv4 addresses will have a fixed point in the past for their discovery date."
+        },
+        "asset_type": {
+          "$ref": "#/$defs/EqFilter",
+          "description": "The type of asset, one of: `ip`, `domain` and `host`(where `domain` and `host` represent the same asset type)."
+        },
+        "referenced_ip": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContainsFilter"
+            },
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            }
+          ],
+          "title": "Referenced Ip",
+          "description": "Filter on an A or CNAME record pointing to the IP address. Use `eq` or `in` for exact IP matching. Use `contains` with a trailing `.` for CIDR range matching, or without for prefix matching."
+        },
+        "cname_reference": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContainsFilter"
+            },
+            {
+              "$ref": "#/$defs/EqFilter"
+            }
+          ],
+          "title": "Cname Reference",
+          "description": "Filter on a domain that is referenced by a CNAME record. Only makes sense for `domain` asset types. Treated as a wildcard, so `example.com` will match `www.example.com`."
+        },
+        "referenced_ip_at": {
+          "$ref": "#/$defs/DateRangeFilter",
+          "description": "If filtering on a `referenced_ip`, include additional criteria that the record existed during a date range."
+        },
+        "valid_record_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "$ref": "#/$defs/NeqFilter"
+            }
+          ],
+          "title": "Valid Record Type",
+          "description": "Filter for assets that have this DNS record type, e.g. `A`,`CNAME`,`MX`."
+        },
+        "dns_resolves": {
+          "$ref": "#/$defs/BooleanFilter",
+          "description": "Filter for assets that in the end resolve to a valid IP currently, either via an `A` or `CNAME`. `IP`-assets is included when filtering for assets that resolve."
+        },
+        "custom_tags": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "$ref": "#/$defs/RequireAllFilter"
+            }
+          ],
+          "title": "Custom Tags",
+          "description": "Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project. By using `*` you can filter for assets that have at least one custom tag applied. By using an empty(`[]`) list you can filter for assets that have no custom tags applied."
+        },
+        "custom_tags_strict": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "$ref": "#/$defs/RequireAllFilter"
+            }
+          ],
+          "title": "Custom Tags Strict",
+          "description": "Filter by custom tags placed on your assets. `strict` version will return a validation error if any of the tags have not been defined on your project. By using `*` you can filter for assets that have at least one custom tag applied. By using an empty(`[]`) list you can filter for assets that have no custom tags applied."
+        },
+        "asn": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/IntEqFilter"
+            },
+            {
+              "$ref": "#/$defs/IntInFilter"
+            }
+          ],
+          "title": "Asn",
+          "description": "Filter for assets which either are, or point to, an IP address announced by the provided ASN (e.g. `16509`)."
+        },
+        "ip_geo_country_iso": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            }
+          ],
+          "title": "Ip Geo Country Iso",
+          "description": "Filter for assets which either are, or point to, an IP address located in the provided ISO country code (e.g. `US`)."
+        },
+        "ip_owner": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            }
+          ],
+          "title": "Ip Owner",
+          "description": "Filter for assets which either are, or point to, an IP address owned by the provided organization. This will often be an ISP or hosting provider or simply the name of the AS owning the IP."
+        },
+        "registry": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Registry",
+          "description": "Filter for assets by their IP registry source (e.g., 'arin', 'ripe', 'apnic')."
+        },
+        "whois_email_current": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EmailEqFilter"
+            },
+            {
+              "$ref": "#/$defs/EmailInFilter"
+            }
+          ],
+          "title": "Whois Email Current",
+          "description": "Filter for assets where the WHOIS email address matches the provided value. For subdomains the parent record will be partially used. The `current` variant will only return results where the email is on the current (rather than historical) versions of the WHOIS."
+        },
+        "whois_email": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EmailEqFilter"
+            },
+            {
+              "$ref": "#/$defs/EmailInFilter"
+            }
+          ],
+          "title": "Whois Email",
+          "description": "Filter for assets where the WHOIS email address matches the provided value. For subdomains the parent record will be partially used. The `current` variant will only return results where the email is on the current (rather than historical) versions of the WHOIS."
+        }
+      },
+      "type": "object",
+      "title": "AssetPropertiesFilter",
+      "description": "Filter options for asset properties (hostname, IP, tags, ports, etc.)."
+    },
+    "AssetSortField": {
+      "type": "string",
+      "enum": [
+        "discovered_at",
+        "added_to_project_at",
+        "last_scanned_at",
+        "exposure_score",
+        "asset_id",
+        "apex_domain"
+      ],
+      "title": "AssetSortField",
+      "description": "Field to sort asset results by."
+    },
+    "BooleanFilter": {
+      "properties": {
+        "eq": {
+          "type": "boolean",
+          "title": "Eq"
+        }
+      },
+      "type": "object",
+      "required": [
+        "eq"
+      ],
+      "title": "BooleanFilter",
+      "description": "Boolean filter (true/false)."
+    },
+    "CertificatePropertiesFilter": {
+      "properties": {
+        "certificate_subject": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "$ref": "#/$defs/ContainsFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Certificate Subject",
+          "description": "Filter where certificate `subject` or `organizationName` matches the provided value"
+        },
+        "certificate_subject_alt_name": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "$ref": "#/$defs/ContainsFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Certificate Subject Alt Name",
+          "description": "Filter here the certificate Subject Alternate Names section matches the provided value"
+        },
+        "certificate_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Filter where the certificate public key sha256 value matches the provided value"
+        },
+        "certificate_expires_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DateRangeFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Filter where the certificate expiration matches the provided value"
+        },
+        "certificate_issued_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DateRangeFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Filter where the certificate issuance date matches the provided value"
+        },
+        "certificate_issuer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Certificate Issuer",
+          "description": "Filter where the certificate (or in the chain) issuer's common name or organization matches the provided value"
+        },
+        "certificate_covers_domain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "$ref": "#/$defs/ContainsFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Certificate Covers Domain",
+          "description": "Filter where the certificate's subject common name domain or one of the Subject Alternate Names exactly matches or is a wildcard covering the provided value"
+        }
+      },
+      "type": "object",
+      "title": "CertificatePropertiesFilter",
+      "description": "Filter options for certificate properties (issuer, expiration, etc.)."
+    },
+    "ContainsFilter": {
+      "properties": {
+        "contains": {
+          "type": "string",
+          "title": "Contains"
+        }
+      },
+      "type": "object",
+      "required": [
+        "contains"
+      ],
+      "title": "ContainsFilter",
+      "description": "Substring containment filter."
+    },
+    "DateRangeFilter": {
+      "properties": {
+        "start": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End"
+        }
+      },
+      "type": "object",
+      "title": "DateRangeFilter",
+      "description": "Date range filter with from/to bounds."
+    },
+    "EmailEqFilter": {
+      "properties": {
+        "eq": {
+          "type": "string",
+          "format": "email",
+          "title": "Eq"
+        }
+      },
+      "type": "object",
+      "required": [
+        "eq"
+      ],
+      "title": "EmailEqFilter",
+      "description": "Exact email address match filter."
+    },
+    "EmailInFilter": {
+      "properties": {
+        "in": {
+          "items": {
+            "type": "string",
+            "format": "email"
+          },
+          "type": "array",
+          "title": "In"
+        }
+      },
+      "type": "object",
+      "required": [
+        "in"
+      ],
+      "title": "EmailInFilter",
+      "description": "Email address inclusion filter (matches any in list)."
+    },
+    "EqFilter": {
+      "properties": {
+        "eq": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string",
+              "format": "ipvanyaddress"
+            },
+            {
+              "type": "string",
+              "format": "ipvanynetwork"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            }
+          ],
+          "title": "Eq"
+        }
+      },
+      "type": "object",
+      "required": [
+        "eq"
+      ],
+      "title": "EqFilter",
+      "description": "Exact value match filter."
+    },
+    "ExposurePropertiesFilter": {
+      "properties": {
+        "severity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "$ref": "#/$defs/EqFilter"
+            }
+          ],
+          "title": "Severity",
+          "description": "Filter for assets which have an exposure severity matching or higher than the provided value. Acceptable values: unknown, informational, moderate, critical."
+        },
+        "signature_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            }
+          ],
+          "title": "Signature Id",
+          "description": "Filter for assets which have an exposure with the provided ASI Signature ID. Note that some signatures line up with CVEs, but this should not be relied upon. Examples: `cve-2024-6387`, `cve-OpenSSH`."
+        },
+        "asset_exposure_score": {
+          "$ref": "#/$defs/IntRangeFilter",
+          "description": "Filter for assets which have an exposure score within the provided range. This is a score from 0-100 that indicates the potential risk of the asset based on various factors. You may specify only one 'end' based on your needs."
+        },
+        "last_scanned_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DateRangeFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Filter on the date (Y-m-d) when the asset was last scanned for exposures."
+        }
+      },
+      "type": "object",
+      "title": "ExposurePropertiesFilter",
+      "description": "Filter options for exposure properties (severity, signature, etc.)."
+    },
+    "ExposureSeverity": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "informational",
+        "moderate",
+        "critical"
+      ],
+      "title": "ExposureSeverity",
+      "description": "Exposure severity level."
+    },
+    "InFilter": {
+      "properties": {
+        "in": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string",
+                "format": "ipvanyaddress"
+              },
+              {
+                "type": "string",
+                "format": "ipvanynetwork"
+              },
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "$ref": "#/$defs/ExposureSeverity"
+              }
+            ]
+          },
+          "type": "array",
+          "title": "In"
+        }
+      },
+      "type": "object",
+      "required": [
+        "in"
+      ],
+      "title": "InFilter",
+      "description": "Value inclusion filter (matches any in list)."
+    },
+    "IntEqFilter": {
+      "properties": {
+        "eq": {
+          "type": "integer",
+          "title": "Eq"
+        }
+      },
+      "type": "object",
+      "required": [
+        "eq"
+      ],
+      "title": "IntEqFilter",
+      "description": "Exact integer match filter."
+    },
+    "IntInFilter": {
+      "properties": {
+        "in": {
+          "items": {
+            "type": "integer"
+          },
+          "type": "array",
+          "title": "In"
+        }
+      },
+      "type": "object",
+      "required": [
+        "in"
+      ],
+      "title": "IntInFilter",
+      "description": "Integer inclusion filter."
+    },
+    "IntRangeFilter": {
+      "properties": {
+        "start": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End"
+        }
+      },
+      "type": "object",
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "IntRangeFilter",
+      "description": "Integer range filter with min/max bounds."
+    },
+    "NeqFilter": {
+      "properties": {
+        "neq": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string",
+              "format": "ipvanyaddress"
+            },
+            {
+              "type": "string",
+              "format": "ipvanynetwork"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            }
+          ],
+          "title": "Neq"
+        }
+      },
+      "type": "object",
+      "required": [
+        "neq"
+      ],
+      "title": "NeqFilter",
+      "description": "Not-equal filter (excludes matching values)."
+    },
+    "Pagination": {
+      "properties": {
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Next Cursor",
+          "description": "An opaque value which should be passed as the `cursor` to retrieve the next page of results. If None or not present there are no remaining pages. This value should not be interpreted by the client."
+        },
+        "limit": {
+          "type": "integer",
+          "maximum": 1000,
+          "title": "Limit",
+          "description": "The number of items to return",
+          "default": 50
+        }
+      },
+      "type": "object",
+      "title": "Pagination",
+      "description": "Cursor-based pagination parameters for requests."
+    },
+    "QuickSearchFilter": {
+      "properties": {
+        "search": {
+          "type": "string",
+          "title": "Search",
+          "description": "Search term to match against asset name, IP addresses, and technology fields"
+        }
+      },
+      "type": "object",
+      "required": [
+        "search"
+      ],
+      "title": "QuickSearchFilter",
+      "description": "Quick search text filter for assets."
+    },
+    "RequireAllFilter": {
+      "properties": {
+        "in": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string",
+                "format": "ipvanyaddress"
+              },
+              {
+                "type": "string",
+                "format": "ipvanynetwork"
+              },
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "$ref": "#/$defs/ExposureSeverity"
+              }
+            ]
+          },
+          "type": "array",
+          "title": "In"
+        }
+      },
+      "type": "object",
+      "required": [
+        "in"
+      ],
+      "title": "RequireAllFilter",
+      "description": "Filter requiring all specified values to match."
+    },
+    "SortDirection": {
+      "type": "string",
+      "enum": [
+        "asc",
+        "desc"
+      ],
+      "title": "SortDirection",
+      "description": "Sort direction (ascending or descending)."
+    },
+    "TechnologyPropertiesFilter": {
+      "properties": {
+        "open_port_number": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/IntEqFilter"
+            },
+            {
+              "$ref": "#/$defs/IntInFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Open Port Number",
+          "description": "Filter for assets which have an open port with the provided number (e.g. `80`)."
+        },
+        "open_port_service": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Open Port Service",
+          "description": "Filter for assets which have an open port that appears to support the provided protocol (e.g. `http`, `rdp`, `ftp`)."
+        },
+        "open_port_protocol": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Open Port Protocol",
+          "description": "Filter for assets which have an open port on the provided protocol (e.g. `tcp`, `udp`)."
+        },
+        "open_port_technology": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Open Port Technology",
+          "description": "Filter for assets which have a specific product listening on an open port (e.g. `nginx`, `apache httpd`)"
+        },
+        "waf_detected": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BooleanFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Filter for assets where a WAF (Web Application Firewall) is detected."
+        },
+        "waf_name": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Waf Name",
+          "description": "Filter for assets where a specific WAF is detected. Will attempt to match both vendor and product, e.g. `Cloudflare`."
+        },
+        "technology_name": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Technology Name",
+          "description": "Filter for the name of a technology found on the asset. Could be directly attached to the port (`nginx`, etc) or a web technology (e.g. 'jQuery', 'Wordpress')"
+        },
+        "web_technology_name": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EqFilter"
+            },
+            {
+              "$ref": "#/$defs/InFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Web Technology Name",
+          "description": "Filter for the name of a technology specifically associated with 'web' resources, such as `jQuery` or `Wordpress`). **NOTE**: In some cases where a port has been closed we may still report findings of web technologies that we previously saw on those ports."
+        },
+        "is_responsive": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BooleanFilter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Filter for assets that are unresponsive over ICMP and no ports are open. This is a boolean filter, so it will return assets that are either responsive or not responsive."
+        }
+      },
+      "type": "object",
+      "title": "TechnologyPropertiesFilter",
+      "description": "Filter options for technology properties (name, version, vendor, etc.)."
+    }
+  }
+}

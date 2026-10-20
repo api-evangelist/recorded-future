@@ -1,0 +1,4231 @@
+[
+ {
+  "page": "https://docs.recordedfuture.com/reference/threat-actor-categories.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "Threat API",
+    "description": "External API to retrieve threat data such as threat maps, threat actors and their categories.\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.\n",
+    "version": "1.0.0",
+    "x-rf-service-id": "service:threat"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/threat",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Metadata"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "paths": {
+    "/actor/categories": {
+     "get": {
+      "summary": "Threat Actor Categories",
+      "description": "Retrieve the full threat actor category taxonomy used across Recorded Future.",
+      "tags": [
+       "Metadata"
+      ],
+      "responses": {
+       "200": {
+        "description": "OK",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CategoriesResponse"
+          },
+          "example": {
+           "data": [
+            {
+             "id": "VBD4zu",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "South Korea Nation State Sponsored"
+             }
+            },
+            {
+             "id": "ppu8e4",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Ransomware and Extortion Groups"
+             }
+            },
+            {
+             "id": "VBBeeA",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Mobile APT",
+              "alias": [
+               "mobile advance persistent threat",
+               "Mobile APT Actors",
+               "mAPT"
+              ]
+             }
+            },
+            {
+             "id": "PzmSRJ",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Iran Nation State Sponsored"
+             }
+            },
+            {
+             "id": "Ps4Y01",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "China Nation State Sponsored",
+              "alias": [
+               "China-nexus",
+               "Chinese Nation State Sponsored",
+               "China APT",
+               "Chinese APT",
+               "APT Chinese",
+               "APT China",
+               "China-nexus actor"
+              ]
+             }
+            },
+            {
+             "id": "Qd_6Ic",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "North Korea Nation State Sponsored",
+              "alias": [
+               "North Korean Nation State"
+              ]
+             }
+            },
+            {
+             "id": "-Aq3E3",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "msfv"
+             }
+            },
+            {
+             "id": "PzmSRI",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Russia Nation State Sponsored",
+              "alias": [
+               "러시아연방 정부",
+               "الحكومة الوطنية الروسي",
+               "俄罗斯民族国家",
+               "俄罗斯民族国家赞助",
+               "러시아 정부",
+               "Russian Nation State",
+               "러시아 연방 정부",
+               "Russian Nation-State",
+               "Russia's nation-state",
+               "러시아 정부 지원",
+               "دولت ملی روسیه"
+              ]
+             }
+            },
+            {
+             "id": "TPtQ6K",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Financially Motivated - Serbia"
+             }
+            },
+            {
+             "id": "MNQkoC",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Germany Nation State Sponsored"
+             }
+            },
+            {
+             "id": "1ceL6i",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Chinese Influence Operations Groups"
+             }
+            },
+            {
+             "id": "VEiTbf",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Lebanon Nation State Sponsored"
+             }
+            },
+            {
+             "id": "VAj58R",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "France Nation State Sponsored"
+             }
+            },
+            {
+             "id": "T0CPRw",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Underground Forum Drug Related"
+             }
+            },
+            {
+             "id": "1cddTS",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Russian Influence Operations Groups"
+             }
+            },
+            {
+             "id": "T8IJfR",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Islamist Forum Member"
+             }
+            },
+            {
+             "id": "TVQwoR",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Farsi Hacking Community Members"
+             }
+            },
+            {
+             "id": "I_7J4G",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Hacktivist"
+             }
+            },
+            {
+             "id": "1cddTQ",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Influence Operations Groups"
+             }
+            },
+            {
+             "id": "Qd_6Io",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "FVEY Related",
+              "alias": [
+               "Five Eyes (FVEY) Alliance Related",
+               "Five Eyes Alliance Related"
+              ]
+             }
+            },
+            {
+             "id": "sqRaWI",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Pakistan Nation State Sponsored"
+             }
+            },
+            {
+             "id": "QCqLfF",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Defacement Crew"
+             }
+            },
+            {
+             "id": "BCoqOoP",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Black Cat",
+              "alias": [
+               "Black Cat"
+              ]
+             }
+            },
+            {
+             "id": "Turzv9",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Underground Forum Member"
+             }
+            },
+            {
+             "id": "1ceL6j",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Azerbaijani Influence Operations Groups"
+             }
+            },
+            {
+             "id": "yHAUZK",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "MageCart Threat Groups"
+             }
+            },
+            {
+             "id": "PD_NyL",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Nation State Sponsored",
+              "alias": [
+               "apt group",
+               "nation-state attacks",
+               "State Sponsored Attacks",
+               "nation state sponsored",
+               "APT"
+              ]
+             }
+            },
+            {
+             "id": "Qn3P4k",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Financially Motivated",
+              "alias": [
+               "Criminal"
+              ]
+             }
+            },
+            {
+             "id": "VBD4zw",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "India Nation State Sponsored"
+             }
+            },
+            {
+             "id": "TPtQ6J",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Financially Motivated - Russia"
+             }
+            },
+            {
+             "id": "Vajy8p",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Dark Web Market Member"
+             }
+            },
+            {
+             "id": "1ceL6h",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Iranian Influence Operations Groups"
+             }
+            },
+            {
+             "id": "PD_N2J",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Nonspecific Regional"
+             }
+            },
+            {
+             "id": "VQW4kV",
+             "type": "CyberThreatActorCategory",
+             "attributes": {
+              "name": "Israel Nation State Sponsored"
+             }
+            }
+           ],
+           "counts": {
+            "returned": 34,
+            "total": 34
+           }
+          }
+         }
+        }
+       }
+      },
+      "operationId": "threat-actor-categories"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "CategoriesResponse": {
+      "description": "Complete taxonomy of threat actor categories.",
+      "type": "object",
+      "properties": {
+       "data": {
+        "description": "List of threat actor categories",
+        "type": "array",
+        "items": {
+         "properties": {
+          "id": {
+           "description": "Entity ID",
+           "type": "string",
+           "example": "PD_NyL"
+          },
+          "type": {
+           "description": "Entity type",
+           "type": "string",
+           "enum": [
+            "CyberThreatActorCategory"
+           ],
+           "example": "CyberThreatActorCategory"
+          },
+          "attributes": {
+           "$ref": "#/components/schemas/ActorCategoryAttributes"
+          }
+         }
+        }
+       },
+       "counts": {
+        "type": "object",
+        "properties": {
+         "returned": {
+          "description": "Number of items returned in this response",
+          "type": "integer",
+          "format": "int32"
+         },
+         "total": {
+          "description": "Total number of items that can be retrieved",
+          "type": "integer",
+          "format": "int32"
+         }
+        },
+        "example": {
+         "returned": 25,
+         "total": 25
+        }
+       }
+      }
+     },
+     "ActorCategoryAttributes": {
+      "allOf": [
+       {
+        "type": "object",
+        "properties": {
+         "name": {
+          "type": "string",
+          "example": "North Korea Nation State Sponsored"
+         }
+        }
+       },
+       {
+        "$ref": "#/components/schemas/CategoryAlias"
+       }
+      ]
+     },
+     "CategoryAlias": {
+      "type": "object",
+      "properties": {
+       "alias": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "North Korean Nation State"
+        }
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/threat-actor-search.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "Threat API",
+    "description": "External API to retrieve threat data such as threat maps, threat actors and their categories.\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.\n",
+    "version": "1.0.0",
+    "x-rf-service-id": "service:threat"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/threat",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Metadata"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "paths": {
+    "/actor/search": {
+     "post": {
+      "summary": "Threat Actor Search",
+      "description": "Search Recorded Future's threat actor database by name, alias, or classification.",
+      "tags": [
+       "Metadata"
+      ],
+      "requestBody": {
+       "required": true,
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/ThreatActorsRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "OK",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ThreatActorsResponse"
+          },
+          "example": {
+           "data": [
+            {
+             "id": "I2QcS_",
+             "type": "Organization",
+             "attributes": {
+              "name": "Anonymous",
+              "common_names": [],
+              "alias": [
+               "Anónimos",
+               "匿名者",
+               "Anonymous",
+               "anonymous",
+               "Анонимус",
+               "어나니머스",
+               "アノニマス",
+               "एनोनिमस",
+               "أنونيموس",
+               "Ανώνυμοι",
+               "అనామక",
+               "Anonumous",
+               "Anonymous, network of hacktivists",
+               "ئەنۆنیمۆس",
+               "آنانیموس",
+               "אנונימוס",
+               "Безосібний"
+              ],
+              "categories": []
+             }
+            },
+            {
+             "id": "TVQwpC",
+             "type": "Person",
+             "attributes": {
+              "name": "Elliot",
+              "common_names": [],
+              "alias": [
+               "엘리엇"
+              ],
+              "categories": []
+             }
+            },
+            {
+             "id": "B_FDT",
+             "type": "Organization",
+             "attributes": {
+              "name": "Al-Qaeda",
+              "common_names": [],
+              "alias": [
+               "Al-Qaeda Central",
+               "Al-Ká’ida",
+               "Al-Qaida au pays du Maghreb islamique",
+               "Organisation al Kaida",
+               "알카이다",
+               "Al - Qaïda",
+               "al Qaeda",
+               "اتحاد تنظيم القاعدة",
+               "حزب القاعدة",
+               "Al Qaeda group in the Maghreb",
+               "Salafist Group for Call and Combat",
+               "卡伊达组织",
+               "Al Qaïda",
+               "Al Quaida",
+               "Al--Qaeda",
+               "阿尔盖达组织",
+               "Grupo Salafista para la Predicación y el Combate",
+               "Al Quaeda",
+               "Al Qaïda Maghreb",
+               "Αλ Κάιντα",
+               "جماعات القاعدة",
+               "Organisation al-Qaida",
+               "El-Qaîde",
+               "al--Qaeda",
+               "قاعدة (منظمة)",
+               "サラフィストグループ",
+               "Al Qaeda del Magreb Islámico",
+               "خلية القاعدة",
+               "阿蓋達組織",
+               "Al-Qaïda",
+               "Organisation al-Kaida",
+               "查瓦希里",
+               " 알 카에다",
+               "基地組織",
+               "Organisation Al Kaida",
+               "Al Qaida no Magreb Islâmico",
+               "Al Qaueda",
+               "Al-Ka’ida",
+               "基地",
+               "Ал Каида",
+               "阿盖达组织",
+               "Al-Qaïda au pays du Maghreb islamique",
+               "アルカーイダ",
+               "تنظيم القاعدة الإسلامي",
+               "أعلام القاعدة",
+               "Organisation al Qaida",
+               "Al Qā’idah",
+               "أمراء القاعدة",
+               "Аль-Каида",
+               "Al Qaîda",
+               "Salafisten Groep voor predeking en het gevecht",
+               "알카에다",
+               "Al Ká’ida",
+               "基地组织",
+               "Al-Káida",
+               "Cyfundrefn Al-Qaeda yn y Maghreb Islamaidd",
+               "Al-Qaeda",
+               "Аль-Каиды",
+               "Al Qa‘idah",
+               "Al Qaïda au pays du Maghreb islamique",
+               "Salafisten-Gruppe fur Predigt und Kampf",
+               "تنظيم_القاعدة",
+               "Al Kaide",
+               "Al-Qaïda Maghreb",
+               "El Qaîde",
+               "蓋達組織",
+               "ალ-ყაიდა",
+               "Al-Qaida pour le Maghreb",
+               "فكر القاعدة",
+               "അല്‍ ഖാഇദ",
+               "Аль - Каеду",
+               "حركة تنظيم القاعدة",
+               "Аль-Каиде",
+               "GSPC",
+               "al Qaida",
+               "Al-Kaida",
+               "تنظيم القاعدة والبعث",
+               "لتنظيم القاعدة",
+               "Al-Qaida Maghreb",
+               "Al Káida",
+               "Salafisten Gruppe für Predigt und Kampf",
+               "Groupe salafiste pour la prédication et le combat",
+               "Al Qā‘idah",
+               "Al - Qaeda",
+               "Salafisten-Gruppe für Predigt und Kampf",
+               "al - Qaeda",
+               "الجماعة السلفية للدعوة والقتال",
+               "جبهة القاعدة",
+               "Al - Qaida",
+               "القاعده",
+               "Al--Qaida",
+               "مركز القاعدة",
+               "凱達組織",
+               "אל קאעידה במגרב האסלאמי",
+               "אל קעידה",
+               "Al-Qaeda group in the Maghreb",
+               "אל קאעידה",
+               "Cyfundrefn Al Qaeda yn y Maghreb Islamaidd",
+               "القاعدة المركزية",
+               "Al Kaida",
+               "al Qaedas",
+               "ذراع القاعدة",
+               "Al Qaida",
+               "نظام القاعدة",
+               "サラフィスト・グループ",
+               "al-Qaeda",
+               "مجاميع القاعدة",
+               "Al-Qaïda pour le Maghreb",
+               "サラフィスト グループ",
+               "Al Qa’idah",
+               "Al Qaaeda",
+               "Аль Каиде",
+               "تنظيم # القاعدة",
+               "Al--Kaida",
+               "جبهة النصرة تنظيم القاعدة",
+               "El-Qaide",
+               "알 카에다",
+               "盖达组织",
+               "Аль - Каэды",
+               "אל-קאעידה",
+               "إرهاب القاعدة",
+               "Al Qaedam",
+               "Al-Qaida",
+               "Аль-Кайдой",
+               "Аль Каида",
+               "Organisation Al-Kaida",
+               "Al Quida",
+               "قادة القاعدة",
+               "تنظيم القاعدة",
+               "Groupe Salafiste pour la Predication et le Combat",
+               "Аль Каиды",
+               "Al Qaida no Magreb Islamico",
+               "القاعدة العالمية",
+               "نهج القاعدة",
+               "אל-קאעידה במגרב האסלאמי",
+               "Al-Qā‘idah",
+               "Аль - Каида",
+               "Al Qaida Maghreb",
+               "Groupe Salafiste pour la Prédication et le Combat",
+               "القاعدة",
+               "El Kaide",
+               "Салафистка група за проповед и борба",
+               "Organisation El-Kaida",
+               "אל קעאידע",
+               "Al Qaìda",
+               "El Kaida",
+               "base",
+               "阿爾蓋達組織",
+               "Ал-Каида",
+               "Al Quaïda",
+               "Al Qaeda del Magreb Islamico",
+               "Al Qaidam",
+               "Organisation El Kaida",
+               "Groupe salafiste pour la predication et le combat",
+               "Al-Qaidam",
+               "Al Qaïda pour le Maghreb",
+               "Al Qaeda",
+               "ალ ყაიდა"
+              ],
+              "categories": []
+             }
+            },
+            {
+             "id": "B_1M8",
+             "type": "Organization",
+             "attributes": {
+              "name": "Federal Security Service (Russia)",
+              "common_names": [],
+              "alias": [
+               "управлением фсб россии",
+               "Moscow Border Institute of the FSB of the Russian Federation",
+               "federal security service",
+               "service federal de securite",
+               "федеральной службы безопасности российской федерации",
+               "ロシア連邦保安庁",
+               "Russian FSB",
+               "управления фсб",
+               "שירות הביטחון הפדרלי",
+               "Federal Security Service of Russia",
+               "федеральной службой безопасности",
+               "федерална служба за сигурност",
+               "УФСБ РФ по ЕАО",
+               "FSB Russia",
+               "俄羅斯聯邦安全局",
+               "уфсб россии",
+               "Федеральная служба безопасности Российской Федерации, управлние по Ярославской области, отделение в г. Ростове",
+               "Russian secret service",
+               "FSB",
+               "Управлении Федеральной службы безопасности РФ",
+               "федерална служба за безопасност",
+               "фсо рф",
+               "Federal Security Service of the Russian Federation",
+               "service fédéral de sécurité de la fédération de russie",
+               "ФСБ",
+               "федеральная служба безопасности российской федерации",
+               "russian federal security service (fsb)",
+               "ФСБ Росії ",
+               "федеральная служба безопасности россии",
+               "servicio federal de seguridad",
+               "Федеральное государственное казенное образовательное учреждение высшего образования \"Московский пограничный институт Федеральной службы безопасности Российской Федерации",
+               "федеральной службы безопасности",
+               "federal'naja služba bezopasnosti",
+               "federalnaja služba bezopasnosti",
+               "УФСБ России по Санкт-Петербургу",
+               "fsb (geheimdienst)",
+               "연방 보안국",
+               "федеральная служба безопасности",
+               "ФСБ России",
+               "Federal Security Service (Russia)",
+               "federalna służba bezpieczeństwa",
+               "federalnaia sloujba bezopasnosti",
+               "러시아 연방 보안국",
+               "federalnaja sloezjba bezopasnosti",
+               "러시아 연방보안국",
+               "Federalnaya Sluzhba Bezopasnosti",
+               "федеральна служба безпеки росії",
+               "Russian Federal Security Service",
+               "управления фсб россии",
+               "Moscow Border Institute of the Federal Security Service of the Russian Federation"
+              ],
+              "categories": []
+             }
+            },
+            {
+             "id": "cjYQjf",
+             "type": "Person",
+             "attributes": {
+              "name": "utf-8",
+              "common_names": [],
+              "alias": [],
+              "categories": [
+               {
+                "id": "Turzv9",
+                "name": "Underground Forum Member"
+               },
+               {
+                "id": "Qn3P4k",
+                "name": "Financially Motivated"
+               }
+              ]
+             }
+            }
+           ],
+           "counts": {
+            "returned": 5,
+            "total": 1477148
+           },
+           "next_offset": "eyJvZmZzZXQiOlsxMjcxNTE4OSwiY2pZUWpmIl19"
+          }
+         }
+        }
+       }
+      },
+      "operationId": "threat-actor-search"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "ThreatActorsRequest": {
+      "description": "JSON object specifying pagination of the threat actor list",
+      "type": "object",
+      "properties": {
+       "name": {
+        "description": "This string value can be used for a case insensitive, free text search of threat actor names, common names, or aliases.  For example, using `name\":\"panda\"` will yield a search result with over 300 threat actors that have the word \"panda\" somewhere in its name, common names, or aliases. Advanced searches are supported using a prefix in the search string. For example, using `\"name\":\"exact:panda\"`yields only threat actor(s) whose name is just \"Panda\". <table>   <tr>     <th>Prefix</th>     <th>Match type</th>     <th>Description</th>   </tr>   <tr>     <td>no prefix</td>     <td>freetext match (default)</td>     <td>Returns threat actors where the search string matches somewhere in a name, a common name or an alias (case-insensitive).</td>   </tr>   <tr>     <td>exact:</td>     <td>exact match</td>     <td>Returns threat actors where the search string exactly matches a name, a common name or an alias.</td>   </tr>   <tr>     <td>prefix:</td>     <td>prefix match</td>     <td>Returns threat actors where the search string matches the beginning of a name, a common name or an alias.</td>   </tr>   <tr>     <td>infix:</td>     <td>infix match</td>     <td>Returns threat actors where the search string is contained anywhere in a name, a common name or an alias.</td>   </tr>   <tr>     <td>relevance:</td>     <td>1 word: relevance match<br/> 2+ words: relevance phrase match</td>     <td>Returns threat actors that have text attributes relevant to the given search word or search phrase (in the same order). The results are sorted by decreasing relevance.</td>   </tr> </table>",
+        "type": "string",
+        "example": "Fancy Bear"
+       },
+       "limit": {
+        "description": "This integer value sets the upper limit on the number of threat actors returned.",
+        "type": "integer",
+        "format": "int32",
+        "minimum": 1,
+        "maximum": 10000,
+        "default": 10000,
+        "example": 1000
+       },
+       "offset": {
+        "description": "This string value should be received in a prior search, and is used to deliver the next set of threat actors in the search response.",
+        "type": "string",
+        "example": "eyJvZmZzZXQiOlswLCJzaDAwNSJdfQ=="
+       }
+      },
+      "required": [
+       "limit"
+      ]
+     },
+     "ThreatActorsResponse": {
+      "description": "Paginated search results for threat actors.",
+      "type": "object",
+      "properties": {
+       "data": {
+        "description": "Array of threat actor objects.",
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/ThreatActorSummary"
+        }
+       },
+       "counts": {
+        "type": "object",
+        "properties": {
+         "returned": {
+          "description": "Number of results in this response page",
+          "type": "integer",
+          "format": "int32"
+         },
+         "total": {
+          "description": "Total number of matching results across all pages",
+          "type": "integer",
+          "format": "int32"
+         }
+        },
+        "example": {
+         "returned": 10000,
+         "total": 1017258
+        },
+        "description": "Pagination counts."
+       },
+       "next_offset": {
+        "description": "Opaque pagination token. Pass as offset in the next request to retrieve the next page.",
+        "type": "string",
+        "example": "eyJvZmZzZXQiOlswLCJzaDAwNSJdfQ=="
+       }
+      },
+      "required": [
+       "data"
+      ]
+     },
+     "ThreatActorSummary": {
+      "description": "Threat actor summary",
+      "properties": {
+       "id": {
+        "description": "Entity ID",
+        "type": "string",
+        "example": "ltKj5s"
+       },
+       "type": {
+        "description": "Entity type (Company, Organization or Person)",
+        "type": "string",
+        "enum": [
+         "Company",
+         "Organization",
+         "Person"
+        ],
+        "example": "Organization"
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/ThreatAttributes"
+       }
+      }
+     },
+     "ThreatAttributes": {
+      "allOf": [
+       {
+        "type": "object",
+        "properties": {
+         "name": {
+          "type": "string",
+          "example": "Lorec53"
+         }
+        },
+        "required": [
+         "name"
+        ]
+       },
+       {
+        "$ref": "#/components/schemas/CommonNames"
+       },
+       {
+        "$ref": "#/components/schemas/Alias"
+       },
+       {
+        "$ref": "#/components/schemas/Categories"
+       }
+      ]
+     },
+     "Categories": {
+      "type": "object",
+      "properties": {
+       "categories": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/BaseEntityOutput"
+        }
+       }
+      }
+     },
+     "CommonNames": {
+      "type": "object",
+      "properties": {
+       "common_names": {
+        "description": "Alternative names of the threat actor",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "UAC-0056"
+        }
+       }
+      }
+     },
+     "Alias": {
+      "type": "object",
+      "properties": {
+       "alias": {
+        "description": "Known aliases of the threat actor, including in other languages",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "Lorec53 APT Group"
+        }
+       }
+      }
+     },
+     "BaseEntityOutput": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "description": "Entity ID",
+        "type": "string",
+        "example": "PD_NyL"
+       },
+       "name": {
+        "description": "Entity name",
+        "type": "string",
+        "example": "Nation State Sponsored"
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/threat-actor-threat-map-org.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "Threat API",
+    "description": "External API to retrieve threat data such as threat maps, threat actors and their categories.\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.\n",
+    "version": "1.0.0",
+    "x-rf-service-id": "service:threat"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/threat",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Actors Threat Map"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "paths": {
+    "/map/{orgId}/actors": {
+     "post": {
+      "summary": "Threat Actor Threat Map for Organization",
+      "description": "Rank threat actors by risk to a specific organization in a multi-org enterprise.",
+      "tags": [
+       "Actors Threat Map"
+      ],
+      "parameters": [
+       {
+        "in": "path",
+        "name": "orgId",
+        "description": "The entity ID of the organization for which to fetch the threat map. The calling user must have access to this organization.",
+        "required": true,
+        "schema": {
+         "type": "string"
+        }
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/ThreatMapRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "OK",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ThreatMapResponse"
+          },
+          "example": {
+           "data": {
+            "threat_map": [
+             {
+              "id": "BDAxo_i",
+              "name": "RedVDS",
+              "alias": [],
+              "categories": [
+               {
+                "id": "JW2OHE",
+                "name": "Threat Actor"
+               }
+              ],
+              "intent": 30,
+              "opportunity": 45,
+              "log_entries": [
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1566.002",
+                 "name": "T1566.002"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1566.001",
+                 "name": "T1566.001"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1078",
+                 "name": "T1078"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1566",
+                 "name": "T1566"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:TA0001",
+                 "name": "TA0001"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "JxldLs",
+                 "name": "Construction"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "B_E7z",
+                 "name": "Healthcare"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-01-15T00:00:00.000Z"
+               }
+              ]
+             },
+             {
+              "id": "-PUetX",
+              "name": "BlackShrantac Ransomware Group",
+              "alias": [],
+              "categories": [
+               {
+                "id": "JW2OHE",
+                "name": "Threat Actor"
+               },
+               {
+                "id": "ppu8e4",
+                "name": "Ransomware and Extortion Groups"
+               }
+              ],
+              "intent": 46,
+              "opportunity": 35,
+              "log_entries": [
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "XS_3ii",
+                 "name": "Valid Accounts"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-10-17T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1078",
+                 "name": "T1078"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-10-17T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:TA0001",
+                 "name": "TA0001"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-10-17T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "JxldLs",
+                 "name": "Construction"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-01-16T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "B_E7z",
+                 "name": "Healthcare"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-03-01T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "23TR9b",
+                 "name": "PKT Quantity Surveyors"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-01-16T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "2V7jug",
+                 "name": "Rasen Insaat Ve Yatirim Ticaret"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2025-11-29T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "gEiM2d",
+                 "name": "Alphington Sports Medicine"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-03-01T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRW",
+                 "name": "Locations Watch List"
+                },
+                "entity": {
+                 "id": "B_FeO",
+                 "name": "Philippines"
+                },
+                "severity": 1,
+                "axis": "intent",
+                "date": "2026-01-22T00:00:00.000Z"
+               }
+              ]
+             },
+             {
+              "id": "8Azc_n",
+              "name": "WilliamNellison",
+              "alias": [],
+              "categories": [
+               {
+                "id": "Turzv9",
+                "name": "Underground Forum Member"
+               },
+               {
+                "id": "JW2OHE",
+                "name": "Threat Actor"
+               },
+               {
+                "id": "Qn3P4k",
+                "name": "Financially Motivated"
+               }
+              ],
+              "intent": 25,
+              "opportunity": 30,
+              "log_entries": [
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1078",
+                 "name": "T1078"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-07-23T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1133",
+                 "name": "T1133"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-07-23T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "JxldLs",
+                 "name": "Construction"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2025-07-23T00:00:00.000Z"
+               }
+              ]
+             }
+            ],
+            "date": "2026-06-03T02:22:42.609Z"
+           }
+          }
+         }
+        }
+       }
+      },
+      "operationId": "threat-actor-threat-map-org"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "ThreatMapResponse": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "object",
+        "properties": {
+         "threat_map": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/ThreatActorMapItem"
+          },
+          "description": "Array of threat actor entries with risk assessments."
+         },
+         "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-01-10T14:51:38.462Z",
+          "description": "Threat map generation timestamp"
+         }
+        }
+       }
+      },
+      "required": [
+       "data"
+      ],
+      "description": "Threat actor threat map with intent/opportunity scores and log entries for each actor targeting the organization."
+     },
+     "ThreatActorMapItem": {
+      "description": "Threat map data points",
+      "type": "object",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/BaseEntityOutput"
+       },
+       {
+        "$ref": "#/components/schemas/Alias"
+       },
+       {
+        "$ref": "#/components/schemas/ThreatActorCategory"
+       },
+       {
+        "$ref": "#/components/schemas/ThreatActor"
+       }
+      ]
+     },
+     "LogEntry": {
+      "type": "object",
+      "properties": {
+       "watchlist": {
+        "$ref": "#/components/schemas/BaseEntityOutput"
+       },
+       "entity": {
+        "$ref": "#/components/schemas/BaseEntityOutput"
+       },
+       "severity": {
+        "type": "string",
+        "example": "limited"
+       },
+       "axis": {
+        "type": "string",
+        "enum": [
+         "opportunity",
+         "intent"
+        ],
+        "example": "opportunity"
+       },
+       "date": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-10T14:51:38.462Z"
+       }
+      }
+     },
+     "Alias": {
+      "type": "object",
+      "properties": {
+       "alias": {
+        "description": "Known aliases of the threat actor, including in other languages",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "Lorec53 APT Group"
+        }
+       }
+      }
+     },
+     "BaseEntityOutput": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "description": "Entity ID",
+        "type": "string",
+        "example": "PD_NyL"
+       },
+       "name": {
+        "description": "Entity name",
+        "type": "string",
+        "example": "Nation State Sponsored"
+       }
+      }
+     },
+     "ThreatMapRequest": {
+      "description": "Threat map filters",
+      "type": "object",
+      "properties": {
+       "actors": {
+        "description": "An array of threat actor entity IDs. If used, the API response will be limited to only those threat actors whose entity IDs match those found in the array. To lookup a threat actor entity ID, use the /actor/search endpoint.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "l3moPJ"
+        }
+       },
+       "categories": {
+        "description": "An array of threat actor category entity IDs. If used, the API response will be filtered to only those threat actors whose category (e.g., Hacktivist, Financially motivated, Nation-state sponsored) matches those found in the array. Categories must be listed by their Recorded Future Entity ID, which can be found by using the /actor/categories endpoint.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "GK7qU"
+        }
+       },
+       "watchlists": {
+        "description": "An array of client specific watch list IDs. If used, the API response will be limited to only those threat actors whose link to the threat map is via the watch lists included. To lookup a watch list ID, use the List API.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "report:Hsxme2"
+        }
+       }
+      }
+     },
+     "ThreatActorCategory": {
+      "type": "object",
+      "properties": {
+       "categories": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "GK7qU"
+        }
+       }
+      }
+     },
+     "ThreatActor": {
+      "type": "object",
+      "properties": {
+       "intent": {
+        "type": "integer",
+        "format": "int32",
+        "example": 5
+       },
+       "opportunity": {
+        "type": "integer",
+        "format": "int32",
+        "example": 25
+       },
+       "log_entries": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/LogEntry"
+        }
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/threat-actor-threat-map.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "Threat API",
+    "description": "External API to retrieve threat data such as threat maps, threat actors and their categories.\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.\n",
+    "version": "1.0.0",
+    "x-rf-service-id": "service:threat"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/threat",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Actors Threat Map"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "paths": {
+    "/map/actors": {
+     "post": {
+      "summary": "Threat Actor Threat Map",
+      "description": "Rank threat actors by risk to your primary organization using intent and opportunity scores.",
+      "tags": [
+       "Actors Threat Map"
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/ThreatMapRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "OK",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ThreatMapResponse"
+          },
+          "example": {
+           "data": {
+            "threat_map": [
+             {
+              "id": "BDAxo_i",
+              "name": "RedVDS",
+              "alias": [],
+              "categories": [
+               {
+                "id": "JW2OHE",
+                "name": "Threat Actor"
+               }
+              ],
+              "intent": 30,
+              "opportunity": 45,
+              "log_entries": [
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1566.002",
+                 "name": "T1566.002"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1566.001",
+                 "name": "T1566.001"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1078",
+                 "name": "T1078"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1566",
+                 "name": "T1566"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:TA0001",
+                 "name": "TA0001"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "JxldLs",
+                 "name": "Construction"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-01-15T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "B_E7z",
+                 "name": "Healthcare"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-01-15T00:00:00.000Z"
+               }
+              ]
+             },
+             {
+              "id": "-PUetX",
+              "name": "BlackShrantac Ransomware Group",
+              "alias": [],
+              "categories": [
+               {
+                "id": "JW2OHE",
+                "name": "Threat Actor"
+               },
+               {
+                "id": "ppu8e4",
+                "name": "Ransomware and Extortion Groups"
+               }
+              ],
+              "intent": 46,
+              "opportunity": 35,
+              "log_entries": [
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "XS_3ii",
+                 "name": "Valid Accounts"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-10-17T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1078",
+                 "name": "T1078"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-10-17T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:TA0001",
+                 "name": "TA0001"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-10-17T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "JxldLs",
+                 "name": "Construction"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-01-16T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "B_E7z",
+                 "name": "Healthcare"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-03-01T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "23TR9b",
+                 "name": "PKT Quantity Surveyors"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-01-16T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "2V7jug",
+                 "name": "Rasen Insaat Ve Yatirim Ticaret"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2025-11-29T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "gEiM2d",
+                 "name": "Alphington Sports Medicine"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2026-03-01T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRW",
+                 "name": "Locations Watch List"
+                },
+                "entity": {
+                 "id": "B_FeO",
+                 "name": "Philippines"
+                },
+                "severity": 1,
+                "axis": "intent",
+                "date": "2026-01-22T00:00:00.000Z"
+               }
+              ]
+             },
+             {
+              "id": "8Azc_n",
+              "name": "WilliamNellison",
+              "alias": [],
+              "categories": [
+               {
+                "id": "Turzv9",
+                "name": "Underground Forum Member"
+               },
+               {
+                "id": "JW2OHE",
+                "name": "Threat Actor"
+               },
+               {
+                "id": "Qn3P4k",
+                "name": "Financially Motivated"
+               }
+              ],
+              "intent": 25,
+              "opportunity": 30,
+              "log_entries": [
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1078",
+                 "name": "T1078"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-07-23T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vazCRX",
+                 "name": "Method Watch List"
+                },
+                "entity": {
+                 "id": "mitre:T1133",
+                 "name": "T1133"
+                },
+                "severity": 2,
+                "axis": "capability",
+                "date": "2025-07-23T00:00:00.000Z"
+               },
+               {
+                "watchlist": {
+                 "id": "report:vaz49k",
+                 "name": "Industry Watch List"
+                },
+                "entity": {
+                 "id": "JxldLs",
+                 "name": "Construction"
+                },
+                "severity": 2,
+                "axis": "intent",
+                "date": "2025-07-23T00:00:00.000Z"
+               }
+              ]
+             }
+            ],
+            "date": "2026-06-03T02:22:24.211Z"
+           }
+          }
+         }
+        }
+       }
+      },
+      "operationId": "threat-actor-threat-map"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "ThreatMapResponse": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "object",
+        "properties": {
+         "threat_map": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/ThreatActorMapItem"
+          },
+          "description": "Array of threat actor entries with risk assessments."
+         },
+         "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-01-10T14:51:38.462Z",
+          "description": "Threat map generation timestamp"
+         }
+        }
+       }
+      },
+      "required": [
+       "data"
+      ],
+      "description": "Threat actor threat map with intent/opportunity scores and log entries for each actor targeting the organization."
+     },
+     "ThreatActorMapItem": {
+      "description": "Threat map data points",
+      "type": "object",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/BaseEntityOutput"
+       },
+       {
+        "$ref": "#/components/schemas/Alias"
+       },
+       {
+        "$ref": "#/components/schemas/ThreatActorCategory"
+       },
+       {
+        "$ref": "#/components/schemas/ThreatActor"
+       }
+      ]
+     },
+     "LogEntry": {
+      "type": "object",
+      "properties": {
+       "watchlist": {
+        "$ref": "#/components/schemas/BaseEntityOutput"
+       },
+       "entity": {
+        "$ref": "#/components/schemas/BaseEntityOutput"
+       },
+       "severity": {
+        "type": "string",
+        "example": "limited"
+       },
+       "axis": {
+        "type": "string",
+        "enum": [
+         "opportunity",
+         "intent"
+        ],
+        "example": "opportunity"
+       },
+       "date": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-10T14:51:38.462Z"
+       }
+      }
+     },
+     "Alias": {
+      "type": "object",
+      "properties": {
+       "alias": {
+        "description": "Known aliases of the threat actor, including in other languages",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "Lorec53 APT Group"
+        }
+       }
+      }
+     },
+     "BaseEntityOutput": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "description": "Entity ID",
+        "type": "string",
+        "example": "PD_NyL"
+       },
+       "name": {
+        "description": "Entity name",
+        "type": "string",
+        "example": "Nation State Sponsored"
+       }
+      }
+     },
+     "ThreatMapRequest": {
+      "description": "Threat map filters",
+      "type": "object",
+      "properties": {
+       "actors": {
+        "description": "An array of threat actor entity IDs. If used, the API response will be limited to only those threat actors whose entity IDs match those found in the array. To lookup a threat actor entity ID, use the /actor/search endpoint.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "l3moPJ"
+        }
+       },
+       "categories": {
+        "description": "An array of threat actor category entity IDs. If used, the API response will be filtered to only those threat actors whose category (e.g., Hacktivist, Financially motivated, Nation-state sponsored) matches those found in the array. Categories must be listed by their Recorded Future Entity ID, which can be found by using the /actor/categories endpoint.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "GK7qU"
+        }
+       },
+       "watchlists": {
+        "description": "An array of client specific watch list IDs. If used, the API response will be limited to only those threat actors whose link to the threat map is via the watch lists included. To lookup a watch list ID, use the List API.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "report:Hsxme2"
+        }
+       }
+      }
+     },
+     "ThreatActorCategory": {
+      "type": "object",
+      "properties": {
+       "categories": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "GK7qU"
+        }
+       }
+      }
+     },
+     "ThreatActor": {
+      "type": "object",
+      "properties": {
+       "intent": {
+        "type": "integer",
+        "format": "int32",
+        "example": 5
+       },
+       "opportunity": {
+        "type": "integer",
+        "format": "int32",
+        "example": 25
+       },
+       "log_entries": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/LogEntry"
+        }
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/malware-categories.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "Threat API",
+    "description": "External API to retrieve threat data such as threat maps, threat actors and their categories.\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.\n",
+    "version": "1.0.0",
+    "x-rf-service-id": "service:threat"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/threat",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Metadata"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "paths": {
+    "/malware/categories": {
+     "get": {
+      "summary": "Malware Categories",
+      "description": "Retrieve the full malware classification taxonomy with valid category identifiers for filtering.",
+      "tags": [
+       "Metadata"
+      ],
+      "responses": {
+       "200": {
+        "description": "OK",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/MalwareCategoriesResponse"
+          },
+          "example": {
+           "data": [
+            {
+             "id": "U58Njb",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Win9x viruses",
+              "alias": [
+               "Win9x virus"
+              ]
+             }
+            },
+            {
+             "id": "0fK7b",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Rootkit",
+              "alias": [
+               "ルートキット",
+               "руткит"
+              ]
+             }
+            },
+            {
+             "id": "RTkDB2",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Linux Malware",
+              "alias": [
+               "LinuxMalware"
+              ]
+             }
+            },
+            {
+             "id": "R1oQ2O",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "DDoS-as-a-Service"
+             }
+            },
+            {
+             "id": "RZpghB",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Ransomware Builder",
+              "alias": [
+               "Ransomware Builder ",
+               "Ransomware Builder"
+              ]
+             }
+            },
+            {
+             "id": "TUyRoD",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "HTA Trojan"
+             }
+            },
+            {
+             "id": "KYejC3",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Network worm",
+              "alias": [
+               "دودة الشبكه "
+              ]
+             }
+            },
+            {
+             "id": "Kj0AQs",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Sniffer",
+              "alias": [
+               "сниффер"
+              ]
+             }
+            },
+            {
+             "id": "J0Nl-p",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Ransomware",
+              "alias": [
+               "вирус вымогатель",
+               "Arrive",
+               "Cryptoviruses",
+               "вирус-вымогатель",
+               "cryptoworm",
+               "rançongiciel",
+               "Logiciel de rançon",
+               "Cryptotrojans",
+               "cryptotrojan",
+               "ransomware",
+               "Cryptoworms",
+               "cryptovirus",
+               "勒索病毒",
+               "Crypto Virus",
+               "cryptomalware"
+              ]
+             }
+            },
+            {
+             "id": "C9GaD",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Fake Antivirus",
+              "alias": [
+               "Scareware",
+               "Rogue Security Software",
+               "fake av",
+               "rogueware",
+               "fake avs",
+               "фейковый антивирус",
+               "scareware",
+               "fake antivirus"
+              ]
+             }
+            },
+            {
+             "id": "cfxXfC",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "AutoIT worms"
+             }
+            },
+            {
+             "id": "OCTmJr",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Polymorphic Virus"
+             }
+            },
+            {
+             "id": "bZl_ZN",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Disruptionware"
+             }
+            },
+            {
+             "id": "fs6-lz",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Grayware"
+             }
+            },
+            {
+             "id": "Pcbis1",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "CryptoTrojan",
+              "alias": [
+               "Crypto Trojan"
+              ]
+             }
+            },
+            {
+             "id": "VSB-0P",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Iot Botnet",
+              "alias": [
+               "IoT Botnets",
+               "Internet of Things Botnet",
+               "Internet of Things bot"
+              ]
+             }
+            },
+            {
+             "id": "0efpT",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Trojan",
+              "alias": [
+               "Trojan Horse",
+               "特洛伊病毒",
+               "ET Trojan",
+               "trojans",
+               "Trojans",
+               "ET Malware",
+               "cheval de troie",
+               "trojan horse",
+               "trojan",
+               "木马",
+               "تروجان",
+               "Trojan",
+               "ET Virus",
+               "木马病毒"
+              ]
+             }
+            },
+            {
+             "id": "STQEu-",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Jackware",
+              "alias": [
+               "Jackware"
+              ]
+             }
+            },
+            {
+             "id": "dFHa0v",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Bruteforce botnets",
+              "alias": [
+               "Brute force botnets"
+              ]
+             }
+            },
+            {
+             "id": "JFw05F",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Rootkits"
+             }
+            },
+            {
+             "id": "UUfmX9",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Cryptocurrency Mining Malware",
+              "alias": [
+               "crypto-mining malware",
+               "Cryptocurrency Mining malware",
+               "Cryptocurrency Mining Botnets",
+               "CryptoCurrency Mining"
+              ]
+             }
+            },
+            {
+             "id": "bOkIhT",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Malicious Bot",
+              "alias": [
+               "Malware Bots",
+               "Malicious Bots",
+               "Malicious Bot"
+              ]
+             }
+            },
+            {
+             "id": "dJQw-I",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": ".Net Backdoor",
+              "alias": [
+               "Net Backdoor"
+              ]
+             }
+            },
+            {
+             "id": "N-E1mQ",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Backdoor Shell"
+             }
+            },
+            {
+             "id": "TcJedz",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Browser"
+             }
+            },
+            {
+             "id": "TBQvg4",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Trojan Bancario"
+             }
+            },
+            {
+             "id": "OapamZ",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Boot Sector Virus"
+             }
+            },
+            {
+             "id": "Th4cmh",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Trojan.SK"
+             }
+            },
+            {
+             "id": "COPdq",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Spyware Company"
+             }
+            },
+            {
+             "id": "IaJvvx",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Potentially Unwanted Program",
+              "alias": [
+               "",
+               "PUA",
+               "potentially unwanted application ",
+               "PUP (Potentially Unwanted Program)",
+               "PUP"
+              ]
+             }
+            },
+            {
+             "id": "0eXiO",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Computer Worm",
+              "alias": [
+               "蠕虫病毒",
+               "w0rm",
+               "worm",
+               "verme de computador",
+               "компьютерный червь",
+               "worms",
+               "ver informatique",
+               "computer worm"
+              ]
+             }
+            },
+            {
+             "id": "0e4eL",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Computer virus",
+              "alias": [
+               "Virus",
+               "virus informatique",
+               " فيروس كومبيوتر",
+               "فيروس الحاسوب ",
+               "فيروسات الحواسيب",
+               "فيروس كمبيوتر",
+               "电脑病毒",
+               "计算机病毒",
+               "virut",
+               "vírus em computador",
+               "vírus de computador",
+               "vírus",
+               "فيروسات الكمبيوتر",
+               "virus"
+              ]
+             }
+            },
+            {
+             "id": "TKBZjw",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Proof-of-Concept Exploit",
+              "alias": [
+               "",
+               "PoC malware",
+               "Proof Of Concept",
+               "proof of concept malware",
+               "proof of concept virus",
+               "poc exploit",
+               "proof of concept attack",
+               "poc attack",
+               "PoC virus",
+               "proof of concept exploit",
+               "concept",
+               "proof-of-concept malware"
+              ]
+             }
+            },
+            {
+             "id": "EW23ir",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Hardware Trojan"
+             }
+            },
+            {
+             "id": "Bb58nC",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Pornware"
+             }
+            },
+            {
+             "id": "TetzSA",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Network"
+             }
+            },
+            {
+             "id": "hzdgTv",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Offensive Security Tools (OST)"
+             }
+            },
+            {
+             "id": "nKz2Q6",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "ShadowCoerece"
+             }
+            },
+            {
+             "id": "SMlvRl",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Stealware",
+              "alias": [
+               "Information Stealer",
+               "Infostealer"
+              ]
+             }
+            },
+            {
+             "id": "UV9HEX",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "UEFI Rootkit",
+              "alias": [
+               "UEFI BIOS Rootkit",
+               "UEFI",
+               "Rootkit UEFI",
+               "UEFI (Unified Extensible Firmware Interface) rootkit",
+               "Unified Extensible Firmware Interface (UEFI) rootkit"
+              ]
+             }
+            },
+            {
+             "id": "0fL5H",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Adware",
+              "alias": [
+               "pitchware",
+               "рекламное по"
+              ]
+             }
+            },
+            {
+             "id": "K0VjWp",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "FileInfector"
+             }
+            },
+            {
+             "id": "KLh9_c",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Bootkit",
+              "alias": [
+               "bio bootkit",
+               "буткита",
+               "bootkit",
+               "pre-boot malware"
+              ]
+             }
+            },
+            {
+             "id": "JjRkPJ",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Vulnerability Exploit"
+             }
+            },
+            {
+             "id": "Koaobw",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "WebShell",
+              "alias": [
+               "webshells",
+               "web shell",
+               "web shells",
+               "webshell",
+               "Shell",
+               "shell"
+              ]
+             }
+            },
+            {
+             "id": "E0yzG",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Remote Access Trojan",
+              "alias": [
+               "RAT",
+               "троян удаленного доступа",
+               "троян удаленного администрирования",
+               "remote access trojans",
+               "remote access trojan",
+               "remote access tool",
+               "remote access trojan (rat)"
+              ]
+             }
+            },
+            {
+             "id": "Rbw2pm",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Scamware"
+             }
+            },
+            {
+             "id": "RKW2y-",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "PowerShell backdoor"
+             }
+            },
+            {
+             "id": "Snxe-v",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "TrollWare",
+              "alias": [
+               "TrollWare"
+              ]
+             }
+            },
+            {
+             "id": "VjhLur",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Clipper Malware",
+              "alias": [
+               "Clipper Malware"
+              ]
+             }
+            },
+            {
+             "id": "H4TEyE",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Spyware",
+              "alias": [
+               "Logiciel espion"
+              ]
+             }
+            },
+            {
+             "id": "S9sv7N",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "RAT-in-the-Mobile",
+              "alias": [
+               "RitM"
+              ]
+             }
+            },
+            {
+             "id": "dlIkCX",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Loader"
+             }
+            },
+            {
+             "id": "We1DF",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "FUD crypter",
+              "alias": [
+               "fud cryptor",
+               "FUD",
+               "fud crypter"
+              ]
+             }
+            },
+            {
+             "id": "TlSXrR",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Fileless Malware"
+             }
+            },
+            {
+             "id": "J2VnlR",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Mac Malware",
+              "alias": [
+               "Mac OS Malware",
+               "MacOS Malware"
+              ]
+             }
+            },
+            {
+             "id": "QPri5_",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Malware Packer"
+             }
+            },
+            {
+             "id": "OkPqZz",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Keylogger",
+              "alias": [
+               "Enregistreur de frappe",
+               "Key Loggers",
+               "system monitor",
+               "keystroke logger"
+              ]
+             }
+            },
+            {
+             "id": "K0Fq0p",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "DDOS Toolkit",
+              "alias": [
+               "ddos-инструмент"
+              ]
+             }
+            },
+            {
+             "id": "Kt5mkm",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Crypto-Ransomware",
+              "alias": [
+               "crypto-ransomware",
+               "Crypto ransomware"
+              ]
+             }
+            },
+            {
+             "id": "ShH63H",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Cryptominer",
+              "alias": [
+               "挖矿病毒"
+              ]
+             }
+            },
+            {
+             "id": "PgjNrD",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "CyberCrime-As-A Service",
+              "alias": [
+               "CyberCrime As A Service"
+              ]
+             }
+            },
+            {
+             "id": "cbKcJh",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "IoT Malware",
+              "alias": [
+               "Internet of Things malware"
+              ]
+             }
+            },
+            {
+             "id": "O2_9uT",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Peer-to-peer botnet",
+              "alias": [
+               "peer-to-peer botnet",
+               "P2P botnet"
+              ]
+             }
+            },
+            {
+             "id": "Sn6ybS",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Screenloggers"
+             }
+            },
+            {
+             "id": "QCqLhE",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Backdoor",
+              "alias": [
+               "Backdoor",
+               "backdoor attack",
+               "后门",
+               "backdoor",
+               "porte dérobée"
+              ]
+             }
+            },
+            {
+             "id": "KjqqyA",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "POS Malware",
+              "alias": [
+               "pos-вирус",
+               "pos-троян",
+               "pos hack",
+               "point of sale hack",
+               "point-of-sale (POS) malware",
+               "point-of-sale attack",
+               "pos attack",
+               "pos malware",
+               "point of sale malware"
+              ]
+             }
+            },
+            {
+             "id": "SpMzKX",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Surveillanceware"
+             }
+            },
+            {
+             "id": "MeIf8T",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Wiper Malware",
+              "alias": [
+               "Destructive Malware",
+               "wiperware"
+              ]
+             }
+            },
+            {
+             "id": "J31vQ6",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Banking Trojan",
+              "alias": [
+               "banking trojans",
+               "banking trojan",
+               "trojan bancário",
+               "банковсикй троян"
+              ]
+             }
+            },
+            {
+             "id": "0edUR",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Botnet",
+              "alias": [
+               "بوتنت ",
+               "botnets",
+               "bot病毒",
+               "botnet",
+               "僵尸网络",
+               "بوتنيتس",
+               "ботнет",
+               "بوتنت"
+              ]
+             }
+            },
+            {
+             "id": "TJuNxd",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "FVEY Related Exploits"
+             }
+            },
+            {
+             "id": "OUpSwd",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "clicker trojans",
+              "alias": [
+               "clicker trojan",
+               "clicker trojans",
+               "clicker malware",
+               "trojan clicker"
+              ]
+             }
+            },
+            {
+             "id": "TbvaH1",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Bundler"
+             }
+            },
+            {
+             "id": "WpT1La",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Malware-as-a-Service",
+              "alias": [
+               "Malware as a Service",
+               "MaaS",
+               "Malware-as-a-Service"
+              ]
+             }
+            },
+            {
+             "id": "chkUiT",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Fleeceware"
+             }
+            },
+            {
+             "id": "JV7SWA",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "JS Sniffer",
+              "alias": [
+               "JS-Sniffers",
+               "JS-Sniffer",
+               "JavaScript Sniffer",
+               "JavaScript Sniffers"
+              ]
+             }
+            },
+            {
+             "id": "QSa6vx",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Bitcoin Ransomware"
+             }
+            },
+            {
+             "id": "BFT1Gir",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Vibeware"
+             }
+            },
+            {
+             "id": "Dogj2Z",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Hacking Tool",
+              "alias": [
+               "Hackingtool",
+               "Hacking Tool",
+               "HackTool"
+              ]
+             }
+            },
+            {
+             "id": "ONtsS0",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "ICS Malware",
+              "alias": [
+               "ics-вирус"
+              ]
+             }
+            },
+            {
+             "id": "TcnIaA",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Dialer"
+             }
+            },
+            {
+             "id": "C2cGlh",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Phishing Kit"
+             }
+            },
+            {
+             "id": "BHZ9MzQ",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Downloader"
+             }
+            },
+            {
+             "id": "UqpVS9",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Worms3"
+             }
+            },
+            {
+             "id": "KEFWlv",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Mobile Malware",
+              "alias": [
+               "мобильный вирус",
+               "мобильный троян"
+              ]
+             }
+            },
+            {
+             "id": "OzMR8M",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Duke APT Family",
+              "alias": [
+               "duke malware family"
+              ]
+             }
+            },
+            {
+             "id": "Kj0AO7",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Crypter"
+             }
+            },
+            {
+             "id": "Fr5PKn",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Browser Hijacker",
+              "alias": [
+               "Pirates de navigateur",
+               "Web Browser Hijacker"
+              ]
+             }
+            },
+            {
+             "id": "ZLDt1Y",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Siegeware"
+             }
+            },
+            {
+             "id": "JVTS__",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Exploit Kit",
+              "alias": [
+               "набор эксплойтов",
+               "ek",
+               "exploit kits",
+               "exploit kit"
+              ]
+             }
+            },
+            {
+             "id": "Ma1G22",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "ATM Malware",
+              "alias": [
+               "atm-вирус",
+               "atm-торян",
+               "ATMMalware"
+              ]
+             }
+            },
+            {
+             "id": "SUFoWe",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Financial Malware"
+             }
+            },
+            {
+             "id": "Qqr2uq",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Macro Virus"
+             }
+            },
+            {
+             "id": "PahwAU",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Fakeware",
+              "alias": [
+               "Fakeware"
+              ]
+             }
+            },
+            {
+             "id": "KT4u85",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "porn-downloader"
+             }
+            },
+            {
+             "id": "U_RLAm",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Win32/TrojanDownloader.Wauchos.XAndroid/Spy.Agent.CE "
+             }
+            },
+            {
+             "id": "KeKudA",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Dropper",
+              "alias": [
+               "дроппер"
+              ]
+             }
+            },
+            {
+             "id": "U_RLAn",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Win64/Olmarik.XAndroid/DroidKungFu.G"
+             }
+            },
+            {
+             "id": "Jp-8IP",
+             "type": "MalwareCategory",
+             "attributes": {
+              "name": "Password Stealer"
+             }
+            }
+           ],
+           "counts": {
+            "returned": 100,
+            "total": 100
+           }
+          }
+         }
+        }
+       }
+      },
+      "operationId": "malware-categories"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "MalwareCategoriesResponse": {
+      "description": "Complete taxonomy of malware categories.",
+      "type": "object",
+      "properties": {
+       "data": {
+        "description": "List of malware categories",
+        "type": "array",
+        "items": {
+         "properties": {
+          "id": {
+           "description": "Entity ID",
+           "type": "string",
+           "example": "J0Nl-p"
+          },
+          "type": {
+           "description": "Entity type",
+           "type": "string",
+           "enum": [
+            "MalwareCategory"
+           ],
+           "example": "MalwareCategory"
+          },
+          "attributes": {
+           "$ref": "#/components/schemas/MalwareCategoryAttributes"
+          }
+         }
+        }
+       },
+       "counts": {
+        "type": "object",
+        "properties": {
+         "returned": {
+          "description": "Number of items returned in this response",
+          "type": "integer",
+          "format": "int32"
+         },
+         "total": {
+          "description": "Total number of items that can be retrieved",
+          "type": "integer",
+          "format": "int32"
+         }
+        },
+        "example": {
+         "returned": 25,
+         "total": 25
+        }
+       }
+      }
+     },
+     "MalwareCategoryAttributes": {
+      "allOf": [
+       {
+        "type": "object",
+        "properties": {
+         "name": {
+          "type": "string",
+          "example": "Ransomware"
+         }
+        }
+       },
+       {
+        "$ref": "#/components/schemas/MalwareCategoryAlias"
+       }
+      ]
+     },
+     "MalwareCategoryAlias": {
+      "type": "object",
+      "properties": {
+       "alias": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "Cryptotrojans"
+        }
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/malware-threat-map-org.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "Threat API",
+    "description": "External API to retrieve threat data such as threat maps, threat actors and their categories.\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.\n",
+    "version": "1.0.0",
+    "x-rf-service-id": "service:threat"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/threat",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Malware Threat Map"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "paths": {
+    "/map/{orgId}/malware": {
+     "post": {
+      "summary": "Malware Threat Map for Organization",
+      "description": "Rank malware families by prevalence and opportunity scores for a specific organization.",
+      "tags": [
+       "Malware Threat Map"
+      ],
+      "parameters": [
+       {
+        "name": "orgId",
+        "in": "path",
+        "description": "The entity ID of the organization for which to fetch the threat map. The calling user must have access to this organization.",
+        "required": true,
+        "schema": {
+         "type": "string"
+        }
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/MalwareThreatMapRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "OK",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/MalwareThreatMapResponse"
+          },
+          "example": {
+           "data": {
+            "threat_map": [
+             {
+              "id": "h-tpcZ",
+              "name": "SolarMarker RAT",
+              "alias": [
+               "SolarMarker",
+               "Polazert",
+               "Jupyter Infostealer",
+               "Yellow Cockatoo",
+               "Jupyter"
+              ],
+              "categories": [
+               {
+                "id": "QCqLhE",
+                "name": "Backdoor"
+               },
+               {
+                "id": "E0yzG",
+                "name": "Remote Access Trojan"
+               },
+               {
+                "id": "Jp-8IP",
+                "name": "Password Stealer"
+               }
+              ],
+              "prevalence": 50,
+              "opportunity": 50,
+              "log_entries": [
+               {
+                "entity": {
+                 "id": "h-tpcZ",
+                 "name": "SolarMarker RAT"
+                },
+                "severity": 3,
+                "axis": "intent",
+                "date": "2026-05-05T00:00:00.000Z"
+               },
+               {
+                "entity": {
+                 "id": "h-tpcZ",
+                 "name": "SolarMarker RAT"
+                },
+                "severity": 3,
+                "axis": "capability",
+                "date": "2026-05-05T00:00:00.000Z"
+               }
+              ]
+             },
+             {
+              "id": "Kj0AOl",
+              "name": "Banload",
+              "alias": [],
+              "categories": [
+               {
+                "id": "0efpT",
+                "name": "Trojan"
+               }
+              ],
+              "prevalence": 50,
+              "opportunity": 50,
+              "log_entries": [
+               {
+                "entity": {
+                 "id": "Kj0AOl",
+                 "name": "Banload"
+                },
+                "severity": 3,
+                "axis": "intent",
+                "date": "2026-03-13T00:00:00.000Z"
+               },
+               {
+                "entity": {
+                 "id": "Kj0AOl",
+                 "name": "Banload"
+                },
+                "severity": 3,
+                "axis": "capability",
+                "date": "2026-03-13T00:00:00.000Z"
+               }
+              ]
+             },
+             {
+              "id": "qjaEVG",
+              "name": "XenArmor",
+              "alias": [],
+              "categories": [],
+              "prevalence": 50,
+              "opportunity": 50,
+              "log_entries": [
+               {
+                "entity": {
+                 "id": "qjaEVG",
+                 "name": "XenArmor"
+                },
+                "severity": 3,
+                "axis": "intent",
+                "date": "2026-03-31T00:00:00.000Z"
+               },
+               {
+                "entity": {
+                 "id": "qjaEVG",
+                 "name": "XenArmor"
+                },
+                "severity": 3,
+                "axis": "capability",
+                "date": "2026-03-31T00:00:00.000Z"
+               }
+              ]
+             }
+            ],
+            "date": "2026-06-03T02:22:43.796Z"
+           }
+          }
+         }
+        }
+       }
+      },
+      "operationId": "malware-threat-map-org"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "MalwareThreatMapResponse": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "object",
+        "properties": {
+         "threat_map": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/MalwareThreatMapItem"
+          },
+          "description": "Array of malware entries with risk assessments."
+         },
+         "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-01-10T14:51:38.462Z",
+          "description": "Threat map generation timestamp"
+         }
+        }
+       }
+      },
+      "description": "Malware threat map with prevalence/opportunity scores for malware families targeting the organization."
+     },
+     "MalwareThreatMapItem": {
+      "description": "Threat map data points",
+      "type": "object",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/BaseMalwareEntityOutput"
+       },
+       {
+        "$ref": "#/components/schemas/MalwareAlias"
+       },
+       {
+        "$ref": "#/components/schemas/MalwareCategory"
+       },
+       {
+        "type": "object",
+        "properties": {
+         "prevalence": {
+          "type": "integer",
+          "format": "int32",
+          "example": 5
+         },
+         "opportunity": {
+          "type": "integer",
+          "format": "int32",
+          "example": 25
+         },
+         "log_entries": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/MalwareLogEntry"
+          }
+         }
+        }
+       }
+      ]
+     },
+     "MalwareLogEntry": {
+      "type": "object",
+      "properties": {
+       "watchlist": {
+        "$ref": "#/components/schemas/BaseMalwareWatchlistOutput"
+       },
+       "entity": {
+        "$ref": "#/components/schemas/BaseMalwareEntityOutput"
+       },
+       "severity": {
+        "type": "string",
+        "example": "limited"
+       },
+       "axis": {
+        "type": "string",
+        "enum": [
+         "opportunity",
+         "intent"
+        ],
+        "example": "opportunity"
+       },
+       "date": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-10T14:51:38.462Z"
+       }
+      }
+     },
+     "BaseMalwareEntityOutput": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "description": "Entity ID",
+        "type": "string",
+        "example": "MZycd3"
+       },
+       "name": {
+        "description": "Entity name",
+        "type": "string",
+        "example": "VirRansom"
+       }
+      }
+     },
+     "BaseMalwareWatchlistOutput": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "description": "Watchlist ID",
+        "type": "string",
+        "example": "lT36d1"
+       },
+       "name": {
+        "description": "Watchlist name",
+        "type": "string",
+        "example": "Tech Stack Watch List"
+       }
+      }
+     },
+     "MalwareAlias": {
+      "type": "object",
+      "properties": {
+       "alias": {
+        "description": "Known aliases of the malware, including in other languages",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "Operation Global III ransomware"
+        }
+       }
+      }
+     },
+     "MalwareThreatMapRequest": {
+      "description": "Malware threat map filters",
+      "type": "object",
+      "properties": {
+       "malware": {
+        "description": "An array of malware entity IDs. If used, the API response will be limited to only those malware whose entity IDs match those found in the array. To lookup a malware entity ID, use the Entity Match API.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "l3moPJ"
+        }
+       },
+       "categories": {
+        "description": "An array of malware category entity IDs. If used, the API response will be filtered to only those malware whose category (e.g., Adware, Ransomware, Spyware) matches those found in the array. Categories must be listed by their Recorded Future Entity ID, which can be found by using the Malware Categories endpoint within the Threat API.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "GK7qU"
+        }
+       },
+       "watchlists": {
+        "description": "An array of client specific watch list IDs. If used, the API response will be limited to only those threat actors whose link to the threat map is via the watch lists included. To lookup a watch list ID, use the List API.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "report:Hsxme2"
+        }
+       }
+      }
+     },
+     "MalwareCategory": {
+      "type": "object",
+      "properties": {
+       "categories": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "GK7qU"
+        }
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/malware-threat-map.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "Threat API",
+    "description": "External API to retrieve threat data such as threat maps, threat actors and their categories.\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.\n",
+    "version": "1.0.0",
+    "x-rf-service-id": "service:threat"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/threat",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Malware Threat Map"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "paths": {
+    "/map/malware": {
+     "post": {
+      "summary": "Malware Threat Map",
+      "description": "Rank malware families by prevalence and opportunity scores for your primary organization.",
+      "tags": [
+       "Malware Threat Map"
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/MalwareThreatMapRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "OK",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/MalwareThreatMapResponse"
+          },
+          "example": {
+           "data": {
+            "threat_map": [
+             {
+              "id": "h-tpcZ",
+              "name": "SolarMarker RAT",
+              "alias": [
+               "SolarMarker",
+               "Polazert",
+               "Jupyter Infostealer",
+               "Yellow Cockatoo",
+               "Jupyter"
+              ],
+              "categories": [
+               {
+                "id": "QCqLhE",
+                "name": "Backdoor"
+               },
+               {
+                "id": "E0yzG",
+                "name": "Remote Access Trojan"
+               },
+               {
+                "id": "Jp-8IP",
+                "name": "Password Stealer"
+               }
+              ],
+              "prevalence": 50,
+              "opportunity": 50,
+              "log_entries": [
+               {
+                "entity": {
+                 "id": "h-tpcZ",
+                 "name": "SolarMarker RAT"
+                },
+                "severity": 3,
+                "axis": "intent",
+                "date": "2026-05-05T00:00:00.000Z"
+               },
+               {
+                "entity": {
+                 "id": "h-tpcZ",
+                 "name": "SolarMarker RAT"
+                },
+                "severity": 3,
+                "axis": "capability",
+                "date": "2026-05-05T00:00:00.000Z"
+               }
+              ]
+             },
+             {
+              "id": "Kj0AOl",
+              "name": "Banload",
+              "alias": [],
+              "categories": [
+               {
+                "id": "0efpT",
+                "name": "Trojan"
+               }
+              ],
+              "prevalence": 50,
+              "opportunity": 50,
+              "log_entries": [
+               {
+                "entity": {
+                 "id": "Kj0AOl",
+                 "name": "Banload"
+                },
+                "severity": 3,
+                "axis": "intent",
+                "date": "2026-03-13T00:00:00.000Z"
+               },
+               {
+                "entity": {
+                 "id": "Kj0AOl",
+                 "name": "Banload"
+                },
+                "severity": 3,
+                "axis": "capability",
+                "date": "2026-03-13T00:00:00.000Z"
+               }
+              ]
+             },
+             {
+              "id": "qjaEVG",
+              "name": "XenArmor",
+              "alias": [],
+              "categories": [],
+              "prevalence": 50,
+              "opportunity": 50,
+              "log_entries": [
+               {
+                "entity": {
+                 "id": "qjaEVG",
+                 "name": "XenArmor"
+                },
+                "severity": 3,
+                "axis": "intent",
+                "date": "2026-03-31T00:00:00.000Z"
+               },
+               {
+                "entity": {
+                 "id": "qjaEVG",
+                 "name": "XenArmor"
+                },
+                "severity": 3,
+                "axis": "capability",
+                "date": "2026-03-31T00:00:00.000Z"
+               }
+              ]
+             }
+            ],
+            "date": "2026-06-03T02:22:25.613Z"
+           }
+          }
+         }
+        }
+       }
+      },
+      "operationId": "malware-threat-map"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "MalwareThreatMapResponse": {
+      "type": "object",
+      "properties": {
+       "data": {
+        "type": "object",
+        "properties": {
+         "threat_map": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/MalwareThreatMapItem"
+          },
+          "description": "Array of malware entries with risk assessments."
+         },
+         "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-01-10T14:51:38.462Z",
+          "description": "Threat map generation timestamp"
+         }
+        }
+       }
+      },
+      "description": "Malware threat map with prevalence/opportunity scores for malware families targeting the organization."
+     },
+     "MalwareThreatMapItem": {
+      "description": "Threat map data points",
+      "type": "object",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/BaseMalwareEntityOutput"
+       },
+       {
+        "$ref": "#/components/schemas/MalwareAlias"
+       },
+       {
+        "$ref": "#/components/schemas/MalwareCategory"
+       },
+       {
+        "type": "object",
+        "properties": {
+         "prevalence": {
+          "type": "integer",
+          "format": "int32",
+          "example": 5
+         },
+         "opportunity": {
+          "type": "integer",
+          "format": "int32",
+          "example": 25
+         },
+         "log_entries": {
+          "type": "array",
+          "items": {
+           "$ref": "#/components/schemas/MalwareLogEntry"
+          }
+         }
+        }
+       }
+      ]
+     },
+     "MalwareLogEntry": {
+      "type": "object",
+      "properties": {
+       "watchlist": {
+        "$ref": "#/components/schemas/BaseMalwareWatchlistOutput"
+       },
+       "entity": {
+        "$ref": "#/components/schemas/BaseMalwareEntityOutput"
+       },
+       "severity": {
+        "type": "string",
+        "example": "limited"
+       },
+       "axis": {
+        "type": "string",
+        "enum": [
+         "opportunity",
+         "intent"
+        ],
+        "example": "opportunity"
+       },
+       "date": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2023-01-10T14:51:38.462Z"
+       }
+      }
+     },
+     "BaseMalwareEntityOutput": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "description": "Entity ID",
+        "type": "string",
+        "example": "MZycd3"
+       },
+       "name": {
+        "description": "Entity name",
+        "type": "string",
+        "example": "VirRansom"
+       }
+      }
+     },
+     "BaseMalwareWatchlistOutput": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "description": "Watchlist ID",
+        "type": "string",
+        "example": "lT36d1"
+       },
+       "name": {
+        "description": "Watchlist name",
+        "type": "string",
+        "example": "Tech Stack Watch List"
+       }
+      }
+     },
+     "MalwareAlias": {
+      "type": "object",
+      "properties": {
+       "alias": {
+        "description": "Known aliases of the malware, including in other languages",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "Operation Global III ransomware"
+        }
+       }
+      }
+     },
+     "MalwareThreatMapRequest": {
+      "description": "Malware threat map filters",
+      "type": "object",
+      "properties": {
+       "malware": {
+        "description": "An array of malware entity IDs. If used, the API response will be limited to only those malware whose entity IDs match those found in the array. To lookup a malware entity ID, use the Entity Match API.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "l3moPJ"
+        }
+       },
+       "categories": {
+        "description": "An array of malware category entity IDs. If used, the API response will be filtered to only those malware whose category (e.g., Adware, Ransomware, Spyware) matches those found in the array. Categories must be listed by their Recorded Future Entity ID, which can be found by using the Malware Categories endpoint within the Threat API.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "GK7qU"
+        }
+       },
+       "watchlists": {
+        "description": "An array of client specific watch list IDs. If used, the API response will be limited to only those threat actors whose link to the threat map is via the watch lists included. To lookup a watch list ID, use the List API.",
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "report:Hsxme2"
+        }
+       }
+      }
+     },
+     "MalwareCategory": {
+      "type": "object",
+      "properties": {
+       "categories": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "example": "GK7qU"
+        }
+       }
+      }
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://docs.recordedfuture.com/reference/available-threat-maps.md",
+  "definition": {
+   "openapi": "3.0.3",
+   "info": {
+    "title": "Threat API",
+    "description": "External API to retrieve threat data such as threat maps, threat actors and their categories.\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.\n",
+    "version": "1.0.0",
+    "x-rf-service-id": "service:threat"
+   },
+   "servers": [
+    {
+     "url": "https://api.recordedfuture.com/threat",
+     "x-internal": false
+    }
+   ],
+   "tags": [
+    {
+     "name": "Common"
+    }
+   ],
+   "security": [
+    {
+     "ApiKeyAuth": []
+    },
+    {
+     "idp": []
+    }
+   ],
+   "paths": {
+    "/maps": {
+     "get": {
+      "tags": [
+       "Common"
+      ],
+      "summary": "Available Threat Maps",
+      "description": "List all threat maps accessible to the current API token with their organization IDs and map types.",
+      "responses": {
+       "200": {
+        "description": "OK",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "properties": {
+            "data": {
+             "type": "array",
+             "items": {
+              "$ref": "#/components/schemas/MapInfo"
+             }
+            }
+           }
+          },
+          "example": {
+           "data": [
+            {
+             "name": "Threat Actor Map for Organization Acme Corporation",
+             "type": "actors",
+             "organization": {
+              "id": "uhash:5XdwuI1B1E",
+              "name": "Acme Corporation"
+             },
+             "url": "/threat/map/uhash:5XdwuI1B1E/actors"
+            },
+            {
+             "name": "Malware Threat Map for Organization Acme Corporation",
+             "type": "malware",
+             "organization": {
+              "id": "uhash:5XdwuI1B1E",
+              "name": "Acme Corporation"
+             },
+             "url": "/threat/map/uhash:5XdwuI1B1E/malware"
+            }
+           ]
+          }
+         }
+        }
+       }
+      },
+      "operationId": "available-threat-maps"
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "MapInfo": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "example": "Threat Actors Map for Organization XPTO",
+        "description": "Human-readable threat map name"
+       },
+       "type": {
+        "type": "string",
+        "example": "actors",
+        "description": "Map type"
+       },
+       "organization": {
+        "type": "object",
+        "properties": {
+         "id": {
+          "type": "string",
+          "example": "uhash:DncskA",
+          "description": "Organization ID (uhash format)"
+         },
+         "name": {
+          "type": "string",
+          "example": "XPTO",
+          "description": "Organization display name"
+         }
+        },
+        "description": "Organization this map belongs to"
+       },
+       "url": {
+        "type": "string",
+        "example": "/threat/map/uhash:DncskA/actors",
+        "description": "Relative API path to retrieve this specific threat map"
+       }
+      },
+      "description": "Enumeration of threat maps accessible to the API token."
+     }
+    },
+    "securitySchemes": {
+     "ApiKeyAuth": {
+      "description": "API Credential",
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-RFToken"
+     },
+     "idp": {
+      "description": "Click on \"Authorize\" to be redirected to the login page.",
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://id.recordedfuture.com/authorize",
+        "tokenUrl": "https://id.recordedfuture.com/token",
+        "refreshUrl": "https://id.recordedfuture.com/token",
+        "scopes": {}
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+]

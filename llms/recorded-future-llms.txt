@@ -1,0 +1,39 @@
+# Recorded Future Documentation
+
+> Recorded Future API documentation
+
+Each section below links to its own llms.txt, which indexes every page in that section. Category links narrow to a single category.
+
+## API Documentation
+
+- [API Documentation index](https://docs.recordedfuture.com/reference/llms.txt): full section index
+- [Getting Started](https://docs.recordedfuture.com/reference/getting-started/llms.txt)
+- [Alerts](https://docs.recordedfuture.com/reference/alerts/llms.txt)
+- [Alert API](https://docs.recordedfuture.com/reference/alert-api/llms.txt)
+- [Analyst Notes](https://docs.recordedfuture.com/reference/analyst-notes/llms.txt)
+- [Attack Surface Intelligence](https://docs.recordedfuture.com/reference/attack-surface-intelligence/llms.txt)
+- [Autonomous Threat Operations](https://docs.recordedfuture.com/reference/autonomous-threat-operations/llms.txt)
+- [Collective Insights](https://docs.recordedfuture.com/reference/collective-insights/llms.txt)
+- [Detection Rules](https://docs.recordedfuture.com/reference/detection-rules/llms.txt)
+- [Enrichment and Risk Lists](https://docs.recordedfuture.com/reference/enrichment-and-risk-lists/llms.txt)
+- [Entity Match](https://docs.recordedfuture.com/reference/entity-match/llms.txt)
+- [Fusion](https://docs.recordedfuture.com/reference/fusion/llms.txt)
+- [Identity Intelligence](https://docs.recordedfuture.com/reference/identity-intelligence/llms.txt)
+- [Links](https://docs.recordedfuture.com/reference/links/llms.txt)
+- [Lists](https://docs.recordedfuture.com/reference/lists/llms.txt)
+- [Malware Intelligence](https://docs.recordedfuture.com/reference/malware-intelligence/llms.txt)
+- [Payment Fraud Intelligence](https://docs.recordedfuture.com/reference/payment-fraud-intelligence/llms.txt)
+- [Risk](https://docs.recordedfuture.com/reference/risk/llms.txt)
+- [Sandbox](https://docs.recordedfuture.com/reference/sandbox/llms.txt)
+- [SOAR](https://docs.recordedfuture.com/reference/soar/llms.txt)
+- [STIX TAXII Feeds](https://docs.recordedfuture.com/reference/stix-taxii-feeds/llms.txt)
+- [Takedowns](https://docs.recordedfuture.com/reference/takedowns/llms.txt)
+- [Threat Maps](https://docs.recordedfuture.com/reference/threat-maps/llms.txt)
+- [RiskRecon V0](https://docs.recordedfuture.com/reference/riskrecon-v0/llms.txt)
+- [RiskRecon CPE V0](https://docs.recordedfuture.com/reference/riskrecon-cpe-v0/llms.txt)
+- [RiskRecon V1](https://docs.recordedfuture.com/reference/riskrecon-v1/llms.txt)
+- [RiskRecon V2](https://docs.recordedfuture.com/reference/riskrecon-v2/llms.txt)
+
+## Changelog
+
+- [Changelog index](https://docs.recordedfuture.com/changelog/llms.txt): full section index

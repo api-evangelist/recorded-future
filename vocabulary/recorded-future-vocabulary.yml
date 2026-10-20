@@ -1,0 +1,416 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/recorded-future-alert-api-openapi.yml
+- openapi/recorded-future-analyst-note-api-openapi.yml
+- openapi/recorded-future-asi-project-api-openapi.yml
+- openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+- openapi/recorded-future-case-api-openapi.yml
+vocabulary:
+  name: Recorded Future Domain Vocabulary
+  description: 'Terms declared by Recorded Future''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-20'
+  terms:
+  - term: Intelligence Sources
+    definition: Endpoints for managing custom intelligence sources
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+  - term: Threat Detection
+    definition: Endpoints for managing threat detection
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+  - term: Threat Hunting
+    definition: Endpoints for managing threat hunting
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+  - term: Threat Prevention
+    definition: Endpoints for managing threat prevention
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-autonomous-threat-operations-api-openapi.yml
+  - term: Case
+    definition: Endpoints related to Case
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-case-api-openapi.yml
+  - term: Metadata
+    definition: Endpoints related to the metadata of a Case
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-case-api-openapi.yml
+  - term: Detections
+    definition: Operations related to raw unprocessed events (detections).
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-collective-insights-api-openapi.yml
+  - term: Search
+    definition: Operations related to previously submitted events that have been processed in Collective Insights analysis.
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-collective-insights-api-openapi.yml
+  - term: Exclusions
+    definition: Operations for managing per-organization exclusion lists. Excluded indicators are filtered out during enrichment.
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-collective-insights-api-openapi.yml
+  - term: Auto Sigma
+    definition: Operations for creating and managing Auto Sigma jobs
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-malware-intelligence-api-openapi.yml
+  - term: Auto Yara
+    definition: Operations for creating and managing Auto YARA jobs
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-malware-intelligence-api-openapi.yml
+  - term: Malware Intelligence
+    definition: Operations for querying malware intelligence data
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-malware-intelligence-api-openapi.yml
+  - term: Action Plans
+    definition: Operations related to Action Plans
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Alerts
+    definition: Operations related to Alerts
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Analyses
+    definition: Operations related to Analyses
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Compliance
+    definition: Operations related to Compliance
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Data Loss Events
+    definition: Operations related to Data Loss Events
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Display Name
+    definition: Operations related to Display Names
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Findings
+    definition: Operations related to Findings
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Hosts
+    definition: Operations related to Hosts
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Integration Routes
+    definition: Operations related to Integration Routes
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Portfolio
+    definition: Operations related to the users Portfolio
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Privacy
+    definition: Operations related to Privacy
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Reports
+    definition: Operations related to Reporting data
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Subsidiaries
+    definition: Operations related to a TOEs subsidiaries
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Target Of Evaluation TOE
+    definition: Operations related to TOEs (Target of Evaluation)
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: TOE Reports
+    definition: Operations related to TOE Reports
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Users
+    definition: Operations related to Users
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-mastercard-riskrecon-api-openapi.yml
+  - term: Active Risks
+    definition: Operations related to active risk rules
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-risk-api-openapi.yml
+  - term: Risk History
+    definition: Operations related to risk history
+    tags:
+    - Resource Group
+    source: openapi/recorded-future-risk-api-openapi.yml
+  - term: AlertLookupResponseV2
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertLookupResponseV2
+  - term: Entity
+    definition: A Recorded Future entity reference. Returned as `null` if the requesting user does not have access to the entity.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/Entity
+  - term: AiInsights
+    definition: 'Recorded Future AI summary of the alert. `text` and `comment` are mutually exclusive: when a summary is available `text` holds
+      it and `comment` is `null`; otherwise `text` is `null` and `comment` explains why no summary is available.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AiInsights
+  - term: OwnerOrganisationDetails
+    definition: Details about the owner of the alert's rule and their organisation(s)
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/OwnerOrganisationDetails
+  - term: UseCaseDeprecation
+    definition: Deprecation notice for the rule's use case. `null` unless the rule's use case is deprecated and the notice is currently active.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/UseCaseDeprecation
+  - term: EntityPathNode
+    definition: A node in a trigger entity path
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/EntityPathNode
+  - term: TriggeredBy
+    definition: One triggering reference and the entity path(s) that matched the alert rule
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/TriggeredBy
+  - term: RuleV2
+    definition: The alert rule that produced the alert
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/RuleV2
+  - term: ReviewV2
+    definition: Triage/review information for the alert
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/ReviewV2
+  - term: EvidenceV2
+    definition: A single piece of risk evidence showing data that is triggering the risk rule
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/EvidenceV2
+  - term: ReferenceV2
+    definition: A reference (document fragment) supporting a risk rule or trend
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/ReferenceV2
+  - term: DocumentV2
+    definition: A source document that contributed to an entity's risk or trend
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/DocumentV2
+  - term: EntityRiskV2
+    definition: Risk information for the entity. Empty for non-risk alerts; individual sub-fields may be `null`.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/EntityRiskV2
+  - term: EntityTrendV2
+    definition: Trend information for the entity. Empty object (`{}`) for non-trend alerts.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/EntityTrendV2
+  - term: AlertEntityV2
+    definition: An entity involved in the alert, with its risk and/or trend context
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertEntityV2
+  - term: AlertCountsV2
+    definition: Per-alert counts of the intelligence that triggered the alert
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertCountsV2
+  - term: AlertV2Summary
+    definition: Summary representation of an alert
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertV2Summary
+  - term: AlertV2Detailed
+    definition: Detailed representation of an alert (V2 lookup and search/details endpoints). Extends the summary with the triggering intelligence.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertV2Detailed
+  - term: AlertSearchDetailsResponseV2
+    definition: 'Object declared by the contract with fields: data, counts.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertSearchDetailsResponseV2
+  - term: Counts
+    definition: 'Object declared by the contract with fields: returned, total.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/Counts
+  - term: AlertSearchResponseV2
+    definition: 'Object declared by the contract with fields: data, counts.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertSearchResponseV2
+  - term: AlertLookupResponseV3
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertLookupResponseV3
+  - term: RuleV3
+    definition: The alert rule that produced the alert
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/RuleV3
+  - term: ReviewV3
+    definition: Triage/review status for the alert. Lifecycle timestamps are in the `log` object.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/ReviewV3
+  - term: LogV3
+    definition: Timestamps and actors for the alert's lifecycle
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/LogV3
+  - term: UrlV3
+    definition: URLs to access this Alert
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/UrlV3
+  - term: CriticalityV3
+    definition: Aggregated criticality for the entity. `null` when no criticality is available.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/CriticalityV3
+  - term: EvidenceV3
+    definition: A single piece of risk evidence
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/EvidenceV3
+  - term: DocumentV3
+    definition: A source document
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/DocumentV3
+  - term: ReferenceV3
+    definition: A reference (document fragment) supporting an enriched entity
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/ReferenceV3
+  - term: EnrichedEntityV3
+    definition: An entity involved in a signal alert, enriched with criticality, evidence and references. Empty for other types of alerts.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/EnrichedEntityV3
+  - term: AnalystNote
+    definition: Analyst note referenced by the hit. `null` unless the hit's source is an analyst note.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AnalystNote
+  - term: HitV3
+    definition: A hit — a piece of Intelligence Cloud data that caused the alert to trigger
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/HitV3
+  - term: AlertV3
+    definition: An alert. The set of fields returned depends on the `fields` query parameter; when it is not set, all available fields are returned.
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertV3
+  - term: AlertHitsResponseV3
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertHitsResponseV3
+  - term: FlatHitV3
+    definition: A hit returned by the flat `/v3/hits` endpoint, including its parent alert id and index within the alert
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/FlatHitV3
+  - term: AlertSearchResponseV3
+    definition: 'Object declared by the contract with fields: data, counts.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertSearchResponseV3
+  - term: AlertRuleSearchResponseV2
+    definition: 'Object declared by the contract with fields: data, counts.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertRuleSearchResponseV2
+  - term: IdName
+    definition: A generic id/name reference (user, organisation, subscriber or intelligence goal)
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/IdName
+  - term: AlertRule
+    definition: An alert rule
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertRule
+  - term: AlertUpdateResponse
+    definition: 'Object declared by the contract with fields: success, error.'
+    tags:
+    - Object
+    source: openapi/recorded-future-alert-api-openapi.yml#/components/schemas/AlertUpdateResponse
+  - term: DeleteResponse
+    definition: 'Object declared by the contract with fields: status, report_id.'
+    tags:
+    - Object
+    source: openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/DeleteResponse
+  - term: ErrorResponse
+    definition: 'Object declared by the contract with fields: message, status_code, trace_id.'
+    tags:
+    - Object
+    source: openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/ErrorResponse
+  - term: DraftRequest
+    definition: 'Object declared by the contract with fields: attributes, events, source, report_id, resolve_entities.'
+    tags:
+    - Object
+    source: openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/DraftRequest
+  - term: DraftResponse
+    definition: 'Object declared by the contract with fields: report_id.'
+    tags:
+    - Object
+    source: openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/DraftResponse
+  - term: NoteEntity
+    definition: 'Object declared by the contract with fields: id, name, type, description.'
+    tags:
+    - Object
+    source: openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/NoteEntity
+  - term: CyberAttackEventAttributes
+    definition: 'Object declared by the contract with fields: start, stop, adversary, target, capabilities, malicious_infrastructure, operation.'
+    tags:
+    - Object
+    source: openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/CyberAttackEventAttributes
+  - term: CyberAttackEvent
+    definition: 'Object declared by the contract with fields: type, attributes.'
+    tags:
+    - Object
+    source: openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/CyberAttackEvent
+  - term: Position
+    definition: 'Object declared by the contract with fields: longitude, latitude.'
+    tags:
+    - Object
+    source: openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/Position
+  - term: ArmedConflictEventAttributes
+    definition: 'Object declared by the contract with fields: start, stop, attacker, target, location, event_positions.'
+    tags:
+    - Object
+    source: openapi/recorded-future-analyst-note-api-openapi.yml#/components/schemas/ArmedConflictEventAttributes

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-profile-schema.json",
+  "title": "Profile",
+  "description": "An analysis profile defining sandbox configuration.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-sandbox-api-secopsti-api-openapi.yml#/components/schemas/Profile",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Profile UUID"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable profile name (must be unique within organization)"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "OS and locale specifications (e.g., os:windows10-2004-x64, locale:en-us)"
+    },
+    "network": {
+      "type": "string",
+      "description": "Network mode for analysis",
+      "enum": [
+        "",
+        "drop",
+        "internet",
+        "tor",
+        "sim200",
+        "sim404",
+        "simnx",
+        "vpn"
+      ]
+    },
+    "geolocation": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "Geographic region tags for VPN routing (required when network is vpn)"
+    },
+    "timeout": {
+      "type": "integer",
+      "description": "Analysis duration in seconds (max 3600)"
+    },
+    "options": {
+      "type": "object",
+      "description": "Additional profile options.",
+      "properties": {
+        "browser": {
+          "type": "string",
+          "description": "Browser to use for URL analysis (e.g., chrome, firefox)"
+        }
+      }
+    }
+  }
+}

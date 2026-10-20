@@ -1,0 +1,284 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/recorded-future/main/json-schema/recorded-future-update-static-assets-response-schema.json",
+  "title": "UpdateStaticAssetsResponse",
+  "description": "Result of a bulk static asset rule update operation.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/recorded-future-asi-project-api-openapi.yml#/components/schemas/UpdateStaticAssetsResponse",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/StaticAssetsResult"
+    },
+    "meta": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ApiMeta",
+          "description": "Metadata field for `count`, `params` and `pagination`"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "$defs": {
+    "ApiCount": {
+      "properties": {
+        "total": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Total"
+        },
+        "returned": {
+          "type": "integer",
+          "title": "Returned"
+        }
+      },
+      "type": "object",
+      "required": [
+        "returned"
+      ],
+      "title": "ApiCount",
+      "description": "Result count metadata."
+    },
+    "ApiMeta": {
+      "properties": {
+        "params": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Params"
+        },
+        "counts": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiCount"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pagination": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PaginationResponse"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Request Id"
+        }
+      },
+      "type": "object",
+      "title": "ApiMeta",
+      "description": "Response metadata including pagination, counts, and request parameters."
+    },
+    "MembershipType": {
+      "type": "string",
+      "enum": [
+        "include",
+        "exclude"
+      ],
+      "title": "MembershipType",
+      "description": "Asset membership type (include or exclude from attack surface)."
+    },
+    "PaginationResponse": {
+      "properties": {
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Next Cursor",
+          "description": "An opaque value which should be passed as the `cursor` to retrieve the next page of results. If None or not present there are no remaining pages. This value should not be interpreted by the client."
+        },
+        "limit": {
+          "type": "integer",
+          "title": "Limit",
+          "description": "The number of items returned",
+          "default": 50
+        },
+        "total": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Total"
+        },
+        "sort": {
+          "anyOf": [
+            {
+              "items": {
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sort",
+          "description": "The sort order of the results"
+        }
+      },
+      "type": "object",
+      "title": "PaginationResponse",
+      "description": "Cursor-based pagination data in responses."
+    },
+    "StaticAssetRule": {
+      "properties": {
+        "asset": {
+          "type": "string",
+          "title": "Asset"
+        },
+        "membership_type": {
+          "$ref": "#/$defs/MembershipType"
+        },
+        "static_type": {
+          "$ref": "#/$defs/StaticType"
+        }
+      },
+      "type": "object",
+      "required": [
+        "asset",
+        "membership_type",
+        "static_type"
+      ],
+      "title": "StaticAssetRule",
+      "description": "A rule specifying an asset to include or exclude from the attack surface."
+    },
+    "StaticAssetRuleError": {
+      "properties": {
+        "rule": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StaticAssetRule"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Params passed in add_rules/remove_rules action"
+        },
+        "failed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Failed",
+          "description": "Indicates if this is a warning or if the operation failed"
+        },
+        "messages": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Messages",
+          "description": "List of errors & warnings encountered during the operation"
+        }
+      },
+      "type": "object",
+      "title": "StaticAssetRuleError",
+      "description": "An error encountered when processing a static asset rule."
+    },
+    "StaticAssetsResult": {
+      "properties": {
+        "added": {
+          "items": {
+            "$ref": "#/$defs/StaticAssetRule"
+          },
+          "type": "array",
+          "title": "Added",
+          "description": "List of static asset rules that were added"
+        },
+        "removed": {
+          "items": {
+            "$ref": "#/$defs/StaticAssetRule"
+          },
+          "type": "array",
+          "title": "Removed",
+          "description": "List of static asset rules that were removed"
+        },
+        "errors": {
+          "items": {
+            "$ref": "#/$defs/StaticAssetRuleError"
+          },
+          "type": "array",
+          "title": "Errors",
+          "description": "List of errors encountered during the operation"
+        }
+      },
+      "type": "object",
+      "title": "StaticAssetsResult",
+      "description": "Result of processing static asset rule operations."
+    },
+    "StaticType": {
+      "type": "string",
+      "enum": [
+        "ipv4",
+        "hostname",
+        "wildcard"
+      ],
+      "title": "StaticType",
+      "description": "Static asset type (hostname, domain, ip, cidr)."
+    }
+  }
+}

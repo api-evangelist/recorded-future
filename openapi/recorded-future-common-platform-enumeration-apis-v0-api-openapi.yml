@@ -1,0 +1,305 @@
+openapi: 3.0.1
+info:
+  title: Common Platform Enumeration APIs V0
+  version: '0'
+servers:
+- url: https://api.riskrecon.com
+security:
+- bearerAuth: []
+paths:
+  /v0/cpe/cve_product_lookup:
+    get:
+      tags:
+      - CPE
+      summary: lookup product association with given cves
+      description: lookup product association with a given cves
+      operationId: CPEWeb.CPEController.cve_product_lookup
+      parameters:
+      - name: cves[]
+        in: query
+        description: query by cves
+        required: true
+        style: form
+        explode: true
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CveProductLookups'
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+  /v0/cpe/query:
+    get:
+      tags:
+      - CPE
+      summary: query vulnerabilities by product and version using the query param
+      description: query vulnerabilities by product and version using the query param
+      operationId: CPEWeb.CPEController.query
+      parameters:
+      - name: query
+        in: query
+        description: query by product and version
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vulnerabilities'
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+  /v0/cpe/query_threat_intel:
+    get:
+      tags:
+      - CPE
+      summary: query threat_intel service by ip or host_name using the query params
+      description: query threat_intel service by ip or host_name using the query params. Each is optional but one is required.
+      operationId: CPEWeb.CPEController.threat_intel_query
+      parameters:
+      - name: ip
+        in: query
+        description: filter results by ip address
+        schema:
+          type: string
+      - name: host_name
+        in: query
+        description: filter results by host_name
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreatIntellResults'
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+  /v0/cpe/query_with_language:
+    get:
+      tags:
+      - CPE
+      summary: query service by product and version, language and security_criteria using the query params
+      description: query service by product and version, language and security_criteria using the query params
+      operationId: CPEWeb.CPEController.query_with_language
+      parameters:
+      - name: query
+        in: query
+        description: query by product and version
+        required: true
+        schema:
+          type: string
+      - name: security_criteria
+        in: query
+        description: filter results by security_criteria
+        required: true
+        schema:
+          type: string
+      - name: language
+        in: query
+        description: filter results by language
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilitiesAndLanguage'
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+  /v0/cpe/raw_language:
+    get:
+      tags:
+      - CPE
+      summary: query language and security_criteria using the query params
+      description: query language and security_criteria using the query params
+      operationId: CPEWeb.CPEController.raw_language
+      parameters:
+      - name: security_criteria
+        in: query
+        description: filter results by security_criteria
+        required: true
+        schema:
+          type: string
+      - name: language
+        in: query
+        description: filter results by language
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindingsLanguage'
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+components:
+  schemas:
+    CveProductLookups:
+      title: CveProductLookups
+      type: array
+      description: Array of CveProductLookups associated provided cves
+      items:
+        $ref: '#/components/schemas/CveProductLookup'
+    CveProductLookup:
+      title: CVE Product Lookup
+      type: object
+      properties:
+        product_short_name:
+          type: string
+        product_long_name:
+          type: string
+        cve_id:
+          type: string
+      description: Look up products and versions associated with a provided cve code
+    Vulnerability:
+      title: Vulnerability
+      type: object
+      properties:
+        urls:
+          type: string
+        summary:
+          type: string
+        score:
+          type: string
+        published_datetime:
+          type: string
+        last_modified_datetime:
+          type: string
+        integrity_impact:
+          type: string
+        cve_id:
+          type: string
+        confidentiality_impact:
+          type: string
+        availability_impact:
+          type: string
+        authentication:
+          type: string
+        access_vector:
+          type: string
+        access_complexity:
+          type: string
+      description: Vulnerability associated with given platform and version
+    VulnerabilitiesAndLanguage:
+      title: Vulnerabilities and Language
+      type: object
+      properties:
+        vulnerabilities:
+          $ref: '#/components/schemas/Vulnerabilities'
+        language:
+          $ref: '#/components/schemas/FindingsLanguage'
+      description: Vulnerabilities and Language associated with given platform and version
+    Vulnerabilities:
+      title: Vulnerabilities
+      type: array
+      description: Array of Vulnerabilities associated with given platform and version
+      items:
+        $ref: '#/components/schemas/Vulnerability'
+    FindingsLanguage:
+      title: Findings language
+      type: object
+      properties:
+        solution_short:
+          type: string
+        solution_owner_short:
+          type: string
+        solution_owner_long:
+          type: string
+        issue_short_vuln:
+          type: string
+        issue_short_eol:
+          type: string
+        issue_long_vuln:
+          type: string
+        issue_long_intro:
+          type: string
+        issue_long_eol:
+          type: string
+      description: Findings language associated with a given platform and version
+    ThreatIntellResults:
+      title: Threat Intell Results
+      type: array
+      description: Array of Threat intell results
+      items:
+        $ref: '#/components/schemas/ThreatIntellResult'
+    ThreatIntellResult:
+      title: Threat Intell Result
+      type: object
+      properties:
+        type:
+          type: string
+        source:
+          type: string
+        notes:
+          type: string
+        ip:
+          type: string
+        intell_date:
+          type: string
+        host_name:
+          type: string
+        family:
+          type: string
+        category:
+          type: string
+        asn:
+          type: string
+      description: Threat Intell Result
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-provenance:
+  method: searched
+  source: https://docs.recordedfuture.com/reference
+  harvested: '2026-10-20'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.recordedfuture.com/reference/cpewebcpecontrollercve_product_lookup.md
+  - https://docs.recordedfuture.com/reference/cpewebcpecontrollerquery.md
+  - https://docs.recordedfuture.com/reference/cpewebcpecontrollerquery_with_language.md
+  - https://docs.recordedfuture.com/reference/cpewebcpecontrollerraw_language.md
+  - https://docs.recordedfuture.com/reference/cpewebcpecontrollerthreat_intel_query.md
+  merge:
+    pages: 5
+    deduped: 7
+    conflicts_kept_first: 0
