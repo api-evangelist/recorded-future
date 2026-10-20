@@ -1,0 +1,186 @@
+slug: recorded-future
+provider: Recorded Future
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 17
+edges:
+- tag: recorded-future-detection-rule-api
+  spec_file: recorded-future-detection-rule-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.9
+  evidence: '"programmatically search for and download YARA, Sigma, and Snort rules"; POST /search Search
+    Detection Rules'
+  reason: Distribution of YARA/Sigma/Snort detection content is squarely threat detection engineering
+    for SOC/SIEM use.
+- tag: Auto Sigma
+  spec_file: recorded-future-malware-intelligence-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.85
+  evidence: '''Create a Auto Sigma job'', ''Update a Sigma Rule'', ''Create an Auto YARA job'' within
+    ''Recorded Future Malware Intelligence'''
+  reason: Generation of Sigma/YARA detection rules for malware is squarely threat detection & response
+    tooling.
+- tag: Detections
+  spec_file: recorded-future-collective-insights-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.85
+  evidence: '''Submit detected IOCs to the Collective Insights'' and ''Search Collective Insights events'''
+  reason: Submission and enrichment of security detections/IOCs from security tooling is threat detection
+    & response.
+- tag: Intelligence Sources
+  spec_file: recorded-future-autonomous-threat-operations-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.85
+  evidence: '''Get Profile Detection Rules'', ''Get Pending Jobs'' under ''Autonomous Threat Operations
+    API'''
+  reason: Threat hunting, detection profiles and prevention indicators — SOC detection and response operations.
+- tag: recorded-future-alert-api
+  spec_file: recorded-future-alert-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.85
+  evidence: '"The Alert API allows for interacting with Recorded Future Alerts and Alert rules"; GET /search
+    Search for alerts; POST /update Update one or several alerts'
+  reason: Security alert triage surface (alerts, alert rules, review/evidence schemas like EvidenceV2,
+    ReviewV2) on a threat intelligence platform — this is SOC-style threat detection and response, not
+    business alerting.
+- tag: recorded-future-asi-project-api
+  spec_file: recorded-future-asi-project-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.85
+  evidence: '"the `Exposures` that our system has identified on those assets, including proposed remediations";
+    GET /projects/{project_id}/assets/{asset_id}/exposures List Asset Exposures; schema ExposureSeverity'
+  reason: Attack surface asset inventory with identified exposures, severity and proposed remediations
+    — this is vulnerability discovery and remediation management.
+- tag: recorded-future-playbook-alerts-api
+  spec_file: recorded-future-playbook-alerts-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.85
+  evidence: POST /code_repo_leakage Bulk Code Repository Data Leakage alert lookup; PUT /common/{playbook_alert_id}
+    Update Playbook Alert; schemas PlaybookAlertStatus, PlaybookAlertAssigneeId
+  reason: Security alert lifecycle (lookup, status, assignee, priority) across data-leakage, domain-abuse
+    and dark-web brand categories — detection and response workflow on security alerts.
+- tag: recorded-future-soar-api
+  spec_file: recorded-future-soar-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.85
+  evidence: '"Fetch risk information for a set of indicators"; "Triage multiple IOC entities"; "high throughput
+    risk checks using Recorded Future''s threat intelligence in bulk"'
+  reason: IOC enrichment and triage feeding SOC/SOAR workflows is squarely threat detection and response;
+    the 'risk' wording refers to indicator risk scores, not enterprise risk management.
+- tag: Action Plans
+  spec_file: recorded-future-mastercard-riskrecon-api-openapi.yml
+  capability_id: BC-510.30
+  capability_id_l1: BC-510
+  capability_name: Supplier Risk Management
+  confidence: 0.8
+  evidence: '''This resource tracks and reports a vendors progress in addressing action plan issues.''
+    and ''getActionPlanVendorStatusSummaryCounts'' / RiskRecon ''visibility into the security quality
+    of their business partners'''
+  reason: RiskRecon action plans drive remediation of third-party/vendor cyber security findings — supplier
+    risk management.
+- tag: Case
+  spec_file: recorded-future-case-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.8
+  evidence: '''Build a Case around a Reference Alert, or a Signal Alert'' with schemas ''CaseStatus, CasePriority,
+    CyberLevel, RiskEvidence, AlertRuleId'''
+  reason: Security alert case management/triage with assignees and priorities — SOC incident response
+    workflow.
+- tag: Credentials
+  spec_file: recorded-future-identity-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.8
+  evidence: '''API to lookup identity leaks data'', ''Lookup passwords for exposure'', schemas ''BreachMetadata,
+    Compromise, DumpMetadata'''
+  reason: Detection of leaked/compromised credentials from breach dumps is threat intelligence feeding
+    detection and response, not IAM provisioning.
+- tag: Metadata
+  spec_file: recorded-future-threat-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.8
+  evidence: GET /actor/categories Threat Actor Categories; POST /map/malware Malware Threat Map — "External
+    API to retrieve threat data such as threat maps, threat actors and their categories"
+  reason: Despite the generic 'Metadata' tag, the operations return threat actor and malware categories
+    and threat maps — threat intelligence feeding security threat detection/response. Cybersecurity Management
+    / Threat Detection & Response is the honest fit; no other candidate covers adversary intelligence.
+- tag: recorded-future-common-platform-enumeration-apis-v0-api
+  spec_file: recorded-future-common-platform-enumeration-apis-v0-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.8
+  evidence: GET /v0/cpe/query "query vulnerabilities by product and version using the query param"; schemas
+    Vulnerability, Vulnerabilities
+  reason: CPE/CVE lookup returning vulnerabilities for a product and version is vulnerability identification
+    — Vulnerability Management.
+- tag: recorded-future-sandbox-api-secopsti-api
+  spec_file: recorded-future-sandbox-api-secopsti-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.8
+  evidence: '"Provides malware analysis capabilities including file/URL submission, behavioral analysis,
+    YARA rule management"; POST /samples submitSample "Submit a sample"'
+  reason: A malware-analysis sandbox with sample submission and YARA rules is security threat analysis
+    tooling, mapping to threat detection and response within cybersecurity management rather than any
+    business-domain capability.
+- tag: Detection Rule
+  spec_file: recorded-future-detection-rule-relation-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.75
+  evidence: '''API to fetch entities and types associated with detection rules'', schema ''DetectionRuleEntity'''
+  reason: Detection-rule entity associations support security detection content; thin surface but clearly
+    security detection domain.
+- tag: Active Risks
+  spec_file: recorded-future-risk-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.7
+  evidence: '''Get a single active risk rule with enriched evidence'' with schemas ''OpenPortEvidence,
+    LeakedCredentialsEvidence, CyberTrendsEvidence'''
+  reason: Cyber threat risk scoring of entities feeding detection; threat intelligence sits under threat
+    detection & response, though it could also be read as risk assessment.
+- tag: recorded-future-connect-api
+  spec_file: recorded-future-connect-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.7
+  evidence: GET /domain/risklist Fetch Domain risk list; GET /hash/risklist Fetch Hash risk list; schema
+    RiskData, ThreatList
+  reason: Indicator enrichment and risk lists for domains, hashes and companies — threat intelligence
+    consumed for detection and response. Breadth of entity types adds some ambiguity, hence moderate confidence.
