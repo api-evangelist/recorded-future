@@ -12,6 +12,9 @@ checked:
 - https://monid.ai/tools/recorded-future
 - https://n8n.io/integrations/recorded-future/
 - https://zapier.com/apps/recorded-future/integrations
+- https://addons.mozilla.org/api/v5/addons/addon/<slug>/
+- https://addons.mozilla.org/api/v5/addons/search/?type=extension&app=firefox
+- https://chromewebstore.google.com/sitemap
 summary: null
 marketplace_apps:
 - marketplace: n8n
@@ -85,4 +88,35 @@ edges:
   seller_name: Recorded Future
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
+- partner_name: Mozilla Firefox Add-ons (AMO)
+  partner: null
+  partner_match: null
+  type: marketplace
+  marketplace: firefox-add-ons
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://addons.mozilla.org/en-US/firefox/addon/recorded-future-look-up/
+  app: Recorded Future
+  listing_count: 1
+  category: browser extension (Firefox Add-ons)
+  partner_url: https://addons.mozilla.org/
+  contract_reference:
+    register: 'Firefox Add-ons (addons.mozilla.org public API v5 search: authors, homepage, support_url)'
+    spec_file: null
+    role: firefox-add-on-publisher
+    registered_name: Recorded Future
+    register_id: https://addons.mozilla.org/api/v5/addons/addon/recorded-future-look-up/
+    matched_domain: recordedfuture.com
+    matched_by: domain
+    matched_name: Recorded Future
+    builder: publisher
+    signal_note: ONE edge per provider for the store; listing alone = participation. The AMO author name (builder
+      publisher) or homepage + support_url both on the provider's domain (builder domain-attested) identifies it;
+      extension / user counts are context, never counted. No Mozilla repo in all/*, so no platform-side edge exists
+      to mirror.
+    detected_by: sweep-browser-extension-stores.py
+    detected: '2026-10-21'
+  detected_by: sweep-browser-extension-stores.py
+  first_seen: '2026-10-21'
 templates: []
