@@ -47,6 +47,9 @@ maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 common:
+- type: CapabilityMap
+  url: capabilities/recorded-future-capability-edges.yml
+  name: Recorded Future Business Capability Map
 - type: AgenticAccess
   url: agentic-access/recorded-future-agentic-access.yml
 - type: Spectral
